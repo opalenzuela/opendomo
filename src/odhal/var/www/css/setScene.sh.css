@@ -1,0 +1,5 @@
+.listbox #setScene li a {
+	background: url("/images/default/scene.png") no-repeat scroll left center transparent;
+	padding-left: 32px;
+}
+   

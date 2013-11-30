@@ -1,0 +1,5 @@
+#! /bin/sh
+
+echo "Configuring busybox HTTPD service ..."
+
+insserv httpd 2>/dev/null

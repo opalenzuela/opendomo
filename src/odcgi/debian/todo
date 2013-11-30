@@ -1,0 +1,17 @@
+- Acelerar la carga
+- Asignar permisos correctamente al crear el archivo sessions.
+- Establecer duracion maxima de una sesion.
+- Mejorar la seguridad.
+- Permitir POSTS largos (envíos de texto largos, por ejemplo)
+- Corregir la ambigüedad de los caracteres " " convertidos a "+" por el browser
+- Añadir ruta del script activa para facilitar la navegación
+- Permitir envios de archivos (campos FILE) respetando privilegios de usuario
+- Normalizar el comportamiento de las redirecciones (falla la inclusión de CSS)
+- Asignar grupos de usuario (al crearlos y al cargar permisos)
+- Habilitar el sistema TOC y Ajax para minimizar peticiones HTTP
+- Desplazar los scripts de /etc/opendomo/[list...] a /usr/local/bin/ y enlazar
+- Habilitar distintas plantillas de visualización para listados
+- Procesar los ID de campos y adecuarlos al formato HTML; etiquetar bloques DOM
+- Migrar a libcgi
+- Unificar el formato de salida de los scripts
+- Habilitar Javascript para colapsar/expandir elementos

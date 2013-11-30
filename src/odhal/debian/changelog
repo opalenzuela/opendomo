@@ -1,0 +1,11 @@
+odhal (1.9.1) experimental; urgency=low
+
+  * Updating init.d files to LSB format
+
+ -- Javier Miras Blanco <jmirab@gmail.com>  Sun, 20 Oct 2013 18:17:49 +0200
+
+odhal (1.9.0) experimental; urgency=low
+
+  * First experimental package
+
+ -- Javier Miras Blanco <jmirab@gmail.com>  Fri, 27 Sep 2013 16:56:35 +0200

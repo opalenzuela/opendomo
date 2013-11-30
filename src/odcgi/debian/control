@@ -1,0 +1,11 @@
+Source: odcgi
+Section: network
+Priority: optional
+Maintainer: Javier Miras Blanco <jmirasb@gmail.com>
+Build-Depends: libc6-dev (>= 2.7), libssl-dev (>= 1.0.1), libjpeg8-dev (>= 8c), libconfig-dev (>= 1.4.8)
+Standards-Version:38
+
+Package: odcgi
+Architecture: i386
+Depends: ${shlibs:Depends}, libc6 (>= 2.7), libssl1.0.0 (>= 1.0.1), libjpeg8 (>= 8c), libconfig9 (>= 1.4.8), busybox (>= 1.10), odcommon (>= 0.1), libcoelacanth (>= 0.1)
+Description: Opendomo web interface

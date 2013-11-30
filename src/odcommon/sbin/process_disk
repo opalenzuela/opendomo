@@ -1,0 +1,119 @@
+#!/bin/sh
+#desc: Configure local drives
+
+# Variables
+DEVICE="$1"
+ID_FS_LABEL=`blkid -o udev -s LABEL /dev/$DEVICE | cut -f2 -d= | uniq`
+ODCFG="/mnt/$DEVICE/opendomo.cfg"
+MOUNT=`mount | grep -c $DEVICE`
+
+if test -f $ODCFG; then
+	CONFDEVICE=`grep ^CONFDEVICE= $ODCFG | sed 's/\"//g' | cut -f2 -d= `
+	SYSDEVICE=`grep ^SYSDEVICE= $ODCFG | sed 's/\"//g' | cut -f2 -d= `
+	HOMEDEVICE=`grep ^HOMEDEVICE= $ODCFG | sed 's/\"//g' | cut -f2 -d=`
+	LABEL=`grep ^LABEL= $ODCFG | sed 's/\"//g' | cut -f2 -d=`
+	LOGDIR=`grep ^LOGDIR= $ODCFG | sed 's/\"//g' | cut -f2 -d=`
+fi
+
+DEFIMG=rootfs.def
+CSTIMG=rootfs.cst
+HOMEIMG=home.img
+
+SQUASHDIR=/run/fs/squashfs
+TEMPFSDIR=/run/fs/tmpfs
+ROOTFSDIR=/run/fs/rootfs
+INITRDDIR=$ROOTFSDIR/run/fs/initrd
+
+HOMESIZE=10000
+
+# Configuration label don't exist, change to fs label or device
+if test -z $LABEL; then
+	if test -z $ID_FS_LABEL; then
+		LABEL=$DEVICE
+	else
+		LABEL=$ID_FS_LABEL
+	fi
+fi
+
+# Previous checks
+if [ "$MOUNT" = "0" ]; then
+	rm /mnt/$DEVICE
+	logger "  Drive $DRIVE can't be mounted"
+	exit 1
+fi
+if test -e "/media/$LABEL"; then
+	logger "  Drive $DRIVE is already processed"
+	exit 1
+fi
+
+# Selecting rootfs to mout
+if test -f /mnt/$DEVICE/$DEFIMG; then
+	IMAGE=$DEFIMG
+fi
+if test -f /mnt/$DEVICE/$CSTIMG; then
+	IMAGE=$CSTIMG
+fi
+
+# Configure drives
+if [ "$SYSDEVICE" = "1" ]; then
+	# Creating folders for new rootfs
+	mkdir -p $SQUASHDIR $TEMPFSDIR $ROOTFSDIR
+
+	# Mounting squashfs
+	if mount -t squashfs /mnt/$DEVICE/$DEFIMG $SQUASHDIR; then
+		CHROOT=$ROOTFSDIR
+	fi
+	mount -t tmpfs none $TEMPFSDIR
+	mount -t aufs -o dirs=$TEMPFSDIR:$SQUASHDIR=ro aufs $ROOTFSDIR
+
+	# Creating system link
+	logger "  Device: $device linked as system drive"
+	ln -s /mnt/$DEVICE $CHROOT/mnt/system
+fi
+
+if [ "$CONFDEVICE" = "1" ]; then
+	logger "  Device: $device linked as configuration drive"
+	ln -s /mnt/$DEVICE $CHROOT/mnt/odconf
+fi
+
+if [ "$LOGDIR" != "" ]; then
+	if test -d /mnt/$DEVICE/$LOGDIR; then
+		logger "$CONF_LOG is the logs dir"
+	fi
+fi
+
+if [ "$HOMEDEVICE" = "1" ]; then
+	logger "  Device: $device linked as home drive"
+
+	# Creating and mount homefs
+	if ! test -f /mnt/$DEVICE/$HOMEIMG; then
+		dd if=/dev/zero of=/mnt/$DEVICE/$HOMEIMG bs=1024 count=$HOMESIZE
+		mkfs.ext2 /mnt/$DEVICE/$HOMEIMG
+	fi
+	mount /mnt/$DEVICE/$HOMEIMG $CHROOT/home
+fi
+
+# Allways link drive to /media
+ln -s /mnt/$DEVICE $CHROOT/media/$LABEL
+
+# Changing rootfs to mounted squash
+if ! test -z $CHROOT; then
+	# Move mount devices to new rootfs
+	cd /mnt
+	for drive in *; do
+		mkdir -p $ROOTFSDIR/mnt/$drive
+		mount --move /mnt/$drive $ROOTFSDIR/mnt/$drive
+		rmdir /mnt/$drive
+	done
+
+	# Move kernel filesystems to new rootfs
+	mount --bind /dev  $ROOTFSDIR/dev
+	mount --move /proc $ROOTFSDIR/proc
+	mount --move /sys  $ROOTFSDIR/sys
+	mount --move /tmp  $ROOTFSDIR/tmp
+	mount --move /run  $ROOTFSDIR/run
+	mkdir -p $INITRDDIR
+
+	# Switch root
+	exec pivot_root $ROOTFSDIR $INITRDDIR
+fi

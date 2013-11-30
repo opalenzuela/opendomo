@@ -1,0 +1,10 @@
+.listbox #setSystemState li a {
+	background: url("/images/default/circle.png") no-repeat scroll left center transparent;
+	padding-left: 32px;
+}
+   
+.listbox #setSystemState li.sel a {
+	background: url("/images/default/circle_sel.png") no-repeat scroll left center transparent;
+	padding-left: 32px;	
+}
+   

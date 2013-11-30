@@ -1,0 +1,12 @@
+- Corregir el bug de permisos en /tmp/odcontrol.pid (y moverlo a /var/run!)
+- (driver arduino) Tolerar puertos de otros tipos (X), ignorarlos sin dar error
+- Implementar un parametro que diga si en un puerto dado existe una placa micropik.
+- Implementar un parametro que muestre el numero de entradas analogicas.
+- Implementar un parametro que muestre el numero de salidas digitales.
+- Implementar funcionalidades internas del driver arduino
+- Implementar soporte odevents, informando de cambios en el estado de las entradas y salidas.
+- crear subpaquetes odcontrol_arduino, odcontrol_micropik, etc.
+- preparar script de aplicación de template para Arduino
+- preparar script para actualización del firmware de Arduino usando avrdude
+
+

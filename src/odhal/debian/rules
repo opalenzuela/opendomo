@@ -1,0 +1,22 @@
+#!/usr/bin/make -f
+
+PACKAGE=$(shell dh_listpackages)
+
+%:
+	dh $@
+
+override_dh_install:
+
+	find . -maxdepth 1 -mindepth 1 -not -name Makefile -not -name debian -not -name src -print0 | \
+		xargs -0 -r -i cp -a {} debian/$(PACKAGE)
+
+override_dh_fixperms:
+	dh_fixperms
+	chown -R 1000 debian/odhal/etc/opendomo
+	chown -R 1000 debian/odhal/etc/crond.d/admin
+	chown 1000 debian/odhal/etc/init.d/odhal
+	chown -R 1000 debian/odhal/usr/local/opendomo
+	chown -R 1000 debian/odhal/var/www
+	chown -R 1000 debian/odhal/var/opendomo
+
+override_dh_usrlocal:

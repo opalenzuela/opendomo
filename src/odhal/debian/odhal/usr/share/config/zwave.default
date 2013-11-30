@@ -1,0 +1,4 @@
+device='zwave'
+driver='openzwave'
+dirname='zwave'
+refresh='100'

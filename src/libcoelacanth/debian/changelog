@@ -1,0 +1,11 @@
+libcoelacanth (1.9.1) experimental; urgency=low
+
+  * New debian/rules format  
+
+ -- Javier Miras Blanco <jmirab@gmail.com>  Wed, 02 Oct 2013 13:28:51 +0200
+
+libcoelacanth (1.9.0) experimental; urgency=low
+
+  * First experimental package
+
+ -- Javier Miras Blanco <jmirab@gmail.com>  Fri, 27 Sep 2013 16:56:35 +0200

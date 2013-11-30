@@ -1,0 +1,19 @@
+KERNEL!="[h,s]d[a-z][0-9]|mmcblk[0-9]p[0-9]", GOTO="mnt_auto_mount_end"
+
+# Global mount options
+ACTION=="add", ENV{mount_options}="relatime"
+# Filesystem-specific mount options
+ACTION=="add", IMPORT{program}="/sbin/blkid -o udev -p %N"
+ACTION=="add", ENV{ID_FS_TYPE}=="vfat|ntfs", ENV{mount_options}="$env{mount_options},utf8,uid=1000,gid=1000,dmask=0027,fmask=0027,flush"
+
+# Mount under /mnt and execute script to configure disk in opendomo
+ACTION=="add", RUN+="/bin/mkdir -p /mnt/%k"
+ACTION=="add", RUN+="/bin/mount -o $env{mount_options} /dev/%k /mnt/%k"
+ACTION=="add", RUN+="/bin/logevent disk attached 'Disk attached' /mnt/%k"
+ACTION=="add", RUN+="/sbin/process_disk %k"
+
+# Clean up after removal
+ACTION=="remove", RUN+="/bin/rm -f /media/%k", RUN+="/bin/umount -l /mnt/%k", RUN+="/bin/rmdir /mnt/%k"
+
+# Exit
+LABEL="mnt_auto_mount_end"

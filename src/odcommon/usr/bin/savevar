@@ -1,0 +1,9 @@
+#!/bin/sh
+CFGFILE="$1"
+VARNAME="$2"
+VARVALUE="$3"
+test -f "$CFGFILE" || exit 1
+test -z "$VARNAME" && exit 2
+
+sed -i "s/^$VARNAME/#$VARNAME/" $CFGFILE && echo "$VARNAME='$VARVALUE'" >> $CFGFILE
+exit 0

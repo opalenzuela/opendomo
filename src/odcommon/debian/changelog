@@ -1,0 +1,13 @@
+odcommon (1.9.1) experimental; urgency=low
+
+  * Updating opendomo configuration files
+  * Updating init.d files to LSB format
+
+ -- Javier Miras Blanco <jmirab@gmail.com>  Sun, 20 Oct 2013 18:11:46 +0200
+
+odcommon (1.9.0) experimental; urgency=low
+
+  * Create first debian package
+  *
+
+ -- Javier Miras Blanco <jmirab@gmail.com>  Fri, 27 Sep 2013 16:56:35 +0200

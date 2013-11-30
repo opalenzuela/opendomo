@@ -1,0 +1,110 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          odhal
+# Required-Start:    $network
+# Required-Stop:
+# Should-Start:
+# Should-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 6
+# Short-Description: HAL daemon for manage microcontrollers
+# Description:       HAL daemon for manage microcontrollers
+### END INIT INFO
+
+. /lib/init/vars.sh
+. /lib/lsb/init-functions
+
+CFGPATH="/etc/opendomo/control"
+CTRLPATH="/var/opendomo/control"
+PID="/var/run/odcontrol.pid"
+
+do_start () {
+	# Omitimos los archivos que no sean ".conf"
+	for i in $CFGPATH/*.conf; do
+		if test -f $i; then
+			# 1. Cargamos configuración
+			. $i
+			# 2. Lanzamos el driver
+			BINARY="/usr/bin/$driver"
+			if test -x $BINARY; then
+				$BINARY -d $device -p $dirname -r $refresh $params \
+						>>/var/log/odhal_$dirname.log 2>/var/log/odhal_$dirname.err &
+				echo -n "($dirname)"
+			else
+				echo -n "($dirname failed)"
+			fi
+		fi
+	done
+
+	touch $PID
+	chown admin:admin /var/log/odhal* 2>/dev/null
+	chown admin $PID 2>/dev/null
+	chmod g+rw $PID 2>/dev/null
+}
+
+do_stop () {
+	for i in $CFGPATH/*.conf; do
+		if test -f $i; then
+			# 1.Cargamos configuración
+			. $i
+			# 2.Matamos el driver
+			killall $driver 2>/dev/null
+
+			# Remove directory
+			rm -fr $CTRLPATH/$dirname
+			#rm -fr $CFGPATH/domino_*
+		fi
+
+	done
+	chmod +w -R $CTRLPATH/* 2>/dev/null
+	rm -fr $CTRLPATH/ODC*
+
+	rm /var/opendomo/domino_devices.conf 2>/dev/null
+	rm -fr $PID
+}
+
+
+case "$1" in
+	start)
+		log_daemon_msg "Starting opendomo controllers"
+		if test -f $PID; then
+			echo -n "(already started)"
+			log_end_msg 2
+		else
+			do_start
+		fi
+
+		# This script is called as root during boot. Reflow to admin
+		if test `whoami` = "root"; then
+			su -c "/etc/init.d/odhal start" admin
+		fi
+		log_end_msg $?
+	;;
+	stop)
+		echo -n "Stopping controllers..."
+		do_stop
+	;;
+	status)
+		if test -f $PID; then
+			echo "The service is running"
+			exit 0
+		else
+			echo "Service not started"
+			exit 1
+		fi
+	;;
+	reload)
+		echo -n "Reloading controllers..."
+		#TODO: Send -HUP signal
+	;;
+	restart)
+		echo -n "Restarting controllers..."
+		stop
+		start
+	;;
+	*)
+		echo "Usage: $0 {start|stop|restart|status}"
+		exit 1
+esac
+
+:

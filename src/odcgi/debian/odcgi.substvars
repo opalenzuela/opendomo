@@ -1,0 +1,2 @@
+shlibs:Depends=libc6 (>= 2.7), libconfig9, libjpeg8 (>= 8c), libssl1.0.0 (>= 1.0.0)
+misc:Depends=

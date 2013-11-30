@@ -1,0 +1,59 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          keymap
+# Required-Start:
+# Required-Stop:
+# Should-Start:      glibc
+# Default-Start:     1 2 3 4 5
+# Default-Stop:      0 6
+# Short-Description: Configuring busybox keymaps
+# Description:       Based bmap keyboard configuration
+#
+### END INIT INFO
+### Copyright(c) 2011 OpenDomo Services SL. Licensed under GPL v3 or later
+
+
+. /lib/init/vars.sh
+. /lib/lsb/init-functions
+
+do_start () {
+	LANGFILE="/etc/opendomo/lang"
+	if test -f $LANGFILE; then
+		LANGUAGE=`cat $LANGFILE`
+	else
+		LANGUAGE="en"
+	fi
+	log_daemon_msg "Loading busybox keymap" "$LANGUAGE"
+
+	/bin/busybox loadkmap < /usr/share/keymaps/$LANGUAGE.bmap
+	log_end_msg $?
+	exit 0
+}
+
+do_status () {
+	return 0
+}
+
+case "$1" in
+  start|"")
+	do_start
+        ;;
+  restart|reload|force-reload)
+        echo "Error: argument '$1' not supported" >&2
+        exit 3
+        ;;
+  stop)
+        echo "Error: argument '$1' not supported" >&2
+        exit 3
+	;;
+  status)
+        do_status
+        exit $?
+        ;;
+  *)
+        echo "Usage: hostname.sh [start|stop]" >&2
+        exit 3
+        ;;
+esac
+
+:

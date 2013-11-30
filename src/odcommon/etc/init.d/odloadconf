@@ -1,0 +1,49 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          odconf
+# Required-Start:    udev
+# Required-Stop:
+# Should-Start:      glibc
+# Default-Start:     S
+# Default-Stop:      0 6
+# Short-Description: Load opendomo configuration files
+# Description:       Load opendomo configuration files
+#
+### END INIT INFO
+### Copyright(c) 2011 OpenDomo Services SL. Licensed under GPL v3 or later
+
+
+. /lib/init/vars.sh
+. /lib/lsb/init-functions
+
+do_start () {
+	SYSCONF=/mnt/odconf/sysconf
+	/usr/bin/logger -p notice "Loading configuration file"
+
+	/usr/local/opendomo/services/syscript/loadSystemConfiguration.sh >/dev/null
+}
+
+case "$1" in
+  start|"")
+	log_action_begin_msg "Updating opendomo configuration files "
+	do_start
+	log_action_end_msg $?
+        ;;
+  restart|reload|force-reload)
+        echo "Error: argument '$1' not supported" >&2
+        exit 3
+        ;;
+   status)
+        echo "Error: argument '$1' not supported" >&2
+        exit 3
+        ;;
+ stop)
+        # No-op
+        ;;
+  *)
+        echo "Usage: odloadconf [start]" >&2
+        exit 3
+        ;;
+esac
+
+:

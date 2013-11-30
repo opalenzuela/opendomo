@@ -1,0 +1,243 @@
+/* OpenDomo CGI interface's Mobile style
+#desc:Estilo simplificado de la interfaz para dispositivos móviles
+#
+# Esta hoja de estilo ha sido desarrollada especialmente para dispositivos con
+# buen cumplimiento de estándares y pantalla de reducidas dimensiones
+ */
+h1 {
+	text-align:center;
+	font-size: 110%;
+	color: #666666;
+}
+h2 {
+	color: #222;
+	color: #666666;	
+}
+
+h2[id*='_lgnd_h2'], #logo_od,.tabberactive, .tabbernav
+{
+	display:none;
+}
+#header {
+	text-align: center;
+}
+body {
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	background-color: #DFDFDF; 
+	margin: 0px;
+}
+#main {
+	border-color: gray;
+	border-style: solid;
+	border-width: 1px;
+	background-color : white;
+	text-align: left;	
+	margin: 0px;
+	margin-top: -5px;	
+}
+#main ul {
+	list-style: none;
+	margin:0px;
+	padding:0px;
+	overflow:none;	
+}
+#main ul li {
+	margin: 0;
+	border-bottom: 1px solid #CCCCCC;
+	display: block;
+	padding: 5px;
+}
+.listbox li:hover {
+	background: #DFDFDF;
+	color: #222;
+}
+#main li{
+	color: #000000;
+	overflow: hidden;
+} 
+.tabform, .listbox, #loginbox {
+	display: table;
+	border: 1px solid inherit;
+	width: 100%;
+}
+.listbox li:hover {
+	background: #DFDFDF;
+	color: #222;
+}
+#loginbox label {
+	display: block;
+	width: 100%;
+	text-align: right;
+}
+a em {
+	background: #999;
+	display: block;
+	margin-top: 0.3em;
+}
+
+.categories {
+	list-style: none;
+	border: none;
+	padding: 0px;
+	margin: 0px;
+	margin-left: 3px;
+	margin-bottom: -1px;
+}
+.categories li {
+	display: inline-block !important;
+	margin: 0px;
+	padding: 0px;
+	background-repeat:no-repeat;
+	background-position: center;
+	overflow:hidden;
+}
+.categories li a {
+	display: block;                                                         
+	margin: 0px;                                                            
+	width:50px;                                                             
+	height:50px;    
+	border-color: gray;
+	border-style: solid;
+	border-width: 1px;
+	border-bottom-style: hidden;
+	color: #666666;
+	text-decoration: none;
+	font-size: 9px;
+	cursor: pointer;		
+	background-color: #CCCCCC;	
+}
+.categories #cat-config a{
+	background-image:url(http://www.userinterfaceicons.com/48x48/configuration.png);
+}
+.categories #cat-control a{
+	background-image:url(http://www.userinterfaceicons.com/48x48/ipod.png);
+}
+.categories #cat-map a{
+	background-image:url(http://www.userinterfaceicons.com/48x48/home.png);
+}
+.categories #cat-tools a{
+	background-image:url(http://www.userinterfaceicons.com/48x48/fax.png);
+}
+
+
+.categories .selected a {
+	background-color: #FFFFFF;	
+	border-bottom: 3px solid #FFFFFF;
+}
+.categories li a:hover {
+	color: #000000;
+	background-color: #DDDDDD;		
+}
+.categories .selected a:hover {
+	color: #000000;	
+	background-color: white;		
+}
+
+#filler {
+	display: none!important;
+}
+
+input {
+	border: 1px solid #666666;
+}
+input[type=button], input[type=submit] {
+
+}
+.tabform, .listbox {
+	display: table;
+	width: 100%;
+}
+.tabform li, .listbox li {
+	display: table-row;
+	list-style: none;
+	border-bottom: 1px solid #CCC;
+	padding: 5px;
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+li label {
+	display: table-cell;
+	margin: 1px;
+	padding: 1px;
+}
+li p {
+	display: table-cell;
+}
+.listbox li .half{
+	width: 250px;
+}
+.tabform li label{
+	width: 200px;
+}
+p {
+	padding: 5px;
+	margin: 1px;
+	font-size: 10pt;
+}
+.debug {
+	display: none;
+}
+.message {
+	border: 1px solid red;
+	background: #FFFFFF;
+}
+.message p{
+	text-align: left;
+}
+
+.error {
+	color: #FF0000;
+}
+.warning {
+	color: #FFA500;
+}
+.hidden {
+	display: none!important;
+}
+
+#numpad {
+	width: 100%;
+	margin: 5px;
+	text-align: center;
+}
+.nkey {
+	margin: 3px;
+	width: 70px;
+	height: 40px;
+	font-size: 110%;
+}
+.subtab {
+	padding: 2px;
+	margin: 2px;
+	margin-left: 20px;
+	border: 1px solid gray;
+	border-top-style: hidden;
+	text-decoration: none;
+	font-size: 12px;
+	background-color: white;
+}
+.applicationTitle {
+	display:none;
+}
+.on .sw-on{
+	display:none;
+}
+.off .sw-off{
+	display:none;
+}
+.on .sw-off{
+	background:transparent url('/images/on.png') center center no-repeat;	
+	display:block;
+	width: 94px;
+	height: 27px;
+	text-indent: -1000px;
+}
+.off .sw-on{
+	background:transparent url('/images/off.png') center center no-repeat;
+	display:block;
+	width: 94px;
+	height: 27px;
+	text-indent: -1000px;
+}
+

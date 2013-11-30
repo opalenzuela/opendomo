@@ -1,0 +1,9 @@
+Package: odcgi
+Version: 0.1
+Architecture: i386
+Maintainer: Javier Miras Blanco <jmirasb@gmail.com>
+Installed-Size: 1725
+Depends: libc6 (>= 2.7), libconfig9 (>= 1.4.8), libjpeg8 (>= 8c), libssl1.0.0 (>= 1.0.1), busybox (>= 1.10), odcommon (>= 0.1), libcoelacanth (>= 0.1)
+Section: network
+Priority: optional
+Description: Opendomo web interface

@@ -1,0 +1,5 @@
+/etc/udev/rules.d/90-usbcontrollers.rules
+/etc/init.d/odhal
+/etc/crond.d/admin/odhalpacklogs
+/etc/crond.d/admin/updaterules
+/etc/opendomo/control/domino.conf

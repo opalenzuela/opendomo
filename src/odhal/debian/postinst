@@ -1,0 +1,5 @@
+#! /bin/sh
+
+echo "Configuring opendomo hal service ..."
+
+insserv odhal 2>/dev/null

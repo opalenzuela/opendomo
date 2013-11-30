@@ -1,0 +1,13 @@
+#! /bin/sh
+
+echo "Configuring opendomo folders and files ..."
+chown 1000:1000 /var/tmp
+chown 1000:1000 /var/run
+chown 1000:1000 /var/log
+ln -fs /usr/local/opendomo/services/syscript/logEvent.sh /bin/logevent
+
+echo "Configuring opendomo services ..."
+
+insserv uid  2>/dev/null
+insserv odloadconf  2>/dev/null
+insserv keymap 2>/dev/null

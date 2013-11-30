@@ -1,0 +1,4 @@
+#!/bin/sh -e
+#desc:Update installed packages
+test $(hour) = "19.00" # hora 19:00
+#command:updateInstalledPackages.sh  

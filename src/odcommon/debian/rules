@@ -1,0 +1,22 @@
+#!/usr/bin/make -f
+
+PACKAGE=$(shell dh_listpackages)
+
+%:
+	dh $@
+
+override_dh_install:
+
+	find . -maxdepth 1 -mindepth 1 -not -name debian -print0 | \
+		xargs -0 -r -i cp -a {} debian/$(PACKAGE)
+
+override_dh_fixperms:
+	dh_fixperms
+	chown 1000 debian/odcommon/var/www/*
+	chown 1000:1000 debian/odcommon/etc/opendomo
+	chown 1000:1000 debian/odcommon/usr/local/opendomo
+	chmod 0775 -R debian/odcommon/etc/opendomo/states
+	chmod g+w debian/odcommon/etc/opendomo/i18n/lang
+	chown 1000:1000 debian/odcommon/etc/opendomo/i18n/lang
+
+override_dh_usrlocal:

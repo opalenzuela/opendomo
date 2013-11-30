@@ -1,0 +1,929 @@
+/*
+#desc:OpenDomo CGI interface's Default style
+*/
+
+.graph {
+	width: 600px;
+	height: 300px;
+	margin-top: 5px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 5px;
+}	
+
+
+h2[id*='_lgnd_h2'], #logo_od,.tabberactive, .tabbernav
+{
+	display:none;
+}
+
+.selectable input[type='checkbox']{
+	display: inline !important;
+}
+
+.hidden {
+	display: none!important;
+}
+.collapsed li{
+	display: none!important;
+}
+
+/* LISTS AND FORMS
+ * General case: tabulated, hiding icon and details
+ */
+ul
+{  
+	list-style-type:none; 
+	padding: 0px;
+	width: 100%;
+}
+label input {
+/*	display: none; */
+}
+li label {
+	display: inline-block;
+}
+li .imgframe {
+	display: none;
+}
+.listbox ul, .detailedlist ul, .tabform ul, {
+	list-style-type:none;
+	padding: 0px;
+}
+.listbox ul li, .detailed ul li, .selectable ul li {
+	height: 35px;
+}
+.listbox ul li p , .iconlist ul li p, .selectable ul li p, .wizard ul li p{
+	display: none;
+}
+.iconlist ul li .imgframe, {
+	display: block;
+	width: 32px;
+	height: 32px;
+	border: 1px solid green;
+}
+/* Exception: in detailed list, items and details are in a table row */
+.detailed ul {
+	display: table;
+}
+.detailed ul li {
+	display: table-row;
+}
+.detailed ul li label {
+	display: table-cell;	
+}
+.detailed ul li p{
+	display: table-cell;
+	vertical-align: middle;	
+}
+/*.selectable ul li label input {
+	display: inline!important;
+} */
+/* Exception: tables act in a similar way */
+.tabform ul {
+	display: table;
+}
+.tabform ul li {
+	display: table-row;
+	height: 35px;
+}
+.tabform ul li label {
+	display: table-cell;
+	vertical-align: middle;
+/*	width: 50%; */
+}
+.tabform ul li p{
+	display: table-cell;
+	vertical-align: middle;
+}
+.tabform ul li label input {
+	display: inline!important;
+}
+/* Exception: in iconlists, setting inline to fit page width */
+.iconlist ul li {
+	display: inline-block;
+	margin: 5px;
+	padding: 5px;
+	min-width: 100px;
+	min-height: 100px;
+	max-width: 300px;
+	max-height: 250px;
+}
+/* Exception: in rowforms, the fields are shown in the same row */
+.rowform ul{
+	display: block;	
+}
+.rowform ul li {
+	display: table-cell;
+	padding: 5px;
+}
+.rowform ul li label {
+	display: none!important;
+}
+
+.par {
+	display: block!important;
+	margin: 15px;
+}
+
+/* List items (and form fields) are idented 10px from the separators */
+.tabform ul li label, .listbox ul li label, .detailed ul li label  {
+	padding-left: 20px;
+	height: 40px;
+	vertical-align: middle;
+	display: table-cell;
+}
+.tabform ul li.separator label, .listbox ul li.separator label, .detailed ul li.separator label {
+	padding-left: 10px;
+}
+
+.toolbar a{
+	cursor:pointer;
+}
+.listboxtoolbar{
+	text-align:right;
+	margin-right: 3px;
+}
+
+#advpad {
+	display: block;
+	margin: 15px;
+	height: 50px;
+	overflow: auto;
+}
+.nkey {
+	margin: 3px;
+	width: 70px;
+	height: 40px;
+	font-size: 110%;
+}
+
+.root, .applicationTitle{
+	display:none;
+}
+
+/* 
+ * MAIN.CSS
+ */
+
+h1 {
+	text-align: center;
+	font-size: 18pt;
+}
+h2 {
+	text-align: center;
+	font-size: 12pt;
+}
+
+body
+{
+	font-family:Arial, Helvetica, sans-serif;
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+	padding: 2px;
+	line-height: 1;	
+	color: black; 
+	font-size: 14px; 
+	min-width: 600px;
+}
+
+a, a:visited, a:active {
+	text-decoration: none;
+	color: black;
+	cursor:pointer;
+}
+#loginform_frm {
+	background-attachment:fixed;
+	background-position:0 0;
+}
+
+#loginbox li label{
+	text-align:right;
+}
+#loginform_frm fieldset h1                                                     
+{                                            
+	margin-top:10px;
+	text-align: center;                                                  
+	width: 100%;                    
+}     
+#login {
+	margin-left: auto;
+	margin-right: auto;
+	width: 400px;
+}  
+form {
+	margin: 2px;
+}
+
+.tooltip 
+{
+	display:none;
+	position:absolute;
+	background-color: #EEE;
+	border: 2px solid #888;
+	padding: 10px;
+}
+
+
+
+a em {
+	display: block;
+	margin-top: 0.3em;
+}
+
+.ro {
+	padding: 2px;
+}
+
+#header
+{
+	padding-top: 20px;
+	padding-bottom: 20px;
+	height: 100px;
+	font-weight: bold;
+	background-color: #FFF;
+	background-image: url(/images/default/logo.png);
+	background-repeat: no-repeat;
+	
+	border-left:5px solid #053f95;	
+	border-right:5px solid #053f95;
+	border-top:5px solid #053f95;	
+}
+
+.categories {
+	list-style: none;
+	border: none;
+	padding: 0px;
+	margin: 0px;
+	margin-left: 30px;
+	margin-top: 69px;
+}
+
+#header .categories li a{
+	font-weight: bold;
+}
+
+.categories li {
+	display: inline !important;
+	margin: 0px;
+	padding: 0px;
+}
+.categories li a {
+	background-position: center left;
+	background-repeat:no-repeat;
+	margin: 1px;
+	border: 0px solid gray;
+	border-bottom-style: hidden;
+	text-decoration: none;
+	font-size: 16px;
+	cursor: pointer;		
+	padding: 1px;
+	padding-bottom: 0px;
+}
+
+#footer {
+	background-color: white;
+	padding-top: 25px;
+	font-size: 11px;
+	border-bottom:5px solid #053f95;
+	border-left:5px solid #053f95;	
+	border-right:5px solid #053f95;	
+	
+}
+
+
+#footer b{
+	font-weight: none;
+}
+#filler {
+	display: none!important;
+}
+input[type=button], input[type=submit], input[type=reset], .button, .buttonlnk {
+	padding: 2px;
+	margin: 2px;
+}
+
+#USER_lbl #USER
+{
+width: 90%;
+} 
+#PASS_lbl #PASS
+{
+width: 90%;
+} 
+
+button, .buttonlnk
+{
+	font-size:12px;
+	font-weight: bold;
+	font-family:Helvetica, Arial, Verdana;
+	text-align:left;
+	color:#FFFFFF;
+	height:25px;
+	background-color:#053f95;
+	border: 1px solid #053f95;
+	border-left-color:#021f4a;
+	border-right-color:#4a86e1;
+	border-right-width:6px;
+	margin-left: 5px;
+	padding: 4px;
+	margin-top: 2px;
+}
+
+.buttonlnk
+{
+	float:left;
+	padding: 4px;
+   	height:15px;
+}
+
+.buttonlnk:link {text-decoration: none;color:#FFF;}
+.buttonlnk:visited {text-decoration: none;color:#FFF;}
+.buttonlnk:active {text-decoration: none;color:#FFF;}
+.buttonlnk:hover {text-decoration: none; color:#FFF;}
+
+button:hover, .buttonlnk:hover
+{
+   color:#FFFFFF;
+   background-color:#000000;
+}
+.pressed {
+	border: 2px inset;
+	text-decoration: none;
+	background-color: #33A;
+	color: white;
+}
+
+input[type=text], input[type=readonly], input[type=datetime], input[type=email],input[type=password],input[type=date] {
+	border-color: #AFAFAF;
+	border-radius: 3px 3px 3px 3px;
+	border-style: solid;
+	border-width: 1px;
+	box-shadow: 0 0 5px #CFCFCF inset;
+	font-size: 12px;
+	margin-left: 0;
+	margin-right: 0;
+	padding: 6px 5px 7px;
+	min-width: 200px;
+}
+
+.subtab 
+{
+	border: 0px solid gray;
+	margin-left:20px;
+	border-top-style: hidden;
+	border: 1px solid #cccccc;
+	padding: 1px;	
+	/*
+ 	-moz-border-radius-bottomleft: 10px;
+	-moz-border-radius-bottomright: 10px;
+ 	-webkit-border-radius-bottomleft: 10px;
+	-webkit-border-radius-bottomright: 10px;
+	border-radius-bottomleft: 10px;
+	border-radius-bottomright: 10px;	
+	*/
+	text-decoration: none;
+	font-size: 12px;
+	background-color: white;
+}
+
+fieldset 
+{
+/*	width: 98%; */
+	border: 1px solid #cccccc;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	margin: 0px;
+	padding: 0px;
+	margin-top: 10px;
+	margin-bottom: 30px;
+
+}
+
+#logoutbutton
+{
+	margin-top: -35px;
+	border: none;
+	background-color: white;
+	background: url(/images/default/logout.png) no-repeat scroll center center;	
+	display: block;
+	color:transparent;
+	margin-top: -10px;
+	display:inline-block;
+	float: left;
+	margin-left: 10px;
+	height: 30px;
+}
+#savebutton
+{
+	margin-top: -35px;
+	border: none;
+	background-color: white;
+	background: url(/images/default/save.png) no-repeat scroll center center;	
+	display: block;
+	color:transparent;
+	margin-top: -10px;
+	display:inline-block;
+	float: left;
+	margin-left: 10px;
+	height: 30px;
+}
+#dbgbutton {
+	display: none;
+	margin-top: -35px;
+	border: none;
+	background-color: white;
+	background: url(/images/default/debug.png) no-repeat scroll center center;	
+	color:transparent;
+	margin-top: -10px;
+	float: left;
+	margin-left: 10px;
+	height: 30px;	
+}
+
+legend 
+{
+	margin-left: 10px;
+}
+
+
+  
+/* **** T A B U L A C I O N ******** 
+ 1. La clase "tabform" se muestra como un formulario tabulado
+ 2. La clase "listbox" se muestra como una lista tabulada, con elementos activos
+ 3. La clase "detailedlist" muestra un listado con una columna adicional
+
+.tabform li, .listbox li, .detailedlist li{
+	border-bottom: 1px solid #CCC;
+	height:32px;
+
+}
+
+.tabform li label, .listbox li label {
+	margin: 1px;
+	padding-left: 15px;
+	vertical-align:middle;
+	width: 50%;
+}
+.tabform li p, .listbox li p {
+	vertical-align:middle;
+	font-size: 11px;
+	padding-left: 5px;
+}
+.tabform, .listbox {
+	padding: 0px;
+}
+.listbox ul li .imgframe {
+	padding-left: 2px;
+	display: none;	
+}
+.listbox ul li .imgstream {
+	padding-left: 2px;
+	display: none;	
+}
+
+.imgfield {
+	max-width: 320px;
+	max-height: 200px;
+}
+
+*/
+
+
+/* WIZARD 
+ *	This block is characterized by it's appearance. It's actually a container
+ *	of any other block (list or form), but with a background image, special
+ *	margination and right-aligned toolbar buttons (typically "back"/"next")
+ */
+.wizard {
+	background: url(/images/robot_wizard.png) no-repeat;
+	background-position: 10px 30px;
+}
+
+.wizard ul{
+	margin: 40px 10px 40px 200px;
+	display: block;
+	width: auto!important;
+	height: 250px;
+	overflow-y: auto;
+}
+.wizard ul li label{
+	padding-left: 20px;
+	padding-right: 20px;
+}
+.wizard ul li.separator label{
+	padding-left: 10px;
+}
+
+.wizard ul li p {
+	padding-right: 55px;
+}
+.wizard legend{
+	float:right;
+}
+.wizard .toolbar {
+	text-align: right;
+}
+
+.wizard .par {
+/*	padding-left: 200px;  */
+}
+
+
+/* *** VISUAL CONTROLS ****** */
+/*.off .pressed, .on .pressed {
+	display: none;
+}
+.on a, .off a{
+	color:transparent;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	display:block;
+	overflow: hidden;
+    height: 20px;
+	width: 20px;
+	border: 1px solid gray;
+} */
+.on .sw-on{
+	display:none;
+}
+.off .sw-off{
+	display:none;
+}
+.on .sw-off{
+	background:transparent url('/images/default/on.png') center center no-repeat;	
+	display:block;
+	width: 94px;
+	height: 27px;
+	color: transparent;
+}
+.off .sw-on{
+	background:transparent url('/images/default/off.png') center center no-repeat;
+	display:block;
+	width: 94px;
+	height: 27px;
+	color: transparent;	
+}
+.readonly .OFF, .readonly .off {
+	background:transparent url('/images/di_off.png') left center no-repeat;
+	color: transparent;	
+	height: 27px;
+}
+.readonly .ON, .readonly .on {
+	background:transparent url('/images/di_on.png') left center no-repeat;
+	color: transparent;
+	height: 27px;	
+}
+
+/*.slider{
+	background:transparent url('/images/default/bar.png') center center repeat-x;
+	width: 200px!important;
+}*/
+.slider a{
+	display:inline-block;
+	width: 20px;
+	height: 20px;
+	color:transparent;
+	background-position: center;
+}
+.slider a:hover {
+	color:transparent!important;
+}
+.slider .OFF{
+	background-image: url("/images/default/bar.png");
+	background-repeat: no-repeat;	
+}
+.slider .ON {
+    background-image: url("/images/default/slider.png");
+    background-repeat: no-repeat;
+}
+.percent p {
+	width: 100%;
+	border: 1px solid gray;
+}
+.percent p input {
+	border: 0px;
+	text-align: right;
+	background-color: blue;
+}
+
+/* *** T E X T O ************* */
+p {
+	padding: 0px;
+	margin: 1px;
+	font-size: 10pt;
+}
+.debug {
+	display: none;
+	border: 1px solid gray;
+	margin-left: 15px; 
+	margin-right: 15px;
+	background: #DFDFDF;
+}
+.message p{
+	text-align: left;
+}
+.sub label{
+	padding-left: 20px!important;
+}
+.unavailable {
+	display: none;
+}
+
+.noscript {
+	font-size: 12pt;
+	color: #BCBCBC;
+}
+.toolbar {
+	margin:0px;
+	padding:5px;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+.sel {
+	background-color: #DDD!important;
+}
+/* Use a minimum 100x100 area, to make sure visibility and format */
+.image .imgframe, .video .imgframe {
+	display: block!important;
+	text-align:center;
+	min-height: 200px;
+	min-width: 200px;
+}
+/* Limit the icon to 100x100 */
+.imgframe img, .video{
+	max-width: 320px;
+	max-height: 260px;
+}
+
+/* Width=200% is equivalent to colspan=2 */
+.embeddedapp {
+	display:block;
+	height:300px;
+	width:200%; 
+}
+
+.hidden {
+	display: none!important;
+}
+
+#loginbox{
+	border-collapse: collapse;
+	float: center;
+}
+#loginbox td{
+	padding: 10px;
+}
+.copyright{
+	margin-top: 5px;
+	text-align:center;
+}
+.copyright a{
+	text-decoration: none;
+	bottom:0;
+}
+
+
+
+.categories li a{
+	color: #053f95;
+	background-color: #AAA;	
+	padding: 10px;	
+}
+.categories .selected a {
+	background-color: #FFF;	
+	border-bottom: 4px solid #053f95;
+	padding: 10px;	
+}
+.categories li a:hover {
+	color: #000;
+	background-color: #DDD;		
+	border-bottom: 4px solid #053f95;	
+	padding: 10px;	
+}
+
+#main {
+	text-align	: left;	
+/*	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;	*/
+	margin 		: 0px;
+	padding		: 10px;	
+	border-left:5px solid #053f95;	
+	border-right:5px solid #053f95;
+	width: auto;
+}
+
+
+h1 {
+	color: #666;
+}
+
+h2 {
+	color: #222;
+}
+
+.listbox li:hover {
+	background: #DFDFDF;
+	color: #222;
+}
+
+.info, .success, .warning, .error, .validation, .errorcont, .notice, .loading, .link, .comments {
+	border: 1px solid;
+	margin: 10px 0px;
+	padding:15px 10px 15px 50px;
+	background-repeat: no-repeat;
+	background-position: 10px center;
+	padding-left: 50px!important;	
+}
+
+.message {
+	border: 1px solid red;
+	background: #FFFFFF;
+}
+
+.comments, .link {
+	margin: 10px 0px;
+	border: none;
+}
+
+.error, .errorcont {
+	color: #D8000C;
+	background-color: #FFBABA;
+	background-image: url('/images/default/error.png');
+}
+.warning {
+	color: #9F6000;
+	background-color: #FEEFB3;
+	background-image: url('/images/default/warning.png');
+}
+.info {
+	color: #00529B;
+	background-color: #DFF2BF;
+	background-image: url('/images/default/notice.png');
+}
+.notice {
+	color: #4F8A10;
+	background-color: #DFF2BF;
+	background-image:url('/images/default/success.png');
+}
+.loading {
+	color: #00529B;
+	background-color: white;
+	background-image:url('/images/loading.gif');	
+}
+.separator {
+	font-weight: bold;
+}
+.errfield {
+	background-color: #FCC;	
+	color: #F00;
+}
+
+
+
+
+#cat-control a {
+	background: url('/images/default/control.png') scroll no-repeat left center;
+	padding-left: 32px;
+	padding-right: 32px;
+}
+#cat-config a {
+	background: url('/images/default/configuracio.png') scroll no-repeat left center;
+	padding-left: 32px;
+	padding-right: 32px;	
+}
+#cat-tools a {
+	background: url('/images/default/eines.png') scroll no-repeat left center;
+	padding-left: 32px;
+	padding-right: 32px;	
+}
+#cat-map a {
+	background: url('/images/default/planell.png') scroll no-repeat left center;
+	padding-left: 32px;
+	padding-right: 32px;	
+}
+
+#list li
+{
+	font-size: 14px;
+	font-weight: 600;
+	vertical-align: middle; 
+	height: 40px;
+	padding-left: 10px;
+	background:#E1E1E1 url(/images/default/frametoolbartop_bg.png) repeat-x 50% 0;
+    line-height: 3em;
+	text-indent: 10px;
+
+}
+
+#list li:hover
+{
+	vertical-align: middle; 
+	height: 40px;
+	padding-left: 10px;
+	background:#E1E1E1 url(/images/default/listbgactive.png) repeat-x 50% 0;
+}
+#list li:hover a 
+{
+	color: orange; 
+}
+
+.selectable ul .separator label input{
+	display:none;
+}
+
+
+
+
+#setSystemState
+{
+	list-style:none;
+	margin:0;
+	padding:0;
+}
+#setSystemState li
+{
+	font-size: 14px;
+	font-weight: 600;
+	vertical-align: middle; 
+	height: 40px;
+	padding-left: 10px;
+
+/*	min-height: 70px;
+	border: 1px solid #cccccc;
+	border-bottom-left-radius: 10px;
+	border-top-right-radius: 10px;
+	background: #FFF url(/images/default/pdtbg.png) no-repeat scroll bottom right;
+	min-width: 70px;
+	font-size: 18px;
+	font-weight: 600;
+	margin:10px;
+	padding:25px;
+	border:1px solid #CCCCCC;
+	float:left; */
+} 
+/* Ocultamos el marco del frameset, leyenda y el checkbox */
+.listbox ul li label input[type=checkbox] {
+	display:none;
+}
+
+.listbox #manageCameras, .listbox #camZonesConf{
+	font-size: 16px;
+	font-weight: 600;
+}
+
+.listbox #manageCameras a, .listbox #camZonesConf a{
+	background: url('/images/default/cam.png') scroll no-repeat left center;
+	padding-left: 32px;
+	padding-right: 32px;	
+}
+
+.listbox #list a{
+	background: url('/images/default/circle.png') scroll no-repeat left center;
+	padding-left: 32px;
+	padding-right: 32px;	
+}
+
+.listbox #list .dir a{
+	background: url('/images/default/folder_sml.png') scroll no-repeat left center;
+	padding-left: 32px;
+	padding-right: 32px;	
+}
+                                    
+                
+.textinfo {
+	display: inline!important;
+}
+                   
+
+ul#listControlPorts.tabform li div.on
+{
+	left:0;
+	margin-left:620;
+	position:absolute;
+	text-indent:-99999;
+	height:30px;
+	width:50px;
+	background:transparent url(/images/default/green.png) left center no-repeat;
+}
+
+ul#listControlPorts.tabform li div.off
+{
+	left:0;
+	margin-left:620;
+	position:absolute;
+	text-indent:-99999;
+	height:30px;
+	width:50px;
+	background:transparent url(/images/default/gray.png) left center no-repeat;
+}
+
+/* Hack to hide dropdowns */
+select option[disabled]
+{
+	background-color:gray;
+}

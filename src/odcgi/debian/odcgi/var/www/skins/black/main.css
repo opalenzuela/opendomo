@@ -1,0 +1,103 @@
+html {
+	background:black url(/skins/black/bg.gif); 
+}
+
+.categories li a{
+	background-color: #AAA;	
+}
+.categories .selected a {
+	background-color: #FFF;	
+	border-bottom: 3px solid #FFF;
+}
+.categories li a:hover {
+	color: #000;
+	background-color: #DDD;		
+}
+body{
+	/*background-color: black;*/
+}
+#main {	
+	background-color: white;
+}
+h1 {
+	color: #666;
+}
+h2 {
+	color: #222;
+}
+.listbox li:hover {
+	background: #DFDFDF;
+	color: #222;
+}
+.message {
+	border: 1px solid red;
+	background: #FFFFFF;
+}
+.comments {
+}
+.error, .errcont {
+	border: 3px solid #F99;
+	margin: 2px;
+	background-position: center left;
+	background:url(/images/error.png);	
+	background-repeat:no-repeat;
+	background-color: #FEE;
+	padding: 8px;
+	padding-left: 32px!important;
+}
+.warning {
+	border: 3px solid #F99;
+	margin: 2px;
+	background-position: center left;
+	background:url(/images/warning.png);	
+	background-repeat:no-repeat;
+	background-color: #FEE;
+	padding: 8px;
+	padding-left: 32px!important;
+}
+.info {
+	border: 3px solid #99F;
+	margin: 2px;
+	background-position: center left;
+	background:url(/images/notice.png);	
+	background-repeat:no-repeat;
+	background-color: #EEF;
+	padding: 8px;
+	padding-left: 32px!important;
+}
+.notice {
+	margin: 2px;
+	background-position: center left;
+	background:url(/images/success.png);	
+	background-repeat:no-repeat;
+	background-color: #EFE;
+	padding: 8px;
+	padding-left: 32px!important;
+}
+
+.errfield {
+	background-color: #FCC;	
+	color: #F00;
+}
+
+.info,.success,.warning,.error,.validation,.errorcont,.notice {
+	background-repeat: no-repeat;
+	background-position: 10px center;
+	text-indent: 50px;
+}
+
+.toolbar {
+	background: #BCBCBC;
+}
+
+.copyright, .copyright a {
+	color: #666;
+}
+.logout {
+	background-color: white;
+}
+.dbg_button {
+	color: #F66;
+	background-color: #DFDFDF;
+}
+

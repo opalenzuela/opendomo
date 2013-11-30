@@ -1,0 +1,12 @@
+#!/usr/bin/make -f
+
+PACKAGE=$(shell dh_listpackages)
+
+%:
+	dh $@
+
+override_dh_install:
+	find . -maxdepth 1 -mindepth 1 -name usr -print0 | \
+		xargs -0 -r -i cp -a {} debian/$(PACKAGE)
+	find . -maxdepth 1 -mindepth 1 -name bin -print0 | \
+		xargs -0 -r -i cp -a {} debian/$(PACKAGE)

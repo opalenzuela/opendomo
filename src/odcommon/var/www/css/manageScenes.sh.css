@@ -1,0 +1,5 @@
+#manageScenes li.scene label a, #editScene li.scene a {
+	background: url("/images/default/scene.png") no-repeat scroll left center transparent;
+	padding-left: 32px;
+}
+

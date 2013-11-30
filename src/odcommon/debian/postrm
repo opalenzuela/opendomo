@@ -1,0 +1,7 @@
+#! /bin/sh
+
+echo "CLeaning opendomo init scripts ..."
+
+insserv -r uid 2>/dev/null
+insserv -r odloadconf 2>/dev/null
+insserv -r keymap 2>/dev/null

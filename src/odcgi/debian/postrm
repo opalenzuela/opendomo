@@ -1,0 +1,5 @@
+#! /bin/sh
+
+echo "Restoring opendomo services ..."
+
+insserv -r httpd 2>/dev/null

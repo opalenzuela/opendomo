@@ -1,0 +1,67 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          uid
+# Required-Start:    $network
+# Required-Stop:
+# Should-Start:      glibc
+# Default-Start:     S
+# Default-Stop:      0 6
+# Short-Description: Set uid and uid based hostname
+# Description:       Read network configuration, select hostname and
+#		     UID opendomo configuration
+### END INIT INFO
+### Copyright(c) 2011 OpenDomo Services SL. Licensed under GPL v3 or later
+
+
+. /lib/init/vars.sh
+. /lib/lsb/init-functions
+
+do_start () {
+	OUID=/etc/opendomo/uid
+
+	if ! test -f "$OUID"
+	then
+		/sbin/ifconfig eth0 | grep HWaddr | cut -c 39-55 | sed -e 's/://g' > $OUID
+		chown 1000:1000 $OUID
+	fi
+
+	HOSTNAME="od`cat $OUID`"
+	hostname $HOSTNAME
+
+	/usr/bin/logger -p notice "Agent's UID `hostname`"
+	exit 0
+}
+
+do_status () {
+	HOSTNAME=$(hostname)
+	if [ "$HOSTNAME" ] ; then
+                return 0
+        else
+                return 4
+        fi
+}
+
+case "$1" in
+  start|"")
+	log_action_begin_msg "Starting opendomo universal identification"
+	do_start
+	log_action_end_msg $?
+        ;;
+  restart|reload|force-reload)
+        echo "Error: argument '$1' not supported" >&2
+        exit 3
+        ;;
+  stop)
+        # No-op
+        ;;
+  status)
+        do_status
+        exit $?
+        ;;
+  *)
+        echo "Usage: hostname.sh [start|stop]" >&2
+        exit 3
+        ;;
+esac
+
+:
