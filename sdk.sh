@@ -23,8 +23,6 @@ if test -z $1; then
 	exit 1
 fi
 
-
-
 # Main
 case $1 in
   build )
@@ -43,10 +41,10 @@ case $1 in
 		exit 1
 	fi
 
-	echo "INFO: Build opendomo for $ARCH"
 	# Extract sdk variables
 	. $SCRIPTSDIR/sdk_variables.sh
 
+	echo "INFO: Build opendomo for $ARCH"
 	# Build all
 	sudo $SCRIPTSDIR/sdk_downloads.sh
 	sudo $SCRIPTSDIR/build_initrd.sh extract
@@ -87,6 +85,7 @@ case $1 in
   ;;
   clean )
 	echo "INFO: Clean SDK ..."
+	sudo $SCRIPTSDIR/sdk_clean.sh
   ;;
   * )
 	echo "ERROR: command selected is not valid"
