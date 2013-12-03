@@ -1,5 +1,5 @@
-KERNEL!="[h,s]d[a-z]", GOTO=="mnt_cdrom_end"
-
+# Check all cdroms
+KERNEL!="sr[0-9]|hd[a-z]", GOTO=="mnt_cdrom_end"
 ACTION=="add", IMPORT{program}="/lib/udev/ata_id --export %N"
 ENV{ID_TYPE}!="cd", GOTO=="mnt_cdrom_end"
 
