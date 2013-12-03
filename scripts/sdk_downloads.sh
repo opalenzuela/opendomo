@@ -7,6 +7,7 @@ SCRIPTSDIR="scripts"
 # Creating emply folders, git don't work with emply folders
 mkdir -p $TMPDIR
 mkdir -p $MOUNTDIR
+mkdir -p $IMAGEDIR
 
 mkdir -p $SRCDIR/libcoelacanth/usr/lib
 mkdir -p $SRCDIR/libcoelacanth/usr/bin

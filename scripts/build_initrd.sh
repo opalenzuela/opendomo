@@ -26,7 +26,7 @@ case $1 in
   ;;
   make )
 	# Creating image basic structure
-	rm $IMAGEDIR/initrd 	2>/dev/null
+	rm $IMAGEDIR/initrd.gz 	2>/dev/null
 	mkdir -p $IMAGEDIR/files/apt
 
 	# Creating opendomo configurations
@@ -36,8 +36,8 @@ case $1 in
 	echo "$OD_VERSION" > $INITRDDIR/etc/VERSION
 
 	# Checking initrd size
-	INITRDSIZE=`du $INITRDDIR | tail -n1 | cut -f1 -di`
-	SIZE=`expr $INITRDSIZE + 5000`
+	INITRDSIZE=`du $INITRDDIR | tail -n1 | cut -f1 -d$'\t'`
+	SIZE=`expr $INITRDSIZE + $FREESIZE`
 
 	# Creating initrd
 	if dd if=/dev/zero of=$IMAGEDIR/initrd bs=1024 count=$SIZE >/dev/null 2>/dev/null; then
@@ -45,13 +45,15 @@ case $1 in
 		mount -o loop $IMAGEDIR/initrd $MOUNTDIR
 		cp -rp $INITRDDIR/* $MOUNTDIR
 
-		# Move debian no critical files to ISO
-		mv $MOUNTDIR/var/lib/apt        $IMAGEDIR/files/apt/apt-db
-		mv $MOUNTDIR/var/cache/apt      $IMAGEDIR/files/apt/apt-cache
-
-		# Linking ISO dirs to target
-		ln -s /media/opendomodistro/files/apt/apt-db    $MOUNTDIR/var/lib/apt
-		ln -s /media/opendomodistro/files/apt/apt-cache $MOUNTDIR/var/cache/apt
+		# Move debian no critical files and linking dirs
+		if ! test -d $IMAGEDIR/files/apt/apt-db; then
+			mv $MOUNTDIR/var/lib/apt        $IMAGEDIR/files/apt/apt-db
+			ln -s /media/opendomodistro/files/apt/apt-db    $MOUNTDIR/var/lib/apt
+		fi
+		if ! test -d $IMAGEDIR/files/apt/apt-cache; then
+			mv $MOUNTDIR/var/cache/apt      $IMAGEDIR/files/apt/apt-cache
+			ln -s /media/opendomodistro/files/apt/apt-cache $MOUNTDIR/var/cache/apt
+		fi
 
 		# Unmount initrd and compress
 		umount $MOUNTDIR

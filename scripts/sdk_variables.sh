@@ -23,9 +23,11 @@ OD_VERSION="1.9.4"
 IMGNAME="opendomo-$OD_VERSION-$ARCH"
 
 # Configuration and other files
+
 ROOTSTRAPCFG="$FILESDIR/rootstrap.conf"
 KERNELCFG="$FILESDIR/kernel.$ARCH.conf"
 INITRDIMG="$TMPDIR/initrd.$ARCH.tar.xz"
+FREESIZE="5000"
 
 # Downloads
 if [ "$ARCH" != "i386" ]; then
