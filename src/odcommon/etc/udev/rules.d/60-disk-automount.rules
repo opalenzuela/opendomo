@@ -1,6 +1,4 @@
-# Only USB devices can be mounted
 KERNEL!="[h,s]d[a-z][0-9]|sd[a-z]", GOTO="mnt_auto_mount_end"
-ID_BUS!="usb", GOTO="mnt_auto_mount_end"
 
 # Global mount options
 ACTION=="add", ENV{mount_options}="relatime"
