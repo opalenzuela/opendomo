@@ -1,5 +1,17 @@
 #! /bin/sh
 
+BUSYBOX_USER_CMD="ar bunzip2 bzip2 bzcat cal dc freeramdisk ftpget ftpput ifconfig less microcom ping ping6 rdate realpath tree telnet tftp traceroute traceroute6 uncompress unexpand unix2dos unzip uuencode vi"
+BUSYBOX_ADMI_CMD="arping hexdump httpd ipcalc logread mdev vconfig watchdog"
+
+echo "Removing busybox symbolic link ..."
+for cmd in $BUSYBOX_ADMI_CMD; do
+	rm -f "/usr/local/sbin/$cmd" 2>/dev/null
+done
+for cmd in $BUSYBOX_USER_CMD; do
+	rm -f "/usr/local/bin/$cmd" 2>/dev/null
+done
+
+
 echo "CLeaning opendomo init scripts ..."
 
 insserv -r uid 2>/dev/null
