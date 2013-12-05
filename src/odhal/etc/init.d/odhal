@@ -16,7 +16,7 @@
 
 CFGPATH="/etc/opendomo/control"
 CTRLPATH="/var/opendomo/control"
-PID="/var/run/odcontrol.pid"
+PID="/var/opendomo/run/odcontrol.pid"
 
 do_start () {
 	# Load drivers configuration
@@ -29,7 +29,7 @@ do_start () {
 			BINARY="/usr/bin/$driver"
 			ARGS="-d $device -p $dirname -r refresh $params"
 			if test -x "$BINARY"; then
-				$BINARY $ARGS >>/var/log/odhal_$dirname.log 2>/var/log/odhal_$dirname.err &
+				$BINARY $ARGS >>/var/opendomo/log/odhal_$dirname.log 2>/var/opendomo/log/odhal_$dirname.err &
 				echo -n " ($dirname)"
 			else
 				echo -n " ($dirname failed)"
@@ -38,7 +38,7 @@ do_start () {
 	done
 
 	echo "" >$PID
-	chown admin:admin /var/log/odhal* 2>/dev/null
+	chown admin:admin /var/opendomo/log/odhal* 2>/dev/null
 	chown admin $PID 2>/dev/null
 	chmod g+rw $PID 2>/dev/null
 }
