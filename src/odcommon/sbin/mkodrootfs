@@ -1,0 +1,25 @@
+#!/bin/sh
+#desc: Make opendomo squash filesystems
+
+# Variables
+DIR="/mnt/system/"
+SQUASHOPTS="-comp gzip"
+SQUASHEXDIR="-e etc/opendomo usr/local/opendomo var/opendomo home root tmp dev proc sys run mnt media lost+found var/cache/apt var/lib/apt"
+
+# Checks
+if ! test -d $DIR; then
+	echo "#ERR: System device is not mounted"
+	exit 1
+fi
+
+# Selecting image
+if test -f $DIR/rootfs.def; then
+	IMAGE="$DIR/rootfs.cst"
+	rm $IMAGE 2>/dev/null
+else
+	IMAGE="$DIR/rootfs.def"
+fi
+
+# Creating squashfs
+echo "#INF: Creating rootfs, please wait ..."
+mksquashfs / $IMAGE $SQUASHOPTS $SQUASHEXDIR >/dev/null 2>/dev/null

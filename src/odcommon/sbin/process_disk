@@ -62,9 +62,32 @@ if [ "$SYSDEVICE" = "1" ]; then
 	# Mounting squashfs
 	if mount -t squashfs /mnt/$DEVICE/$DEFIMG $SQUASHDIR; then
 		CHROOT=$ROOTFSDIR
+		mount -t tmpfs none $TEMPFSDIR
+		mount -t aufs -o dirs=$TEMPFSDIR:$SQUASHDIR=ro aufs $ROOTFSDIR
+
+		# Creating missing folders
+		mkdir -p $ROOTFSDIR/tmp $ROOTFSDIR/dev $ROOTFSDIR/proc $ROOTFSDIR/sys $ROOTFSDIR/run $ROOTFSDIR/mnt $ROOTFSDIR/media
+
+	        # Creating user folders
+	        mkdir -p $ROOTFSDIR/home/admin
+	        mkdir -p $ROOTFSDIR/home/user
+	        mkdir -p $ROOTFSDIR/root
+
+		cp $INITRD/etc/skel/.* $INITRD/home/admin/ 2>/dev/null
+		cp $INITRD/etc/skel/.* $INITRD/home/user/ 2>/dev/null
+
+	        chown -R admin:admin $ROOTFSDIR/home/admin
+	        chown -R user:users $ROOTFSDIR/home/user
+
+	        # Creating opendomo structure
+	        mkdir -p $ROOTFSDIR/var/opendomo/tmp $ROOTFSDIR/var/opendomo/log $ROOTFSDIR/var/opendomo/run
+	        chown -R admin:admin $ROOTFSDIR/var/opendomo
+	        chmod -R ugo+rwx $ROOTFSDIR/var/opendomo
+
+	        mkdir -p /etc/opendomo $ROOTFSDIR/usr/local/opendomo/
+	        chown -R admin:admin $ROOTFSDIR/etc/opendomo
+	        chown -R admin:admin $ROOTFSDIR/usr/local/opendomo
 	fi
-	mount -t tmpfs none $TEMPFSDIR
-	mount -t aufs -o dirs=$TEMPFSDIR:$SQUASHDIR=ro aufs $ROOTFSDIR
 
 	# Creating system link
 	logger "  Device: $device linked as system drive"
@@ -113,6 +136,8 @@ if ! test -z $CHROOT; then
 	mount --move /tmp  $ROOTFSDIR/tmp
 	mount --move /run  $ROOTFSDIR/run
 	mkdir -p $INITRDDIR
+
+	#TODO: Unmount initrd
 
 	# Switch root
 	exec pivot_root $ROOTFSDIR $INITRDDIR

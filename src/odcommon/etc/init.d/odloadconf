@@ -17,15 +17,6 @@
 . /lib/lsb/init-functions
 
 do_start () {
-	# Creating opendomo folders
-	mkdir -p /var/opendomo/tmp /var/opendomo/log /var/opendomo/run
-	chown -R admin:admin /var/opendomo
-	chmod -R ugo+rwx /var/opendomo
-
-	mkdir -p /etc/opendomo /usr/local/opendomo/
-	chown -R admin:admin /etc/opendomo
-	chown -R admin:admin /etc/local/opendomo
-
 	SYSCONF=/mnt/odconf/sysconf
 	/usr/bin/logger -p notice "Loading configuration file"
 
