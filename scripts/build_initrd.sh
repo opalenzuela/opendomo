@@ -46,14 +46,11 @@ case $1 in
 		cp -rp $INITRDDIR/* $MOUNTDIR
 
 		# Move debian no critical files and linking dirs
-		if ! test -d $IMAGEDIR/files/apt/apt-db; then
-			mv $MOUNTDIR/var/lib/apt        $IMAGEDIR/files/apt/apt-db
-			ln -s /media/opendomodistro/files/apt/apt-db    $MOUNTDIR/var/lib/apt
-		fi
-		if ! test -d $IMAGEDIR/files/apt/apt-cache; then
-			mv $MOUNTDIR/var/cache/apt      $IMAGEDIR/files/apt/apt-cache
-			ln -s /media/opendomodistro/files/apt/apt-cache $MOUNTDIR/var/cache/apt
-		fi
+		mv $MOUNTDIR/var/lib/apt   $IMAGEDIR/files/apt/apt-db
+		ln -s /mnt/odconf/files/apt/apt-db    $MOUNTDIR/var/lib/apt
+
+		mv $MOUNTDIR/var/cache/apt $IMAGEDIR/files/apt/apt-cache
+		ln -s /mnt/odconf/files/apt/apt-cache $MOUNTDIR/var/cache/apt
 
 		# Unmount initrd and compress
 		umount $MOUNTDIR
