@@ -17,15 +17,37 @@
 . /lib/lsb/init-functions
 
 do_start () {
-	SYSCONF=/mnt/odconf/sysconf
-	/usr/bin/logger -p notice "Loading configuration file"
+	DEFCONF=/mnt/odconf/sysconf/defconf.tar.gz
+	CSTCONF=/mnt/odconf/sysconf/cstconf.tar.gz
+	LOGFILE="/var/opendomo/log/loadcfg.log"
+	CGIDIR="/var/www/cgi-bin/"
 
-	/usr/local/opendomo/services/syscript/loadSystemConfiguration.sh >/dev/null
+	# Selecting config
+	if test -f $CSTCONF; then
+		CONFIG=$CSTCONF
+		log_action_begin_msg "Updating opendomo configuration files"
+	else
+		if test -f $DEFCONF; then
+			CONFIG=$DEFCONF
+			log_action_begin_msg "Updating opendomo configuration files (default)"
+		else
+			exit 1
+		fi
+	fi
+
+	/usr/bin/logger -p notice "Loading configuration file"
+	cd /
+	tar xfzp $CONFIG
+
+	# Fix perms
+	chown root:root etc
+	chmod ugo+rx etc
+	chown -R admin:admin /etc/opendomo
+	chmod -R 744 /etc/opendomo
 }
 
 case "$1" in
   start|"")
-	log_action_begin_msg "Updating opendomo configuration files "
 	do_start
 	log_action_end_msg $?
         ;;
