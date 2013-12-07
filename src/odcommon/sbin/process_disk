@@ -73,8 +73,8 @@ if [ "$SYSDEVICE" = "1" ]; then
 	        mkdir -p $ROOTFSDIR/home/user
 	        mkdir -p $ROOTFSDIR/root
 
-		cp $INITRD/etc/skel/.* $INITRD/home/admin/ 2>/dev/null
-		cp $INITRD/etc/skel/.* $INITRD/home/user/ 2>/dev/null
+		cp /etc/skel/.* $ROOTFSDIR/home/admin/ 2>/dev/null
+		cp /etc/skel/.* $ROOTFSDIR/home/user/ 2>/dev/null
 
 	        chown -R admin:admin $ROOTFSDIR/home/admin
 	        chown -R user:users $ROOTFSDIR/home/user
