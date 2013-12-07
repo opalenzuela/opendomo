@@ -12,6 +12,11 @@ for cmd in $BUSYBOX_USER_CMD; do
 	ln -fs /bin/busybox "/usr/local/bin/$cmd" 2>/dev/null
 done
 
+echo "Force permissions in sudo files ..."
+chown -R root:root /etc/sudoers.d
+chmod 0555 /etc/sudoers.d
+chmod 0440 /etc/sudoers.d/*
+
 echo "Configuring opendomo folders and files ..."
 ln -fs /usr/local/opendomo/services/syscript/logEvent.sh /bin/logevent
 
