@@ -9,7 +9,7 @@ if [ "$2" = "downloads" ]; then
 	rm -r $TMPDIR/*.tar.xz
 fi
 
-rm $TMPDIR/arch
+rm $TMPDIR/arch 2>/dev/null
 rm -r $TMPDIR/initrd.i386 2>/dev/null
 rm -r $TMPDIR/rootstrap.i386 2>/dev/null
 rm -r $TMPDIR/image.i386 2>/dev/null

@@ -4,7 +4,8 @@
 # Selecting Variables
 
 SCRIPTSDIR="scripts"
-ARCHCFG="tmp/arch"
+TMPDIR="tmp"
+ARCHCFG="$TMPDIR/arch"
 
 # Check user and sudo
 if [ `whoami` != "root" ]; then
@@ -31,6 +32,9 @@ case $1 in
 		echo "ERROR: You need select arch to build [i386 or arm]"
 		exit 1
 	fi
+
+	# Creating tmp dir
+	mkdir -p $TMPDIR
 
 	# Validating arch
 	if [ $2 = i386 ] || [ $2 = arm ]; then
