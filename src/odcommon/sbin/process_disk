@@ -87,6 +87,10 @@ if [ "$SYSDEVICE" = "1" ]; then
 	        mkdir -p /etc/opendomo $ROOTFSDIR/usr/local/opendomo/
 	        chown -R admin:admin $ROOTFSDIR/etc/opendomo
 	        chown -R admin:admin $ROOTFSDIR/usr/local/opendomo
+
+		# Creating apt links
+		ln -s /mnt/odconf/files/apt/apt-db $ROOTFSDIR/var/lib/apt
+		ln -s /mnt/odconf/files/apt/apt-cache $ROOTFSDIR/var/cache/apt
 	fi
 
 	# Creating system link
