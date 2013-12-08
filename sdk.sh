@@ -46,7 +46,7 @@ case $1 in
 
 	echo "INFO: Build opendomo for $ARCH"
 	# Build all
-	sudo $SCRIPTSDIR/sdk_downloads.sh
+	$SCRIPTSDIR/sdk_downloads.sh
 	sudo $SCRIPTSDIR/build_initrd.sh extract
 	sudo $SCRIPTSDIR/build_rootstrap.sh
 	sudo $SCRIPTSDIR/build_odpkg.sh make
