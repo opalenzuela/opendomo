@@ -8,7 +8,7 @@ ARCHCFG="tmp/arch"
 
 # Check user and sudo
 if [ `whoami` != "root" ]; then
-	if ! sudo echo; then
+	if ! sudo echo -n; then
 		echo "ERROR: You don't have permissions to execute this SDK"
 		exit 1
 	fi
@@ -79,7 +79,7 @@ case $1 in
 			$SCRIPTSDIR/sdk_help.sh
 			exit 1
 		else
-			sudo $SCRIPTSDIR/export_$2.sh
+			sudo $SCRIPTSDIR/export_$2.sh $3
 		fi
 	fi
   ;;
