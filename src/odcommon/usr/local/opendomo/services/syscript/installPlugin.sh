@@ -9,7 +9,7 @@ DEPS=`grep ^$1 $REPOFILE| cut -f4 -d';' |sort |head -n1`
 echo "INFO: Installing plugin $1"
 
 #TODO Support ZIP or other formats as well
-wget $URLFILE -O /var/opendomo/tmp/$1.tar.gz
+wget $URLFILE -O /var/opendomo/tmp/$1.tar.gz --no-check-certificate
 
 #Execute as root
 #TODO add "unattended"

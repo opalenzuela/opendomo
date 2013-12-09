@@ -6,7 +6,7 @@ TMPDIR="/var/opendomo/tmp"
 OSVER=`cat /etc/VERSION`
 REPOSITORY="https://cloud.opendomo.com/repo/$OSVER/"
 if ! test -f $TMPDIR/repo.lst; then
-  wget $REPOSITORY -O $TMPDIR/repo.lst
+  wget $REPOSITORY -O $TMPDIR/repo.lst --no-check-certificate
 fi
 if test -z "$1"; then
   echo "list:managePlugins.sh"
