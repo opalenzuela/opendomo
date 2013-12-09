@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  *  This file is part of the OpenDomo project.
  *  Copyright(C) 2011 OpenDomo Services SL
  *  
@@ -43,9 +43,9 @@
 #define ODCGI_TEXT_ERROR_HELP "The operation was not completed"	///< Error text
 #define ODCGI_TEXT_ERROR_HELP_LINK "More information"	///< Help caption
 #define ODCGI_TEXT_ERROR_TRACKER_LINK "Notify the error"	///< Bugtracker caption
-#define ODCGI_URL_HELP "http://es.opendomo.org/wiki/index.php?title="	///< URL prefix to the help
+#define ODCGI_URL_HELP "http://www.opendomo.com/wiki/"	///< URL prefix to the help
 /// URL to the discussion board
-#define ODCGI_URL_TRACKER "http://es.opendomo.org/wiki/index.php?action=edit&title=Discusión"
+#define ODCGI_URL_TRACKER "http://www.opendomo.com/wiki/index.php?action=edit&title=Discusión"
 
 /// Return TRUE if the first 3 bytes of the string matches the parameters
 #define SPELL3(str,c1,c2,c3) ((str[0]==c1) && (str[1]==c2) && (str[2]==c3))
@@ -1494,7 +1494,7 @@ script_exec (const char *cmd, const char *section, script_env_t * env)
 		}
 	}
 	// ========== SECTION HEADERS ========================  
-	// Manual page of this section: http://es.opendomo.org/script-section   
+	// Manual page of this section: http://www.opendomo.com/script-section   
 	// "categories" Section
 	else if(SPELL4 (buf, 't', 'a', 'b', 's'))
 	{
