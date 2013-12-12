@@ -21,27 +21,14 @@ else
 	fi
 fi
 
-# Check parted
+# Check syslinux
 if ! test -x /usr/bin/syslinux; then
 	echo "ERROR: You need install syslinux package"
 	exit 1
 fi
 
-# Clean
-rm -f "$IMAGEDIR/sysconf/sysconf.tar.gz" 2>/dev/null
-
-# Creating opendomo configuration file
-mkdir -p $IMAGEDIR/sysconf
-cd $FILESDIR/sysconf
-tar cfp ../../$IMAGEDIR/sysconf/defconf.tar *
-gzip -f ../../$IMAGEDIR/sysconf/defconf.tar
-cd ../../
-
-# Copy ISOFILES
-cp -r $ISOFILESDIR/* $IMAGEDIR/
-
 # Exporting to SD
-echo "INFO: Exporting to SD ($DEVICE)..."
+echo "INFO: Export opendomo to SD ($DEVICE)..."
 echo -n "WARN: This action delete all data in $DEVICE, are you sure? (y/n): "
 read ASK
 
@@ -70,5 +57,3 @@ if [ "$ASK" = "y" ]; then
 else
 	exit 1
 fi
-
-exit 0

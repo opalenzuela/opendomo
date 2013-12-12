@@ -83,6 +83,7 @@ case $1 in
 			$SCRIPTSDIR/sdk_help.sh
 			exit 1
 		else
+			sudo $SCRIPTSDIR/export_all.sh
 			sudo $SCRIPTSDIR/export_$2.sh $3
 		fi
 	fi

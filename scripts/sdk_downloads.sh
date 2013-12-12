@@ -8,6 +8,7 @@ SCRIPTSDIR="scripts"
 mkdir -p $TMPDIR
 mkdir -p $MOUNTDIR
 mkdir -p $IMAGEDIR
+mkdir -p $EXPORTDIR
 
 mkdir -p $SRCDIR/libcoelacanth/usr/lib
 mkdir -p $SRCDIR/libcoelacanth/usr/bin
