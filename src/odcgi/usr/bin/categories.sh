@@ -6,7 +6,7 @@
 # Este script genera el listado de elementos que formará las pestañas de la 
 # interfaz web de OpenDomo
 
-RUTA="/etc/opendomo/root/"
+RUTA="/var/opendomo/cgiroot/"
 echo "tabs:"
 cd $RUTA
 for i in control map tools config; do

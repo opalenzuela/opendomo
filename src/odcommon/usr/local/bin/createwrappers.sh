@@ -9,8 +9,8 @@ do
     fi
 done
 # Creacion de los enlaces del CGI 
-ROOTPATH=/etc/opendomo/root
-SCRIPTPATH=/usr/local/opendomo
+ROOTPATH="/var/opendomo/cgiroot"
+SCRIPTPATH="/usr/local/opendomo"
 for section in config control map tools
 do
    cd $SCRIPTPATH/services/$section

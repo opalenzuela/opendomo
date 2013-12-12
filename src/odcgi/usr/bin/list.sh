@@ -18,8 +18,9 @@ if test -z "$1" || test "/" = "$1"; then
 fi
 
 RAIZ="."
+RUTA="var/opendomo/cgiroot"
 
-cd /etc/opendomo/root/$D
+cd $RUTA/$D
 PLACE=`basename $D`
 if test -f ./$PLACE.name; then
 	PLACE=`cat ./$PLACE.name`
