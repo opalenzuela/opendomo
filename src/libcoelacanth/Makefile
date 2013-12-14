@@ -5,7 +5,7 @@ SRC_COELACANTH=coelacanth/string.c coelacanth/str.c
 LLIB=-lcoelacanth -L usr/lib/
 
 default:
-	$(CC) $(FLAGS) $(HDRS) -shared -o $(LIB_COELACANTH) $(SRC_COELACANTH) -I. 
+	$(CC) $(FLAGS) $(HDRS) -fPIC -shared -o $(LIB_COELACANTH) $(SRC_COELACANTH) -I. 
 	$(CC) $(FLAGS) $(HDRS) src/str.c -o bin/str $(LLIB)
 	$(CC) $(FLAGS) $(HDRS) src/string.c -o bin/string $(LLIB)
 	$(CC) $(FLAGS) $(HDRS) src/vector.c -o bin/vector

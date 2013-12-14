@@ -19,17 +19,6 @@ fi
 # Copy initrd to create rootstrap
 cp -rp $INITRDDIR $ROOTSTRAPDIR
 
-# Installing qemu for RaspberryPi
-if [ "$ARCH" != "i386" ]; then
-	if
-	cp /usr/bin/qemu-arm-static $ROOTSTRAPDIR/usr/bin
-	then
-		echo "INFO: Installing emulator in RaspberryPi rootstrap ..."
-	else
-		echo "ERROR: You need qemu-arm-static to create RaspberryPi distro"
-	fi
-fi
-
 # Update rootstrap apt sources
 cp /etc/resolv.conf $ROOTSTRAPDIR/etc/
 chroot "$ROOTSTRAPDIR" /bin/bash -c "apt-get update"

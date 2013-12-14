@@ -16,13 +16,24 @@ case $1 in
   extract )
 	if test -d $INITRDDIR; then
 		echo "WARN: initrd is already extracted"
-		exit 0
+	else
+		# Extracting initrd
+		cd $TMPDIR
+		tar xfJp ../$INITRDIMG
+		cd ..
 	fi
 
-	# Extracting initrd
-	cd $TMPDIR
-	tar xfJp ../$INITRDIMG
-	cd ..
+	# Installing qemu for RaspberryPi
+	if [ "$ARCH" != "i386" ]; then
+		if
+		cp /usr/bin/qemu-arm-static $INITRDDIR/usr/bin
+	        then
+			echo "INFO: Installing RaspberryPi emulator ..."
+		else
+			echo "ERROR: You need qemu-arm-static to create RaspberryPi distro"
+			exit 1
+		fi
+	fi
   ;;
   make )
 	# Creating image basic structure
@@ -39,6 +50,9 @@ case $1 in
 	INITRDSIZE=`du $INITRDDIR | tail -n1 | cut -f1 -d$'\t'`
 	SIZE=`expr $INITRDSIZE + $FREESIZE`
 
+	# Clean emulator
+	rm $INITRDDIR/usr/bin/qemu-arm-static 2>/dev/null
+
 	# Creating initrd
 	if dd if=/dev/zero of=$IMAGEDIR/initrd bs=1024 count=$SIZE >/dev/null 2>/dev/null; then
 		mkfs.ext2 -F $IMAGEDIR/initrd >/dev/null 2>/dev/null
@@ -46,10 +60,10 @@ case $1 in
 		cp -rp $INITRDDIR/* $MOUNTDIR
 
 		# Move debian no critical files and linking dirs
-		mv $MOUNTDIR/var/lib/apt   $IMAGEDIR/files/apt/apt-db
+		mv $MOUNTDIR/var/lib/apt   $IMAGEDIR/files/apt/apt-db 2>/dev/null
 		ln -s /mnt/odconf/files/apt/apt-db    $MOUNTDIR/var/lib/apt
 
-		mv $MOUNTDIR/var/cache/apt $IMAGEDIR/files/apt/apt-cache
+		mv $MOUNTDIR/var/cache/apt $IMAGEDIR/files/apt/apt-cache 2>/dev/null
 		ln -s /mnt/odconf/files/apt/apt-cache $MOUNTDIR/var/cache/apt
 
 		# Unmount initrd and compress

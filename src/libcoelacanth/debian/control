@@ -6,6 +6,6 @@ Build-Depends: libc6-dev (>=2.7), libssl-dev (>= 1.0.0), libsqlite3-dev (>= 3.7.
 Standards-Version:38
 
 Package: libcoelacanth
-Architecture: i386
+Architecture: i386 armhf
 Depends: ${shlibs:Depends}, libc6 (>= 2.7), busybox (>= 1.10), libssl1.0.0 (>= 1.0.0), libsqlite3-0 (>= 3.7.10)
 Description: Opendomo common libraries
