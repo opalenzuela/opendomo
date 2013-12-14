@@ -22,10 +22,10 @@ else
 fi
 
 # Check syslinux
-if ! test -x /usr/bin/syslinux; then
-	echo "ERROR: You need install syslinux package"
-	exit 1
-fi
+#if ! test -x /usr/bin/syslinux; then
+#	echo "ERROR: You need install syslinux package"
+#	exit 1
+#fi
 
 # Exporting to SD
 echo "INFO: Export opendomo to SD ($DEVICE)..."

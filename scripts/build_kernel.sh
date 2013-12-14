@@ -19,7 +19,7 @@ extract_kernel () {
 	cp $ROOTSTRAPDIR/usr/src/linux-patch-"$KERNEL_SOURCES"-rt.patch.bz2 $ROOTSTRAPDIR/usr/src/linux.patch.bz2
 	bunzip2 -k $ROOTSTRAPDIR/usr/src/linux.patch.bz2
 	mv $ROOTSTRAPDIR/usr/src/linux.patch $KERNELDIR
-	chroot "$ROOTSTRAPDIR" /bin/bash -c "cd /usr/src/linux && patch --quiet -p1 <linux.patch 2>/dev/null"
+	$CHROOT "$ROOTSTRAPDIR" /bin/bash -c "cd /usr/src/linux && patch --quiet -p1 <linux.patch 2>/dev/null"
 	rm $KERNELDIR/linux.patch
 
 	# Copy kernel config
@@ -36,7 +36,7 @@ case $1 in
 	fi
 
 	KERNELDIR="/usr/src/linux"
-	chroot "$ROOTSTRAPDIR" /bin/bash -c "cd $KERNELDIR && make"
+	$CHROOT "$ROOTSTRAPDIR" /bin/bash -c "cd $KERNELDIR && make"
   ;;
   install )
 	# Install compiled kernel
@@ -71,7 +71,7 @@ case $1 in
 	# Copy modules db
 	cp $KERNELDIR/modules.order $INITRDDIR/lib/modules/$KERNEL_VERSION
 	cp $KERNELDIR/modules.builtin $INITRDDIR/lib/modules/$KERNEL_VERSION
-	chroot "$INITRDDIR" /bin/bash -c "/sbin/depmod -a $KERNEL_VERSION"
+	$CHROOT "$INITRDDIR" /bin/bash -c "/sbin/depmod -a $KERNEL_VERSION"
   ;;
   configure )
 	# Extract kernel
@@ -82,7 +82,7 @@ case $1 in
 	fi
 
 	KERNELDIR="/usr/src/linux"
-        chroot "$ROOTSTRAPDIR" /bin/bash -c "cd $KERNELDIR && make menuconfig"
+        $CHROOT "$ROOTSTRAPDIR" /bin/bash -c "cd $KERNELDIR && make menuconfig"
   ;;
 esac
 

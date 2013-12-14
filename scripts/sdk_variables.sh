@@ -43,3 +43,6 @@ ROOTSTRAPDIR="$TMPDIR/rootstrap.$ARCH"
 IMAGEDIR="$TMPDIR/image.$ARCH"
 KERNELDIR="$ROOTSTRAPDIR/usr/src/linux"
 EXPORTDIR="exports"
+
+# SDK commands
+CHROOT="linux32 chroot"

@@ -21,9 +21,9 @@ cp -rp $INITRDDIR $ROOTSTRAPDIR
 
 # Update rootstrap apt sources
 cp /etc/resolv.conf $ROOTSTRAPDIR/etc/
-chroot "$ROOTSTRAPDIR" /bin/bash -c "apt-get update"
+$CHROOT "$ROOTSTRAPDIR" /bin/bash -c "apt-get update"
 
 # Installing rootstrap packages
-chroot "$ROOTSTRAPDIR" /bin/bash -c "DEBIAN_FRONTEND=noninteractive apt-get --force-yes -yq install $PACKAGES"
-chroot "$ROOTSTRAPDIR" /bin/bash -c "dpkg-reconfigure --frontend=noninteractive debconf"
-chroot "$ROOTSTRAPDIR" /bin/bash -c "apt-get clean"
+$CHROOT "$ROOTSTRAPDIR" /bin/bash -c "DEBIAN_FRONTEND=noninteractive apt-get --force-yes -yq install $PACKAGES"
+$CHROOT "$ROOTSTRAPDIR" /bin/bash -c "dpkg-reconfigure --frontend=noninteractive debconf"
+$CHROOT "$ROOTSTRAPDIR" /bin/bash -c "apt-get clean"

@@ -24,14 +24,14 @@ case $1 in
 
 		# Copy package into rootstrap and build
 		cp -r $SRCDIR/$pkg $ROOTSTRAPDIR/tmp/ 2>/dev/null
-		chroot "$ROOTSTRAPDIR" /bin/bash -c "cd /tmp/$pkg && dpkg-buildpackage 2>/dev/null >/dev/null"
+		$CHROOT "$ROOTSTRAPDIR" /bin/bash -c "cd /tmp/$pkg && dpkg-buildpackage 2>/dev/null >/dev/null"
 	done
 	echo
   ;;
   install )
 	echo "INFO: Installing package in initrd ..."
 	cp $ROOTSTRAPDIR/tmp/*.deb $INITRDDIR/tmp/
-	chroot "$INITRDDIR" /bin/bash -c "dpkg -i /tmp/*.deb"
+	$CHROOT "$INITRDDIR" /bin/bash -c "dpkg -i /tmp/*.deb"
   ;;
 esac
 
