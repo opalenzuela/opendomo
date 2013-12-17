@@ -1,5 +1,0 @@
-#! /bin/sh
-
-echo "Restoring opendomo services ..."
-
-insserv -r odhal 2>/dev/null

@@ -7,5 +7,5 @@ Standards-Version:38
 
 Package: odcgi
 Architecture: i386 armhf
-Depends: ${shlibs:Depends}, libc6 (>= 2.7), libssl1.0.0 (>= 1.0.1), libjpeg8 (>= 8c), libconfig9 (>= 1.4.8), busybox (>= 1.10), odcommon (>= 0.1), libcoelacanth (>= 0.1)
+Depends: ${shlibs:Depends}, libc6 (>= 2.7), libssl1.0.0 (>= 1.0.1), libjpeg8 (>= 8c), libconfig9 (>= 1.4.8), busybox (>= 1.10), odcommon (>= 1.9.2)
 Description: Opendomo web interface

@@ -1,1 +1,0 @@
-/usr/local/opendomo/services/syscript/displayZone.sh

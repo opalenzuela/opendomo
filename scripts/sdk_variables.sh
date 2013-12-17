@@ -17,7 +17,7 @@ RPIFILESDIR="$FILESDIR/rpifiles"
 
 ARCHCFG="$TMPDIR/arch"
 ARCH=`cat $ARCHCFG 2>/dev/null`
-ODPKG="libcoelacanth odcommon odcgi odhal"
+ODPKG="odcommon odcgi odhal"
 KERNEL_VERSION="3.2.51-rt72"
 KERNEL_SOURCES="3.2"
 OD_VERSION="2.0beta1"

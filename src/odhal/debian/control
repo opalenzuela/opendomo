@@ -7,6 +7,6 @@ Standards-Version:38
 
 Package: odhal
 Architecture: i386 armhf
-Depends: ${shlibs:Depends}, libc6 (>= 2.7), busybox (>= 1.10), odcommon (>= 0.1), libusb-0.1-4 (>=0.1.10)
+Depends: ${shlibs:Depends}, libc6 (>= 2.7), busybox (>= 1.10), odcommon (>= 1.9.1), libusb-0.1-4 (>=0.1.10)
 Description: Opendomo microcontroller drivers
 

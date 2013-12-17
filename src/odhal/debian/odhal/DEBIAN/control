@@ -1,9 +1,0 @@
-Package: odhal
-Version: 0.1
-Architecture: i386
-Maintainer: Javier Miras Blanco <jmirasb@gmail.com>
-Installed-Size: 285
-Depends: libc6 (>= 2.7), libusb-0.1-4 (>= 2:0.1.12), busybox (>= 1.10), odcommon (>= 0.1)
-Section: electronics
-Priority: optional
-Description: Opendomo microcontroller drivers

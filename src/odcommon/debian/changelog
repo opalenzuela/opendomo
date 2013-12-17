@@ -1,3 +1,10 @@
+odcommon (1.9.2) experimental; urgency=low
+
+  * Cleaning libcoelacanth dep
+  * Clean and move some scripts
+
+ -- Javier Miras Blanco <jmirasb@gmail.com>  Tue, 17 Dec 2013 14:13:46 +0100
+
 odcommon (1.9.1) experimental; urgency=low
 
   * Updating opendomo configuration files

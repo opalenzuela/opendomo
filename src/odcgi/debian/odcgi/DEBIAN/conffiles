@@ -1,7 +1,0 @@
-/etc/init.d/httpd
-/etc/opendomo/root/tools.name
-/etc/opendomo/root/map.name
-/etc/opendomo/root/control.name
-/etc/opendomo/root/config.name
-/etc/opendomo/root/config/user.name
-/etc/opendomo/start.frm

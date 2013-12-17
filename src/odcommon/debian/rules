@@ -7,7 +7,7 @@ PACKAGE=$(shell dh_listpackages)
 
 override_dh_install:
 
-	find . -maxdepth 1 -mindepth 1 -not -name debian -print0 | \
+	find . -maxdepth 1 -mindepth 1 -not -name src -not -name Makefile -not -name debian -print0 | \
 		xargs -0 -r -i cp -a {} debian/$(PACKAGE)
 
 override_dh_fixperms:

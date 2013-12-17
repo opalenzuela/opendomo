@@ -1,6 +1,0 @@
-#desc:Update logic rules
-#period:minutes
-#data:1
-#script:eh_process_rules.sh
-#param:
-* * * * * /usr/local/opendomo/services/syscript/eh_process_rules.sh > /dev/null

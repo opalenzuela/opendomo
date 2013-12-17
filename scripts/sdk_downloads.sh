@@ -10,10 +10,7 @@ mkdir -p $MOUNTDIR
 mkdir -p $IMAGEDIR
 mkdir -p $EXPORTDIR
 
-mkdir -p $SRCDIR/libcoelacanth/usr/lib
-mkdir -p $SRCDIR/libcoelacanth/usr/bin
-mkdir -p $SRCDIR/libcoelacanth/bin
-
+mkdir -p $SRCDIR/odcommon/usr/lib
 mkdir -p $SRCDIR/odhal/bin
 mkdir -p $SRCDIR/odhal/usr/bin
 mkdir -p $SRCDIR/odhal/var/opendomo

@@ -5,6 +5,6 @@ Maintainer: Javier Miras Blanco <jmirasb@gmail.com>
 Standards-Version:38
 
 Package: odcommon
-Architecture: all
-Depends: libc6 (>= 2.7), busybox (>= 1.10), libcoelacanth (>= 0.1)
+Architecture: i386 armhf
+Depends: libc6 (>= 2.7)
 Description: Opendomo common files and structures
