@@ -1,6 +1,0 @@
-#desc:Organize control ports
-#period:hours
-#data:00
-#script:organizeControlPorts.sh
-#param:
-00 * * * * /usr/local/opendomo/services/syslog/organizeControlPorts.sh >/dev/null

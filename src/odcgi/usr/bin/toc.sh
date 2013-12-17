@@ -9,7 +9,7 @@
 # los tiempos de carga de cada página.
 
 RAIZ="/cgi-bin/od.cgi"
-CFGDIR="/etc/opendomo/root/"
+CFGDIR="/var/opendomo/cgiroot/"
 cd $CFGDIR
 # Solamente mostramos los enlaces con extensión ".sh", evitando directorios y
 # enlaces a archivos .css o .js

@@ -44,6 +44,8 @@ do_start () {
 	chmod ugo+rx etc
 	chown -R admin:admin /etc/opendomo
 	chmod -R 744 /etc/opendomo
+	chown -R admin:admin /var/opendomo
+	chmod -R 744 /var/opendomo
 }
 
 case "$1" in

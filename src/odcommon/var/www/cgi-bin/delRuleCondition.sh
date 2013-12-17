@@ -1,1 +1,0 @@
-addRuleRequirement.sh

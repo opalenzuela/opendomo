@@ -29,7 +29,6 @@ do_start () {
 do_stop () {
 	start-stop-daemon --stop --quiet --oknodo --signal TERM --exec /bin/busybox --pidfile $PID
 	killall -9 busybox 2>/dev/null
-	rm $PID
 }
 
 do_status () {

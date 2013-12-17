@@ -1,6 +1,6 @@
 #!/bin/sh
 #desc:Set port
-#package:odcommon
+#package:odhal
 
 CTRLPATH="/var/opendomo/control"
 if test -e "$CTRLPATH/$1"; then

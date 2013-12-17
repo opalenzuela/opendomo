@@ -1,6 +1,6 @@
 #!/bin/sh
 #desc:Set all
-#package:odcommon
+#package:odhal
 
 TAG="$1"
 VALUE="$2"

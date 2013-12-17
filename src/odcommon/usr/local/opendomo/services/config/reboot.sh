@@ -8,4 +8,4 @@ echo "# Rebooting ... Please wait"
 echo
 echo "actions:"
 echo
-bgshell /usr/bin/reboot_u
+/usr/local/bin/reboot.sh
