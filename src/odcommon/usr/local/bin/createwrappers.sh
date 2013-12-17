@@ -16,6 +16,7 @@ do
    cd $SCRIPTPATH/services/$section
    for i in *.sh 
    do
+       mkdir -p $ROOTPATH/$section
        ln -fs $SCRIPTPATH/$i $ROOTPATH/$section/$i
        grep '#desc' $i | cut -f2 -d: > $ROOTPATH/$section/.$i.name
    done
