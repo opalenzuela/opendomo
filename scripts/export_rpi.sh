@@ -5,6 +5,9 @@
 SCRIPTSDIR="scripts"
 . $SCRIPTSDIR/sdk_variables.sh
 
+# Force image dir
+IMAGEDIR="$TMPDIR/image.arm"
+
 # Check variable
 if test -z $1; then
 	echo "ERROR: You need select SD to export"
@@ -21,14 +24,8 @@ else
 	fi
 fi
 
-# Check syslinux
-if ! test -x /usr/bin/syslinux; then
-	echo "ERROR: You need install syslinux package"
-	exit 1
-fi
-
-# Copy ISOFILES
-cp -r $ISOFILESDIR/* $IMAGEDIR/
+# Copy RaspberryPi boot files
+cp -r $RPIFILESDIR/* $IMAGEDIR/
 
 # Exporting to SD
 echo "INFO: Export opendomo to SD ($DEVICE)..."
@@ -45,15 +42,6 @@ if [ "$ASK" = "y" ]; then
 		# Mount and Copy files
 		mount $DEVICE $MOUNTDIR
 		cp -r $IMAGEDIR/* $MOUNTDIR/
-
-		# Installing syslinux
-		if syslinux -i $DEVICE; then
-			# Wait a moment, and unmount
-			sleep 5
-			umount $DEVICE
-		else
-			echo "ERROR: syslinux can be installed in SD"
-		fi
 	else
 		echo "ERROR: Device $DEVICE can be mounted"
 	fi

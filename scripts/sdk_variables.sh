@@ -11,6 +11,7 @@ DOCSDIR="docs"
 SRCDIR="src"
 TESTDIR="test"
 ISOFILESDIR="$FILESDIR/isofiles"
+RPIFILESDIR="$FILESDIR/rpifiles"
 
 # Opendomo packages and versions
 

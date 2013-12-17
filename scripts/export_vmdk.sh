@@ -18,6 +18,9 @@ if ! test -x "/usr/bin/qemu-img"; then
 	exit 1
 fi
 
+# Copy ISOFILES
+cp -r $ISOFILESDIR/* $IMAGEDIR/
+
 # Exporting to RAW image
 echo "INFO: Export opendomo to RAW image ..."
 rm $EXPORTDIR/$IMGNAME.img 2>/dev/null
