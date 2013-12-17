@@ -25,27 +25,33 @@ do_start () {
 	# Selecting config
 	if test -f $CSTCONF; then
 		CONFIG=$CSTCONF
-		log_action_begin_msg "Updating opendomo configuration files"
+		log_action_begin_msg "Updating opendomo configuration files (custom)"
 	else
 		if test -f $DEFCONF; then
 			CONFIG=$DEFCONF
 			log_action_begin_msg "Updating opendomo configuration files (default)"
 		else
-			exit 1
+			log_warning_msg "No opendomo configuration file found!"
 		fi
 	fi
 
-	/usr/bin/logger -p notice "Loading configuration file"
+	# Force dir and extract config
 	cd /
 	tar xfzp $CONFIG
 
-	# Fix perms
+	# Make all opendomo dirs and fix perms
+	mkdir -p /var/opendomo/tmp /var/opendomo/log /var/opendomo/run /var/opendomo/cgiroot /var/opendomo/control
+	mkdir -p /etc/opendomo /usr/local/opendomo/
+
 	chown root:root etc
 	chmod ugo+rx etc
-	chown -R admin:admin /etc/opendomo
-	chmod -R 744 /etc/opendomo
+
+	chown -R admin:admin /usr/local/opendomo
 	chown -R admin:admin /var/opendomo
+	chown -R admin:admin /etc/opendomo
+	chmod -R 744 /usr/local/opendomo
 	chmod -R 744 /var/opendomo
+	chmod -R 744 /etc/opendomo
 }
 
 case "$1" in

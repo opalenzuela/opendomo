@@ -29,7 +29,6 @@ do_start () {
 	hostname $HOSTNAME
 
 	/usr/bin/logger -p notice "Agent's UID `hostname`"
-	exit 0
 }
 
 do_status () {

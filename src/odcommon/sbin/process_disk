@@ -46,7 +46,7 @@ if test -e "/media/$LABEL"; then
 	exit 1
 fi
 
-# Selecting rootfs to mout
+# Selecting rootfs to mount
 if test -f /mnt/$DEVICE/$DEFIMG; then
 	IMAGE=$DEFIMG
 fi
@@ -60,7 +60,7 @@ if [ "$SYSDEVICE" = "1" ]; then
 	mkdir -p $SQUASHDIR $TEMPFSDIR $ROOTFSDIR
 
 	# Mounting squashfs
-	if mount -t squashfs /mnt/$DEVICE/$DEFIMG $SQUASHDIR; then
+	if mount -t squashfs /mnt/$DEVICE/$IMAGE $SQUASHDIR; then
 		CHROOT=$ROOTFSDIR
 		mount -t tmpfs none $TEMPFSDIR
 		mount -t aufs -o dirs=$TEMPFSDIR:$SQUASHDIR=ro aufs $ROOTFSDIR
@@ -78,15 +78,6 @@ if [ "$SYSDEVICE" = "1" ]; then
 
 	        chown -R admin:admin $ROOTFSDIR/home/admin
 	        chown -R user:users $ROOTFSDIR/home/user
-
-	        # Creating opendomo structure
-	        mkdir -p $ROOTFSDIR/var/opendomo/tmp $ROOTFSDIR/var/opendomo/log $ROOTFSDIR/var/opendomo/run
-	        chown -R admin:admin $ROOTFSDIR/var/opendomo
-	        chmod -R ugo+rwx $ROOTFSDIR/var/opendomo
-
-	        mkdir -p /etc/opendomo $ROOTFSDIR/usr/local/opendomo/
-	        chown -R admin:admin $ROOTFSDIR/etc/opendomo
-	        chown -R admin:admin $ROOTFSDIR/usr/local/opendomo
 
 		# Creating apt links
 		ln -s /mnt/odconf/files/apt/apt-db $ROOTFSDIR/var/lib/apt
@@ -134,12 +125,15 @@ if ! test -z $CHROOT; then
 	done
 
 	# Move kernel filesystems to new rootfs
-	mount --bind /dev  $ROOTFSDIR/dev
+	mount --move /dev  $ROOTFSDIR/dev
 	mount --move /proc $ROOTFSDIR/proc
 	mount --move /sys  $ROOTFSDIR/sys
 	mount --move /tmp  $ROOTFSDIR/tmp
 	mount --move /run  $ROOTFSDIR/run
 	mkdir -p $INITRDDIR
+
+	# Rebuild mtab
+	cat $ROOTFSDIR/proc/mounts > $ROOTFSDIR/etc/mtab
 
 	#TODO: Unmount initrd
 
