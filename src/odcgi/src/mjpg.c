@@ -37,9 +37,9 @@
 
 //#include "perceiving/vision/jpeg.h"
 
-#include "coelacanth/str.h"
-#include "coelacanth/string.h"
-#include "ai/perceiving/vision/mjpg.h"
+#include "src/str.h"
+#include "src/string.h"
+#include "src/mjpg.h"
 
 #include <openssl/sha.h>
 #include <openssl/hmac.h>

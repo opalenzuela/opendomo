@@ -1,6 +1,6 @@
 OPTS= -Wall
-HDRS= -I $(TOOLCHAIN)/usr/include -I ctrlpt/ -I device/ -I common/
-LIBS= -I ../libcoelacanth/ ../libcoelacanth/coelacanth/str.c
+HDRS= -I /usr/include -I ctrlpt/ -I device/ -I common/
+LIBS= -I ../odcommon/ ../odcommon/src/str.c
 
 
 

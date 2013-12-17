@@ -40,7 +40,7 @@
 #include <net/if.h>
 #include <linux/if_ether.h>
 #include <sys/ioctl.h>
-#include <regex/match.h>
+#include <src/match.h>
 #include <stdarg.h>
 
 #include "conf.h"
@@ -53,8 +53,8 @@
 #include "script.h"
 #include "i18n.h"
 #include "mjpg.h"
-#include "coelacanth/string.h"
-#include "coelacanth/str.h"
+#include "src/string.h"
+#include "src/str.h"
 
 
 /*! \brief DOCTYPE Does not work until CSS3+HTML5 */

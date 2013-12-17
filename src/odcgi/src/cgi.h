@@ -25,7 +25,7 @@
 
 #define CGI_ERROR_SIZE 256
 
-#include "coelacanth/string.h"
+#include "src/string.h"
 
 
 /** cgi_t data type */

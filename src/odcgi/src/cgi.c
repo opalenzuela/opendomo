@@ -41,7 +41,7 @@
 #include "secfunc.h"
 #include "cgi.h"
 #include "file.h"
-#include "regex/match.h"
+#include "src/match.h"
 
 #define MAX_URL_SIZE 8096
 

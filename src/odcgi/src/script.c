@@ -28,15 +28,15 @@
 #include <syslog.h>
 #include <errno.h>
 #include <libgen.h>
-#include <regex/match.h>
+#include <src/match.h>
 #include <sys/wait.h>
 
 #include "conf.h"
 #include "script.h"
 #include "secfunc.h"
 #include "i18n.h"
-#include "coelacanth/str.h"
-#include "coelacanth/string.h"
+#include "src/str.h"
+#include "src/string.h"
 
 #define ODCGI_TEXT_HELP "Help"	///< Help caption
 #define ODCGI_TEXT_BACK "Back"	///< Back caption

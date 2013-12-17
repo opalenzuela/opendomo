@@ -37,7 +37,7 @@
 #include <syslog.h>
 #include <signal.h>
 
-#include <coelacanth/str.h>
+#include <src/str.h>
 
 
 #include "fifo.h"

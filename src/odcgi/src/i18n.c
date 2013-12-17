@@ -26,7 +26,7 @@
 #include "conf.h"
 #include "i18n.h"
 
-#include <coelacanth/str.h>
+#include <src/str.h>
 
 #define TRUE 1		///< True int val
 #define FALSE -1	///< False int val
