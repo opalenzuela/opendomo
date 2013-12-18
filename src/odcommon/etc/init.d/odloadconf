@@ -20,31 +20,30 @@ do_start () {
 	DEFCONF=/mnt/odconf/sysconf/defconf.tar.gz
 	CSTCONF=/mnt/odconf/sysconf/cstconf.tar.gz
 	LOGFILE="/var/opendomo/log/loadcfg.log"
-	CGIDIR="/var/www/cgi-bin/"
 
-	# Selecting config
+	# Make all opendomo dirs
+	mkdir -p /var/opendomo/tmp /var/opendomo/log /var/opendomo/run /var/opendomo/cgiroot /var/opendomo/control
+	mkdir -p /etc/opendomo /usr/local/opendomo/
+	touch $LOGFILE
+
+	# Selecting config and extract
 	if test -f $CSTCONF; then
-		CONFIG=$CSTCONF
 		log_action_begin_msg "Updating opendomo configuration files (custom)"
+		tar xfzp $CSTCONF -C / 2>$LOGFILE
+		log_action_end_msg $?
 	else
 		if test -f $DEFCONF; then
-			CONFIG=$DEFCONF
 			log_action_begin_msg "Updating opendomo configuration files (default)"
+			tar xfzp $DEFCONF -C / 2>$LOGFILE
+			log_action_end_msg $?
 		else
 			log_warning_msg "No opendomo configuration file found!"
 		fi
 	fi
 
-	# Force dir and extract config
-	cd /
-	tar xfzp $CONFIG
-
-	# Make all opendomo dirs and fix perms
-	mkdir -p /var/opendomo/tmp /var/opendomo/log /var/opendomo/run /var/opendomo/cgiroot /var/opendomo/control
-	mkdir -p /etc/opendomo /usr/local/opendomo/
-
-	chown root:root etc
-	chmod ugo+rx etc
+	# Fix perms
+	chown root:root /etc
+	chmod ugo+rx /etc
 
 	chown -R admin:admin /usr/local/opendomo
 	chown -R admin:admin /var/opendomo
@@ -52,12 +51,16 @@ do_start () {
 	chmod -R 744 /usr/local/opendomo
 	chmod -R 744 /var/opendomo
 	chmod -R 744 /etc/opendomo
+
+	# Create wrapper scripts
+	log_action_begin_msg "Creating opendomo wrapper scripts"
+	su -c /usr/local/bin/createwrappers.sh admin 2>$LOGFILE
+	log_action_end_msg $?
 }
 
 case "$1" in
   start|"")
 	do_start
-	log_action_end_msg $?
         ;;
   restart|reload|force-reload)
         echo "Error: argument '$1' not supported" >&2
