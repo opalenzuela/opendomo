@@ -8,7 +8,7 @@
 
 CTRLPATH="/var/opendomo/control"
 CFGPATH="/etc/opendomo/control"
-TMPFILE="/tmp/listcontrolports.tmp"
+TMPFILE="/var/opendomo/tmp/listcontrolports.tmp"
 
 cd $CTRLPATH
 #PORTS=`find -type p`

@@ -58,7 +58,7 @@ case "$1" in
         exit $?
         ;;
   *)
-        echo "Usage: hostname.sh [start|stop]" >&2
+        echo "Usage: uid [start]" >&2
         exit 3
         ;;
 esac

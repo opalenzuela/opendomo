@@ -5,7 +5,7 @@
 
 STDIR="/etc/opendomo/states"
 SCENESDIR="/etc/opendomo/scenes"
-RLVLFILE="/var/run/runlevel"
+RLVLFILE="/var/opendomo/run/runlevel"
 
 if test `whoami` = "root"; then
 	echo "#ERR This script cannot be called as root!"

@@ -6,7 +6,7 @@
 # Copyright(c) 2011 OpenDomo Services SL. Licensed under GPL v3 or later
 
 ZONEDIR=/etc/opendomo/zones
-ETCDIR=/etc/opendomo/root/map
+ETCDIR=/var/opendomo/cgiroot/map
 ODDIR=/usr/local/opendomo
 
 test -d $ZONEDIR || mkdir -p $ZONEDIR

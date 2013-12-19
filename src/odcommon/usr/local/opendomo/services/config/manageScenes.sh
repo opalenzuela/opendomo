@@ -18,7 +18,7 @@ if ! test -z "$1" && test -f $CFGPATH/$1.conf; then
 	echo "list:`basename $0`	detailed"
 	. $CFGPATH/$1.conf
 	for port in $values; do
-		p=`echo $port | cut -f1 -d=` 
+		p=`echo $port | cut -f1 -d=`
 		value=`echo $port | cut -f2 -d=`
 		pfile=`echo $port | cut -f1 -d= | sed 's/_/\//' `
 		pname=`echo $port | cut -f1 -d= | cut -f2 -d'_'`
@@ -35,7 +35,7 @@ if ! test -z "$1" && test -f $CFGPATH/$1.conf; then
 	echo "	manageScenes.sh	Manage scenes"
 
 else
-	
+
 	# Available scenes
 	echo "#> Available"
 	echo "list:editScene.sh	selectable"
@@ -56,7 +56,7 @@ else
 	echo "	setScene.sh	Set scenes"
 	echo
 
-	
+
 fi
 echo
 

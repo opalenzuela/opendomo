@@ -4,7 +4,7 @@
 #package:odcommon
 
 ZONEDIR=/etc/opendomo/zones
-ETCDIR=/etc/opendomo/root/map
+ETCDIR=/var/opendomo/cgiroot
 ODDIR=/usr/local/opendomo
 
 DELETED=0

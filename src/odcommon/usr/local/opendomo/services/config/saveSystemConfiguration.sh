@@ -4,9 +4,9 @@
 #type:multiple
 
 CFGFILE="/mnt/odconf/sysconf/sysconf.tar"
-LOG="/var/log/savecfg.log"
-ERR="/var/log/savecfg.err"
-ENC="/tmp/cfgbackup.enc"
+LOG="/var/opendomo/log/savecfg.log"
+ERR="/var/opendomo/log/savecfg.err"
+ENC="/var/opendomo/tmp/cfgbackup.enc"
 
 save_data(){
 	if test -d /mnt/odconf/ ; then

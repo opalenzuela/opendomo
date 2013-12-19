@@ -4,7 +4,7 @@
 #package:odcgi_flot
 
 #TODO Allow date selection
-MEMFILE="/var/log/stats/loadmem.stats"
+MEMFILE="/var/opendomo/log/stats/loadmem.stats"
 
 
 if test -f $MEMFILE; then

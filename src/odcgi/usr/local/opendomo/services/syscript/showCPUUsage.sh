@@ -4,7 +4,7 @@
 #package:odcgi_flot
 
 #TODO Allow date selection
-CPUFILE="/var/log/stats/loadcpu.stats"
+CPUFILE="/var/opendomo/log/stats/loadcpu.stats"
 
 
 if test -f $CPUFILE; then
