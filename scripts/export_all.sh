@@ -15,6 +15,6 @@ echo "i386" >$ARCHCFG
 # Creating opendomo configuration file
 mkdir -p $IMAGEDIR/sysconf
 cd $FILESDIR/sysconf
-tar cfp ../../$IMAGEDIR/sysconf/defconf.tar *
+tar cfp ../../$IMAGEDIR/sysconf/defconf.tar * --owner 1000 --group 1000
 gzip -f ../../$IMAGEDIR/sysconf/defconf.tar
 cd ../../

@@ -17,24 +17,26 @@
 . /lib/lsb/init-functions
 
 do_start () {
-	DEFCONF=/mnt/odconf/sysconf/defconf.tar.gz
-	CSTCONF=/mnt/odconf/sysconf/cstconf.tar.gz
+	CSTCONF="/mnt/odconf/sysconf/cstconf.tar.gz"
+	DEFCONF="/mnt/odconf/sysconf/defconf.tar.gz"
 	LOGFILE="/var/opendomo/log/loadcfg.log"
+	MNGFILE="/usr/local/bin/manage_conf.sh"
+	ODDIRS="/var/opendomo/tmp /var/opendomo/log /var/opendomo/run /var/opendomo/cgiroot /var/opendomo/control /etc/opendomo /usr/local/opendomo/defaults"
+
 
 	# Make all opendomo dirs
-	mkdir -p /var/opendomo/tmp /var/opendomo/log /var/opendomo/run /var/opendomo/cgiroot /var/opendomo/control
-	mkdir -p /etc/opendomo /usr/local/opendomo/
+	mkdir -p $ODDIRS
 	touch $LOGFILE
 
-	# Selecting config and extract
+	# Extract custon config or default
 	if test -f $CSTCONF; then
 		log_action_begin_msg "Updating opendomo configuration files (custom)"
-		tar xfzp $CSTCONF -C / 2>$LOGFILE
+		$MNGFILE load custom >$LOGFILE 2>$LOGFILE
 		log_action_end_msg $?
 	else
 		if test -f $DEFCONF; then
 			log_action_begin_msg "Updating opendomo configuration files (default)"
-			tar xfzp $DEFCONF -C / 2>$LOGFILE
+			$MNGFILE load default >$LOGFILE 2>$LOGFILE
 			log_action_end_msg $?
 		else
 			log_warning_msg "No opendomo configuration file found!"
@@ -42,9 +44,6 @@ do_start () {
 	fi
 
 	# Fix perms
-	chown root:root /etc
-	chmod ugo+rx /etc
-
 	chown -R admin:admin /usr/local/opendomo
 	chown -R admin:admin /var/opendomo
 	chown -R admin:admin /etc/opendomo
