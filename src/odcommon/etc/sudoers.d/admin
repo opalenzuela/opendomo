@@ -2,6 +2,7 @@ Cmnd_Alias	ADMIN = /usr/bin/apt-get, \
                         /usr/bin/dpkg, \
                         /usr/sbin/dpkg-reconfigure, \
 			/sbin/shutdown, \
-			/usr/local/sbin/mkrootfs
+			/usr/local/sbin/mkrootfs, \
+			/usr/local/bin/manage_conf.sh
 
 admin ALL=(ALL) NOPASSWD: ADMIN

@@ -7,12 +7,15 @@ DEFCONF="/mnt/odconf/sysconf/defconf.tar"
 CSTCONF="/mnt/odconf/sysconf/cstconf.tar"
 LOGFILE="/var/opendomo/log/loadcfg.log"
 DEFAULTSDIR="/usr/local/opendomo/defaults"
+DEFSYSDIR="/usr/local/opendomo/defaults/system"
+SYSTEMDIR="/etc/opendomo/system"
 
 help () {
   echo "USAGE:"
   echo "   manage_conf.sh load custom / default  - Load conf"
   echo "   manage_conf.sh save                   - Save custom conf "
   echo "   manage_conf.sh restore                - Restore default conf"
+  echo "   manage_conf.sh restore system         - Restore system conf files"
   echo "   manage_conf.sh copy                   - Copy plugin default config to /etc"
   echo
 }
@@ -50,6 +53,72 @@ save_custom_config () {
   fi
 }
 
+copy_default_conf () {
+  cd $DEFAULTSDIR
+
+  # Check empty dir
+  if test -z `find -maxdepth 0 -empty`; then
+	# Find default files
+	for file in `find ./ | sed 's/^..//'`; do
+
+		# Create dirs and only copy files if don't exist
+		if test -d $file; then
+			mkdir -p $DIRCONF/$file
+			chown admin:admin $DIRCONF/$file
+		else
+			if ! test -f $DIRCONF/$file; then
+				cp -p $DEFAULTSDIR/$file $DIRCONF/$file 2>>$LOGFILE
+				chown admin:admin $DIRCONF/$file
+			fi
+		fi
+  	done
+  fi
+}
+
+create_system_conf () {
+  cd $DEFSYSDIR
+
+  # Check empty dir
+  if test -z `find -maxdepth 0 -empty`; then
+	# Find system file
+	for config in *; do
+		SYSTEMCONF=`find /etc/ -name $config | grep -m1 -v opendomo`
+		SYSDIRCONF=`dirname $SYSTEMCONF`
+
+		# If file is a link do nothing, if not create link
+		if ! test -h $SYSTEMCONF; then
+			mv $SYSTEMCONF $SYSTEMDIR/$config.origin
+			ln -s $SYSTEMDIR/$config $SYSDIRCONF/$config
+		fi
+	done
+  fi
+}
+
+restore_system_conf () {
+  cd $SYSTEMDIR
+
+  # Check empty dir
+  if test -z `find -maxdepth 0 -empty`; then
+	# Restore original configs
+	for config in `ls -1 | grep -v origin`; do
+		SYSTEMCONF=`find /etc/ -name $config | grep -m1 -v opendomo`
+		SYSDIRCONF=`dirname $SYSTEMCONF`
+		if ! test -e $DEFSYSDIR/$config; then
+			if test -h $SYSDIRCONF/$config; then
+
+				# Delete custom files and restore original
+				rm $SYSDIRCONF/$config
+				rm $config
+				mv $config.origin $SYSDIRCONF/$config
+			fi
+		fi
+	done
+  fi
+}
+
+# Make folders
+mkdir -p $DEFSYSDIR $SYSTEMDIR $DEFAULTSDIR
+
 case $1 in
   load )
   if test -z $2; then
@@ -74,24 +143,27 @@ case $1 in
 	save_custom_config
   ;;
   restore )
-	echo "INFO: Restore default config ..."
+	if [ "$2" = "system" ]; then
+		echo "INFO: Restoring system configs ..."
+		restore_system_conf
+	else
+		echo "INFO: Restore default config ..."
+		rm $CSTCONF.gz 2>>$LOGFILE
 
-	rm $CSTCONF.gz 2>>$LOGFILE
-	rm -r $CONFDIR/* 2>$LOGFILE
-	load_default_config
+		# Exclude system configuration folders
+		cd $DIRCONF
+		for file in `ls -1 | grep -v system`; do
+			rm -r $file 2>>$LOGFILE
+		done
+		load_default_config
+	fi
   ;;
   copy )
 	echo "INFO: Copy default configurations ..."
-	cd $DEFAULTSDIR
-	for file in `find ./ | sed 's/^..//'`; do
+	copy_default_conf
 
-		# Only copy if no exist
-		if ! test -f $CONFDIR/$file; then
-			cp -pr $DEFAULTSDIR/$file $CONFDIR/$file 2>>$LOGFILE
-		fi
-	done
-
-	#TODO Create system links
+	echo "INFO Creating system config links ..."
+	create_system_conf
  ;;
   * )
 	help

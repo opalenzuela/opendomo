@@ -23,7 +23,6 @@ do_start () {
 	MNGFILE="/usr/local/bin/manage_conf.sh"
 	ODDIRS="/var/opendomo/tmp /var/opendomo/log /var/opendomo/run /var/opendomo/cgiroot /var/opendomo/control /etc/opendomo /usr/local/opendomo/defaults"
 
-
 	# Make all opendomo dirs
 	mkdir -p $ODDIRS
 	touch $LOGFILE
