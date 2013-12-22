@@ -39,9 +39,9 @@
 #arm_freq=800
 
 # Opendomo default options
+boot_delay=2
 kernel=linux
-ramfsfile=initrd.gz
-ramfsaddr=0x00800000
+initramfs initrd.gz
 disable_splash=1
-
+gpu_mem=16
 
