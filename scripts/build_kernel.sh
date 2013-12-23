@@ -40,7 +40,7 @@ case $1 in
   ;;
   install )
 	# Install compiled kernel
-	if [ "$ARCH" == "arm" ]; then
+	if [ "$ARCH" = "arm" ]; then
 		if test -f $KERNELDIR/arch/arm/boot/zImage; then
 			cp $KERNELDIR/arch/arm/boot/zImage $IMAGEDIR/linux
 		else

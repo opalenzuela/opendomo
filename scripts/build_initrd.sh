@@ -47,7 +47,7 @@ case $1 in
 	echo "$OD_VERSION" > $INITRDDIR/etc/VERSION
 
 	# Checking initrd size
-	INITRDSIZE=`du $INITRDDIR | tail -n1 | cut -f1 -d$'\t'`
+	INITRDSIZE=`du $INITRDDIR | tail -n1 | sed 's/\t.*//'`
 	SIZE=`expr $INITRDSIZE + $FREESIZE`
 
 	# Clean emulator
