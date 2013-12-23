@@ -18,6 +18,6 @@ do
    do
        mkdir -p $ROOTPATH/$section
        ln -fs $SCRIPTPATH/$i $ROOTPATH/$section/$i
-       grep '#desc' $i | cut -f2 -d: > $ROOTPATH/$section/.$i.name
+       grep '#desc' $i | head -n1| cut -f2 -d: > $ROOTPATH/$section/$i.name
    done
 done
