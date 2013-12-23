@@ -1143,7 +1143,7 @@ main (int argc, char *argv[])
   /* Check NOHEADER */
   if ((gui == html) && (atoi (http_noheader) != 1))
     {
-      string_assign_str (cmd, OD_APP_CONF_DIR "/categories.sh ");
+      string_assign_str (cmd, "/usr/bin/categories.sh ");
       string_append (cmd, path_info);
 
       script_exec (cmd->str, "header", &env);
@@ -1168,7 +1168,7 @@ main (int argc, char *argv[])
   /* if dir: list contents */
   if (file_is_dir (&fs))
     {
-      string_assign_str (cmd, OD_APP_CONF_DIR "/list.sh ");
+      string_assign_str (cmd,  "/usr/bin/list.sh ");
       string_append (cmd, path_info);
       string_append (cmd, " contents");
 

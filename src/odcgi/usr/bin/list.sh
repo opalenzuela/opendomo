@@ -18,7 +18,7 @@ if test -z "$1" || test "/" = "$1"; then
 fi
 
 RAIZ="."
-RUTA="var/opendomo/cgiroot"
+RUTA="/var/opendomo/cgiroot"
 
 cd $RUTA/$D
 PLACE=`basename $D`
