@@ -45,7 +45,7 @@
 #define ODCGI_TEXT_ERROR_TRACKER_LINK "Notify the error"	///< Bugtracker caption
 #define ODCGI_URL_HELP "http://www.opendomo.com/wiki/"	///< URL prefix to the help
 /// URL to the discussion board
-#define ODCGI_URL_TRACKER "http://www.opendomo.com/wiki/index.php?action=edit&title=Discusión"
+#define ODCGI_URL_TRACKER "https://github.com/opalenzuela/opendomo/issues/new"
 
 /// Return TRUE if the first 3 bytes of the string matches the parameters
 #define SPELL3(str,c1,c2,c3) ((str[0]==c1) && (str[1]==c2) && (str[2]==c3))
@@ -1619,20 +1619,23 @@ script_exec (const char *cmd, const char *section, script_env_t * env)
     else if(retval == -1)
     {
       // Some problem happened when closing the pipe
-      printf ("<p class='error'>%s (%d): %s</p><div class='toolbar'>\n",
+      printf ("<p class='error'>%s (%d): %s</p>\n"
+              "<div id='tbrerror' class='toolbar'>\n",
 	      strerror (errno), errno, cmd);
       printf (" <button onclick='history.back();'>%s</button>",
 	      T (ODCGI_TEXT_BACK));
-      printf (" <button "
+      //The following line is disabled. It should be in oddevel plugin instead
+      /*printf (" <button "
 	      "onclick=\"window.open('%s:%s','issues');\">%s</button>",
-	      ODCGI_URL_TRACKER, cmdid, T (ODCGI_TEXT_ERROR_TRACKER_LINK));
+	      ODCGI_URL_TRACKER, cmdid, T (ODCGI_TEXT_ERROR_TRACKER_LINK)); */
       printf ("</div>\n");
       syslog (LOG_ERR, "%s (%d): %s\n", strerror (errno), errno, cmd);
     }
     else
     {
       // Error code returned by the script 
-      printf ("\t\t<p class='error'>%s</p><div class='toolbar'>",
+      printf ("\t\t<p class='error'>%s</p>\n"
+        "<div id='tbrerror' class='toolbar'>",
 	      T (ODCGI_TEXT_ERROR_HELP));
       printf (" <button onclick='history.back();'>%s</button>",
 	      T (ODCGI_TEXT_BACK));
@@ -1640,9 +1643,10 @@ script_exec (const char *cmd, const char *section, script_env_t * env)
 	      "onclick=\"window.open('%s%s#error%d','help');\">%s</button>",
 	      ODCGI_URL_HELP, cmdid, WEXITSTATUS (retval),
 	      T (ODCGI_TEXT_ERROR_HELP_LINK));
-      printf (" <button "
+      //The following line is disabled. It should be in oddevel plugin instead
+      /*printf (" <button "
 	      "onclick=\"window.open('%s:%s','issues');\">%s</button>",
-	      ODCGI_URL_TRACKER, cmdid, T (ODCGI_TEXT_ERROR_TRACKER_LINK));
+	      ODCGI_URL_TRACKER, cmdid, T (ODCGI_TEXT_ERROR_TRACKER_LINK)); */
       printf ("</div>\n");
 
       syslog (LOG_ERR, "return (%d): %s\n", WEXITSTATUS (retval), cmd);
