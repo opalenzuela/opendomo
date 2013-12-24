@@ -26,7 +26,7 @@
 #define OD_SESSION_FILE   "/var/opendomo/session"
 #define OD_USER_CONF_DIR  "/var/opendomo/userconf"
 #define OD_APP_CONF_DIR   "/etc/opendomo"
-#define OD_CFG_ROOT_DIR   "/etc/opendomo/root"
+#define OD_CFG_ROOT_DIR   "/var/opendomo/cgiroot"
 #define OD_APP_I18N_DIR   "/var/opendomo/i18n"
 #define OD_APP_I18N_CONF  "/etc/opendomo/i18n/lang"
 #define OD_URI            "/cgi-bin/od.cgi"
