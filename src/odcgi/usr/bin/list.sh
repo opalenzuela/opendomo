@@ -20,7 +20,8 @@ fi
 RAIZ="."
 RUTA="/var/opendomo/cgiroot"
 
-cd $RUTA/$D
+cd $RUTA
+cd $D
 PLACE=`basename $D`
 if test -f ./$PLACE.name; then
 	PLACE=`cat ./$PLACE.name`
@@ -86,13 +87,6 @@ fi
 if test -x /usr/local/opendomo/addToFavorites.sh; then
 	echo "	addToFavorites.sh	Add to Favorites"
 fi
-# Deprecated. Links are created automatically by oddiscovery
-#if test -x /usr/local/opendomo/addInterfaceLink.sh; then
-#	echo "	addInterfaceLink.sh	Add link"
-#fi
-#if test -x /usr/local/opendomo/delInterfaceLink.sh; then
-#	echo "	delInterfaceLink.sh	Remove link"
-#fi
 
 echo
 exit 0
