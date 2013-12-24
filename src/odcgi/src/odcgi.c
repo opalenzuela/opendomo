@@ -1113,7 +1113,7 @@ main (int argc, char *argv[])
     }
 
   /* root directory */
-  if (chdir (OD_APP_CONF_DIR "/root") != 0)
+  if (chdir (OD_CFG_ROOT_DIR) != 0)
     {
       odcgi_print_header ("error", env.user);
       syslog (LOG_ERR, "%s\n", ODCGI_ERROR__ROOT_PATH_ACCESS);
