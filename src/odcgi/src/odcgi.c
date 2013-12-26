@@ -1109,7 +1109,7 @@ main (int argc, char *argv[])
   // If PATH is not modified, use the default path in CONF_DIR.
   if (path[0] == 0)
     {
-      snprintf (path, sizeof (path), "%s/root%s", OD_APP_CONF_DIR, path_info);
+      snprintf (path, sizeof (path), "%s/%s", OD_CFG_ROOT_DIR, path_info);
     }
 
   /* root directory */
