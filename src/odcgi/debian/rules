@@ -5,6 +5,12 @@ PACKAGE=$(shell dh_listpackages)
 %:
 	dh $@
 
+override_dh_auto_configure:
+	dh_auto_configure
+	mkdir -p var/opendomo/cgiroot/control var/opendomo/cgiroot/config \
+		 var/opendomo/cgiroot/map var/opendomo/cgiroot/tools
+	
+
 override_dh_install:
 
 	find . -maxdepth 1 -mindepth 1 -not -name Makefile -not -name debian -not -name src -print0 | \
@@ -14,6 +20,6 @@ override_dh_fixperms:
 	dh_fixperms
 	chown -R 1000 debian/odcgi/etc/opendomo
 	chown -R 1000 debian/odcgi/usr/local/opendomo
-	chown -R 1000 debian/odcgi/var/www
+	chown -R 1000 debian/odcgi/var/opendomo/cgiroot
 
 override_dh_usrlocal:

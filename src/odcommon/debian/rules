@@ -5,6 +5,10 @@ PACKAGE=$(shell dh_listpackages)
 %:
 	dh $@
 
+override_dh_auto_configure:
+	dh_auto_configure
+	mkdir -p usr/lib
+
 override_dh_install:
 
 	find . -maxdepth 1 -mindepth 1 -not -name src -not -name Makefile -not -name debian -print0 | \
@@ -12,11 +16,11 @@ override_dh_install:
 
 override_dh_fixperms:
 	dh_fixperms
-	chown 1000 debian/odcommon/var/www/*
-	chown 1000:1000 debian/odcommon/etc/opendomo
-	chown 1000:1000 debian/odcommon/usr/local/opendomo
-	chmod 0775 -R debian/odcommon/etc/opendomo/states
-	chmod g+w debian/odcommon/etc/opendomo/i18n/lang
-	chown 1000:1000 debian/odcommon/etc/opendomo/i18n/lang
+	chown -R 1000:1000 debian/odcommon/etc/opendomo
+	chown -R root:root /etc/sudoers.d
+	chmod 0555 /etc/sudoers.d
+	chmod 0440 /etc/sudoers.d/*
+	chown -R 1000:1000 debian/odcommon/usr/local/opendomo
+	chown -R 1000:1000 debian/odcommon/var/opendomo
 
 override_dh_usrlocal:
