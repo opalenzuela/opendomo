@@ -4,9 +4,16 @@
 
 TMPDIR="/var/opendomo/tmp"
 OSVER=`cat /etc/VERSION`
+OSVER="2.0.0"
 REPOSITORY="http://cloud.opendomo.com/repo/$OSVER/"
 if ! test -f $TMPDIR/repo.lst; then
-  wget $REPOSITORY -O $TMPDIR/repo.lst --no-check-certificate
+    if wget $REPOSITORY -O $TMPDIR/repo.lst --no-check-certificate --max-redirect=0 2>/dev/null
+    then
+        echo "#INFO Repository updated"
+    else
+        echo "#ERROR Cannot find repository for version [$OSVER]"
+        exit 1
+    fi
 fi
 if test -z "$1"; then
   echo "list:managePlugins.sh"
