@@ -4,11 +4,11 @@
 #author:opalenzuela 
 # 
 # Este script muestra el contenido del directorio indicado como argumento, 
-# formateado para el CGI de OpenDomo. Los elementos mostrados son, únicamente,
+# formateado para el CGI de OpenDomo. Los elementos mostrados son, unicamente,
 # aquellos que pueden ser ejecutados por el usuario validado (con el flag +x), 
 # ya sean scripts o directorios.
-# Por razones de seguridad, serán eliminados de la ruta combinaciones de dos
-# puntos ".." y direccionadores estándar (<>)
+# Por razones de seguridad, seran eliminados de la ruta combinaciones de dos
+# puntos ".." y direccionadores estandar (<>)
 
 
 D="$1"
@@ -21,7 +21,7 @@ RAIZ="."
 RUTA="/var/opendomo/cgiroot"
 
 cd $RUTA
-cd $D
+cd $RUTA/$D
 PLACE=`basename $D`
 if test -f ./$PLACE.name; then
 	PLACE=`cat ./$PLACE.name`
