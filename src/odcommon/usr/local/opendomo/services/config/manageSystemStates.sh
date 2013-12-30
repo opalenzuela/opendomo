@@ -8,6 +8,9 @@
 STATEDIR=/etc/opendomo/states
 ODDIR=/usr/local/opendomo
 
+# TODO: Needs rebuild
+exit 0
+
 case $1 in
 	"add"|"update")
 		if test -z "$3"; then

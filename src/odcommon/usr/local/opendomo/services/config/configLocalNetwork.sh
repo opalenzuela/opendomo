@@ -3,6 +3,9 @@
 #type:local
 #package:odcommon
 
+#TODO: Needs a rebuild
+exit 0
+
 if ! test -z "$1"; then
 	MODE="$1"
 	IPADDRESS="$2"

@@ -8,6 +8,9 @@ LOG="/var/opendomo/log/savecfg.log"
 ERR="/var/opendomo/log/savecfg.err"
 ENC="/var/opendomo/tmp/cfgbackup.enc"
 
+# TODO: Needs rebuild
+exit 0
+
 save_data(){
 	if test -d /mnt/odconf/ ; then
 		echo "#> Saving data"

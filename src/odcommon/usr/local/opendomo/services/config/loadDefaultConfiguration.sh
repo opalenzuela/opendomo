@@ -3,6 +3,9 @@
 #package:odcommon
 #type:local
 
+#TODO: Need rebuild
+exit 0
+
 if test -z "$1"; then
 	# No params. Showing menu and warning
 	echo "#WARN: Default configuration will be loaded"

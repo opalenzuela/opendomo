@@ -12,6 +12,9 @@ if test `whoami` = "root"; then
 	exit 1
 fi
 
+# TODO: Needs rebuild
+exit 0
+
 if ! test -z "$1"; then
 	# Script called with a parameter. Possible cases:
 	# 1. The parameter is the code of a state

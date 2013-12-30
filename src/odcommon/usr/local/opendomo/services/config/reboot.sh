@@ -1,7 +1,7 @@
 #!/bin/sh
 #name:Reboot
 #desc:Reboot
-#package:distro
+#package:odcommon
 #type:local
 
 echo "# Rebooting ... Please wait"
