@@ -1,29 +1,25 @@
 #!/bin/sh
-#desc:Delete sequence
+#desc:Delete state
 #type:local
 #package:odcommon
 
 # Copyright(c) 2011 OpenDomo Services SL. Licensed under GPL v3 or later
 
-STPATH=/etc/opendomo/states
+STATESDIR=/etc/opendomo/states
+STATE=$1
 
-if test -z "$1"; then
+if test -z $STATE; then
 	echo "#> Delete states"
-	echo "# No state specified"
-	echo "#INFO: No state specified"
+	echo "#ERR No system state specified"
 	exit 1
-fi
-
-for file in "$@"
-do
-	if test -e "$STPATH/$file"; then
-		if rm -fr "$STPATH/$file"; then
-			echo "#INFO: State deleted [$file]"
-		else
-			echo "#ERR: Cannot delete"
-			exit 2
-		fi
+else
+	if [ "$STATE" = "active" ]; then
+		echo "#ERR State 'active' can't be deleted"
+	else
+		echo "#INFO State $STATE deleted"
+		rm -r $STATESDIR/$STATE
 	fi
-done
-# Once deleted, back to the main script
-/usr/local/opendomo/manageSystemStates.sh
+
+	# Return to manage states
+	/usr/local/opendomo/manageSystemStates.sh
+fi

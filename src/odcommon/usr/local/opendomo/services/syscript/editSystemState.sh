@@ -5,57 +5,55 @@
 
 # Copyright(c) 2011 OpenDomo Services SL. Licensed under GPL v3 or later
 
-STDIR="/etc/opendomo/states"
+DAEMONSDIR="/usr/local/opendomo/daemons"
+CONFIGSDIR="/etc/opendomo/states"
+TEMPSTATE="/var/opendomo/tmp/state.tmp"
 
-if test -z "$1"; then
-	echo "#> System states"
-	echo "list:`basename $0`"
-	for d in $STDIR/*; do
-		BN=`basename $d`
-		if test -f $d/.name
-		then
-			b=`cat $d/.name`
-			echo "	-$BN	$b	state"
-		fi
-	done
-#	echo "actions:"
-#	echo "	manageSystemStates.sh	Edit"
-#	echo
-else
-	STAT=`echo $1 | cut -f1 -d.`
-	SERVICE=`echo $1 | cut -f2 -d.`
-	if test "$STAT" = "boot" ; then
-		echo "#WARN Read-only directory"
+case $2 in
+  on )
+	# If $2 is on, $1 is a service, check and change status in state
+	STATE=`cat $TEMPSTATE`
+
+	if test -e $DAEMONSDIR/$1; then
+		touch $CONFIGSDIR/$STATE/$1
 	fi
-	if test "$2" = "on"; then
-		if test -x "/etc/init.d/$SERVICE"; then
-			if ! test -s /$STDIR/$STAT/$SERVICE; then
-				ln -s /etc/init.d/$SERVICE /$STDIR/$STAT/$SERVICE
-			fi
-		fi
+  ;;
+  off )
+	# If $2 is on, $1 is a service, check and change status in state
+	STATE=`cat $TEMPSTATE`
+
+	if test -e $DAEMONSDIR/$1; then
+		rm $CONFIGSDIR/$STATE/$1
+	fi
+  ;;
+  * )
+	# Check if state exist and see form
+	if ! test -d $CONFIGSDIR/$1 || test -z $1; then
+		echo "#> Configure states"
+		echo "#ERR Need specify state"
+		echo
+		exit 1
 	else
-		if test "$2" = "off"; then
-			# Setting service to "off"
-			rm /$STDIR/$STAT/$SERVICE 2>/dev/null
-		fi
-	fi
-	echo "#> Services active in [$STAT]"
-	echo "form:`basename $0`"
-	for i in /etc/init.d/*; do
-		if test -x $i; then
-			BN=`basename $i`
-			if test "$BN" != "rcS"; then
-				NAME=`grep '#desc' $i | cut -f2- -d:`
-				if test -f $STDIR/$STAT/$BN; then
-					STATE="on"
-				else
-					STATE="off"
-				fi
-				echo "	$STAT.$BN	$NAME	subcommand[on,off]	$STATE"
+		# Save current state in temprola file
+		echo "$1" >$TEMPSTATE
+
+		# Check service status and print services
+		echo "#> Configure state ($1)"
+		echo "form:`basename $0`"
+
+		cd $DAEMONSDIR
+		for service in *; do
+			DESC=`grep "# Short-Description" $service | cut -f2 -d:`
+			if test -f $CONFIGSDIR/$1/$service; then
+				STATUS=on
+			else
+				STATUS=off
 			fi
-		fi
-	done
-	echo "action:"
-	echo "	manageSystemStates.sh	Manage system states"
-fi
-echo
+			echo "	$service	$DESC	subcommand[on,off]	$STATUS"
+		done
+		echo "action:"
+		echo "	manageSystemStates.sh	Back"
+		echo
+	fi
+  ;;
+esac
