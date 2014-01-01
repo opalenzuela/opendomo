@@ -9,6 +9,7 @@ SCRIPTSDIR="scripts"
 IMAGEDIR="$TMPDIR/image.arm"
 
 # Check variable
+# TODO variable device need a drive no partition
 if test -z $1; then
 	echo "ERROR: You need select SD to export"
 	exit 1
@@ -36,8 +37,16 @@ if [ "$ASK" = "y" ]; then
 	# Umount drive
 	umount $DEVICE 2>/dev/null
 
+	# Clean drive and creating partitions
+	echo "INFO: Creating partition ..."
+	(echo o; echo w)  | fdisk $DEVICE		&>/dev/null				# Clean drive
+	(echo n; echo p; echo 1; echo; echo; echo 1G; echo w)  | fdisk $DEVICE	&>/dev/null	# Create partition 1G
+	(echo t; echo e; echo w)  | fdisk $DEVICE	&>/dev/null				# Change partition type
+	(echo a; echo 1; echo w)  | fdisk $DEVICE	&>/dev/null				# Make bootable
+
+	echo "INFO: Formating partition ..."
 	if
-	mkfs.vfat -I -n "opendomo" $DEVICE 2>/dev/null >/dev/null
+	mkfs.msdos -I -n "opendomo" -F 16 $DEVICE 2>/dev/null >/dev/null
 	then
 		# Mount and Copy files
 		mount $DEVICE $MOUNTDIR

@@ -10,14 +10,28 @@ if ! test -d $ROOTSTRAPDIR; then
 	exit 1
 fi
 
+download_kernel () {
+	KERNELPKG=`basename $KERNEL_URLSRC`
+	if ! test -f $TMPDIR/$KERNELPKG; then
+		echo "INFO: Downloading kernel ..."
+		cd $TMPDIR
+		wget $KERNEL_URLSRC
+		cd ..
+
+		echo "INFO: Installing kernel ..."
+		cp $TMPDIR/$KERNELPKG $ROOTSTRAPDIR/tmp
+	        $CHROOT "$ROOTSTRAPDIR" /bin/bash -c "cd tmp && dpkg -i $KERNELPKG"
+	fi
+}
+
 extract_kernel () {
 	echo "INFO: Extracting kernel ..."
-	tar xfjp $ROOTSTRAPDIR/usr/src/linux-source-"$KERNEL_SOURCES".tar.bz2
+	tar xfJp $ROOTSTRAPDIR/usr/src/linux-source-"$KERNEL_SOURCES".tar.xz
 	mv linux-source-"$KERNEL_SOURCES" $KERNELDIR
 
 	# Debian patch
-	cp $ROOTSTRAPDIR/usr/src/linux-patch-"$KERNEL_SOURCES"-rt.patch.bz2 $ROOTSTRAPDIR/usr/src/linux.patch.bz2
-	bunzip2 -k $ROOTSTRAPDIR/usr/src/linux.patch.bz2
+	cp $ROOTSTRAPDIR/usr/src/linux-patch-"$KERNEL_SOURCES"-rt.patch.xz $ROOTSTRAPDIR/usr/src/linux.patch.xz
+	xz --decompress $ROOTSTRAPDIR/usr/src/linux.patch.xz
 	mv $ROOTSTRAPDIR/usr/src/linux.patch $KERNELDIR
 	$CHROOT "$ROOTSTRAPDIR" /bin/bash -c "cd /usr/src/linux && patch --quiet -p1 <linux.patch 2>/dev/null"
 	rm $KERNELDIR/linux.patch
@@ -28,8 +42,10 @@ extract_kernel () {
 
 case $1 in
   make )
+
 	# Extract kernel
 	if ! test -d $KERNELDIR; then
+		download_kernel
 		extract_kernel
 	else
 		echo "WARN: kernel is already extracted"

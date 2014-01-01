@@ -50,8 +50,13 @@ case $1 in
 	INITRDSIZE=`du $INITRDDIR | tail -n1 | sed 's/\t.*//'`
 	SIZE=`expr $INITRDSIZE + $FREESIZE`
 
-	# Clean emulator
-	rm $INITRDDIR/usr/bin/qemu-arm-static 2>/dev/null
+	if [ "$ARCH" != "i386" ]; then
+		# Clean emulator for RaspberryPi
+		rm $INITRDDIR/usr/bin/qemu-arm-static 2>/dev/null
+	else
+		# Creating syslinux boot configuration files (i386 only)
+		echo "DEFAULT linux initrd=initrd.gz ramdisk_size=$SIZE rw root=/dev/ram0 quiet" >$ISOFILESDIR/syslinux.cfg
+	fi
 
 	# Creating initrd
 	if dd if=/dev/zero of=$IMAGEDIR/initrd bs=1024 count=$SIZE >/dev/null 2>/dev/null; then

@@ -24,6 +24,6 @@ cp /etc/resolv.conf $ROOTSTRAPDIR/etc/
 $CHROOT "$ROOTSTRAPDIR" /bin/bash -c "apt-get update"
 
 # Installing rootstrap packages
-$CHROOT "$ROOTSTRAPDIR" /bin/bash -c "DEBIAN_FRONTEND=noninteractive apt-get --force-yes -yq install $PACKAGES"
-$CHROOT "$ROOTSTRAPDIR" /bin/bash -c "dpkg-reconfigure --frontend=noninteractive debconf"
+$CHROOT "$ROOTSTRAPDIR" /bin/bash -c "LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive apt-get --force-yes -yq install $PACKAGES"
+$CHROOT "$ROOTSTRAPDIR" /bin/bash -c "LC_ALL=C LANGUAGE=C LANG=C dpkg-reconfigure --frontend=noninteractive debconf"
 $CHROOT "$ROOTSTRAPDIR" /bin/bash -c "apt-get clean"
