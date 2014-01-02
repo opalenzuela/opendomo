@@ -5,13 +5,19 @@ REPOFILE="/var/opendomo/tmp/repo.lst"
 DEPS=`grep ^$1 $REPOFILE| cut -f4 -d';' |sort |head -n1`
 URLFILE=`grep ^$1 $REPOFILE| cut -f2 -d';' |sort |head -n1`
 PROGRESS="/var/opendomo/run/$PKGID.progress"
+STORAGE="/mnt/odconf/plugins"
 
-LFILE="/var/opendomo/tmp/$1.tar.gz"
+if ! test -d $STORAGE
+then
+    mkdir -p $STORAGE
+fi
+
+LFILE="$STORAGE/`basename $URLFILE`"
 
 echo "00" > $PROGRESS
 
-#TODO Support ZIP or other formats as well
-if wget $URLFILE -O $LFILE --no-check-certificate
+
+if wget $URLFILE -O $LFILE -q --no-check-certificate
 then
     SHA1=`grep ^$1 $REPOFILE| cut -f5 -d';' |sort |head -n1`
     #TODO Check SHA1
@@ -27,6 +33,6 @@ fi
 echo "75" > $PROGRESS
 
 cd /
-
-/bin/tar -zxvf $LFILE > /var/opendomo/log/$PKGID.files
-echo "100" > $PROGRESS
+echo $LFILE | grep ".tar.gz" - && /bin/tar -zxvf $LFILE > /var/opendomo/log/$PKGID.files
+echo $LFILE | grep ".zip" - && /usr/local/bin/unzip $LFILE > /var/opendomo/log/$PKGID.files
+rm $PROGRESS
