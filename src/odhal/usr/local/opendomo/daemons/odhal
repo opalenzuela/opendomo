@@ -7,8 +7,8 @@
 # Should-Stop:
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 6
-# Short-Description: HAL daemon for manage microcontrollers
-# Description:       HAL daemon for manage microcontrollers
+# Short-Description: Control board drivers
+# Description:       Daemon for manage microcontrollers
 ### END INIT INFO
 
 . /lib/init/vars.sh

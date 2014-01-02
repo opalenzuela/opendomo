@@ -3,31 +3,60 @@
 #package:odcommon
 #type:local
 
-CONFIGSDIR="/etc/opendomo/states"
-DAEMONSDIR="/usr/local/opendomo/daemons"
-CURSTATE=`cat /var/opendomo/run/states.pid`
-
+# Checks
 if test `whoami` = "root"; then
 	echo "#ERR This script cannot be called as root!"
 	exit 1
 fi
 
-interface () {
-  # Available states
-  STATES=`ls -1 "$CONFIGSDIR" | grep -v $CURSTATE | tr '\n' "," | sed 's/.$//'`
-  echo $STATES
+# Always check blacklist
+changestate.sh blacklist
 
-  echo "#> Change state"
-  echo "form:`basename $0`"
-  echo "	change	Change state	hidden	change"
-  echo "	state	Select state	list[$CURSTATE,$STATES]	$CURSTATE"
-  echo
-  echo "#> Available services"
-  echo "form:`basename $0`"
+# With parameter, execute changes
+if test -z $2; then
+	if ! test -z $1; then
+		# Change system state
+		echo "#INFO Changing to '$1' state ..."
+		sudo changestate.sh change $1 &>/dev/null
+	fi
+else
+	# Start / Stop service
+	if ! test -z $1 && [ "$2" = "on" ]; then
+		sudo changestate.sh service $1 on  &>/dev/null
+	elif ! test -z $1 && [ "$2" = "off" ]; then
+		sudo changestate.sh service $1 off &>/dev/null
+	fi
+fi
 
-  # Available services
-  cd $DAEMONSDIR
-  for service in *; do
+# Always reload parameters and see interface
+STATESDIR="/etc/opendomo/states"
+DAEMONSDIR="/usr/local/opendomo/daemons"
+CURSTATE=`cat /var/opendomo/run/states.pid`
+STATES=`ls -1 "$STATESDIR" | grep -v $CURSTATE | tr '\n' "," | sed 's/.$//'`
+
+# Available states
+echo "#> Change state"
+echo "list:`basename $0`"
+
+cd $STATESDIR
+for state in *; do
+	if test -d $state; then
+		if [ "$state" = "$CURSTATE" ]; then
+			echo "	$state	$state (current)	state"
+		else
+			echo "	-$state	$state	state"
+		fi
+	fi
+done
+echo "action:"
+echo
+
+# Available services
+echo "#> Available services"
+echo "form:`basename $0`"
+
+cd $DAEMONSDIR
+for service in *; do
 	# Check service information
 	DESC=`grep "# Short-Description" $service | cut -f2 -d:`
 	if ./$service status >/dev/null 2>/dev/null ; then
@@ -36,26 +65,7 @@ interface () {
 		STATUS=off
 	fi
 	echo "	$service	$DESC	subcommand[on,off]	$STATUS"
-  done
-  echo "action:"
-  echo "	manageSystemStates.sh	Manage system states"
-  echo
-}
-
-
-
-case $2 in
-  on | off)
-	# Change service
-	changestate.sh service $1 $2
-	interface
-  ;;
-  * )
-	if [ "$1" = change ]; then
-		# Change system state
-		changestate.sh change $2
-	else
-		interface
-	fi
-  ;;
-esac
+done
+echo "action:"
+echo "	manageSystemStates.sh	Manage system states"
+echo

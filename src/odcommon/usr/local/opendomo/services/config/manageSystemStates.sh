@@ -8,6 +8,9 @@
 STATESDIR=/etc/opendomo/states
 STATE="$1"
 
+# Always check blacklist
+changestate.sh blacklist
+
 # $1 only can be a state selected to configure
 if ! test -z $STATE && test -d $STATESDIR/$STATE; then
 	/usr/local/opendomo/editSystemState.sh $STATE
@@ -25,3 +28,4 @@ else
 	echo "	delSystemState.sh	Delete"
 	echo
 fi
+

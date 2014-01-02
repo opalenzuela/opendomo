@@ -18,4 +18,5 @@ ln -fs /usr/local/opendomo/services/syscript/logEvent.sh /bin/logevent
 echo "Configuring opendomo services ..."
 insserv uid  2>/dev/null
 insserv odloadconf  2>/dev/null
+insserv odchstates.sh  2>/dev/null
 insserv keymap 2>/dev/null
