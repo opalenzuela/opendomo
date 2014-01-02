@@ -13,11 +13,14 @@ ROOTPATH="/var/opendomo/cgiroot"
 SCRIPTPATH="/usr/local/opendomo"
 for section in config control map tools
 do
-   cd $SCRIPTPATH/services/$section
-   for i in *.sh 
-   do
-       mkdir -p $ROOTPATH/$section
-       ln -fs $SCRIPTPATH/$i $ROOTPATH/$section/$i
-       grep '#desc' $i | head -n1| cut -f2 -d: > $ROOTPATH/$section/$i.name
-   done
+    if test -d  "$SCRIPTPATH/services/$section"
+    then
+	cd $SCRIPTPATH/services/$section
+	for i in *.sh 
+	do
+	    mkdir -p $ROOTPATH/$section
+	    ln -fs $SCRIPTPATH/$i $ROOTPATH/$section/$i
+	    grep '#desc' $i | head -n1| cut -f2 -d: > $ROOTPATH/$section/$i.name
+	done
+    fi
 done
