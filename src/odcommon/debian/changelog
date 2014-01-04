@@ -1,3 +1,12 @@
+odcommon (1.9.5) experimental; urgency=low
+
+  * Clean scripts
+  * New change states scripts
+  * Add plugin install
+  * New save configuration scripts
+
+ -- Javier Miras Blanco <jmirasb@gmail.com>  Sat, 04 Jan 2014 16:43:03 +0100
+
 odcommon (1.9.2) experimental; urgency=low
 
   * Cleaning libcoelacanth dep

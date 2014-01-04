@@ -1,3 +1,10 @@
+odcgi (1.9.5) experimental; urgency=low
+
+  * Clean package
+  * Update configuration files
+
+ -- Javier Miras Blanco <jmirasb@gmail.com>  Sat, 04 Jan 2014 16:41:45 +0100
+
 odcgi (1.9.1) experimental; urgency=low
 
   * Updating init.d files to LSB format

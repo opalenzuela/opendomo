@@ -1,3 +1,9 @@
+odhal (1.9.5) experimental; urgency=low
+
+  * Clean package 
+
+ -- Javier Miras Blanco <jmirasb@gmail.com>  Sat, 04 Jan 2014 16:45:29 +0100
+
 odhal (1.9.1) experimental; urgency=low
 
   * Updating init.d files to LSB format
