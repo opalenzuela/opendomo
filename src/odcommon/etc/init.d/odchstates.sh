@@ -22,8 +22,8 @@ do_start () {
 
 	log_daemon_msg "Loading default state"
 	echo -n " $DEFSTATE"
-	$STATEEXEC change $DEFSTATE &>/dev/null
 	log_end_msg $?
+	$STATEEXEC change $DEFSTATE
 }
 
 case "$1" in

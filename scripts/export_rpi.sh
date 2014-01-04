@@ -8,6 +8,9 @@ SCRIPTSDIR="scripts"
 # Force image dir
 IMAGEDIR="$TMPDIR/image.arm"
 
+# Creating image folders
+mkdir -p $IMAGEDIR/sysconf $IMAGEDIR/plugins
+
 # Check variable
 # TODO variable device need a drive no partition
 if test -z $1; then

@@ -27,8 +27,9 @@ if ! test -x /usr/bin/syslinux; then
 	exit 1
 fi
 
-# Copy ISOFILES
+# Copy ISOFILES and create opendomo folders
 cp -r $ISOFILESDIR/* $IMAGEDIR/
+mkdir -p $IMAGEDIR/sysconf $IMAGEDIR/plugins
 
 # Exporting to SD
 echo "INFO: Export opendomo to SD ($DEVICE)..."

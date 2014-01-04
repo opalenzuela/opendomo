@@ -18,8 +18,9 @@ if ! test -x "/usr/bin/qemu-img"; then
 	exit 1
 fi
 
-# Copy ISOFILES
+# Copy ISOFILES and create opendomo folders
 cp -r $ISOFILESDIR/* $IMAGEDIR/
+mkdir -p $IMAGEDIR/sysconf $IMAGEDIR/plugins
 
 # Exporting to RAW image
 echo "INFO: Export opendomo to RAW image ..."

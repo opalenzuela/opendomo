@@ -17,16 +17,22 @@
 . /lib/lsb/init-functions
 
 do_start () {
-	OUID=/etc/opendomo/uid
+	UIDFILE="/etc/opendomo/uid"
+	HOSTSFILE="/etc/hosts"
 
-	if ! test -f "$OUID"
+	if ! test -f "$UIDFILE"
 	then
-		/sbin/ifconfig eth0 | grep HWaddr | cut -c 39-55 | sed -e 's/://g' > $OUID
-		chown 1000:1000 $OUID
+		/sbin/ifconfig eth0 | grep HWaddr | cut -c 39-55 | sed -e 's/://g' > $UIDFILE
+		chown 1000:1000 $UIDFILE
 	fi
 
 	HOSTNAME="od`cat $OUID`"
 	hostname $HOSTNAME
+
+	# Updating hosts files
+	OTHERHOSTS=`cat $HOSTSFILE | grep -v $HOSTNAME`
+	echo "127.0.0.1	$HOSTNAME" 	 >$HOSTSFILE
+	echo "$OTHERHOSTS"		>>$HOSTSFILE
 
 	/usr/bin/logger -p notice "Agent's UID `hostname`"
 }

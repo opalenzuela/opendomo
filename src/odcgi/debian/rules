@@ -8,7 +8,8 @@ PACKAGE=$(shell dh_listpackages)
 override_dh_auto_configure:
 	dh_auto_configure
 	mkdir -p var/opendomo/cgiroot/control var/opendomo/cgiroot/config \
-		 var/opendomo/cgiroot/map var/opendomo/cgiroot/tools
+		 var/opendomo/cgiroot/map var/opendomo/cgiroot/tools \
+		 etc/opendomo
 	
 
 override_dh_install:

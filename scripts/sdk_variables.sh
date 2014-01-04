@@ -21,7 +21,7 @@ ODPKG="odcommon odcgi odhal"
 if [ "$ARCH" != "i386" ]; then
 	KERNEL_VERSION="3.10.11-rt7"
 	KERNEL_SOURCES="3.10"
-	KERNEL_URLSRC="http://archive.raspbian.org/raspbian/pool/main/l/linux-3.10/linux-source-3.10_3.10.11-1+rpi1_all.deb"
+	KERNEL_URLSRC="http://archive.raspbian.org/raspbian/pool/main/l/linux-3.10/linux-source-3.10_3.10.11-1+rpi3_all.deb"
 	KERNEL_URLPKG=""
 else
 	KERNEL_VERSION="3.10.11-rt7"

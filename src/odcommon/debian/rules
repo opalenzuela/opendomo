@@ -7,7 +7,7 @@ PACKAGE=$(shell dh_listpackages)
 
 override_dh_auto_configure:
 	dh_auto_configure
-	mkdir -p usr/lib var/opendomo/log var/opendomo/run var/opendomo/tmp
+	mkdir -p usr/lib var/opendomo/log var/opendomo/run var/opendomo/tmp etc/opendomo
 
 override_dh_install:
 

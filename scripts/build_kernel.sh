@@ -17,10 +17,11 @@ download_kernel () {
 		cd $TMPDIR
 		wget $KERNEL_URLSRC
 		cd ..
-
+	fi
+	if ! test -d $KERNELDIR; then
 		echo "INFO: Installing kernel ..."
 		cp $TMPDIR/$KERNELPKG $ROOTSTRAPDIR/tmp
-	        $CHROOT "$ROOTSTRAPDIR" /bin/bash -c "cd tmp && dpkg -i $KERNELPKG"
+		$CHROOT "$ROOTSTRAPDIR" /bin/bash -c "cd tmp && dpkg -i $KERNELPKG"
 	fi
 }
 
