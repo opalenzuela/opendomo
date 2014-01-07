@@ -2,4 +2,6 @@ mnt/
 tmp/
 exports/
 files/isofiles/syslinux.cfg
+files/isofiles/isolinux.cfg
+files/rpifiles/cmdline.txt
 files/sysconf

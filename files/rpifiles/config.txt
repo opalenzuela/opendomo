@@ -42,6 +42,6 @@
 boot_delay=2
 kernel=linux
 initramfs initrd.gz
-disable_splash=1
+#disable_splash=1
 gpu_mem=16
 

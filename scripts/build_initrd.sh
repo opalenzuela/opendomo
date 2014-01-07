@@ -53,9 +53,14 @@ case $1 in
 	if [ "$ARCH" != "i386" ]; then
 		# Clean emulator for RaspberryPi
 		rm $INITRDDIR/usr/bin/qemu-arm-static 2>/dev/null
+
+		# Creating RaspberryPi boot config file
+		echo "rw root=/dev/ram0 ramdisk_size=$SIZE quiet rootwait" >$RPIFILESDIR/cmdline.txt
+
 	else
-		# Creating syslinux boot configuration files (i386 only)
+		# Creating syslinux boot configuration files
 		echo "DEFAULT linux initrd=initrd.gz ramdisk_size=$SIZE rw root=/dev/ram0 quiet" >$ISOFILESDIR/syslinux.cfg
+		echo "DEFAULT linux initrd=initrd.gz ramdisk_size=$SIZE rw root=/dev/ram0 quiet" >$ISOFILESDIR/isolinux.cfg
 	fi
 
 	# Creating initrd
@@ -64,12 +69,9 @@ case $1 in
 		mount -o loop $IMAGEDIR/initrd $MOUNTDIR
 		cp -rp $INITRDDIR/* $MOUNTDIR
 
-		# Move debian no critical files and linking dirs
+		# Move debian no critical files
 		mv $MOUNTDIR/var/lib/apt   $IMAGEDIR/files/apt/apt-db 2>/dev/null
-		ln -s /mnt/odconf/files/apt/apt-db    $MOUNTDIR/var/lib/apt
-
 		mv $MOUNTDIR/var/cache/apt $IMAGEDIR/files/apt/apt-cache 2>/dev/null
-		ln -s /mnt/odconf/files/apt/apt-cache $MOUNTDIR/var/cache/apt
 
 		# Unmount initrd and compress
 		umount $MOUNTDIR

@@ -1,4 +1,4 @@
-KERNEL!="[h,s]d[a-z][0-9]|sd[a-z]", GOTO="mnt_auto_mount_end"
+KERNEL!="[h,s]d[a-z][0-9]|sd[a-z]|mmcblk[0-9]p[1-9]", GOTO="mnt_auto_mount_end"
 
 # Global mount options
 ACTION=="add", ENV{mount_options}="relatime"

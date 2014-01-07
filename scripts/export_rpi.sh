@@ -37,23 +37,34 @@ echo -n "WARN: This action delete all data in $DEVICE, are you sure? (y/n): "
 read ASK
 
 if [ "$ASK" = "y" ]; then
-	# Umount drive
-	umount $DEVICE 2>/dev/null
+	# Umount all particions
+	DRIVE_PARTS=`blkid -o device | grep $DEVICE`
+	for part in $DRIVE_PARTS; do
+		umount $part 2>/dev/null
+	done
 
 	# Clean drive and creating partitions
 	echo "INFO: Creating partition ..."
-	(echo o; echo w)  | fdisk $DEVICE		&>/dev/null				# Clean drive
-	(echo n; echo p; echo 1; echo; echo; echo 1G; echo w)  | fdisk $DEVICE	&>/dev/null	# Create partition 1G
-	(echo t; echo e; echo w)  | fdisk $DEVICE	&>/dev/null				# Change partition type
-	(echo a; echo 1; echo w)  | fdisk $DEVICE	&>/dev/null				# Make bootable
+	(echo o; echo w)  | fdisk $DEVICE				  >/dev/null 2>/dev/null # Clean drive
+	(echo n; echo p; echo 1; echo; echo +1G; echo w)  | fdisk $DEVICE >/dev/null 2>/dev/null # Create partition 1G
+	(echo t; echo e; echo w)  | fdisk $DEVICE			  >/dev/null 2>/dev/null # Change partition type
+	(echo a; echo 1; echo w)  | fdisk $DEVICE			  >/dev/null 2>/dev/null # Make bootable
+
+	# Device is now a partition
+	DEVICE=$DEVICE"1"
 
 	echo "INFO: Formating partition ..."
 	if
 	mkfs.msdos -I -n "opendomo" -F 16 $DEVICE 2>/dev/null >/dev/null
 	then
 		# Mount and Copy files
+		echo "INFO: Copying opendomo distro ..."
 		mount $DEVICE $MOUNTDIR
 		cp -r $IMAGEDIR/* $MOUNTDIR/
+
+		# Wait a moment and umount
+		sleep 5
+		umount $DEVICE
 	else
 		echo "ERROR: Device $DEVICE can be mounted"
 	fi
