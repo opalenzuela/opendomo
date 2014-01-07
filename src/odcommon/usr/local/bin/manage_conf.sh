@@ -9,6 +9,7 @@ LOGFILE="/var/opendomo/log/loadcfg.log"
 DEFAULTSDIR="/usr/local/opendomo/defaults"
 DEFSYSDIR="/usr/local/opendomo/defaults/system"
 SYSTEMDIR="/etc/opendomo/system"
+BLACKLIST="group group- gshadow gshadow- shadow shadow- passwd passwd- sudoers sudoers.d VERSION debian_version os-release os-release.orig mtab"
 
 help () {
   echo "USAGE:"
@@ -73,6 +74,15 @@ copy_default_conf () {
 		fi
   	done
   fi
+}
+
+check_blacklist () {
+  for blackconf in $BLACKLIST; do
+        if test -f "$DEFSYSDIR/$blackconf"; then
+		echo "#ERR Configuration file '$blackconf' can be used by plugins, cleaning ..."
+		rm $blackconf 2>/dev/null
+	fi
+  done
 }
 
 create_system_conf () {
@@ -164,7 +174,10 @@ case $1 in
 
 	echo "INFO Creating system config links ..."
 	create_system_conf
- ;;
+  ;;
+  blacklist )
+	check_blacklist
+  ;;
   * )
 	help
   ;;
