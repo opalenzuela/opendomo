@@ -18,6 +18,11 @@ if ! test -x "/usr/bin/qemu-img"; then
 	exit 1
 fi
 
+if ! test -x "/usr/bin/extlinux"; then
+	echo "ERROR: You need install extlinux first"
+	exit 1
+fi
+
 # Copy ISOFILES and create opendomo folders
 cp -r $ISOFILESDIR/* $IMAGEDIR/
 mkdir -p $IMAGEDIR/sysconf $IMAGEDIR/plugins

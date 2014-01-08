@@ -60,7 +60,6 @@ case $1 in
 	else
 		# Creating syslinux boot configuration files
 		echo "DEFAULT linux initrd=initrd.gz ramdisk_size=$SIZE rw root=/dev/ram0 quiet" >$ISOFILESDIR/syslinux.cfg
-		echo "DEFAULT linux initrd=initrd.gz ramdisk_size=$SIZE rw root=/dev/ram0 quiet" >$ISOFILESDIR/isolinux.cfg
 	fi
 
 	# Creating initrd
