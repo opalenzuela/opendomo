@@ -46,6 +46,23 @@ case $1 in
 	echo 'SYSDEVICE="1"' >> $IMAGEDIR/opendomo.cfg
 	echo "$OD_VERSION" > $INITRDDIR/etc/VERSION
 
+	# Creating raw file to move no critical files
+	if ! test -f $IMAGEDIR/$CHANGESIMG.gz; then
+		if dd if=/dev/zero of=$IMAGEDIR/$CHANGESIMG bs=1024 count=500000 >/dev/null 2>/dev/null; then
+
+			# Creating fs and copy files
+			mkfs.ext2 -F $IMAGEDIR/$CHANGESIMG >/dev/null 2>/dev/null
+			mount -o loop $IMAGEDIR/$CHANGESIMG $MOUNTDIR 2>/dev/null
+			mkdir -p $MOUNTDIR/usr && mv $INITRDDIR/usr/share $MOUNTDIR/usr/ 2>/dev/null
+
+			# Unmount and compress image, in first boot will be decompressed
+			while !	umount $MOUNTDIR 2>/dev/null; do
+				sleep 1
+			done
+			gzip $IMAGEDIR/$CHANGESIMG 2>/dev/null
+		fi
+	fi
+
 	# Checking initrd size
 	INITRDSIZE=`du $INITRDDIR | tail -n1 | sed 's/\t.*//'`
 	SIZE=`expr $INITRDSIZE + $FREESIZE`
@@ -68,12 +85,14 @@ case $1 in
 		mount -o loop $IMAGEDIR/initrd $MOUNTDIR
 		cp -rp $INITRDDIR/* $MOUNTDIR
 
-		# Move debian no critical files
+		# Move apt files to SD
 		mv $MOUNTDIR/var/lib/apt   $IMAGEDIR/files/apt/apt-db 2>/dev/null
 		mv $MOUNTDIR/var/cache/apt $IMAGEDIR/files/apt/apt-cache 2>/dev/null
 
 		# Unmount initrd and compress
-		umount $MOUNTDIR
+		while !	umount $MOUNTDIR 2>/dev/null; do
+			sleep 1
+		done
 		gzip $IMAGEDIR/initrd
 	fi
   ;;

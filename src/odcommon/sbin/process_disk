@@ -15,14 +15,15 @@ if test -f $ODCFG; then
 	LOGDIR=`grep ^LOGDIR= $ODCFG | sed 's/\"//g' | cut -f2 -d=`
 fi
 
-DEFIMG=rootfs.def
-CSTIMG=rootfs.cst
-HOMEIMG=home.img
+DFCHANGES=dfchange.img
+CTCHANGES=ctchange.img
+HOMEIMG=homefs.img
 
-SQUASHDIR=/run/fs/squashfs
+CHANGEDIR=/run/fs/change
 TEMPFSDIR=/run/fs/tmpfs
-ROOTFSDIR=/run/fs/rootfs
-INITRDDIR=$ROOTFSDIR/run/fs/initrd
+SWITCHDIR=/run/fs/root
+INITRDDIR=/run/fs/initrd
+MNTINITRD=$SWITCHDIR/run/fs/initrd
 
 HOMESIZE=10000
 
@@ -46,42 +47,35 @@ if test -e "/media/$LABEL"; then
 	exit 1
 fi
 
-# Selecting rootfs to mount
-if test -f /mnt/$DEVICE/$DEFIMG; then
-	IMAGE=$DEFIMG
+# Uncompress default image in first start
+if test -f /mnt/$DEVICE/$DFCHANGES.gz; then
+	/bin/gunzip $DFCHANGES
 fi
-if test -f /mnt/$DEVICE/$CSTIMG; then
-	IMAGE=$CSTIMG
+
+# Selecting rootfs to mount
+if test -f /mnt/$DEVICE/$DFCHANGES; then
+	CHANGEIMG=$DFCHANGES
+fi
+if test -f /mnt/$DEVICE/$CTCHANGES; then
+	CHANGEIMG=$CTCHANGES
 fi
 
 # Configure drives
 if [ "$SYSDEVICE" = "1" ]; then
 	# Creating folders for new rootfs
-	mkdir -p $SQUASHDIR $TEMPFSDIR $ROOTFSDIR
+	mkdir -p $CHANGEDIR $TEMPFSDIR $SWITCHDIR $INITRDDIR
 
-	# Mounting squashfs
-	if mount -t squashfs /mnt/$DEVICE/$IMAGE $SQUASHDIR; then
-		CHROOT=$ROOTFSDIR
-		mount -t tmpfs none $TEMPFSDIR
-		mount -t aufs -o dirs=$TEMPFSDIR:$SQUASHDIR=ro aufs $ROOTFSDIR
-
-		# Creating missing folders
-		mkdir -p $ROOTFSDIR/tmp $ROOTFSDIR/dev $ROOTFSDIR/proc $ROOTFSDIR/sys $ROOTFSDIR/run $ROOTFSDIR/mnt $ROOTFSDIR/media
-
-	        # Creating user folders
-	        mkdir -p $ROOTFSDIR/home/admin
-	        mkdir -p $ROOTFSDIR/home/user
-	        mkdir -p $ROOTFSDIR/root
-
-		cp /etc/skel/.* $ROOTFSDIR/home/admin/ 2>/dev/null
-		cp /etc/skel/.* $ROOTFSDIR/home/user/ 2>/dev/null
-
-	        chown -R admin:admin $ROOTFSDIR/home/admin
-	        chown -R user:users $ROOTFSDIR/home/user
-
+	# Mounting new root parts
+	mount /mnt/system/$CHANGEIMG $CHANGEDIR
+	mount -t tmpfs none $TEMPFSDIR
+	mount --bind / $INITRDDIR
+	if
+		mount -t aufs -o dirs=$TEMPFSDIR:$INITRDDIR:$CHANGEDIR=ro aufs $SWITCHDIR
+	then
+		CHROOT=$SWITCHDIR
 		# Creating apt links
-		ln -s /mnt/odconf/files/apt/apt-db $ROOTFSDIR/var/lib/apt
-		ln -s /mnt/odconf/files/apt/apt-cache $ROOTFSDIR/var/cache/apt
+		ln -s /mnt/odconf/files/apt/apt-db $CHROOT/var/lib/apt
+		ln -s /mnt/odconf/files/apt/apt-cache $CHROOT/var/cache/apt
 	fi
 
 	# Creating system link
@@ -114,29 +108,23 @@ fi
 # Allways link drive to /media
 ln -s /mnt/$DEVICE $CHROOT/media/$LABEL
 
-# Changing rootfs to mounted squash
-if ! test -z $CHROOT; then
-	# Move mount devices to new rootfs
+# Changing / to mounted new root
+if ! test -z $SWITCHDIR; then
+	mkdir -p $MNTINITRD
+
+	# Move mounted drives to new rootfs
 	cd /mnt
 	for drive in *; do
-		mkdir -p $ROOTFSDIR/mnt/$drive
-		mount --move /mnt/$drive $ROOTFSDIR/mnt/$drive
+		mkdir -p $SWITCHDIR/mnt/$drive
+		mount --move /mnt/$drive $SWITCHDIR/mnt/$drive
 		rmdir /mnt/$drive
 	done
-
 	# Move kernel filesystems to new rootfs
-	mount --move /dev  $ROOTFSDIR/dev
-	mount --move /proc $ROOTFSDIR/proc
-	mount --move /sys  $ROOTFSDIR/sys
-	mount --move /tmp  $ROOTFSDIR/tmp
-	mount --move /run  $ROOTFSDIR/run
-	mkdir -p $INITRDDIR
+        mount --move /dev  $SWITCHDIR/dev
+        mount --move /proc $SWITCHDIR/proc
+        mount --move /sys  $SWITCHDIR/sys
+        mount --move /tmp  $SWITCHDIR/tmp
+        mount --move /run  $SWICTHDIR/run
 
-	# Rebuild mtab
-	cat $ROOTFSDIR/proc/mounts > $ROOTFSDIR/etc/mtab
-
-	#TODO: Unmount initrd
-
-	# Switch root
-	exec pivot_root $ROOTFSDIR $INITRDDIR
+	exec pivot_root $SWITCHDIR $MNTINITRD
 fi

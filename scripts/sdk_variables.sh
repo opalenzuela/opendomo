@@ -29,6 +29,7 @@ ROOTSTRAPCFG="$FILESDIR/rootstrap.conf"
 KERNELCFG="$FILESDIR/kernel.$ARCH.conf"
 INITRDIMG="$TMPDIR/initrd.$ARCH.tar.xz"
 FREESIZE="5000"
+CHANGESIMG="dfchange.img"
 
 # Downloads
 if [ "$ARCH" != "i386" ]; then
