@@ -2,6 +2,8 @@
 #type:local
 #package:odcommon
 
+# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+
 TMPDIR="/var/opendomo/tmp"
 OSVER=`cat /etc/VERSION`
 OSVER="2.0.0"

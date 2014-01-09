@@ -4,6 +4,8 @@
 # It will ignore versions of the files, so it can be used to install an older
 # version than the installed one.
 
+# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+
 if test -z "$1"
 then
     echo "usage: $0 pluginID"
