@@ -37,29 +37,35 @@ case $1 in
   ;;
   make )
 	# Creating image basic structure
-	rm $IMAGEDIR/initrd.gz 	2>/dev/null
-	mkdir -p $IMAGEDIR/files/apt
+	rm $TARGETDIR/initrd.gz 2>/dev/null
+	mkdir -p $IMAGESDIR 	2>/dev/null
 
 	# Creating opendomo configurations
-	echo 'LABEL="opendomodistro"' > $IMAGEDIR/opendomo.cfg
-	echo 'CONFDEVICE="1"' >> $IMAGEDIR/opendomo.cfg
-	echo 'SYSDEVICE="1"' >> $IMAGEDIR/opendomo.cfg
+	echo 'LABEL="opendomodistro"' > $TARGETDIR/opendomo.cfg
+	echo 'CONFDEVICE="1"' >> $TARGETDIR/opendomo.cfg
+	echo 'SYSDEVICE="1"' >> $TARGETDIR/opendomo.cfg
 	echo "$OD_VERSION" > $INITRDDIR/etc/VERSION
 
 	# Creating raw file to move no critical files
-	if ! test -f $IMAGEDIR/$CHANGESIMG.gz; then
-		if dd if=/dev/zero of=$IMAGEDIR/$CHANGESIMG bs=1024 count=500000 >/dev/null 2>/dev/null; then
+	if ! test -f $IMAGESDIR/$CHANGESIMG; then
+		if dd if=/dev/zero of=$IMAGESDIR/$CHANGESIMG bs=1024 count=500000 >/dev/null 2>/dev/null; then
 
 			# Creating fs and copy files
-			mkfs.ext2 -F $IMAGEDIR/$CHANGESIMG >/dev/null 2>/dev/null
-			mount -o loop $IMAGEDIR/$CHANGESIMG $MOUNTDIR 2>/dev/null
+			mkfs.ext2 -F $IMAGESDIR/$CHANGESIMG >/dev/null 2>/dev/null
+			mount -o loop $IMAGESDIR/$CHANGESIMG $MOUNTDIR 2>/dev/null
 			mkdir -p $MOUNTDIR/usr && mv $INITRDDIR/usr/share $MOUNTDIR/usr/ 2>/dev/null
 
-			# Unmount and compress image, in first boot will be decompressed
+			# Move apt files to SD and create links in initrd
+			mkdir $TARGETDIR/apt
+			mv $INITRDDIR/var/lib/apt   $TARGETDIR/apt/lib   2>/dev/null
+			mv $INITRDDIR/var/cache/apt $TARGETDIR/apt/cache 2>/dev/null
+			ln -s /mnt/odconf/apt/lib   $INITRDDIR/var/lib/apt   2>/dev/null
+			ln -s /mnt/odconf/apt/cache $INITRDDIR/var/cache/apt 2>/dev/null
+
+			# Unmount
 			while !	umount $MOUNTDIR 2>/dev/null; do
 				sleep 1
 			done
-			gzip $IMAGEDIR/$CHANGESIMG 2>/dev/null
 		fi
 	fi
 
@@ -80,20 +86,16 @@ case $1 in
 	fi
 
 	# Creating initrd
-	if dd if=/dev/zero of=$IMAGEDIR/initrd bs=1024 count=$SIZE >/dev/null 2>/dev/null; then
-		mkfs.ext2 -F $IMAGEDIR/initrd >/dev/null 2>/dev/null
-		mount -o loop $IMAGEDIR/initrd $MOUNTDIR
+	if dd if=/dev/zero of=$TARGETDIR/initrd bs=1024 count=$SIZE >/dev/null 2>/dev/null; then
+		mkfs.ext2 -F $TARGETDIR/initrd >/dev/null 2>/dev/null
+		mount -o loop $TARGETDIR/initrd $MOUNTDIR
 		cp -rp $INITRDDIR/* $MOUNTDIR
-
-		# Move apt files to SD
-		mv $MOUNTDIR/var/lib/apt   $IMAGEDIR/files/apt/apt-db 2>/dev/null
-		mv $MOUNTDIR/var/cache/apt $IMAGEDIR/files/apt/apt-cache 2>/dev/null
 
 		# Unmount initrd and compress
 		while !	umount $MOUNTDIR 2>/dev/null; do
 			sleep 1
 		done
-		gzip $IMAGEDIR/initrd
+		gzip $TARGETDIR/initrd
 	fi
   ;;
 esac

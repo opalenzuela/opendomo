@@ -2,7 +2,6 @@
 #desc: Variables to use in SDK"
 
 # SDK basic directories
-
 TMPDIR="tmp"
 SCRIPTSDIR="scripts"
 FILESDIR="files"
@@ -14,7 +13,6 @@ ISOFILESDIR="$FILESDIR/isofiles"
 RPIFILESDIR="$FILESDIR/rpifiles"
 
 # Opendomo packages and versions
-
 ARCHCFG="$TMPDIR/arch"
 ARCH=`cat $ARCHCFG 2>/dev/null`
 ODPKG="odcommon odcgi odhal"
@@ -24,7 +22,6 @@ OD_VERSION="2.0beta1"
 IMGNAME="opendomo-$OD_VERSION-$ARCH"
 
 # Configuration and other files
-
 ROOTSTRAPCFG="$FILESDIR/rootstrap.conf"
 KERNELCFG="$FILESDIR/kernel.$ARCH.conf"
 INITRDIMG="$TMPDIR/initrd.$ARCH.tar.xz"
@@ -39,12 +36,12 @@ else
 fi
 
 # SDK temporal directories
-
 INITRDDIR="$TMPDIR/initrd.$ARCH"
 ROOTSTRAPDIR="$TMPDIR/rootstrap.$ARCH"
-IMAGEDIR="$TMPDIR/image.$ARCH"
+TARGETDIR="$TMPDIR/image.$ARCH"
 KERNELDIR="$ROOTSTRAPDIR/usr/src/linux"
 EXPORTDIR="exports"
+IMAGESDIR="$TARGETDIR/images"
 
 # SDK commands
 CHROOT="linux32 chroot"

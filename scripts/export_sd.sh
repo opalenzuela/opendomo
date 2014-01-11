@@ -28,8 +28,8 @@ if ! test -x /usr/bin/syslinux; then
 fi
 
 # Copy ISOFILES and create opendomo folders
-cp -r $ISOFILESDIR/* $IMAGEDIR/
-mkdir -p $IMAGEDIR/sysconf $IMAGEDIR/plugins
+cp -r $ISOFILESDIR/* $TARGETDIR/
+mkdir -p $TARGETDIR/sysconf $TARGETDIR/plugins
 
 # Exporting to SD
 echo "INFO: Export opendomo to SD ($DEVICE)..."
@@ -45,7 +45,7 @@ if [ "$ASK" = "y" ]; then
 	then
 		# Mount and Copy files
 		mount $DEVICE $MOUNTDIR
-		cp -r $IMAGEDIR/* $MOUNTDIR/
+		cp -r $TARGETDIR/* $MOUNTDIR/
 
 		# Installing syslinux
 		if syslinux -i $DEVICE; then

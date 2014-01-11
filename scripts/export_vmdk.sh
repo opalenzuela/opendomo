@@ -24,8 +24,8 @@ if ! test -x "/usr/bin/extlinux"; then
 fi
 
 # Copy ISOFILES and create opendomo folders
-cp -r $ISOFILESDIR/* $IMAGEDIR/
-mkdir -p $IMAGEDIR/sysconf $IMAGEDIR/plugins
+cp -r $ISOFILESDIR/* $TARGETDIR/
+mkdir -p $TARGETDIR/sysconf $TARGETDIR/plugins
 
 # Exporting to RAW image
 echo "INFO: Export opendomo to RAW image ..."
@@ -42,7 +42,7 @@ if
 mkfs.vfat $LOOPDEV >/dev/null 2>/dev/null
 then
 	mount $EXPORTDIR/$IMGNAME.img $MOUNTDIR
-	cp -rp $IMAGEDIR/* $MOUNTDIR/
+	cp -r $TARGETDIR/* $MOUNTDIR/ 2>/dev/null
 
 	# Installing bootloader
 	extlinux -i $MOUNTDIR >/dev/null 2>/dev/null

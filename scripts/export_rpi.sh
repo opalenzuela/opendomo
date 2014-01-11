@@ -6,10 +6,10 @@ SCRIPTSDIR="scripts"
 . $SCRIPTSDIR/sdk_variables.sh
 
 # Force image dir
-IMAGEDIR="$TMPDIR/image.arm"
+TARGETDIR="$TMPDIR/image.arm"
 
 # Creating image folders
-mkdir -p $IMAGEDIR/sysconf $IMAGEDIR/plugins
+mkdir -p $TARGETDIR/sysconf $TARGETDIR/plugins
 
 # Check variable
 # TODO variable device need a drive no partition
@@ -29,7 +29,7 @@ else
 fi
 
 # Copy RaspberryPi boot files
-cp -r $RPIFILESDIR/* $IMAGEDIR/
+cp -r $RPIFILESDIR/* $TARGETDIR/
 
 # Exporting to SD
 echo "INFO: Export opendomo to SD ($DEVICE)..."
@@ -60,7 +60,7 @@ if [ "$ASK" = "y" ]; then
 		# Mount and Copy files
 		echo "INFO: Copying opendomo distro ..."
 		mount $DEVICE $MOUNTDIR
-		cp -r $IMAGEDIR/* $MOUNTDIR/
+		cp -r $TARGETDIR/* $MOUNTDIR/
 
 		# Wait a moment and umount
 		sleep 5

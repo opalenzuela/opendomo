@@ -1,0 +1,12 @@
+.**
+run/**
+var/opendomo/**
+etc/opendomo/**
+var/log/**
+var/tmp/**
+var/run/**
+proc/**
+sys/**
+media/**
+mnt/**
+usr/local/opendomo/**

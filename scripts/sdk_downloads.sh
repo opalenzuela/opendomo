@@ -7,7 +7,7 @@ SCRIPTSDIR="scripts"
 # Creating emply folders, git don't work with emply folders
 mkdir -p $TMPDIR
 mkdir -p $MOUNTDIR
-mkdir -p $IMAGEDIR
+mkdir -p $TARGETDIR
 mkdir -p $EXPORTDIR
 
 # Download initrd

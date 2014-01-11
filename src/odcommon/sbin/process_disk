@@ -1,12 +1,23 @@
 #!/bin/sh
 #desc: Configure local drives
 
-# Variables
+# General vars
 DEVICE="$1"
 ID_FS_LABEL=`blkid -o udev -s LABEL /dev/$DEVICE | cut -f2 -d= | uniq`
-ODCFG="/mnt/$DEVICE/opendomo.cfg"
 MOUNT=`mount | grep -c $DEVICE`
 
+# Dirs vars
+MOUNTSDIR=/run/mounts
+DISKMOUNT=$MOUNTSDIR/$1
+CHANGEDIR=$MOUNTSDIR/change
+TEMPFSDIR=$MOUNTSDIR/tmpfs
+SWITCHDIR=$MOUNTSDIR/root
+INITRDDIR=$MOUNTSDIR/initrd
+IMAGESDIR=$DISKMOUNT/images
+MNTINITRD=$SWITCHDIR/run/mounts/initrd
+
+# Config vars
+ODCFG="$DISKMOUNT/opendomo.cfg"
 if test -f $ODCFG; then
 	CONFDEVICE=`grep ^CONFDEVICE= $ODCFG | sed 's/\"//g' | cut -f2 -d= `
 	SYSDEVICE=`grep ^SYSDEVICE= $ODCFG | sed 's/\"//g' | cut -f2 -d= `
@@ -14,17 +25,9 @@ if test -f $ODCFG; then
 	LABEL=`grep ^LABEL= $ODCFG | sed 's/\"//g' | cut -f2 -d=`
 	LOGDIR=`grep ^LOGDIR= $ODCFG | sed 's/\"//g' | cut -f2 -d=`
 fi
-
-DFCHANGES=dfchange.img
-CTCHANGES=ctchange.img
-HOMEIMG=homefs.img
-
-CHANGEDIR=/run/fs/change
-TEMPFSDIR=/run/fs/tmpfs
-SWITCHDIR=/run/fs/root
-INITRDDIR=/run/fs/initrd
-MNTINITRD=$SWITCHDIR/run/fs/initrd
-
+DFCHANGES=$IMAGESDIR/dfchange.img
+CTCHANGES=$IMAGESDIR/ctchange.img
+HOMEIMG=$IMAGESDIR/homefs.img
 HOMESIZE=10000
 
 # Configuration label don't exist, change to fs label or device
@@ -38,7 +41,7 @@ fi
 
 # Previous checks
 if [ "$MOUNT" = "0" ]; then
-	rm /mnt/$DEVICE
+	rm $DISKMOUNT
 	logger "  Drive $DRIVE can't be mounted"
 	exit 1
 fi
@@ -47,16 +50,10 @@ if test -e "/media/$LABEL"; then
 	exit 1
 fi
 
-# Uncompress default image in first start
-if test -f /mnt/$DEVICE/$DFCHANGES.gz; then
-	/bin/gunzip $DFCHANGES
-fi
-
-# Selecting rootfs to mount
-if test -f /mnt/$DEVICE/$DFCHANGES; then
+# Selecting image to mount
+if test -f $DFCHANGES; then
 	CHANGEIMG=$DFCHANGES
-fi
-if test -f /mnt/$DEVICE/$CTCHANGES; then
+elif test -f $CTCHANGES; then
 	CHANGEIMG=$CTCHANGES
 fi
 
@@ -66,30 +63,31 @@ if [ "$SYSDEVICE" = "1" ]; then
 	mkdir -p $CHANGEDIR $TEMPFSDIR $SWITCHDIR $INITRDDIR
 
 	# Mounting new root parts
-	mount /mnt/system/$CHANGEIMG $CHANGEDIR
+	if ! test -z $CHANGEIMG; then
+		mount -o ro $CHANGEIMG $CHANGEDIR
+	fi
 	mount -t tmpfs none $TEMPFSDIR
 	mount --bind / $INITRDDIR
+
+	# Creating new compound root
 	if
 		mount -t aufs -o dirs=$TEMPFSDIR:$INITRDDIR:$CHANGEDIR=ro aufs $SWITCHDIR
 	then
 		CHROOT=$SWITCHDIR
-		# Creating apt links
-		ln -s /mnt/odconf/files/apt/apt-db $CHROOT/var/lib/apt
-		ln -s /mnt/odconf/files/apt/apt-cache $CHROOT/var/cache/apt
 	fi
 
 	# Creating system link
 	logger "  Device: $device linked as system drive"
-	ln -s /mnt/$DEVICE $CHROOT/mnt/system
+	ln -s $DISKMOUNT $CHROOT/mnt/system
 fi
 
 if [ "$CONFDEVICE" = "1" ]; then
 	logger "  Device: $device linked as configuration drive"
-	ln -s /mnt/$DEVICE $CHROOT/mnt/odconf
+	ln -s $DISKMOUNT $CHROOT/mnt/odconf
 fi
 
 if [ "$LOGDIR" != "" ]; then
-	if test -d /mnt/$DEVICE/$LOGDIR; then
+	if test -d $DISKMOUNT/$LOGDIR; then
 		logger "$CONF_LOG is the logs dir"
 	fi
 fi
@@ -98,33 +96,36 @@ if [ "$HOMEDEVICE" = "1" ]; then
 	logger "  Device: $device linked as home drive"
 
 	# Creating and mount homefs
-	if ! test -f /mnt/$DEVICE/$HOMEIMG; then
-		dd if=/dev/zero of=/mnt/$DEVICE/$HOMEIMG bs=1024 count=$HOMESIZE
-		mkfs.ext2 /mnt/$DEVICE/$HOMEIMG
+	if ! test -f $HOMEIMG; then
+		dd if=/dev/zero of=$HOMEIMG bs=1024 count=$HOMESIZE
+		mkfs.ext2 $HOMEIMG
 	fi
-	mount /mnt/$DEVICE/$HOMEIMG $CHROOT/home
+	mount $HOMEIMG $CHROOT/home
 fi
 
 # Allways link drive to /media
-ln -s /mnt/$DEVICE $CHROOT/media/$LABEL
+ln -s $DISKMOUNT $CHROOT/media/$LABEL
 
 # Changing / to mounted new root
 if ! test -z $SWITCHDIR; then
 	mkdir -p $MNTINITRD
 
 	# Move mounted drives to new rootfs
-	cd /mnt
+	cd $MOUNTSDIR
 	for drive in *; do
-		mkdir -p $SWITCHDIR/mnt/$drive
-		mount --move /mnt/$drive $SWITCHDIR/mnt/$drive
-		rmdir /mnt/$drive
+		mkdir -p $CHROOT/$MOUNTSDIR/$drive
+		mount --move $drive $CHROOT/$MOUNTSDIR/$drive
+		rmdir $drive
 	done
-	# Move kernel filesystems to new rootfs
-        mount --move /dev  $SWITCHDIR/dev
-        mount --move /proc $SWITCHDIR/proc
-        mount --move /sys  $SWITCHDIR/sys
-        mount --move /tmp  $SWITCHDIR/tmp
-        mount --move /run  $SWICTHDIR/run
 
+	# Move kernel filesystems to new rootfs
+	mount --move /dev  $SWITCHDIR/dev
+	mount --move /proc $SWITCHDIR/proc
+	mount --move /sys  $SWITCHDIR/sys
+	mount --move /tmp  $SWITCHDIR/tmp
+	mount --move /run  $SWICTHDIR/run
+
+	# Clean mtab and change root
+	echo -n > /etc/mtab
 	exec pivot_root $SWITCHDIR $MNTINITRD
 fi

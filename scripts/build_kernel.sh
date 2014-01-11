@@ -43,14 +43,14 @@ case $1 in
 	# Install compiled kernel
 	if [ "$ARCH" = "arm" ]; then
 		if test -f $KERNELDIR/arch/arm/boot/zImage; then
-			cp $KERNELDIR/arch/arm/boot/zImage $IMAGEDIR/linux
+			cp $KERNELDIR/arch/arm/boot/zImage $TARGETDIR/linux
 		else
 			echo "ERROR: Kernel isn't compiled yet"
 			exit 1
 		fi
 	else
 		if test -f $KERNELDIR/arch/x86/boot/bzImage; then
-			cp $KERNELDIR/arch/x86/boot/bzImage $IMAGEDIR/linux
+			cp $KERNELDIR/arch/x86/boot/bzImage $TARGETDIR/linux
 		else
 			echo "ERROR: Kernel isn't compiled yet"
 			exit 1

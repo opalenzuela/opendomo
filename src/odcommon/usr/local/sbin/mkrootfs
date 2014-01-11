@@ -2,24 +2,43 @@
 #desc: Make opendomo squash filesystems
 
 # Variables
-DIR="/mnt/system/"
-SQUASHOPTS="-comp gzip"
-SQUASHEXDIR="-e etc/opendomo usr/local/opendomo var/opendomo home root tmp dev proc sys run mnt media lost+found var/cache/apt var/lib/apt"
+IMAGESDIR="/mnt/system/images"
+MOUNTDIR="/run/mounts/changerw"
+CHANGEDIR="/run/mounts/change"
+TEMPFSDIR="/run/mounts/tmpfs"
+SYNCOPTS="--quiet --archive --delete --exclude-from=/etc/mkrootfs.excludes"
 
 # Checks
-if ! test -d $DIR; then
+fi
+
+if ! test -d $IMAGESDIR; then
 	echo "#ERR: System device is not mounted"
 	exit 1
 fi
 
-# Selecting image
-if test -f $DIR/rootfs.def; then
-	IMAGE="$DIR/rootfs.cst"
-	rm $IMAGE 2>/dev/null
+# Select image
+if test -z $1; then
+	echo "USAGE: mkrootfs [ custom / default ]"
+	exit 1
+elif [ "$2" = "custom" ]; then
+	IMAGE="$IMAGESDIR/ctchange.img"
+elif [ "$2" = "default" ]; then
+	IMAGE="$IMAGESDIR/dfchange.img"
 else
-	IMAGE="$DIR/rootfs.def"
+	echo "#ERR: Selected image is not valid"
+	exit 1
 fi
 
-# Creating squashfs
-echo "#INF: Creating rootfs, please wait ..."
-mksquashfs / $IMAGE $SQUASHOPTS $SQUASHEXDIR >/dev/null 2>/dev/null
+# Mounting image
+mkdir -p $MOUNTDIR
+mount $IMAGE $MOUNTDIR || exit 1
+
+# Creating image
+echo -n "#INF: Creating rootfs, please wait "
+if
+	rsync $SYNCOPTS $TEMPFSDIR $MOUNTDIR
+then
+	echo "   (done)"
+else
+	echo "   (error)"
+fi
