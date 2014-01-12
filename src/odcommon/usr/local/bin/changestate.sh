@@ -17,9 +17,9 @@ fi
 daemons_blacklist () {
   cd $DAEMONSDIR
   for blackdaemon in *; do
-
 	# Only check links
 	if test -h $blackdaemon; then
+
 		# If init.d script don't exist, clean
 		if ! test -x $INITDIR/$blackdaemon; then
 			echo "#ERR Service $blackdaemon don't have valid link, cleaning ..."
@@ -40,6 +40,11 @@ daemons_blacklist () {
 				rm $blackdaemon
 			fi
 		done
+
+		# Stop system service survivors
+  		if test -h $blackdaemon; then
+			 insserv -r $blackdaemon
+		fi
 	fi
   done
 }
@@ -50,20 +55,24 @@ change_services () {
 	# Start/Stop service in state
 	if ! test -h $DAEMONSDIR/$daemon && test -f $STATEDIR/$daemon; then
 		# This is a opendomo service, started with admin user
-		sudo -u admin $DAEMONSDIR/$daemon restart
-
+		if ! $DAEMONSDIR/$daemon status &>/dev/null; then
+			sudo -u admin $DAEMONSDIR/$daemon start
+		fi
 	elif test -h $DAEMONSDIR/$daemon && test -f $STATEDIR/$daemon; then
 		# This is a system service controled by plugins
-		service $daemon restart
-
+		if ! service $daemon status &>/dev/null; then
+			service $daemon start
+		fi
 	elif ! test -f $STATEDIR/$daemon && test -h $DAEMONSDIR/$daemon; then
 		# This is a system service stoped in this state
-		service $daemon stop
-
+		if service $daemon status &>/dev/null; then
+			service $daemon stop
+		fi
 	else
 		# This is a opendomo service stoped in this state
-		sudo -u admin $DAEMONSDIR/$daemon stop
-
+		if $DAEMONSDIR/$daemon status &>/dev/null; then
+			sudo -u admin $DAEMONSDIR/$daemon stop
+		fi
 	fi
   done
 }

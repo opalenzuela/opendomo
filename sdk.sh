@@ -64,11 +64,11 @@ case $1 in
 	. $SCRIPTSDIR/sdk_variables.sh
 
 	# Check
-	if ! test -f $IMAGEDIR/initrd.gz; then
+	if ! test -f $TARGETDIR/initrd.gz; then
 		echo "ERROR: You need execute build first"
 		exit 1
 	fi
-	if ! test -f $IMAGEDIR/linux; then
+	if ! test -f $TARGETDIR/linux; then
 		echo "ERROR: You need execute build first"
 		exit 1
 	fi

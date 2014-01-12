@@ -71,7 +71,7 @@ if [ "$SYSDEVICE" = "1" ]; then
 
 	# Creating new compound root
 	if
-		mount -t aufs -o dirs=$TEMPFSDIR:$INITRDDIR:$CHANGEDIR=ro aufs $SWITCHDIR
+		mount -t aufs -o dirs=$TEMPFSDIR:$CHANGEDIR:$INITRDDIR=ro aufs $SWITCHDIR
 	then
 		CHROOT=$SWITCHDIR
 	fi

@@ -1,14 +1,14 @@
 #!/bin/sh
 cd /
 for i in `find /usr/local/opendomo/services/ -type f`
-do 
+do
     bn=`basename $i`
     if ! test -f /usr/local/opendomo/$i; then
        # Solamente creamos wrapper si no existe
        ln -fs $i /usr/local/opendomo/ >/dev/null
     fi
 done
-# Creacion de los enlaces del CGI 
+# Creacion de los enlaces del CGI
 ROOTPATH="/var/opendomo/cgiroot"
 SCRIPTPATH="/usr/local/opendomo"
 for section in config control map tools
@@ -16,7 +16,7 @@ do
     if test -d  "$SCRIPTPATH/services/$section"
     then
 	cd $SCRIPTPATH/services/$section
-	for i in *.sh 
+	for i in *.sh
 	do
 	    mkdir -p $ROOTPATH/$section
 	    ln -fs $SCRIPTPATH/$i $ROOTPATH/$section/$i

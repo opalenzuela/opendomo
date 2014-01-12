@@ -48,7 +48,7 @@ case $1 in
 
 	# Creating raw file to move no critical files
 	if ! test -f $IMAGESDIR/$CHANGESIMG; then
-		if dd if=/dev/zero of=$IMAGESDIR/$CHANGESIMG bs=1024 count=500000 >/dev/null 2>/dev/null; then
+		if dd if=/dev/zero of=$IMAGESDIR/$CHANGESIMG bs=1024 count=400000 >/dev/null 2>/dev/null; then
 
 			# Creating fs and copy files
 			mkfs.ext2 -F $IMAGESDIR/$CHANGESIMG >/dev/null 2>/dev/null

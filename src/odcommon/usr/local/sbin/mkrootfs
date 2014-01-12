@@ -6,39 +6,71 @@ IMAGESDIR="/mnt/system/images"
 MOUNTDIR="/run/mounts/changerw"
 CHANGEDIR="/run/mounts/change"
 TEMPFSDIR="/run/mounts/tmpfs"
-SYNCOPTS="--quiet --archive --delete --exclude-from=/etc/mkrootfs.excludes"
+SYNCOPTS="--quiet --archive --exclude-from=/etc/mkrootfs.excludes"
+
+FINDCMD=`find $TEMPFSDIR -name ".wh.*" -not -name ".wh..*" | sed 's/tmpfs/changerw/'`
 
 # Checks
-fi
-
 if ! test -d $IMAGESDIR; then
 	echo "#ERR: System device is not mounted"
 	exit 1
 fi
 
-# Select image
-if test -z $1; then
-	echo "USAGE: mkrootfs [ custom / default ]"
-	exit 1
-elif [ "$2" = "custom" ]; then
-	IMAGE="$IMAGESDIR/ctchange.img"
-elif [ "$2" = "default" ]; then
+# Select option or image
+case $1 in
+  default )
 	IMAGE="$IMAGESDIR/dfchange.img"
-else
-	echo "#ERR: Selected image is not valid"
+  ;;
+  custom )
+	IMAGE="$IMAGESDIR/ctchange.img"
+	# Copy an compress default image, only use in restore mode
+	if ! test -f $IMAGE && cp $IMAGESDIR/dfchange.img $IMAGE; then
+			gzip $IMAGESDIR/dfchange.img
+	fi
+  ;;
+  restore )
+	# Uncompress default and delete custom image
+	if test gunzip $IMAGESDIR/dfchange.img.gz; then
+		rm "$IMAGESDIR/ctchange.img"
+		exit 0
+	else
+		echo "#ERR Default image can be uncompress"
+		exit 1
+	fi
+  ;;
+  * )
+	# Help
+	echo "USAGE: mkrootfs [ custom | default | restore ]"
 	exit 1
-fi
+  ;;
+esac
 
 # Mounting image
 mkdir -p $MOUNTDIR
 mount $IMAGE $MOUNTDIR || exit 1
 
-# Creating image
+# Copy new files in image
 echo -n "#INF: Creating rootfs, please wait "
 if
-	rsync $SYNCOPTS $TEMPFSDIR $MOUNTDIR
+	rsync $SYNCOPTS $TEMPFSDIR/ $MOUNTDIR/
 then
 	echo "   (done)"
 else
-	echo "   (error)"
+	echo "   (ERROR)"
 fi
+
+# Delete old files in image
+for file in $FINDCMD; do
+	FILENAME=`basename $file | sed 's/.sh.//'`
+	DIRNAME=`dirname $file`
+	if test -f $DIRNAME/$FILENAME; then
+		echo "#INF Delete $FILENAME"
+		rm -r $DIRNAME/$FILENAME
+	fi
+done
+
+# Unmount image
+while ! umount $MOUNTDIR; do
+	sleep 1
+done
+rmdir $MOUNTDIR 2>/dev/null
