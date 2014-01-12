@@ -30,7 +30,7 @@ case $1 in
   ;;
   restore )
 	# Uncompress default and delete custom image
-	if test gunzip $IMAGESDIR/dfchange.img.gz; then
+	if gunzip $IMAGESDIR/dfchange.img.gz; then
 		rm "$IMAGESDIR/ctchange.img"
 		exit 0
 	else

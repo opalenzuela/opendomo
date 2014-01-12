@@ -32,7 +32,7 @@ echo "INFO: Export opendomo to RAW image ..."
 rm $EXPORTDIR/$IMGNAME.img 2>/dev/null
 
 # Creating image
-qemu-img create -f raw $EXPORTDIR/$IMGNAME.img $1 >/dev/null
+qemu-img create -f raw $EXPORTDIR/$IMGNAME.img 2G >/dev/null
 
 # Creating RAW image
 losetup -f $EXPORTDIR/$IMGNAME.img

@@ -46,7 +46,7 @@ if [ "$ASK" = "y" ]; then
 	# Clean drive and creating partitions
 	echo "INFO: Creating partition ..."
 	(echo o; echo w)  | fdisk $DEVICE				  >/dev/null 2>/dev/null # Clean drive
-	(echo n; echo p; echo 1; echo; echo +1G; echo w)  | fdisk $DEVICE >/dev/null 2>/dev/null # Create partition 1G
+	(echo n; echo p; echo 1; echo; echo +2G; echo w)  | fdisk $DEVICE >/dev/null 2>/dev/null # Create partition 1G
 	(echo t; echo e; echo w)  | fdisk $DEVICE			  >/dev/null 2>/dev/null # Change partition type
 	(echo a; echo 1; echo w)  | fdisk $DEVICE			  >/dev/null 2>/dev/null # Make bootable
 
