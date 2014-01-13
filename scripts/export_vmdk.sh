@@ -6,13 +6,7 @@ SCRIPTSDIR="scripts"
 . $SCRIPTSDIR/sdk_variables.sh
 USER=`users | cut -f1 -d" "`
 
-
 # Check
-if test -z $1; then
-        echo "ERROR: You need select size"
-        exit 1
-fi
-
 if ! test -x "/usr/bin/qemu-img"; then
 	echo "ERROR: You need install qemu first"
 	exit 1
