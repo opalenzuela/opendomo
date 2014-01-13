@@ -6,8 +6,11 @@
 
 REPOFILE="/var/opendomo/tmp/repo.lst"
 
-echo "#INFO Installing plugin $1"
-
-/usr/local/bin/bghell "/usr/local/bin/plugin_add.sh $1"
-
+if test -z "$1"
+then
+	echo "#ERROR You must specify the plugin ID"
+else
+	echo "#INFO Installing plugin $1"
+	/usr/local/bin/bgshell "/usr/local/bin/plugin_add.sh $1"
+fi
 echo
