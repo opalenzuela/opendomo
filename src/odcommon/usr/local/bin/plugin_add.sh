@@ -15,7 +15,7 @@ then
 fi
 
 if test -f "$1"
-then 
+then
     # If the parameter is a file, the name should be composed by PKGID-VERSION
     PKGID=`basename $1| cut -f1 -d'-'`
 	PKGVER=`basename $1| cut -f1 -d. | cut -f2 -d-`
@@ -25,7 +25,7 @@ else
 	PKGVER=""
 fi
 
-# The repository index file must exist. 
+# The repository index file must exist.
 # Otherwise it will trigger a self-explanatory error.
 REPOFILE="/var/opendomo/tmp/repo.lst"
 if ! test -f "$REPOFILE"
@@ -60,7 +60,7 @@ echo "50" > $PROGRESS
 
 #Execute as root
 if ! test -z "$DEPS"; then
-    sudo apt-get install $DEPS -y 
+    sudo apt-get install $DEPS -y
 else
 	echo "No dependencies found"
 fi
@@ -70,6 +70,6 @@ echo "75" > $PROGRESS
 echo $PKGVER > /var/opendomo/plugins/$PKGID.version
 
 cd /
-echo $LFILE | grep ".tar.gz" - && /bin/tar -zxvf $LFILE | grep -v /$ > /var/opendomo/plugins/$PKGID.files
+echo $LFILE | grep ".tar.gz" - && /bin/tar -m --no-overwrite-dir -zxvf $LFILE | grep -v /$ > /var/opendomo/plugins/$PKGID.files
 echo $LFILE | grep ".zip" - && /usr/local/bin/unzip -o $LFILE | grep -v /$ | cut -f2 -d':' |sed 's/ //'> /var/opendomo/plugins/$PKGID.files
 rm $PROGRESS

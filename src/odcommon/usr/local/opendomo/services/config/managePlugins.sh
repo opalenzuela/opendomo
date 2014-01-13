@@ -44,10 +44,10 @@ else
 	fi
 	echo "#> Plugin details"
 	echo "form:managePlugins.sh"
-	echo "	code	Code	$1	readonly"
-	echo "	desc	Description	$DESC	readonly"
-	echo "	deps	Dependences	$DEPS	readonly"
-	echo "	icon	Icon	$1.png	image"
+	echo "	code	Code	readonly	$1"
+	echo "	desc	Description	readonly	$DESC"
+	echo "	deps	Dependences	readonly	$DEPS"
+	echo "	icon	Icon	image	$1.png"
 	echo "actions:"
 	if ! test -f /var/opendomo/plugins/$1; then
 		echo "	installPlugin.sh	Install"
