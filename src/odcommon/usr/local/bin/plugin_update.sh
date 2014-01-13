@@ -20,6 +20,7 @@ then
 fi
 
 # First we create a list with all the installed plugins
+mkdir -p /var/opendomo/plugins/
 cd /var/opendomo/plugins/
 for i in *.info
 do
@@ -40,7 +41,7 @@ then
 fi
 for PKGID in $PLIST
 do
-	LVER=`cat /var/opendomo/plugins/$PKGID.version`
+	LVER=`cat /var/opendomo/plugins/$PKGID.version` 2>/dev/null
 	RVER=`grep ^$PKGID $REPOFILE| cut -f1 -d';' |sort |head -n1|cut -f1 -d. |cut -f2 -d-`
 	
 	if test -z "$RVER" || test -z "$LVER"
