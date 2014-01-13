@@ -13,13 +13,13 @@ SLANG=`cat $LANGFILE`
 
 mkdir -p $CFGPATH
 
-cd /var/pkg/installed
-PACKAGES=`echo * | sed 's/ /+/g'`
+#cd /var/pkg/installed
+#PACKAGES=`echo * | sed 's/ /+/g'`
 echo "#LOADING Updating language files"
 echo
 cd $CFGPATH
-if wget -q "$URLTRANS?modules=$PACKAGES&lang=key" -O $CFGPATH/key 2>/dev/null && \
-	wget -q "$URLTRANS?modules=$PACKAGES&lang=$SLANG" -O $CFGPATH/$SLANG 2>/dev/null
+if wget -q "$URLTRANS?modules=$PACKAGES&lang=key" -O $CFGPATH/key  && \
+	wget -q "$URLTRANS?modules=$PACKAGES&lang=$SLANG" -O $CFGPATH/$SLANG 
 then
 	cp $CFGPATH/$SLANG $CFGPATH/key $LPATH/
 	chown admin $CFGPATH/* 2>/dev/null
@@ -36,6 +36,6 @@ then
 else
 	echo "#INFO Community files not available"
 fi
-wget -q "$URLTRANS?lang=all" -O $CFGPATH/available 2>/dev/null
+wget -q "$URLTRANS?lang=all" -O $CFGPATH/available 
 chown admin $LPATH/* 2>/dev/null
 echo
