@@ -3,7 +3,7 @@
 #type:local
 #package:odcommon
 
-# Copyright(c) 2011 OpenDomo Services SL. Licensed under GPL v3 or later
+# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
 
 STATESDIR=/etc/opendomo/states
 STATE="$1"

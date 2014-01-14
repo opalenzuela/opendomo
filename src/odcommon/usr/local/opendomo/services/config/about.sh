@@ -3,7 +3,7 @@
 #package:odcgi
 #type:local
 
-# Copyright(c) 2012 OpenDomo Services SL. Licensed under GPL v3 or later
+# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
 
 KERNELVERSION=`uname -r` 2> /dev/null
 

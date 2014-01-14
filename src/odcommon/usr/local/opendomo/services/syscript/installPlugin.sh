@@ -12,5 +12,8 @@ then
 else
 	echo "#INFO Installing plugin $1"
 	/usr/local/bin/bgshell "/usr/local/bin/plugin_add.sh $1"
+	echo "list:$0"
+	echo "actions:"
+	echo "	managePlugins.sh	Back"
 fi
 echo

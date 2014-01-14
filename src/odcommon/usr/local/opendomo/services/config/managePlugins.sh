@@ -1,4 +1,5 @@
 #!/bin/sh
+#desc:Manage plugins
 #type:local
 #package:odcommon
 
@@ -54,4 +55,5 @@ else
 	else
 		echo "	removePlugin.sh	Uninstall"
 	fi
+	echo "	managePlugins.sh	Back"
 fi
