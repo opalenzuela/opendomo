@@ -9,7 +9,7 @@ IMGEXE="/usr/local/sbin/mkrootfs"
 SAVEPLUGINS=`cat $TMPFILE`
 
 # Select option
-if [ $SAVEPLUGINS = "yes" ]; then
+if [ $SAVEPLUGINS = "on" ]; then
 	echo "#INF Configuration and plugins saved"
 	$CONFEXE save
 	sudo $IMGEXE custom
