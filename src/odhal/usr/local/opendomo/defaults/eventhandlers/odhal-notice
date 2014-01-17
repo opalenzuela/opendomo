@@ -1,1 +1,1 @@
-/usr/local/opendomo/services/syscript/eh_outputstates.sh
+src/odhal/usr/local/opendomo/eventhandlers/outputStates.sh
