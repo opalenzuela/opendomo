@@ -1,0 +1,5 @@
+Cmnd_Alias      NETWORK = /sbin/ifconfig, \
+                          /sbin/ifup, \
+                          /sbin/ifdown
+
+admin ALL=(ALL) NOPASSWD: NETWORK

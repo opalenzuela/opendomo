@@ -1,0 +1,3 @@
+Cmnd_Alias      ADMIN = /sbin/shutdown
+
+admin ALL=(ALL) NOPASSWD: ADMIN
