@@ -91,6 +91,12 @@ case $1 in
 		mount -o loop $TARGETDIR/initrd $MOUNTDIR
 		cp -rp $INITRDDIR/* $MOUNTDIR
 
+		# Force home directories permissions
+		chmod 700 $MOUNTDIR/home/admin
+		chmod 700 $MOUNTDIR/home/user
+		chown -R 1000:1000 $MOUNTDIR/home/admin
+		chown -R 1001:100  $MOUNTDIR/home/user
+
 		# Unmount initrd and compress
 		while !	umount $MOUNTDIR 2>/dev/null; do
 			sleep 1
