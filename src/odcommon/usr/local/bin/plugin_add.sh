@@ -60,6 +60,7 @@ echo "50" > $PROGRESS
 
 #Execute as root
 if ! test -z "$DEPS"; then
+	sudo apt-get update
     sudo apt-get install $DEPS -y
 else
 	echo "No dependencies found"
