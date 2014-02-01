@@ -7,6 +7,12 @@ SCRIPTSDIR="scripts"
 TMPDIR="tmp"
 ARCHCFG="$TMPDIR/arch"
 
+# Previous checks
+if test -z $1; then
+	$SCRIPTSDIR/sdk_help.sh
+	exit 1
+fi
+
 # Check user and sudo
 if [ `whoami` != "root" ]; then
 	if ! sudo echo -n; then
@@ -18,11 +24,6 @@ else
 	exit 1
 fi
 
-# Previous checks
-if test -z $1; then
-	$SCRIPTSDIR/sdk_help.sh
-	exit 1
-fi
 
 # Main
 case $1 in
