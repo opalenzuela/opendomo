@@ -8,4 +8,4 @@ echo "# Rebooting ... Please wait"
 echo
 echo "actions:"
 echo
-/usr/local/bin/reboot.sh
+/usr/local/bin/reboot.sh >/dev/null

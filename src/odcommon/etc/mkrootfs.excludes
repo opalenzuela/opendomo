@@ -1,7 +1,9 @@
 .**
 run/**
 home/**
-var/opendomo/**
+var/opendomo/tmp/**
+var/opendomo/run/**
+var/opendomo/log/**
 etc/opendomo/**
 var/log/**
 var/tmp/**
@@ -10,4 +12,3 @@ proc/**
 sys/**
 media/**
 mnt/**
-usr/local/opendomo/**

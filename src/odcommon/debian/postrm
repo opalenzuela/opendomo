@@ -12,9 +12,10 @@ for cmd in $BUSYBOX_USER_CMD; do
 done
 
 
-echo "CLeaning opendomo init scripts ..."
+echo "Cleaning opendomo init scripts ..."
 insserv -r uid 2>/dev/null
 insserv -r odloadconf 2>/dev/null
 insserv -r odchstates.sh  2>/dev/null
 insserv -r keymap 2>/dev/null
 insserv -r diskmanager 2>/dev/null
+insserv -r ntpdate 2>/dev/null

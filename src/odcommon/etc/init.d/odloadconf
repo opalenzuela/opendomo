@@ -1,7 +1,7 @@
 #! /bin/sh
 ### BEGIN INIT INFO
 # Provides:          odconf
-# Required-Start:    udev networking
+# Required-Start:    udev
 # Required-Stop:
 # Should-Start:      glibc
 # Default-Start:     S
@@ -22,15 +22,6 @@ do_start () {
 	LOGFILE="/var/opendomo/log/loadcfg.log"
 	MNGFILE="/usr/local/bin/manage_conf.sh"
 	touch $LOGFILE
-
-	# Configure time with ntpdate, RaspberryPi don't have hardware clock
-	if text -x "/usr/sbin/ntpdate-debian"; then
-		log_action_begin_msg "Configuring date with ntp"
-		ntpdate-debian >/dev/null 2>/dev/null
-		log_action_end_msg $?
-	else
-		 log_warning_msg "ntp is not installed, system date may be wrong"
-	fi
 
 	# Extract custon config or default, if don't exist anyone create default file
 	if test -f $CSTCONF.gz; then
@@ -53,14 +44,6 @@ do_start () {
                 tar cfp $DEFCONF * --owner 1000 --group 1000 2>$LOGFILE && gzip -f $DEFCONF 2>$LOGFILE
                 log_action_end_msg $?
 	fi
-
-	# Fix perms
-	chown -R admin:admin /usr/local/opendomo
-	chown -R admin:admin /var/opendomo
-	chown -R admin:admin /etc/opendomo
-	chmod -R 744 /usr/local/opendomo
-	chmod -R 744 /var/opendomo
-	chmod -R 744 /etc/opendomo
 
 	# Create wrapper scripts
 	log_action_begin_msg "Creating opendomo wrapper scripts"

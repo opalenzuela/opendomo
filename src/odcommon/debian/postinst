@@ -22,3 +22,4 @@ insserv odfirstinit.sh  2>/dev/null
 insserv odchstates.sh  2>/dev/null
 insserv keymap 2>/dev/null
 insserv diskmanager 2>/dev/null
+insserv ntpdate 2>/dev/null

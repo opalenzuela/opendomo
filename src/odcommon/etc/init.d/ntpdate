@@ -1,0 +1,55 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          ntpdate
+# Required-Start:    $network
+# Required-Stop:
+# Should-Start:      glibc
+# Default-Start:     S
+# Default-Stop:      0 6
+# Short-Description: Set uid and uid based hostname
+# Description:       Read network configuration, select hostname and
+#		     UID opendomo configuration
+### END INIT INFO
+### Copyright(c) 2011 OpenDomo Services SL. Licensed under GPL v3 or later
+
+
+. /lib/init/vars.sh
+. /lib/lsb/init-functions
+
+do_start () {
+	# Configure time with ntpdate, RaspberryPi don't have hardware clock
+	if test -x "/usr/sbin/ntpdate-debian"; then
+		ntpdate-debian >/dev/null 2>/dev/null
+	else
+		log_warning_msg "ntp is not installed, system date may be wrong"
+	fi
+}
+
+do_status () {
+	return 0
+}
+
+case "$1" in
+  start|"")
+	log_action_begin_msg "Configuring date with ntp"
+	do_start
+	log_action_end_msg $?
+        ;;
+  restart|reload|force-reload)
+        echo "Error: argument '$1' not supported" >&2
+        exit 3
+        ;;
+  stop)
+        # No-op
+        ;;
+  status)
+        do_status
+        exit $?
+        ;;
+  *)
+        echo "Usage: ntpdate [start]" >&2
+        exit 3
+        ;;
+esac
+
+:
