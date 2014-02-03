@@ -3,70 +3,66 @@
 #type:local
 #package:odcommon
 
-#TODO: Needs a rebuild
-exit 0
+CFGFILE="/etc/network/interfaces"
 
 if ! test -z "$1"; then
 	MODE="$1"
 	IPADDRESS="$2"
-	DEFAULTGW="$3"
-	NTPSERVER="$4"
-	DNSSERVER="$5"
+	NETMASK="$3"
+	DEFAULTGW="$4"
+	#NTPSERVER="$5"
+	#DNSSERVER="$6"
 	case "$1" in
 		static)
+		
 			if test -z "$IPADDRESS" || test -z "$DEFAULTGW"; then
 				echo "#ERR Missing parameters"	
 			else
-				rm -f /etc/opendomo/dhcpd.conf
-				echo "IPADDRESS=$IPADDRESS" > /etc/opendomo/network.conf
-				echo "DEFAULTGW=$DEFAULTGW" >> /etc/opendomo/network.conf
-				echo "NTPSERVER=$NTPSERVER" >> /etc/opendomo/network.conf
-				echo "DNSSERVER=$DNSSERVER" >> /etc/opendomo/network.conf
-				chown admin /etc/opendomo/network.conf
-				echo "#INF: Configuration saved"
-				echo "#INF: Please, save configuration and restart"
+				echo "auto lo" > $CFGFILE
+				echo "iface lo inet loopback" >> $CFGFILE
+				echo "" >> $CFGFILE
+				echo "auto eth0" >> $CFGFILE
+				echo "iface eth0 inet static" >> $CFGFILE
+				echo "address $IPADDRESS" >> $CFGFILE
+				echo "netmask $NETMASK" >> $CFGFILE
+				echo "gateway $DEFAULTGW" >> $CFGFILE
+				echo "#INFO Configuration saved"
+				echo "#INFO Please, save configuration and restart"
 			fi
 		;;
 		dhcp)
-			rm -f /etc/opendomo/dhcpd.conf
-			rm -f /etc/opendomo/network.conf
-			echo "#INF: Configuration saved"
-			echo "#INF: Please, save configuration and restart"
-		;;
-		server)
-			rm -f /etc/opendomo/network.conf
-			if ! test -f /etc/opendomo/dhcpd.conf; then
-				cp /etc/udhcpd.conf /etc/opendomo/dhcpd.conf
-			fi
-			echo "#INF: Configuration saved"
-			echo "#INF: Please, save configuration and restart"
+			echo "auto lo" > $CFGFILE
+			echo "iface lo inet loopback" >> $CFGFILE
+			echo "" >> $CFGFILE
+			echo "auto eth0" >> $CFGFILE
+			echo "iface eth0 inet dhcp" >> $CFGFILE
+			echo "#INFO Configuration saved"
+			echo "#INFO Please, save configuration and restart"
 		;;
 		*)
-			if test -f /etc/opendomo/network.conf; then
-				. /etc/opendomo/network.conf
-			fi
+			echo "#ERROR Invalid parameter"
+			echo
 		;;
 	esac
 else
 	# First load of the page
-	if test -f /etc/opendomo/network.conf; then
-		MODE=static
-		. /etc/opendomo/network.conf
+	if grep -q dhcp /etc/network/interfaces
+	then
+		MODE=dhcp
 	else	
-		if test -f /etc/opendomo/dhcpd.conf; then
-			MODE=server
-		else
-			MODE=dhcp
-		fi
+		MODE=static
+		IPADDRESS=`grep address $CFGFILE | cut -f2 -d' '`
+		NETMASK=`grep netmask $CFGFILE | cut -f2 -d' '`
+		DEFAULTGW=`grep gateway $CFGFILE | cut -f2 -d' '`
 	fi
 fi
 
 echo "#> Network interface configuration"
 echo "form:`basename $0`"
-#echo "	mode	Mode	list[static:static,server:DHCP server,dhcp:DHCP client]	$MODE"
 echo "	mode	Mode	list[static:static,dhcp:DHCP client]	$MODE"
 echo "	ip	IP	text	$IPADDRESS"
+echo "	mask	netmask	text	$NETMASK"
 echo "	gw	Gateway	text	$DEFAULTGW"
-echo "	ntp	Time server	text	$NTPSERVER"
-echo "	dns	DNS server	text	$DNSSERVER"
+#echo "	ntp	Time server	text	$NTPSERVER"
+#echo "	dns	DNS server	text	$DNSSERVER"
 echo
