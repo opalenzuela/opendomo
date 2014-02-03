@@ -6,7 +6,12 @@
 TMPFILE="/var/opendomo/tmp/savestatus"
 CONFEXE="/usr/local/bin/manage_conf.sh"
 IMGEXE="/usr/local/sbin/mkrootfs"
-SAVEPLUGINS=`cat $TMPFILE`
+if test -f $TMPFILE
+then
+	SAVEPLUGINS=`cat $TMPFILE` 
+else
+	SAVEPLUGINS="off"
+fi
 
 # Select option
 if test "$SAVEPLUGINS" = "on" 
