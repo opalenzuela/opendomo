@@ -19,5 +19,6 @@ override_dh_fixperms:
 	chown -R 1000 debian/odhal/etc/opendomo
 	chown -R 1000 debian/odhal/usr/local/opendomo
 	chown -R 1000 debian/odhal/var/opendomo
+	chown -R 1000 debian/odhal/var/www
 
 override_dh_usrlocal:

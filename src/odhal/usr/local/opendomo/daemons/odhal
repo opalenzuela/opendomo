@@ -38,9 +38,6 @@ do_start () {
 	done
 
 	echo "" >$PID
-	chown admin:admin /var/opendomo/log/odhal* 2>/dev/null
-	chown admin $PID 2>/dev/null
-	chmod g+rw $PID 2>/dev/null
 }
 
 do_stop () {
@@ -102,4 +99,3 @@ case "$1" in
 esac
 
 :
-

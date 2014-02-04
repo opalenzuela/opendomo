@@ -19,8 +19,9 @@ override_dh_install:
 
 override_dh_fixperms:
 	dh_fixperms
-	chown -R 1000 debian/odcgi/etc/opendomo
-	chown -R 1000 debian/odcgi/usr/local/opendomo
-	chown -R 1000 debian/odcgi/var/opendomo/cgiroot
+	chown -R 1000:1000 debian/odcgi/etc/opendomo
+	chown -R 1000:1000 debian/odcgi/usr/local/opendomo
+	chown -R 1000:1000 debian/odcgi/var/opendomo/cgiroot
+	chown -R 1000:1000 debian/odcgi/var/www
 
 override_dh_usrlocal:

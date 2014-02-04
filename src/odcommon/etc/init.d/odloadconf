@@ -22,6 +22,7 @@ do_start () {
 	LOGFILE="/var/opendomo/log/loadcfg.log"
 	MNGFILE="/usr/local/bin/manage_conf.sh"
 	touch $LOGFILE
+	chown admin:admin $LOGFILE
 
 	# Extract custon config or default, if don't exist anyone create default file
 	if test -f $CSTCONF.gz; then
@@ -49,6 +50,12 @@ do_start () {
 	log_action_begin_msg "Creating opendomo wrapper scripts"
 	su -c /usr/local/bin/createwrappers.sh admin 2>$LOGFILE
 	log_action_end_msg $?
+
+	# Change opendomo files and folders to admin user
+	chown -R admin:admin "/etc/opendomo" 2>/dev/null
+	chown -R admin:admin "/var/opendomo" 2>/dev/null
+	chown -R admin:admin "/var/www" 2>/dev/null
+	chown -R admin:admin "/usr/local/opendomo" 2>/dev/null
 }
 
 case "$1" in
