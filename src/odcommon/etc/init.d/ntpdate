@@ -19,7 +19,9 @@
 do_start () {
 	# Configure time with ntpdate, RaspberryPi don't have hardware clock
 	if test -x "/usr/sbin/ntpdate-debian"; then
-		ntpdate-debian >/dev/null 2>/dev/null
+		log_action_begin_msg "Configuring date with ntp"
+		ntpdate-debian >/dev/null 2>/dev/null &
+		log_action_end_msg $?
 	else
 		log_warning_msg "ntp is not installed, system date may be wrong"
 	fi
@@ -31,9 +33,7 @@ do_status () {
 
 case "$1" in
   start|"")
-	log_action_begin_msg "Configuring date with ntp"
 	do_start
-	log_action_end_msg $?
         ;;
   restart|reload|force-reload)
         echo "Error: argument '$1' not supported" >&2
