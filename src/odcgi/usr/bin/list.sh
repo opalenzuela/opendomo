@@ -37,7 +37,7 @@ else
 fi
 echo "list:$script	simple"
 
-if ! test -f /etc/opendomo/udata/admin/email; then
+if ! test -f /mnt/odconf/sysconf/cstconf.tar.gz; then
 	echo "#INFO OpenDomo is not yet configured. Click Configuration wizard to configure it"
 	CFGWIZARD="1"
 fi
