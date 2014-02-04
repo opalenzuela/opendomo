@@ -15,6 +15,7 @@ mkdir -p $CFGPATH
 
 #cd /var/pkg/installed
 #PACKAGES=`echo * | sed 's/ /+/g'`
+PACKAGES="all"
 echo "#LOADING Updating language files"
 echo
 cd $CFGPATH
