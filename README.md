@@ -1,5 +1,5 @@
-OpenDomo
-==========
+OpenDomo OS
+===========
 
 The main website of this project is still 
 <a title="OpenDomo" href="http://en.opendomo.org">here</a>, but in <a href='https://github.com/opalenzuela/opendomo/wiki/OpenDomo'>this page</a> you can find useful information about it. 
