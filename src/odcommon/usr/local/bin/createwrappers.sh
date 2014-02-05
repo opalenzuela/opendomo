@@ -3,9 +3,12 @@ cd /
 for i in `find /usr/local/opendomo/services/ -type f`
 do
     bn=`basename $i`
+	# Solamente creamos wrapper si no existe
     if ! test -f /usr/local/opendomo/$i; then
-       # Solamente creamos wrapper si no existe
-       ln -fs $i /usr/local/opendomo/ >/dev/null
+		# Forzamos permisos de ejecucion
+		chmod +x $i
+		# Creamos enlace simbólico
+		ln -fs $i /usr/local/opendomo/ >/dev/null
     fi
 done
 # Creacion de los enlaces del CGI
