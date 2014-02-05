@@ -46,7 +46,7 @@ fi
 LFILE="$STORAGE/`basename $URLFILE`"
 
 echo "00" > $PROGRESS
-
+rm /var/opendomo/plugins/$PKGID.error
 
 if wget $URLFILE -O $LFILE -q --no-check-certificate
 then
@@ -71,6 +71,14 @@ echo "75" > $PROGRESS
 echo $PKGVER > /var/opendomo/plugins/$PKGID.version
 
 cd /
-echo $LFILE | grep ".tar.gz" - && /bin/tar -m --no-overwrite-dir -zxvf $LFILE | grep -v /$ > /var/opendomo/plugins/$PKGID.files
-echo $LFILE | grep ".zip" - && /usr/local/bin/unzip -o $LFILE | grep -v /$ | cut -f2 -d':' |sed 's/ //'> /var/opendomo/plugins/$PKGID.files
+echo $LFILE | grep ".tar.gz" - && /bin/tar -m --no-overwrite-dir -zxvf $LFILE | grep -v /$ > /var/opendomo/plugins/$PKGID.files 2>/var/opendomo/plugins/$PKGID.error
+echo $LFILE | grep ".zip" - && /usr/local/bin/unzip -o $LFILE | grep -v /$ | cut -f2 -d':' |sed 's/ //'> /var/opendomo/plugins/$PKGID.files 2>/var/opendomo/plugins/$PKGID.error
 rm $PROGRESS
+
+if test -s /var/opendomo/plugins/$PKGID.error
+then
+	sed 's/^/# /' -i /var/opendomo/plugins/$PKGID.error
+	echo "#WARN Installation finished with errors:"
+	cat /var/opendomo/plugins/$PKGID.error
+fi
+
