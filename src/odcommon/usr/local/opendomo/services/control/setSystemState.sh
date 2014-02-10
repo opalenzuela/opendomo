@@ -20,7 +20,7 @@ if test -z $2; then
 		sudo changestate.sh change $1 &>/dev/null
 	fi
 else
-	# Start / Stop service
+	# Start / Stop service, Ignoring boot services
 	if ! test -z $1 && [ "$2" = "on" ]; then
 		sudo changestate.sh service $1 on  &>/dev/null
 	elif ! test -z $1 && [ "$2" = "off" ]; then
@@ -57,14 +57,19 @@ echo "form:`basename $0`"
 
 cd $DAEMONSDIR
 for service in *; do
-	# Check service information
-	DESC=`grep "# Short-Description" $service | cut -f2 -d:`
-	if ./$service status >/dev/null 2>/dev/null ; then
-		STATUS=on
-	else
-		STATUS=off
+	# Ignoring boot services
+	RUNLEVEL=`cat $service | grep "# Default-Start:" | awk '{print $3}'`
+	if [ "$RUNLEVEL" != "S" ]; then
+
+		# Check service information
+		DESC=`grep "# Short-Description" $service | cut -f2 -d:`
+		if ./$service status >/dev/null 2>/dev/null ; then
+			STATUS=on
+		else
+			STATUS=off
+		fi
+		echo "	$service	$DESC	subcommand[on,off]	$STATUS"
 	fi
-	echo "	$service	$DESC	subcommand[on,off]	$STATUS"
 done
 echo "action:"
 echo "	manageSystemStates.sh	Manage system states"

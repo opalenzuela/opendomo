@@ -43,13 +43,18 @@ case $2 in
 
 		cd $DAEMONSDIR
 		for service in *; do
-			DESC=`grep "# Short-Description" $service | cut -f2 -d:`
-			if test -f $CONFIGSDIR/$1/$service; then
-				STATUS=on
-			else
-				STATUS=off
+			RUNLEVEL=`cat $service | grep "# Default-Start:" | awk '{print $3}'`
+
+			# Ignoring boot services
+			if [ "$RUNLEVEL" != "S" ]; then
+				DESC=`grep "# Short-Description" $service | cut -f2 -d:`
+				if test -f $CONFIGSDIR/$1/$service; then
+					STATUS=on
+				else
+					STATUS=off
+				fi
+				echo "	$service	$DESC	subcommand[on,off]	$STATUS"
 			fi
-			echo "	$service	$DESC	subcommand[on,off]	$STATUS"
 		done
 		echo "action:"
 		echo "	manageSystemStates.sh	Back"

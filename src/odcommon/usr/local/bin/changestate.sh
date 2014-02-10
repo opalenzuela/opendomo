@@ -6,7 +6,7 @@ DAEMONSDIR="/usr/local/opendomo/daemons"
 CONFIGSDIR="/etc/opendomo/states"
 INITDIR="/etc/init.d"
 STATEPID="/var/opendomo/run/states.pid"
-BLACKLIST="motd bootlogs httpd"
+BLACKLIST="motd bootlogs httpd mountall-bootclean.sh mountall.sh mtab.sh checkfs.sh checkroot-bootclean.sh checkroot.sh mountnfs-bootclean.sh mountnfs.sh plymouth-log plymouth hwclock.sh"
 
 # Checks
 if test -z $1; then
@@ -19,20 +19,6 @@ daemons_blacklist () {
   for blackdaemon in *; do
 	# Only check links
 	if test -h $blackdaemon; then
-
-		# If init.d script don't exist, clean
-		if ! test -x $INITDIR/$blackdaemon; then
-			echo "#ERR Service $blackdaemon don't have valid link, cleaning ..."
-			rm $blackdaemon
-		else
-			# If script is a boot services, can be used by plugins, so clean
-			RUNLEVEL=`cat $INITDIR/$blackdaemon | grep "# Default-Start:" | awk '{print $3}'`
-			if [ "$RUNLEVEL" = "S" ]; then
-				echo "#ERR Service $blackdaemon can be used by plugins, cleaning ..."
-				rm $blackdaemon
-			fi
-		fi
-
 		# If script is in blacklist, can be used by plugins, so clean
 		for script in $BLACKLIST; do
 			if [ "$blackdaemon" = "$script" ]; then
@@ -41,9 +27,9 @@ daemons_blacklist () {
 			fi
 		done
 
-		# Stop system service survivors
+		# Stop autostart system service survivors
   		if test -h $blackdaemon; then
-			 insserv -r $blackdaemon
+			 insserv -r $blackdaemon 2>/dev/null
 		fi
 	fi
   done
@@ -52,26 +38,34 @@ daemons_blacklist () {
 change_services () {
   cd $DAEMONSDIR
   for daemon in *; do
-	# Start/Stop service in state
-	if ! test -h $DAEMONSDIR/$daemon && test -f $STATEDIR/$daemon; then
-		# This is a opendomo service, started with admin user
-		if ! $DAEMONSDIR/$daemon status &>/dev/null; then
-			sudo -u admin $DAEMONSDIR/$daemon start
-		fi
-	elif test -h $DAEMONSDIR/$daemon && test -f $STATEDIR/$daemon; then
-		# This is a system service controled by plugins
-		if ! service $daemon status &>/dev/null; then
-			service $daemon start
-		fi
-	elif ! test -f $STATEDIR/$daemon && test -h $DAEMONSDIR/$daemon; then
-		# This is a system service stoped in this state
-		if service $daemon status &>/dev/null; then
-			service $daemon stop
-		fi
+	# Ignoring boot services
+	if test -h "$DAEMONSDIR/$daemon" && test -x "$INITDIR/$daemon"; then
+		RUNLEVEL=`cat $daemon | grep "# Default-Start:" | awk '{print $3}'`
 	else
-		# This is a opendomo service stoped in this state
-		if $DAEMONSDIR/$daemon status &>/dev/null; then
-			sudo -u admin $DAEMONSDIR/$daemon stop
+		RUNLEVEL="2"
+	fi
+	if [ "$RUNLEVEL" != "S" ]; then
+		# Start/Stop service in state
+		if ! test -h $DAEMONSDIR/$daemon && test -f $STATEDIR/$daemon; then
+			# This is a opendomo service, started with admin user
+			if ! $DAEMONSDIR/$daemon status &>/dev/null; then
+				sudo -u admin $DAEMONSDIR/$daemon start
+			fi
+		elif test -h $DAEMONSDIR/$daemon && test -f $STATEDIR/$daemon; then
+			# This is a system service controled by plugins
+			if ! service $daemon status &>/dev/null; then
+				service $daemon start
+			fi
+		elif ! test -f $STATEDIR/$daemon && test -h $DAEMONSDIR/$daemon; then
+			# This is a system service stoped in this state
+			if service $daemon status &>/dev/null; then
+				service $daemon stop
+			fi
+		else
+			# This is a opendomo service stoped in this state
+			if $DAEMONSDIR/$daemon status &>/dev/null; then
+				sudo -u admin $DAEMONSDIR/$daemon stop
+			fi
 		fi
 	fi
   done

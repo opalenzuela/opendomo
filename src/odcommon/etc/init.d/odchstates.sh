@@ -1,10 +1,10 @@
 #! /bin/sh
 ### BEGIN INIT INFO
 # Provides:          states
-# Required-Start:
+# Required-Start:    $all
 # Required-Stop:
-# Should-Start:      glibc
-# Default-Start:     2 3 4 5
+# Should-Start:
+# Default-Start:     S
 # Default-Stop:
 # Short-Description: Change default opendomo state
 # Description:       Change default opendomo state
@@ -19,7 +19,22 @@
 do_start () {
 	DEFSTATE="active"
 	STATEEXEC="/usr/local/bin/changestate.sh"
+	DAEMONDIR="/usr/local/opendomo/daemons"
+	INITRDDIR="/etc/init.d/"
 
+	# Starting boot service
+	cd $DAEMONDIR
+	for service in *; do
+		if test -x "/etc/init.d/$service"; then
+			RUNLEVEL=`cat $service | grep "# Default-Start:" | awk '{print $3}'`
+
+			if [ "$RUNLEVEL" = "S" ]; then
+				service $service start
+			fi
+		fi
+	done
+
+	# Starting services in default state
 	log_daemon_msg "Loading default state"
 	echo -n " $DEFSTATE"
 	log_end_msg $?
