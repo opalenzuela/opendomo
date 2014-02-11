@@ -1,5 +1,6 @@
 Cmnd_Alias      APT = /usr/bin/apt-get, \
                       /usr/bin/dpkg, \
-                      /usr/sbin/dpkg-reconfigure
+                      /usr/sbin/dpkg-reconfigure, \
+		      /usr/local/opendomo/updateSystem.sh	
 
 admin ALL=(ALL) NOPASSWD: APT
