@@ -44,6 +44,7 @@ case $1 in
 	echo 'LABEL="opendomodistro"' > $TARGETDIR/opendomo.cfg
 	echo 'CONFDEVICE="1"' >> $TARGETDIR/opendomo.cfg
 	echo 'SYSDEVICE="1"' >> $TARGETDIR/opendomo.cfg
+	echo 'HOMEDEVICE="1"' >> $TARGETDIR/opendomo.cfg
 	echo "$OD_VERSION" > $INITRDDIR/etc/VERSION
 
 	# Creating raw file to move no critical files

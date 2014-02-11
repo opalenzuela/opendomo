@@ -101,9 +101,16 @@ if [ "$HOMEDEVICE" = "1" ]; then
 	# Creating and mount homefs
 	if ! test -f $HOMEIMG; then
 		dd if=/dev/zero of=$HOMEIMG bs=1024 count=$HOMESIZE
-		mkfs.ext2 $HOMEIMG
+		mkfs.ext2 -F $HOMEIMG
 	fi
+
+	# Mount and create user folders
 	mount $HOMEIMG $CHROOT/home
+	mkdir -p $CHROOT/home/admin $CHROOT/home/user
+	chown admin:admin $CHROOT/home/admin
+	chown user:users  $CHROOT/home/user
+	chmod 700 $CHROOT/home/admin
+	chmod 700 $CHROOT/home/user
 fi
 
 # Allways link drive to /media
