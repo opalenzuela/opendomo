@@ -43,9 +43,9 @@ echo "#INFO Your configuration was saved"
 echo "# You can now start using your OpenDomo"
 echo
 /usr/bin/list.sh /
-if test -x /usr/local/opendomo/services/syscript/eh_odalerts.sh
+if test -x /usr/local/opendomo/eventhandlers/odalert.sh
 then
-	/usr/local/opendomo/services/syscript/eh_odalerts.sh notice odcommon "Your OpenDomo was successfully registered"
+	/usr/local/opendomo/eventhandlers/odalert.sh notice odcommon "Your OpenDomo was successfully registered"
 fi
 echo
 
