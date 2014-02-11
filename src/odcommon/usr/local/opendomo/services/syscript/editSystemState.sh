@@ -8,6 +8,7 @@
 DAEMONSDIR="/usr/local/opendomo/daemons"
 CONFIGSDIR="/etc/opendomo/states"
 TEMPSTATE="/var/opendomo/tmp/state.tmp"
+INITRDDIR="/etc/init.d"
 
 case $2 in
   on )
@@ -43,17 +44,19 @@ case $2 in
 
 		cd $DAEMONSDIR
 		for service in *; do
-			RUNLEVEL=`cat $service | grep "# Default-Start:" | awk '{print $3}'`
+			# Ignoring boot services and missing services
+			if ! test -h "$DAEMONSDIR/$service" || test -x "$INITRDDIR/$service"; then
+				RUNLEVEL=`cat $service | grep "# Default-Start:" | awk '{print $3}'`
 
-			# Ignoring boot services
-			if [ "$RUNLEVEL" != "S" ]; then
-				DESC=`grep "# Short-Description" $service | cut -f2 -d:`
-				if test -f $CONFIGSDIR/$1/$service; then
-					STATUS=on
-				else
-					STATUS=off
+				if [ "$RUNLEVEL" != "S" ]; then
+					DESC=`grep "# Short-Description" $service | cut -f2 -d:`
+					if test -f $CONFIGSDIR/$1/$service; then
+						STATUS=on
+					else
+						STATUS=off
+					fi
+					echo "	$service	$DESC	subcommand[on,off]	$STATUS"
 				fi
-				echo "	$service	$DESC	subcommand[on,off]	$STATUS"
 			fi
 		done
 		echo "action:"
