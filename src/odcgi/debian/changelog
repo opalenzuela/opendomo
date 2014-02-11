@@ -1,3 +1,9 @@
+odcgi (1.9.6) experimental; urgency=low
+
+  * Fix some interface bugs
+
+ -- Javier Miras Blanco <jmirasb@gamil.com>  Tue, 11 Feb 2014 15:35:57 +0100
+
 odcgi (1.9.5) experimental; urgency=low
 
   * Clean package
