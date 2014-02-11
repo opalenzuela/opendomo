@@ -3,8 +3,10 @@
 #package:odcgi
 #type:local
 
-TMPCFGFILE="/tmp/wizFirstConfiguration.cfg"
+TMPCFGFILE="/var/opendomo/tmp/wizFirstConfiguration.cfg"
 . $TMPCFGFILE
+
+mkdir -p /etc/opendomo/udata/admin 2>/dev/null
 
 URLVAL="http://cloud.opendomo.com/activate/index.php"
 
@@ -30,7 +32,7 @@ fi
 mail=`cat /etc/opendomo/udata/admin/email` 2>/dev/null
 
 FULLURL="$URLVAL?UID=$uid&VER=$ver&MAIL=$mail"
-wget -q -O /tmp/activation.tmp $FULLURL 2>/dev/null
+wget -q -O /var/opendomo/tmp/activation.tmp $FULLURL 2>/dev/null
 
 #echo "#URL: $FULLURL"
 

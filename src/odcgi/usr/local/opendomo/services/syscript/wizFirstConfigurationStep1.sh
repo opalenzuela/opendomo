@@ -3,7 +3,7 @@
 #package:odcgi
 #type:local
 
-TMPCFGFILE="/tmp/wizFirstConfiguration.cfg"
+TMPCFGFILE="/var/opendomo/tmp/wizFirstConfiguration.cfg"
 CFGFILE="/mnt/odconf/sysconf/sysconf.tar"
 language="es"
 touch $TMPCFGFILE
