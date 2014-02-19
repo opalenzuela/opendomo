@@ -19,13 +19,19 @@ then
     mkdir -p $STORAGE
 fi
 
-# First we create a list with all the installed plugins
+# First we make sure the directory exists
 mkdir -p /var/opendomo/plugins/
-cd /var/opendomo/plugins/
+cd /var/opendomo/plugins/ || exit 2
+
+# Then we create a list with all the installed plugins
+PLIST=""
 for i in *.info
-do
-	f=`echo $i | cut -f1 -d'.'`
-	PLIST="$PLIST $f"
+do	
+	if test -f $i
+	then
+		f=`echo $i | cut -f1 -d'.'`
+		PLIST="$PLIST $f"
+	fi
 done
 cd /
 
