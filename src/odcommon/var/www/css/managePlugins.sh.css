@@ -3,3 +3,12 @@
 	padding-left: 32px;
 }
 
+#managePlugins li.installed {
+	background: #FFF url(/images/default/installed.png) no-repeat scroll bottom right;
+	box-shadow: 1px 1px #808080;
+	border: 1px solid black;
+}
+#managePlugins li.new {
+	background: #FFF url(/images/default/new.png) no-repeat scroll bottom right;
+	box-shadow: 3px 4px #808080;
+}
