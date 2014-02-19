@@ -22,23 +22,20 @@ if test -z "$1"; then
 	echo "#> Manage plugins"
 	echo  "list:managePlugins.sh	iconlist"
 	for p in `grep -v "#" $TMPDIR/repo.lst | cut -f1 -d- | uniq`; do
-	ID=`grep $p $TMPDIR/repo.lst | cut -f1 -d'-' | head -n1`
-	DESC=`grep $p $TMPDIR/repo.lst | cut -f3 -d';' | head -n1`
-	if test -f /var/opendomo/plugins/$ID
-	then
-		echo "	-$ID	$DESC	plugin new"
-	else
-		echo "	-$ID	$DESC	plugin installed"
-	fi
+		ID=`grep $p $TMPDIR/repo.lst | cut -f1 -d'-' | head -n1`
+		DESC=`grep $p $TMPDIR/repo.lst | cut -f3 -d';' | head -n1`
+		if test -f /var/opendomo/plugins/$ID
+		then
+			echo "	-$ID	$DESC	plugin new"
+		else
+			echo "	-$ID	$DESC	plugin installed"
+		fi
 	done
 	if test -z "$ID"; then
-	echo "#ERROR The repository was empty. Try again later"
+		echo "#ERROR The repository was empty. Try again later"
 	fi
-	echo
-
-#echo "actions:"
-#echo "   managePlugins.sh   Details"
-#echo
+	echo "actions:"
+	echo "	managePlugins.sh   Details"
 
 else
 	# Parameter was passed (requesting plugin's details)
@@ -60,5 +57,7 @@ else
 	else
 		echo "	removePlugin.sh	Uninstall"
 	fi
-	echo "	managePlugins.sh	Back"
+	echo "	goback	Back"
+	echo "	updatePlugins.sh	Update all"
 fi
+echo
