@@ -24,7 +24,7 @@ if test -z "$1"; then
 	for p in `grep -v "#" $TMPDIR/repo.lst | cut -f1 -d- | uniq`; do
 		ID=`grep $p $TMPDIR/repo.lst | cut -f1 -d'-' | head -n1`
 		DESC=`grep $p $TMPDIR/repo.lst | cut -f3 -d';' | head -n1`
-		if test -f /var/opendomo/plugins/$ID
+		if test -f /var/opendomo/plugins/$ID.version
 		then
 			echo "	-$ID	$DESC	plugin new"
 		else
@@ -52,7 +52,7 @@ else
 	echo "	deps	Dependences	readonly	$DEPS"
 	echo "	icon	Icon	image	$1.png"
 	echo "actions:"
-	if ! test -f /var/opendomo/plugins/$1; then
+	if ! test -f /var/opendomo/plugins/$1.version; then
 		echo "	installPlugin.sh	Install"
 	else
 		echo "	removePlugin.sh	Uninstall"
