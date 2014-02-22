@@ -17,34 +17,14 @@
 . /lib/lsb/init-functions
 
 do_start () {
-	CSTCONF="/mnt/odconf/sysconf/cstconf.tar"
-	DEFCONF="/mnt/odconf/sysconf/defconf.tar"
 	LOGFILE="/var/opendomo/log/loadcfg.log"
 	MNGFILE="/usr/local/bin/manage_conf.sh"
 	touch $LOGFILE
 	chown admin:admin $LOGFILE
 
-	# Extract custon config or default, if don't exist anyone create default file
-	if test -f $CSTCONF.gz; then
-		log_action_begin_msg "Updating opendomo configuration files (custom)"
-		$MNGFILE load custom &>$LOGFILE
-		log_action_end_msg $?
-
-	elif test -f $DEFCONF.gz; then
-		log_action_begin_msg "Updating opendomo configuration files (default)"
-		$MNGFILE load default &>$LOGFILE
-		log_action_end_msg $?
-
-	else
-		log_action_begin_msg "Creating default configuration file"
-		# Copy default config files
-                $MNGFILE copy &>$LOGFILE
-
-		# Creating default configuration file
-                cd /etc/opendomo
-                tar cfp $DEFCONF * --owner 1000 --group 1000 2>$LOGFILE && gzip -f $DEFCONF 2>$LOGFILE
-                log_action_end_msg $?
-	fi
+	log_action_begin_msg "Copy default configuration files"
+	$MNGFILE copy &>$LOGFILE
+	log_action_end_msg $?
 
 	# Create wrapper scripts
 	log_action_begin_msg "Creating opendomo wrapper scripts"

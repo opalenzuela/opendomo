@@ -9,7 +9,7 @@ SCRIPTSDIR="scripts"
 TARGETDIR="$TMPDIR/image.arm"
 
 # Creating image folders
-mkdir -p $TARGETDIR/sysconf $TARGETDIR/plugins
+mkdir -p $TARGETDIR/plugins
 
 # Check variable
 # TODO variable device need a drive no partition

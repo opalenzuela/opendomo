@@ -29,7 +29,7 @@ fi
 
 # Copy ISOFILES and create opendomo folders
 cp -r $ISOFILESDIR/* $TARGETDIR/
-mkdir -p $TARGETDIR/sysconf $TARGETDIR/plugins
+mkdir -p $TARGETDIR/plugins
 
 # Exporting to SD
 echo "INFO: Export opendomo to SD ($DEVICE)..."

@@ -7,23 +7,12 @@ TMPFILE="/var/opendomo/tmp/savestatus"
 CONFEXE="/usr/local/bin/manage_conf.sh"
 IMGEXE="/usr/local/sbin/mkrootfs"
 
-# Creating default temp file
-if ! test -f $TMPFILE; then
-	echo "off" > $TMPFILE
-fi
-SAVEPLUGINS=`cat $TMPFILE`
-
 # Select option
-if [ "$1" = "plugins" ]; then
-	echo "$2" > $TMPFILE
-else
-	# No options, see interface
-	echo "#> Saving data"
-        echo "form:`basename $0`"
-	echo "	plugins	Save / Delete plugins	subcommand[on,off]	$SAVEPLUGINS"
-	echo "	save	Save data	hidden	save"
-	echo "actions:"
-	echo "	saveSystemConfiguration.sh	Save configuration"
-	echo "	loadDefaultConfiguration.sh	Load default configuration"
-	echo
-fi
+echo "#> Saving data"
+echo "list:`basename $0`"
+echo "#WARN This actions modify system permanently and can't be undo"
+echo "actions:"
+echo "	saveSystemConfig.sh	Save configuration"
+echo "	loadDefaultConfig.sh	Load default configuration"
+echo "	restoreDefaultSystem.sh	Restore default system"
+echo

@@ -4,7 +4,6 @@ home/**
 var/opendomo/tmp/**
 var/opendomo/run/**
 var/opendomo/log/**
-etc/opendomo/**
 var/log/**
 var/tmp/**
 var/run/**

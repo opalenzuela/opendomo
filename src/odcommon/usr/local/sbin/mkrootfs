@@ -3,6 +3,7 @@
 
 # Variables
 IMAGESDIR="/mnt/system/images"
+IMAGE="$IMAGESDIR/ctchange.img"
 MOUNTDIR="/run/mounts/changerw"
 CHANGEDIR="/run/mounts/change"
 TEMPFSDIR="/run/mounts/tmpfs"
@@ -18,11 +19,7 @@ fi
 
 # Select option or image
 case $1 in
-  default )
-	IMAGE="$IMAGESDIR/dfchange.img"
-  ;;
   custom )
-	IMAGE="$IMAGESDIR/ctchange.img"
 	# Copy an compress default image, only use in restore mode
 	if ! test -f $IMAGE && cp $IMAGESDIR/dfchange.img $IMAGE; then
 			gzip $IMAGESDIR/dfchange.img
@@ -30,8 +27,8 @@ case $1 in
   ;;
   restore )
 	# Uncompress default and delete custom image
-	if gunzip $IMAGESDIR/dfchange.img.gz; then
-		rm "$IMAGESDIR/ctchange.img"
+	if test -f "$IMAGE" && gunzip $IMAGESDIR/dfchange.img.gz; then
+		rm "$IMAGE"
 		exit 0
 	else
 		echo "#ERR Default image can be uncompress"
@@ -40,7 +37,7 @@ case $1 in
   ;;
   * )
 	# Help
-	echo "USAGE: mkrootfs [ custom | default | restore ]"
+	echo "USAGE: mkrootfs [ custom | restore ]"
 	exit 1
   ;;
 esac
@@ -59,7 +56,7 @@ else
 	echo "   (ERROR)"
 fi
 
-# Delete old files in image
+# Delete missing files in image
 for file in $FINDCMD; do
 	FILENAME=`basename $file | sed 's/.sh.//'`
 	DIRNAME=`dirname $file`
