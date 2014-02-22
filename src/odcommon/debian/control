@@ -6,5 +6,5 @@ Standards-Version:38
 
 Package: odcommon
 Architecture: i386 armhf
-Depends: libc6 (>= 2.7)
+Depends: libc6 (>= 2.7), rsync (>= 3.0.9), ntpdate (>= 4.2.6)
 Description: Opendomo common files and structures

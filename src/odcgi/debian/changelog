@@ -1,8 +1,14 @@
+odcgi (1.9.7) experimental; urgency=low
+
+  * Bug fixes
+
+ -- Javier Miras Blanco <jmirasb@gmail.com>  Sat, 22 Feb 2014 11:18:02 +0100
+
 odcgi (1.9.6) experimental; urgency=low
 
   * Fix some interface bugs
 
- -- Javier Miras Blanco <jmirasb@gamil.com>  Tue, 11 Feb 2014 15:35:57 +0100
+ -- Javier Miras Blanco <jmirasb@gmail.com>  Tue, 11 Feb 2014 15:35:57 +0100
 
 odcgi (1.9.5) experimental; urgency=low
 

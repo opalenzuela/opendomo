@@ -1,3 +1,9 @@
+odcommon (1.9.7) experimental; urgency=low
+
+  * New configuration system added
+
+ -- Javier Miras Blanco <jmirasb@gamil.com>  Sat, 22 Feb 2014 11:17:24 +0100
+
 odcommon (1.9.6) experimental; urgency=low
 
   * Add diskmanager and events structure
