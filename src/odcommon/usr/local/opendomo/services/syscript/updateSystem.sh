@@ -8,26 +8,41 @@ else
 	ARCH="armhf"
 fi
 
-# Packages and url
 ODCOMPKG="odcommon_current_$ARCH.deb"
 ODCGIPKG="odcgi_current_$ARCH.deb"
 ODHALPKG="odhal_current_$ARCH.deb"
 PKGURL="http://es.opendomo.org/files/"
 
+LOGFILE="/var/opendomo/log/updateSystem.log"
+
+APTFILE="/mnt/odconf/apt/lastupdate"
+CURWEEK=`date +%W`
+
 if [ `whoami` != "root" ]; then
-	echo "#ERR Only root can update system"
+	echo "#ERROR Only root can update system"
 	exit 1
 fi
 
-# Update system
-cd /tmp
-echo "#INF Updating opendomo packages ..."
-if apt-get update; then
-	apt-get --force-yes -yq upgrade
-	if wget $PKGURL/$ODCOMPKG $PKGURL/$ODCGIPKG $PKGURL/$ODHALPKG; then
-		dpkg -i $ODCOMPKG $ODCGIPKG $ODHALPKG
+#Only update apt sources once a week
+if ! test -f $APTFILE || [ $CURWEEK != `cat $APTFILE` ]
+then
+    echo "#INFO Updating sources ..."
+    apt-get update
+    date +%W >$APTFILE
+fi
+
+echo -n "#INFO Updating opendomo packages, please wait ..."
+LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive apt-get --force-yes -yq upgrade &>$LOGFILE
+if wget $PKGURL/$ODCOMPKG $PKGURL/$ODCGIPKG $PKGURL/$ODHALPKG &>$LOGFILE; then
+	if test dpkg -i $ODCOMPKG $ODCGIPKG $ODHALPKG &>$LOGFILE; then
+		rm $ODCOMPKG $ODCGIPKG $ODHALPKG
+	else
+		# Fix dpkg database installing missing deps
+		LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive apt-get --force-yes -fyq install &>$LOGFILE
 		rm $ODCOMPKG $ODCGIPKG $ODHALPKG
 	fi
+fi
+	echo "   (done)"
 else
-	echo "#ERR Sources can't be downloaded, check network connection"
+	echo "#ERROR Sources can't be downloaded, check network connection"
 fi

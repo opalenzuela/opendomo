@@ -19,7 +19,7 @@ then
 	exit 2
 else
 	echo "#INFO Installing plugin $1"
-	/usr/local/bin/bgshell "/usr/local/bin/plugin_add.sh $1"
+	/usr/local/bin/plugin_add.sh $1 >/dev/null 2>/dev/null
 	echo "list:$0"
 	echo "actions:"
 	echo "	managePlugins.sh	Back"

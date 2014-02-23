@@ -35,7 +35,7 @@ if test -z "$1"; then
 		echo "#ERROR The repository was empty. Try again later"
 	fi
 	echo "actions:"
-	echo "	managePlugins.sh   Details"
+	echo "	managePlugins.sh	Details"
 
 else
 	# Parameter was passed (requesting plugin's details)
