@@ -3,20 +3,20 @@
 #type:local
 #package:odcommon
 
-CFGFILE="/etc/network/interfaces"
+CFGFILE="/etc/opendomo/system/interfaces"
+DNSFILE="/etc/opendomo/system/resolv.conf"
 
 if ! test -z "$1"; then
 	MODE="$1"
 	IPADDRESS="$2"
 	NETMASK="$3"
 	DEFAULTGW="$4"
-	#NTPSERVER="$5"
-	#DNSSERVER="$6"
+	DNSSERVER="$5"
 	case "$1" in
 		static)
-		
+
 			if test -z "$IPADDRESS" || test -z "$DEFAULTGW"; then
-				echo "#ERR Missing parameters"	
+				echo "#ERR Missing parameters"
 			else
 				echo "auto lo" > $CFGFILE
 				echo "iface lo inet loopback" >> $CFGFILE
@@ -26,6 +26,9 @@ if ! test -z "$1"; then
 				echo "address $IPADDRESS" >> $CFGFILE
 				echo "netmask $NETMASK" >> $CFGFILE
 				echo "gateway $DEFAULTGW" >> $CFGFILE
+
+				echo "nameserver $DNSSERVER" > $DNSFILE
+
 				echo "#INFO Configuration saved"
 				echo "#INFO Please, save configuration and restart"
 			fi
@@ -49,11 +52,12 @@ else
 	if grep -q dhcp /etc/network/interfaces
 	then
 		MODE=dhcp
-	else	
+	else
 		MODE=static
 		IPADDRESS=`grep address $CFGFILE | cut -f2 -d' '`
 		NETMASK=`grep netmask $CFGFILE | cut -f2 -d' '`
 		DEFAULTGW=`grep gateway $CFGFILE | cut -f2 -d' '`
+		DNSSERVER=`grep -m1 nameserver $DNSFILE | cut -f2 -d' '`
 	fi
 fi
 
@@ -63,6 +67,5 @@ echo "	mode	Mode	list[static:static,dhcp:DHCP client]	$MODE"
 echo "	ip	IP	text	$IPADDRESS"
 echo "	mask	netmask	text	$NETMASK"
 echo "	gw	Gateway	text	$DEFAULTGW"
-#echo "	ntp	Time server	text	$NTPSERVER"
-#echo "	dns	DNS server	text	$DNSSERVER"
+echo "	dns	DNS server	text	$DNSSERVER"
 echo
