@@ -19,6 +19,7 @@
 do_start () {
 	LOGFILE="/var/opendomo/log/loadcfg.log"
 	MNGFILE="/usr/local/bin/manage_conf.sh"
+	ODCFG="/mnt/odconf/opendomo.cfg"
 	touch $LOGFILE
 	chown admin:admin $LOGFILE
 
@@ -30,6 +31,19 @@ do_start () {
 	log_action_begin_msg "Creating opendomo wrapper scripts"
 	su -c /usr/local/bin/createwrappers.sh admin 2>$LOGFILE
 	log_action_end_msg $?
+
+	# Creating user folders if homedevice is not activated
+	HOMEDEVICE=`grep ^HOMEDEVICE= $ODCFG | sed 's/\"//g' | cut -f2 -d=`
+	if [ "$HOMEDEVICE" != "1" ]; then
+		log_action_begin_msg "Creating user folders"
+		USERFOLDERS=`grep /home /etc/passwd | cut -f6 -d:`
+		for folder in $USERFOLDERS; do
+			USER=`basename $folder`
+			mkdir -p $folder
+			chown -R $USER:users $folder
+		done
+		log_action_end_msg $?
+	fi
 
 	# Change opendomo files and folders to admin user
 	chown -R admin:admin "/etc/opendomo" 2>/dev/null

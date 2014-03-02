@@ -1,5 +1,6 @@
 Cmnd_Alias      OPENDOMO = /usr/local/sbin/mkrootfs, \
                         /usr/local/bin/manage_conf.sh, \
-                        /usr/local/bin/changestate.sh
+                        /usr/local/bin/changestate.sh, \
+			/usr/local/sbin/manageusers.sh
 
 admin ALL=(ALL) NOPASSWD: OPENDOMO

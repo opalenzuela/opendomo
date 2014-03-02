@@ -1,70 +1,25 @@
 #!/bin/sh
-#desc:Edit user
+#desc:Manage users
 #type:multiple
-#package:odcgi
+#package:odcommon
 
-# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+CONFIGDIR="/etc/opendomo/udata"
+USER="$1"
 
-#FIXME Provisional script. This will be replaced by the ./user/ toolkit in beta
-
-PROGNAME=`basename $0`
-#USER=admin
-
-if ! test -d /etc/opendomo/udata/ ; then
-	mkdir -p /etc/opendomo/udata/admin
-	mkdir -p /etc/opendomo/udata/user
-	echo "Administrator" > /etc/opendomo/udata/admin/name
-	echo "Standard User" > /etc/opendomo/udata/user/name
-fi
-
-
-if test -z "$2"; then
-	if test -f /etc/opendomo/udata/$USER/email; then
-		email=`cat /etc/opendomo/udata/$USER/email`
-	fi
-	if test -f /etc/opendomo/udata/$USER/name; then
-		name=`cat /etc/opendomo/udata/$USER/name`
-	else
-		name="$1"
-	fi 
-	echo "#> Change user data"
-	echo "form:$PROGNAME"
-	echo "	contact	Contact information	separator"
-	echo "	user	Username	readonly	$USER"
-	echo "	fullname	Full name	text:[a-zA-Z0-9 \.]+	$name"
-	echo "	email	E-mail	text:[a-z0-9_\.]+@[a-z0-9\.]+	$email"
-	echo "	cred	Credentials	separator"
-	echo "	oldpass	Old password	password"
-	echo "	newpass	New password	password"
-	echo "	retype	Repeat password	password"
-
+# If $1 modify user
+if ! test -z $USER && test -f $CONFIGDIR/$USER.info; then
+    /usr/local/opendomo/modifyUser.sh $USER
 else
-	# Modify User name ONLY IF SPECIFIED
-	if ! test -z "$2"; then
-		echo "$2" | sed 's/+/ /g' > /etc/opendomo/udata/$USER/name
-	fi
-	
-	# Modify email ONLY IF SPECIFIED
-	if ! test -z "$3"; then
-		echo "$3" > /etc/opendomo/udata/$USER/email
-	else
-		rm /etc/opendomo/udata/$USER/email
-	fi
-
-	# Modify passwords ONLY IF SPECIFIED
-	if ! test -z "$4"; then
-		if test "$5" = "$6"; then
-			if ! /usr/bin/usermm $4 set $1 $5; then
-				echo "#ERR Permission denied"
-				exit 2
-			fi
-		else
-			echo "#ERR Passwords do not match"
-			exit 1
-		fi
-	fi
-	echo "#INFO Data modified for [$1]"
-	
+    # No user selected, see users list
+    cd $CONFIGDIR
+    echo "#> Available users"
+    echo "list:`basename $0`	selectable"
+    for user in `ls *.info | cut -f1 -d.`; do
+        FULLNAME=`grep ^FULLNAME= $user.info | sed 's/\"//g' | cut -f2 -d= `
+        echo "	-$user	$FULLNAME	user"
+    done
+    echo "action:"
+    echo "	modifyUser.sh	Add / Modify"
+    echo "	deleteUser.sh	Delete"
+    echo
 fi
-echo 
-
