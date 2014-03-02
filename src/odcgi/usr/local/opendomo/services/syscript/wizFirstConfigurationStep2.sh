@@ -11,10 +11,10 @@ if test "$stepfrom" = "1"; then
 	fullname="$2"
 	email="$3"
 	language="$4"
-	savevar $TMPCFGFILE fullname "$fullname"
-	savevar $TMPCFGFILE email "$email"
-	savevar $TMPCFGFILE language "$language"
-	echo "$language" > /etc/opendomo/i18n/lang	
+	echo "fullname=$fullname"  > $TMPCFGFILE
+	echo "email=$email"	  >> $TMPCFGFILE
+	echo "language=$language" >> $TMPCFGFILE
+	echo "$language" > /etc/opendomo/i18n/lang
 	echo "#LOADING Updating language files"
 	echo
 	/usr/local/opendomo/services/syscript/updateLanguageFiles.sh > /dev/null
@@ -28,4 +28,3 @@ echo "actions:"
 echo "	wizFirstConfigurationStep3.sh	Accept"
 echo "	wizFirstConfigurationStep1.sh	Previous"
 echo
-

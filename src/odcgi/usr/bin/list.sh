@@ -1,11 +1,11 @@
 #!/bin/sh
 #desc:Lista el contenido del directorio pasado como argumento
 #package:odcgi
-#author:opalenzuela 
-# 
-# Este script muestra el contenido del directorio indicado como argumento, 
+#author:opalenzuela
+#
+# Este script muestra el contenido del directorio indicado como argumento,
 # formateado para el CGI de OpenDomo. Los elementos mostrados son, unicamente,
-# aquellos que pueden ser ejecutados por el usuario validado (con el flag +x), 
+# aquellos que pueden ser ejecutados por el usuario validado (con el flag +x),
 # ya sean scripts o directorios.
 # Por razones de seguridad, seran eliminados de la ruta combinaciones de dos
 # puntos ".." y direccionadores estandar (<>)
@@ -37,7 +37,7 @@ else
 fi
 echo "list:$script	simple"
 
-if ! test -f /mnt/odconf/sysconf/cstconf.tar.gz; then
+if ! test -f /mnt/system/images/ctchange.img; then
 	echo "#INFO OpenDomo is not yet configured. Click Configuration wizard to configure it"
 	CFGWIZARD="1"
 fi
@@ -53,7 +53,7 @@ for i in `find -maxdepth 1 -type d | cut -c 3-100 | sort && \
 		else
 			name="$i"
 		fi
-		
+
 		if test -z "$name"; then
 			name="$i"
 		fi
@@ -66,7 +66,7 @@ for i in `find -maxdepth 1 -type d | cut -c 3-100 | sort && \
 				link="./$i/"
 			fi
 		else
-			class="$base sh_file"                               
+			class="$base sh_file"
 		fi
 
 		if ! echo "$name" | grep "@invisible" > /dev/null

@@ -17,4 +17,3 @@ echo "actions:"
 echo "	wizFirstConfigurationStep4.sh	Finish"
 echo "	wizFirstConfigurationStep2.sh	Previous"
 echo
-
