@@ -43,8 +43,15 @@ else
 	DESC=`grep ^$1 $TMPDIR/repo.lst | sort | head -n1 | cut -f3 -d';' `
 	DEPS=`grep ^$1 $TMPDIR/repo.lst | sort | head -n1 | cut -f4 -d';' `
 	WEB=`grep ^$1 $TMPDIR/repo.lst | sort | head -n1 | cut -f6 -d';' `
-	if test -z "$DEPS"; then
+	if test -z "$DEPS"
+	then
 		DEPS="none"
+	fi
+	if test -z "$WEB"
+	then
+		# If website is not specified, we use the community one. We expect
+		# to have a valid icon in PNG with the package's ID as filename.
+		WEB="http://es.opendomo.org/files"
 	fi
 	echo "#> Plugin details"
 	echo "form:managePlugins.sh"
