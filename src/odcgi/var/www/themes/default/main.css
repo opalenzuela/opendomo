@@ -650,8 +650,8 @@ p {
 .image .imgframe, .video .imgframe {
 	display: block!important;
 	text-align:center;
-	min-height: 200px;
-	min-width: 200px;
+	min-height: 100px;
+	min-width: 100px;
 }
 /* Limit the icon to 100x100 */
 .imgframe img, .video{

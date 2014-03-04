@@ -5,10 +5,25 @@
 
 #managePlugins li.installed {
 	background: #FFF url(/images/default/installed.png) no-repeat scroll bottom right;
-	box-shadow: 1px 1px #808080;
+	-webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
 	border: 1px solid black;
 }
 #managePlugins li.new {
 	background: #FFF url(/images/default/new.png) no-repeat scroll bottom right;
-	box-shadow: 3px 4px #808080;
+	-webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+}
+
+#managePlugins #icon_li div.imgframe {
+	width: 100px;
+	height: 100px;
+	border: 2px solid #555;
+	border-radius: 20px;
+	overflow: hidden;
+	-webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
 }
