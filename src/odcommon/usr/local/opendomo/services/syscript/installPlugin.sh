@@ -18,9 +18,9 @@ then
 	echo "#ERROR You must specify the plugin ID"
 	exit 2
 else
-	SIZE=`grep ^$1 $TMPDIR/repo.lst | sort | head -n1 | cut -f7 -d';' `
+	SIZE=`grep ^$1 $REPOFILE | sort | head -n1 | cut -f7 -d';' `
 	AVAIL=`/usr/local/bin/get_mem_free.sh | cut -f1 -d' '`
-	if test "$SIZE" -gt "$AVAIL"
+	if test "0$SIZE" -gt "0$AVAIL"
 	then
 		echo "#ERROR You need at least [$SIZE] Bytes free"
 		exit 3
