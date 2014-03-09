@@ -78,6 +78,11 @@ case $1 in
 		# Clean emulator for RaspberryPi
 		rm $INITRDDIR/usr/bin/qemu-arm-static 2>/dev/null
 
+		# Copy RasberryPi firmware to boot
+		cp $RPIFILESDIR/bootcode.bin $INITRDDIR/boot/
+		cp $RPIFILESDIR/start* $INITRDDIR/boot/
+		cp $RPIFILESDIR/fixup* $INITRDDIR/boot/
+
 		# Creating RaspberryPi boot config file
 		echo "rw root=/dev/ram0 ramdisk_size=$SIZE quiet rootwait" >$RPIFILESDIR/cmdline.txt
 
