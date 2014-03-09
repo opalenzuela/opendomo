@@ -21,14 +21,14 @@ IMGNAME="opendomo-$OD_VERSION-$ARCH"
 
 # Kernel version and downloads
 if [ "$ARCH" != "i386" ]; then
-        KERNEL_SOURCES="3.12"
-        KERNEL_PACKAGE="linux-source-3.12_3.12.6-2+rpi1_all.deb"
-        KERNEL_VERSION="3.12.6-rt7"
-        KERNEL_URL="http://archive.raspbian.org/raspbian/pool/main/l/linux/$KERNEL_PACKAGE"
+        KERNEL_SOURCES="3.6"
+        KERNEL_PACKAGE="linux-source-3.6_3.6.9-1~experimental.1+rpi7_all.deb"
+        KERNEL_VERSION="3.6.11"
+	KERNEL_URL="http://archive.raspbian.org/raspbian/pool/main/l/linux-3.6/$KERNEL_PACKAGE"
 else
-        KERNEL_SOURCES="3.13"
-        KERNEL_PACKAGE="linux-source-3.13_3.13.4-1_all.deb"
-        KERNEL_VERSION="3.13.4"
+        KERNEL_SOURCES="3.2"
+        KERNEL_PACKAGE="linux-source-3.2_3.2.54-2_all.deb"
+        KERNEL_VERSION="3.2.54"
         KERNEL_URL="http://ftp.debian.org/debian/pool/main/l/linux/$KERNEL_PACKAGE"
 fi
 

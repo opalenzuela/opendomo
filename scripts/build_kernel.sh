@@ -12,7 +12,7 @@ fi
 
 extract_kernel () {
 	# Check and download kernel
-	if ! test -f $ROOTSTRAPDIR/usr/src/linux-source-$KERNEL_SOURCES.tar.xz; then
+	if ! test -f $ROOTSTRAPDIR/usr/src/linux-source-$KERNEL_SOURCES.tar.bz2; then
 		echo "INFO: Downloading kernel ..."
 		wget -q --directory-prefix=$ROOTSTRAPDIR/tmp $KERNEL_URL
 		$CHROOT "$ROOTSTRAPDIR" /bin/bash -c "dpkg -i /tmp/$KERNEL_PACKAGE &>/dev/null"
@@ -21,13 +21,13 @@ extract_kernel () {
 	fi
 
 	echo "INFO: Extracting kernel ..."
-	tar xfJp $ROOTSTRAPDIR/usr/src/linux-source-"$KERNEL_SOURCES".tar.xz
+	tar xfjp $ROOTSTRAPDIR/usr/src/linux-source-"$KERNEL_SOURCES".tar.bz2
 	mv linux-source-"$KERNEL_SOURCES" $KERNELDIR
 
 	# Debian patch
-	if test -f $ROOTSTRAPDIR/usr/src/linux-patch-"$KERNEL_SOURCES"-rt.patch.xz; then
-		cp $ROOTSTRAPDIR/usr/src/linux-patch-"$KERNEL_SOURCES"-rt.patch.xz $ROOTSTRAPDIR/usr/src/linux.patch.xz
-		xz -d $ROOTSTRAPDIR/usr/src/linux.patch.xz
+	if test -f $ROOTSTRAPDIR/usr/src/linux-patch-"$KERNEL_SOURCES"-rt.patch.bz2; then
+		cp $ROOTSTRAPDIR/usr/src/linux-patch-"$KERNEL_SOURCES"-rt.patch.bz2 $ROOTSTRAPDIR/usr/src/linux.patch.bz2
+		bunzip2 $ROOTSTRAPDIR/usr/src/linux.patch.bz2
 		mv $ROOTSTRAPDIR/usr/src/linux.patch $KERNELDIR
 		$CHROOT "$ROOTSTRAPDIR" /bin/bash -c "cd /usr/src/linux && patch --quiet -p1 <linux.patch 2>/dev/null"
 		rm $KERNELDIR/linux.patch
