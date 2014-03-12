@@ -28,6 +28,7 @@ fi
 # The repository index file must exist.
 # Otherwise it will trigger a self-explanatory error.
 REPOFILE="/var/opendomo/tmp/repo.lst"
+PIDFILE="/var/opendomo/tmp/installplugin.pid"
 if ! test -f "$REPOFILE"
 then
     echo "#ERROR $REPOFILE does not exist. Launch managePlugins.sh and try again"
@@ -46,6 +47,7 @@ fi
 LFILE="$STORAGE/`basename $URLFILE`"
 
 echo "00" > $PROGRESS
+echo "00" > $PIDFILE
 rm /var/opendomo/plugins/$PKGID.error 2>/dev/null
 
 if wget $URLFILE -O $LFILE -q --no-check-certificate
@@ -54,6 +56,7 @@ then
     PKGVER=`basename $LFILE| cut -f1 -d'.' | cut -f2 -d'-'`
     #TODO Check SHA1
 else
+	rm $PIDFILE
     exit 2
 fi
 echo "50" > $PROGRESS
@@ -93,7 +96,7 @@ echo $PKGVER > /var/opendomo/plugins/$PKGID.version
 cd /
 echo $LFILE | grep ".tar.gz" - && /bin/tar -m --no-overwrite-dir -zxvf $LFILE | grep -v /$ > /var/opendomo/plugins/$PKGID.files 2>/var/opendomo/plugins/$PKGID.error
 echo $LFILE | grep ".zip" - && /usr/local/bin/unzip -o $LFILE | grep -v /$ | cut -f2 -d':' |sed 's/ //'> /var/opendomo/plugins/$PKGID.files 2>/var/opendomo/plugins/$PKGID.error
-rm $PROGRESS
+
 
 #Updating configuration files & wrappers
 sudo manage_conf.sh copy
@@ -105,3 +108,5 @@ then
     echo "#WARN Installation finished with errors:"
     cat /var/opendomo/plugins/$PKGID.error
 fi
+rm $PIDFILE
+rm $PROGRESS
