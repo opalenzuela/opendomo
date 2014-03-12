@@ -75,10 +75,10 @@ case $1 in
 	cd $KERNELDIR
 	for module in `find ./ -name *.ko`; do
 		MODULEDIR=`dirname $module`
-		mkdir -p $DIR/$INITRDDIR/lib/modules/$KERNEL_VERSION/$MODULEDIR
-		cp -r $module $DIR/$INITRDDIR/lib/modules/$KERNEL_VERSION/$MODULEDIR
+		mkdir -p "$DIR/$INITRDDIR/lib/modules/$KERNEL_VERSION/$MODULEDIR"
+		cp -r $module "$DIR/$INITRDDIR/lib/modules/$KERNEL_VERSION/$MODULEDIR"
 	done
-	cd $DIR
+	cd "$DIR"
 
 	# Copy modules db
 	cp $KERNELDIR/modules.order $INITRDDIR/lib/modules/$KERNEL_VERSION

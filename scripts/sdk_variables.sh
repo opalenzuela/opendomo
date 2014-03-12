@@ -28,7 +28,7 @@ if [ "$ARCH" != "i386" ]; then
 else
         KERNEL_SOURCES="3.2"
         KERNEL_PACKAGE="linux-source-3.2_3.2.54-2_all.deb"
-        KERNEL_VERSION="3.2.54"
+        KERNEL_VERSION="3.2.54-rt75"
         KERNEL_URL="http://ftp.debian.org/debian/pool/main/l/linux/$KERNEL_PACKAGE"
 fi
 
