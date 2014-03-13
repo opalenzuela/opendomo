@@ -35,7 +35,7 @@ then
     exit 2
 fi
 DEPS=`grep ^$1 $REPOFILE| cut -f4 -d';' |sort |head -n1`
-URLFILE=`grep ^$1 $REPOFILE| cut -f2 -d';' |sort |head -n1`
+URLFILE=`grep ^$1 $REPOFILE|sort -r |cut -f2 -d';' |head -n1`
 PROGRESS="/var/opendomo/run/$PKGID.progress"
 STORAGE="/mnt/odconf/plugins"
 
