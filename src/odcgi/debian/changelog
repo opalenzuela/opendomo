@@ -1,3 +1,10 @@
+odcgi (1.9.9) experimental; urgency=low
+
+  * Multiuser suport added
+  * Bug fixes
+
+ -- Javier Miras Blanco <jmirasb@gmail.com>  Thu, 13 Mar 2014 15:17:03 +0100
+
 odcgi (1.9.7) experimental; urgency=low
 
   * Bug fixes
