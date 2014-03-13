@@ -10,9 +10,10 @@ OSVER=`cat /etc/VERSION`
 OSVER="2.0.0"
 REPOSITORY="http://cloud.opendomo.com/repo/$OSVER/"
 if ! test -f $TMPDIR/repo.lst; then
-	if wget $REPOSITORY -O $TMPDIR/repo.lst --no-check-certificate --max-redirect=0 2>/dev/null
+	if wget $REPOSITORY -O $TMPDIR/repo.tmp --no-check-certificate --max-redirect=0 2>/dev/null
 	then
 		echo "#INFO Repository updated"
+		grep -v "#" $TMPDIR/repo.tmp > $TMPDIR/repo.lst
 	else
 		echo "#ERROR Cannot find repository for version [$OSVER]"
 		exit 1
@@ -24,7 +25,7 @@ if test -z "$1"; then
 	for p in `grep -v "#" $TMPDIR/repo.lst | cut -f1 -d- | uniq`; do
 		ID=`grep $p $TMPDIR/repo.lst | cut -f1 -d'-' | head -n1`
 		DESC=`grep $p $TMPDIR/repo.lst | cut -f3 -d';' | head -n1`
-		if test -f /var/opendomo/plugins/$ID.version
+		if test -f "/var/opendomo/plugins/$ID.version"
 		then
 			echo "	-$ID	$DESC	plugin new"
 		else
@@ -39,10 +40,10 @@ if test -z "$1"; then
 
 else
 	# Parameter was passed (requesting plugin's details)
-	URL=`grep ^$1 $TMPDIR/repo.lst | sort | head -n1 | cut -f2 -d';' `
-	DESC=`grep ^$1 $TMPDIR/repo.lst | sort | head -n1 | cut -f3 -d';' `
-	DEPS=`grep ^$1 $TMPDIR/repo.lst | sort | head -n1 | cut -f4 -d';' `
-	WEB=`grep ^$1 $TMPDIR/repo.lst | sort | head -n1 | cut -f6 -d';' `
+	URL=`grep ^$1 $TMPDIR/repo.lst  | sort -r | head -n1 | cut -f2 -d';' `
+	DESC=`grep ^$1 $TMPDIR/repo.lst | sort -r | head -n1 | cut -f3 -d';' `
+	DEPS=`grep ^$1 $TMPDIR/repo.lst | sort -r | head -n1 | cut -f4 -d';' `
+	WEB=`grep ^$1 $TMPDIR/repo.lst  | head -n1 | cut -f6 -d';' `
 	if test -z "$DEPS"
 	then
 		DEPS="none"
@@ -61,7 +62,7 @@ else
 	echo "	webp	Web page	readonly	$WEB"
 	echo "	icon	Icon	image	$WEB/$1.png"
 	echo "actions:"
-	if ! test -f /var/opendomo/plugins/$1.version; then
+	if ! test -f "/var/opendomo/plugins/$1.version"; then
 		echo "	installPlugin.sh	Install"
 	else
 		echo "	removePlugin.sh	Uninstall"
