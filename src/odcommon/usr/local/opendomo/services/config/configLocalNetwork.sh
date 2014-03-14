@@ -4,7 +4,6 @@
 #package:odcommon
 
 CFGFILE="/etc/opendomo/system/interfaces"
-DNSFILE="/etc/opendomo/system/resolv.conf"
 
 if ! test -z "$1"; then
 	MODE="$1"
@@ -26,8 +25,7 @@ if ! test -z "$1"; then
 				echo "address $IPADDRESS" >> $CFGFILE
 				echo "netmask $NETMASK" >> $CFGFILE
 				echo "gateway $DEFAULTGW" >> $CFGFILE
-
-				echo "nameserver $DNSSERVER" > $DNSFILE
+				echo "dns-nameservers $DNSSERVER" >> $CFGFILE
 
 				echo "#INFO Configuration saved"
 				echo "#INFO Please, save configuration and restart"
