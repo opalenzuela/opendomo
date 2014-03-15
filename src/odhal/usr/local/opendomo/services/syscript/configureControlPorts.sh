@@ -9,7 +9,6 @@ CTRLPATH="/var/opendomo/control"
 CFGPATH="/etc/opendomo/control"
 ZONEDIR="/etc/opendomo/zones"
 
-
 # Loading zones list
 mkdir -p $ZONEDIR
 cd $ZONEDIR
@@ -45,7 +44,7 @@ for t in *; do
 	fi
 done
 
-# Tipos de puerto de entrada
+# Inputs types
 TYPES="switch:switch,pushbutton:pushbutton,analog:analog"
 
 cd $CTRLPATH
@@ -100,7 +99,6 @@ else
 	if test -z "$2";
 	then
 		mkdir -p $CFGPATH/`echo $PORT | cut -f1 -d/` 2>/dev/null
-	
 
 		# Load configuration, if exists.
 		if test -f $CFGPATH/$PORT.info
@@ -111,7 +109,7 @@ else
 			#. $CTRLPATH/$PORT.info
 			echo "#WARN: No configuration was found"
 		fi
-		
+
 		# We obtain the name of the port, if not saved
 		if test -z "$desc"; then
 			# In desc file, from an old version
@@ -122,23 +120,23 @@ else
 				desc="$PORT"
 			fi
 		fi
-		
+
 		echo "#> Configure ${way}put port"
 		echo "form:`basename $0`"
 		echo "	port	Port	readonly	$1"
 		echo "	desc	Name	text	$desc"
 		echo "	status	Status	list[enabled:enabled,disabled:disabled]	enabled"
 		echo "	way	way	hidden	$way"
-		
-		# Si es de salida:
+
+		# If is a output
 		if test "$way" = "out"
 		then
 			pv=`echo $values| sed 's/,/-/g'`
 			echo "	values	Possible values	list[$POSSV]	$pv"
 			echo "	zone	Zone	list[$ZONES]	$zone"
 			echo "	tag	Tag	list[$TAGS]	$tag"
-	
-		# Si es de entrada:
+
+		# If is a input
 		elif test "$way" = "in"
 		then
 			echo "	units	Units	text	$units"
@@ -162,7 +160,6 @@ else
 
 		pv=`echo $values | sed 's/-/,/g'`
 		desc=`echo $desc | sed 's/+/ /g'`
-		#echo $name > $CFGPATH/$PORT.desc
 		rm $CFGPATH/$PORT.desc
 		echo "desc='$desc'"	 	>> $CFGPATH/$PORT.info
 		echo "status='$3'"  	>> $CFGPATH/$PORT.info
@@ -176,9 +173,7 @@ else
 		echo "#INF: Configuration saved"
 		echo
 		# Delete temporary data file
-		if test -f /tmp/listcontrolports.tmp; then
-			rm /tmp/listcontrolports.*
-		fi
+		rm /var/opendomo/tmp/listcontrolports.* 2>/dev/null
 		chmod o+rx $CFGPATH/$PORT.info
 		/usr/local/opendomo/configureControlPorts.sh
 	fi

@@ -15,16 +15,14 @@ cd $CTRLPATH
 
 BNAME=`echo $1 | cut -d'-' -f1`
 PNAME=`echo $1 | cut -d'-' -f2`
-VALUE=$2   
+VALUE=$2
 # If "set" command is sent, execute
 if test -n "$1"; then
 	DNAME="$CTRLPATH/`echo $1 | sed 's/-/\//'`"
 	if test -w $DNAME; then
 		echo $2 > $DNAME
 		# Some time to propagate changes for the driver
-		usleep 100000 
-#	else
-#		echo "#ERR: Invalid port name"
+		usleep 100000
 	fi
 fi
 portsfound=0
@@ -38,7 +36,7 @@ if ! test -f $TMPFILE; then
 	touch $TMPFILE
 	cd $CTRLPATH
 	for device in *; do
-		if test "$device" != "*"; then 
+		if test "$device" != "*"; then
 			cd $device
 			for port in ?????; do
 				if test "$port" != "?????"
@@ -51,7 +49,7 @@ if ! test -f $TMPFILE; then
 					desc=""
 					if test -f $CFGPATH/$device/$port.desc; then
 						desc=`cat $CFGPATH/$device/$port.desc`
-					fi				
+					fi
 					if test -f $CFGPATH/$device/$port.info; then
 						. $CFGPATH/$device/$port.info
 					fi
@@ -60,7 +58,7 @@ if ! test -f $TMPFILE; then
 					fi
 					if test -z "$tag"; then
 						tag="none"
-					fi		
+					fi
 					if test -z "$zone"; then
 						zone="none"
 					fi
@@ -72,24 +70,16 @@ if ! test -f $TMPFILE; then
 			done
 			cd ..
 		fi
-	done	
+	done
 	# We sort it by tag (column 5)
 	sort -k5 $TMPFILE -o $TMPFILE
 fi
 
-
-if test -d /etc/opendomo/tags; then
-	cd /etc/opendomo/tags
-else
-	echo "#WARN: Tag file corrupted. Click Manage tags to fix it"
-fi
-
 # this function receives:
-
 displayport() {
 	if ! test -z "$1"; then
 		if test -f /var/opendomo/control/$1.value
-		then	
+		then
 			value=`cat /var/opendomo/control/$1.value`
 		else
 			value="off"
@@ -104,14 +94,29 @@ displayport() {
 			else
 				ftype="readonly $type"
 			fi
-		fi		
+		fi
 		echo "	$1	$2	$ftype	$value" | sed 's/+/ /g' 
 	fi
 }
 
+# Only show tags with ports
+if test -z $SELECTEDZONE; then
+        PORTTAG=`cat $TMPFILE | awk '{print$5}' | cut -f2 -d= | uniq`
+else
+        PORTTAG=`cat $TMPFILE | grep zone=$SELECTEDZONE | awk '{print$5}' | cut -f2 -d= | uniq`
+fi
+
+for tag in $PORTTAG; do
+        if test -z "$TAGLIST"; then
+                TAGLIST="$tag"
+        else
+                TAGLIST="$TAGLIST $tag"
+        fi
+done
+
 echo "#> Control ports"
 echo "form:`basename $0`"
-for TAG in * none; do
+for TAG in $TAGLIST; do
 	if test -f /etc/opendomo/tags/$TAG ; then
 		tname=`cat /etc/opendomo/tags/$TAG`
 	else
@@ -122,10 +127,9 @@ for TAG in * none; do
 		if test -z $SELECTEDZONE; then
 			grep tag=$TAG $TMPFILE > $TMPFILE.$TAG
 		else
-			grep tag=$TAG $TMPFILE | grep zone=$SELECTEDZONE > $TMPFILE.$TAG	
+			grep tag=$TAG $TMPFILE | grep zone=$SELECTEDZONE > $TMPFILE.$TAG
 		fi
 	fi
-	#grep $TAG $TMPFILE | sed 's/^/# /'
 	exec 3<$TMPFILE.$TAG
 	while read LINE <&3
 	do
@@ -133,7 +137,7 @@ for TAG in * none; do
 	done
 
 done
-chmod ugo+rw /tmp/listcontrolports* 2>/dev/null
+chmod ugo+rw /var/opendomo/tmp/listcontrolports* 2>/dev/null
 
 echo "actions:"
 if test -x /usr/local/opendomo/manageTags.sh; then
@@ -142,7 +146,4 @@ fi
 if test -x /usr/local/opendomo/configureControlPorts.sh; then
 	echo "	configureControlPorts.sh	Configure control ports"
 fi
-#if test `basename $0` = "listControlPorts.sh" && test -x /usr/local/opendomo/turnAllLightsOff.sh; then
-#	echo "	turnAllLightsOff.sh	Turn all lights off"
-#fi
-echo 
+echo
