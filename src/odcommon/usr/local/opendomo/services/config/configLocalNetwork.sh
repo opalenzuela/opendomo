@@ -55,7 +55,7 @@ else
 		IPADDRESS=`grep address $CFGFILE | cut -f2 -d' '`
 		NETMASK=`grep netmask $CFGFILE | cut -f2 -d' '`
 		DEFAULTGW=`grep gateway $CFGFILE | cut -f2 -d' '`
-		DNSSERVER=`grep -m1 nameserver $DNSFILE | cut -f2 -d' '`
+		DNSSERVER=`grep -m1 dns-nameservers $CFGFILE | cut -f2 -d' '`
 	fi
 fi
 
@@ -63,7 +63,7 @@ echo "#> Network interface configuration"
 echo "form:`basename $0`"
 echo "	mode	Mode	list[static:static,dhcp:DHCP client]	$MODE"
 echo "	ip	IP	text	$IPADDRESS"
-echo "	mask	netmask	text	$NETMASK"
+echo "	mask	Netmask	text	$NETMASK"
 echo "	gw	Gateway	text	$DEFAULTGW"
 echo "	dns	DNS server	text	$DNSSERVER"
 echo

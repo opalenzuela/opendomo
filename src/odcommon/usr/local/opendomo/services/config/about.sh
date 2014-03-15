@@ -27,7 +27,7 @@ cd /var/opendomo/plugins/
 # Checking plugins dir and see info
 if ls *; then
 	for plugin in `ls | cut -f1 -d. | uniq`; do
-		if iscfg.sh $plugin.info; then
+		if iscfg.sh $plugin.info &>/dev/null; then
 			DESCRIPTION=`grep ^DESCRIPTION= $plugin.info | sed 's/\"//g' | cut -f2 -d= `
 			VERSION=`cat $plugin.version`
 			echo "	-$plugin	$DESCRIPTION	package	$VERSION GLP v3"
