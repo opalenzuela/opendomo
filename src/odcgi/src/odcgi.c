@@ -282,7 +282,7 @@ odcgi_print_footer (const char *msg, int buttons, cgi_t * cgi)
 			"onclick='showDebug();'>%s</a>\n", T (ODCGI_TEXT_DEBUG));
 		if (1000 == getgid()) {
 			printf ("\t\t<a id='savebutton' class='savebutton subtab' "
-				"href='/cgi-bin/od.cgi/saveSystemConfiguration.sh' >%s</a>\n", 
+				"href='/cgi-bin/od.cgi/manageConfiguration.sh' >%s</a>\n", 
 				T (ODCGI_TEXT_SAVE));			
 		}
 	
