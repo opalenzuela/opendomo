@@ -39,7 +39,7 @@ case $1 in
 	    if useradd -g $GROUPUID -G $USERGROUPS -m -u $UUID $USER; then
                 ch_password $USER $PASSWD
             else
-                echo "#ERROR User $USER can be added, already exist"
+                echo "#ERRO User $USER can be added, already exist"
             fi
 
             # Adding extra info
@@ -56,18 +56,18 @@ case $1 in
             # Checking user
             USER="$2"
             if test -z `cat "/etc/passwd" | cut -f1 -d: | grep $USER`; then
-                echo "#ERROR User $USER don't exist"
+                echo "#ERRO User $USER don't exist"
                 exit 1
             fi
 
             # Checking GID, only group users can be deleted
             let UGID=`grep $USER /etc/passwd | cut -f4 -d:`
             if [ $UGID = "100" ]; then
-                echo "#WARN Deleting $USER user"
+                echo "#INFO Deleting $USER user"
                 userdel -r $USER 2>/dev/null
                 rm $CONFIGDIR/$USER.info 2>/dev/null
             else
-                echo "#ERROR User $USER can be deleted"
+                echo "#ERRO User $USER can be deleted"
 		exit 1
             fi
         else

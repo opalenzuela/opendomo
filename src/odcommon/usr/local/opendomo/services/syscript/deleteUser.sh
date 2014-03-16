@@ -5,9 +5,7 @@
 
 USER=$1
 if ! test -z $1; then
-    echo "#INFO User $USER has been deleted"
-    sudo manageusers.sh del $USER >/dev/null 2>/dev/null
-
+    sudo manageusers.sh del $USER
     manageUsers.sh
 else
     echo "#ERROR User is not selected"
