@@ -24,11 +24,12 @@ if test -z "$1"; then
 	for p in `grep -v "#" $TMPDIR/repo.lst | cut -f1 -d- | uniq`; do
 		ID=`grep $p $TMPDIR/repo.lst | cut -f1 -d'-' | head -n1`
 		DESC=`grep $p $TMPDIR/repo.lst | cut -f3 -d';' | head -n1`
+		test -z "$DESC" && DESC="$ID"
 		if test -f "/var/opendomo/plugins/$ID.version"
 		then
-			echo "	-$ID	$DESC	plugin new"
-		else
 			echo "	-$ID	$DESC	plugin installed"
+		else
+			echo "	-$ID	$DESC	plugin new"
 		fi
 	done
 	if test -z "$ID"; then
