@@ -62,7 +62,7 @@
 #define DRIVER_PATH 	"/var/opendomo/control"
 #define CONF_PATH 	"/etc/opendomo/control"
 #define CONF_FILE		"/var/opendomo/domino_devices.conf"
-#define LOG_PATH		"/var/log/stats"
+#define LOG_PATH		"/var/opendomo/log/"
 #define PATH_LEN 64
 #define DEVICEDOWN_STR   "DEVICEDOWN"
 #define DEVICEDOWN_TIME 30
@@ -81,7 +81,7 @@ domino_data_t;
 
 void notify_port_change(char *pname, char *pvalue){
 	char cmd[512];
-	char script[] = "/usr/local/opendomo/services/syscript/eh_outputstates.sh";
+	char script[] = "/usr/local/opendomo/eventhandlers/outputStates.sh";
 
 	snprintf(cmd, sizeof(cmd), "%s portchange odhal '%s %s'", 
 		script, pname, pvalue);
@@ -503,7 +503,7 @@ void domino_update_list(
 		fclose(f);
 		char cmd[1024];
 		snprintf(cmd, sizeof(cmd), 
-			"/usr/bin/bgshell \"/usr/local/bin/odhal_init.sh %s %s >>/var/log/odhaldetection.log\"", ip, uid);
+			"/usr/local/bin/bgshell \"/usr/local/bin/odhal_init.sh %s %s >>/var/opendomo/log/odhaldetection.log\"", ip, uid);
 		printlog(LOG_E, "executing: %s", cmd);
 		system(cmd);
 	}

@@ -32,7 +32,7 @@
 
 #include "printlog.h"
 
-#define EVCMD_D "/usr/bin/logger -p odhal.debug "
+#define EVCMD_D "/usr/bin/logger -p user.debug "
 #define EVCMD_N "/bin/logevent notice odhal "
 #define EVCMD_W "/bin/logevent warning odhal "
 #define EVCMD_A "/bin/logevent alarm odhal "
