@@ -56,5 +56,5 @@ do
 	fi
 	usleep 100
 done
-rm /tmp/listcontrolports* 
+rm /var/opendomo/tmp/listcontrolports* 
 rm $TMPFILE

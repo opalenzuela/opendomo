@@ -5,10 +5,10 @@
 
 # Copyright(c) 2013 OpenDomo Services SL. Licensed under GPL v3 or later
 
-LOGFILE="/var/opendomo/log/stats/odhal-st.h`date +%H`"
+LOGFILE="/var/opendomo/log/odhal-st.h`date +%H`"
 tstamp=`date +%H:%M:%S`
 
-/usr/local/opendomo/services/syscript/eh_process_rules.sh >/dev/null
+/usr/local/opendomo/eventhandlers/processRules.sh >/dev/null
 
 touch $LOGFILE
 chmod o+w $LOGFILE
