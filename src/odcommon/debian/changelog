@@ -1,3 +1,9 @@
+odcommon (2.0.0) experimental; urgency=low
+
+  * Bug fixes 
+
+ -- Javier Miras Blanco <jmirasb@gmail.com>  Fri, 21 Mar 2014 16:38:39 +0100
+
 odcommon (1.9.9) experimental; urgency=low
 
   * Multiuser support added

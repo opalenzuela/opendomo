@@ -16,7 +16,7 @@ RPIFILESDIR="$FILESDIR/rpifiles"
 ARCHCFG="$TMPDIR/arch"
 ARCH=`cat $ARCHCFG 2>/dev/null`
 ODPKG="odcommon odcgi odhal"
-OD_VERSION="2.0rc1"
+OD_VERSION="2.0.0"
 IMGNAME="opendomo-$OD_VERSION-$ARCH"
 
 # Kernel version and downloads

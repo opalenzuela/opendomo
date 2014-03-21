@@ -1,8 +1,9 @@
-odhal (1.9.9) UNRELEASED; urgency=low
+odhal (2.0.0) experimental; urgency=low
 
   * Bug fixes
+  * Modify paths in scripts
 
- -- Javier Miras Blanco <jmirasb@gmail.com>  Sat, 22 Feb 2014 11:18:50 +0100
+ -- Javier Miras Blanco <jmirasb@gmail.com>  Sat, 21 Mar 2014 11:18:50 +0100
 
 odhal (1.9.6) experimental; urgency=low
 

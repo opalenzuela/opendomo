@@ -56,13 +56,6 @@ case $1 in
 			mount -o loop $IMAGESDIR/$CHANGESIMG $MOUNTDIR 2>/dev/null
 			mkdir -p $MOUNTDIR/usr && mv $INITRDDIR/usr/share $MOUNTDIR/usr/ 2>/dev/null
 
-			# Move apt files to SD and create links in initrd
-			mkdir $TARGETDIR/apt
-			mv $INITRDDIR/var/lib/apt   $TARGETDIR/apt/lib   2>/dev/null
-			mv $INITRDDIR/var/cache/apt $TARGETDIR/apt/cache 2>/dev/null
-			ln -s /mnt/odconf/apt/lib   $INITRDDIR/var/lib/apt   2>/dev/null
-			ln -s /mnt/odconf/apt/cache $INITRDDIR/var/cache/apt 2>/dev/null
-
 			# Unmount
 			while !	umount $MOUNTDIR 2>/dev/null; do
 				sleep 1
