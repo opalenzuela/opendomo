@@ -77,6 +77,8 @@ fi
 #Execute as root
 if ! test -z "$DEPS"
 then
+    #Clean cache
+    sh -c "sync; echo 3 > /proc/sys/vm/drop_caches"
     if
     LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive sudo apt-get --force-yes -yq install $DEPS
     then
