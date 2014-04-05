@@ -135,7 +135,6 @@ if ! test -z $SWITCHDIR; then
 	mount --move /tmp  $SWITCHDIR/tmp
 	mount --move /run  $SWICTHDIR/run
 
-	# Rebuild mtab and change root
-	/bin/egrep "hda|mmcblk|sda" /proc/mounts >/etc/mtab
+	# change root
 	exec pivot_root $SWITCHDIR $MNTINITRD
 fi

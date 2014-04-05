@@ -45,6 +45,9 @@ do_start () {
 		log_action_end_msg $?
 	fi
 
+	# rebuild mtab
+	egrep "hda|mmcblk|sda|home|aufs" /proc/mounts >/etc/mtab
+
 	# Change opendomo files and folders to admin user
 	chown -R admin:admin "/etc/opendomo" 2>/dev/null
 	chown -R admin:admin "/var/opendomo" 2>/dev/null
