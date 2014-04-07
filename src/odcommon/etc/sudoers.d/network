@@ -1,4 +1,5 @@
 Cmnd_Alias      NETWORK = /sbin/ifconfig, \
+                          /usr/local/bin/ping, \
                           /sbin/ifup, \
                           /sbin/ifdown
 

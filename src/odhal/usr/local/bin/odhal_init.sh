@@ -6,7 +6,7 @@ if test -z "$1"; then
 	exit 1
 fi
 if test -z "$BNAME"; then
-	BNAME=`grep "$IPADDRESS" /var/opendomo/domino_devices.conf | cut -f2 -d:`
+	BNAME=`grep "$IPADDRESS" /var/opendomo/domino_devices.conf | cut -f1 -d:`
 	if test -z "$BNAME" 
 	then
 		echo "ERROR: $IPADDRESS not found in /var/opendomo/domino_devices.conf:"
@@ -17,7 +17,8 @@ if test -z "$BNAME"; then
 fi
 
 TMPFILE=/var/opendomo/tmp/$$.portlist
-if ping $IPADDRESS >/dev/null
+
+if  sudo ping -c 1 $IPADDRESS >/dev/null
 then
 	echo lst | nc $IPADDRESS 1729 | cut -f2 -d: > $TMPFILE 
 else
@@ -34,10 +35,10 @@ do
 	echo lst $p | nc $IPADDRESS 1729 | sed -e 's/ /\n/g' -e 's/:/=/g'  > /var/opendomo/tmp/$IPADDRESS-$p.data
 	echo "$p added"
 	tag=""
-	tag=`grep tag= /tmp/$IPADDRESS-$p.data | cut -f2 -d=`
+	tag=`grep tag= /var/opendomo/tmp/$IPADDRESS-$p.data | cut -f2 -d=`
 	# this cannot be done. Some chars (&) are invalid to be included as values
 	# . /tmp/$IPADDRESS-$p.data
-	if ! test -z "$tag" && test "$tag" != "0"; then
+	if ! test -z "$tag" && test "$tag" != "_"; then
 		tname=`ls $tag* | head -n1` 2>/dev/null
 		if ! test -z "$tname"; then
 			INFOFILE="/etc/opendomo/control/$BNAME/$p.info"
@@ -54,7 +55,7 @@ do
 	else
 		echo "empty tag"
 	fi
-	usleep 100
+	sleep 0.1
 done
 rm /var/opendomo/tmp/listcontrolports* 
 rm $TMPFILE
