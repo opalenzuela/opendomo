@@ -16,7 +16,7 @@ if test -z "$BNAME"; then
 	BNAME="ODC$BNAME"
 fi
 
-TMPFILE=/tmp/$$.portlist
+TMPFILE=/var/opendomo/tmp/$$.portlist
 if ping $IPADDRESS >/dev/null
 then
 	echo lst | nc $IPADDRESS 1729 | cut -f2 -d: > $TMPFILE 
@@ -31,7 +31,7 @@ sleep 60 # leave time for the driver to create the files
 for p in `cat $TMPFILE`
 do
 	cd /etc/opendomo/tags
-	echo lst $p | nc $IPADDRESS 1729 | sed -e 's/ /\n/g' -e 's/:/=/g'  > /tmp/$IPADDRESS-$p.data
+	echo lst $p | nc $IPADDRESS 1729 | sed -e 's/ /\n/g' -e 's/:/=/g'  > /var/opendomo/tmp/$IPADDRESS-$p.data
 	echo "$p added"
 	tag=""
 	tag=`grep tag= /tmp/$IPADDRESS-$p.data | cut -f2 -d=`
