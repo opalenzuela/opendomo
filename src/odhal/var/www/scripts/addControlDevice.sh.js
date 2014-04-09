@@ -1,4 +1,4 @@
-$("select[name=model]").on("change",function(){
+$("select[name=model]").bind("change",function(){
 	switch(jQuery(this).val()){
 		case "dummy":
 			$("#port_li").hide();
