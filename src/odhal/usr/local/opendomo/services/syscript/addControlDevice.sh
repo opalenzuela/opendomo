@@ -17,7 +17,7 @@ mkdir -p $CFGPATH
 if test -e /usr/bin/micropik
 then
 	MODELS="$MODELS, micropik:micropik"
-	PS=`ls /dev/ttyS* | cut -c 0-15` 2>/dev/null
+	PS=`ls /dev/ttyS* | cut -c1-15` 2>/dev/null
 fi
 
 # arduino ports
@@ -25,7 +25,7 @@ if test -e /usr/bin/arduino
 then
 	NETDEVICES=`grep "D:" /var/opendomo/oddiscovery-agentlist | sed 's/^/net-/' | cut -f1` 2>/dev/null
 	MODELS="$MODELS, arduino:arduino"
-	PS="$PS `ls /dev/ttyU* | cut -c 0-15`" 2>/dev/null
+	PS="$PS `ls /dev/ttyU* | cut -c1-15`" 2>/dev/null
 	PS="$PS 
 	/dev/arduino
 	$NETDEVICES"
@@ -38,6 +38,13 @@ then
 	PS="$PS 
 	`/usr/bin/x10 -l`" 2>/dev/null
 fi
+
+# ODControl2 ports
+if test -e /usr/bin/domino
+then
+	MODELS="$MODELS, domino:ODControl2"
+fi
+
 
 # list of all available ports
 for p in $PS; do
@@ -64,6 +71,9 @@ else
 	echo "	port	Port	list[$PORTS]	$device"
 	echo "	dirname	Name	text:[a-zA-Z0-9_]+	$dirname"
 	echo "	refresh	Refresh	text.integer	$refresh"
+	echo "	ip	IP address	text	$ip"	
+	echo "	username	Username	text	$username"
+	echo "	password	Password	text	$password"
 	echo "actions:"
 	echo "	manageControlDevices.sh	Save"
 fi

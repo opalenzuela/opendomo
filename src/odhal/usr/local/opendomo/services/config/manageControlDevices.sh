@@ -45,19 +45,16 @@ case "$action" in
 
 	;;
 	"update")
-		MODEL=$2
-		PORT=`echo $3| tr - :`
-		NAME=$4
-		REFRESH=$5
+		port=`echo $port| tr - :`
 
-		if test -z "$NAME"
+		if test -z "$dirname"
 		then
 			echo "#ERR: Name cannot be empty."
 			exit 1
 		fi
 
 		# TODO: verificar nombres existentes, solo al añadir
-		if test -e $CFGPATH/$NAME.conf
+		if test -e $CFGPATH/$dirname.conf
 		then
 			echo "# Please choose another name."
 			exit 1
@@ -70,21 +67,24 @@ case "$action" in
 		#fi
 
 	 	echo "
-device='$PORT'
-driver='$MODEL'
-dirname='$NAME'
-refresh='$REFRESH'
+device='$port'
+driver='$model'
+dirname='$dirname'
+refresh='$refresh'
+username='$username'
+password='$password'
+ip='$ip'
 " > $CFGPATH/$NAME.conf
 
 		mkdir $CFGPATH/$NAME
 
 		#echo "#INFO Device stored"
 		# Restarting service
-		/etc/init.d/odcontrol restart >/dev/null
+		/usr/local/opendomo/daemons/odhal restart >/dev/null
 		
 		echo "#> Manage control devices"
 		echo "list:`basename $0`"
-		echo "# Device [$MODEL] configured"
+		echo "# Device [$model] configured"
 
 		echo "actions:"
 		echo "	configureControlPorts.sh	Configure control ports"
