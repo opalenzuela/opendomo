@@ -14,7 +14,6 @@ PORTS=""
 
 mkdir -p $CFGPATH
 
-
 case "$action" in
 	"")
 

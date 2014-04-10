@@ -23,12 +23,8 @@ fi
 # arduino ports
 if test -e /usr/bin/arduino
 then
-	NETDEVICES=`grep "D:" /var/opendomo/oddiscovery-agentlist | sed 's/^/net-/' | cut -f1` 2>/dev/null
 	MODELS="$MODELS, arduino:arduino"
 	PS="$PS `ls /dev/ttyU* | cut -c1-15`" 2>/dev/null
-	PS="$PS 
-	/dev/arduino
-	$NETDEVICES"
 fi
 
 # x10 ports
