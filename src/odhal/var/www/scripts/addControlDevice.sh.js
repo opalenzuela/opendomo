@@ -1,5 +1,6 @@
-$("select[name=model]").bind("change",function(){
-	switch(jQuery(this).val()){
+jQuery(function($) {
+	$("select[name=model]").bind("change",function(){
+		switch(jQuery(this).val()){
 		case "dummy":
 			$("#port_li").hide();
 			$("#dirname_li").show();
@@ -41,4 +42,5 @@ $("select[name=model]").bind("change",function(){
 			$("#password_li").hide();
 			break;
 		} 
+	});
 });

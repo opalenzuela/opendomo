@@ -17,14 +17,14 @@ mkdir -p $CFGPATH
 if test -e /usr/bin/micropik
 then
 	MODELS="$MODELS, micropik:micropik"
-	PS=`ls /dev/ttyS* | cut -c1-15` 2>/dev/null
+	PS="`ls /dev/ttyS* 2>/dev/null | cut -c1-15` "
 fi
 
 # arduino ports
 if test -e /usr/bin/arduino
 then
 	MODELS="$MODELS, arduino:arduino"
-	PS="$PS `ls /dev/ttyU* | cut -c1-15`" 2>/dev/null
+	PS="$PS `ls /dev/ttyU* 2>/dev/null | cut -c1-15`" 
 fi
 
 # x10 ports
@@ -32,13 +32,13 @@ if test -e /usr/bin/x10
 then
 	MODELS="$MODELS, x10:x10"
 	PS="$PS 
-	`/usr/bin/x10 -l`" 2>/dev/null
+	`/usr/bin/x10 -l 2>/dev/null`" 
 fi
 
 # ODControl2 ports
 if test -e /usr/bin/domino
 then
-	MODELS="$MODELS, domino:ODControl2"
+	MODELS="$MODELS, domino:ODControl"
 fi
 
 
