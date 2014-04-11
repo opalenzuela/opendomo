@@ -73,9 +73,9 @@ refresh='$refresh'
 username='$username'
 password='$password'
 ip='$ip'
-" > $CFGPATH/$NAME.conf
+" > $CFGPATH/$dirname.conf
 
-		mkdir $CFGPATH/$NAME
+		mkdir $CFGPATH/$dirname
 
 		#echo "#INFO Device stored"
 		# Restarting service

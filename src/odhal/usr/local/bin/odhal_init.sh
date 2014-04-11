@@ -1,10 +1,23 @@
 #!/bin/sh
 IPADDRESS="$1"
 BNAME="ODC$2"
+CFGPATH="/etc/opendomo/control"
 if test -z "$1"; then
 	echo "usage: $0 ip_address [UID]"
+	echo "usage: $0 device_id"
 	exit 1
 fi
+
+if test -f "$CFGPATH/$1.conf"
+then
+	. $CFGPATH/$1.conf
+	if test "$driver" = "domino"
+	then
+		BNAME="$dirname"
+		IPADDRESS="$ip"
+	fi
+fi
+
 if test -z "$BNAME"; then
 	BNAME=`grep "$IPADDRESS" /var/opendomo/domino_devices.conf | cut -f1 -d:`
 	if test -z "$BNAME" 

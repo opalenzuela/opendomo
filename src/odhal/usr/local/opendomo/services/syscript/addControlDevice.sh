@@ -7,7 +7,7 @@
 
 CFGPATH="/etc/opendomo/control"
 CTRLPATH="/var/opendomo/control"
-MODELS="dummy"
+MODELS=",dummy"
 PS=""
 PORTS="/dev/dummy"
 
