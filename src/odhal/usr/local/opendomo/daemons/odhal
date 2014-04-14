@@ -29,7 +29,7 @@ do_start () {
 			BINARY="/usr/bin/$driver"
 			ARGS="-d $device -p $dirname -r refresh $params"
 			if test -x "$BINARY"; then
-				$BINARY $ARGS >>/var/opendomo/log/odhal_$dirname.log 2>/var/opendomo/log/odhal_$dirname.err &
+				sudo $BINARY $ARGS >>/var/opendomo/log/odhal_$dirname.log 2>/var/opendomo/log/odhal_$dirname.err &
 				echo -n " ($dirname)"
 			else
 				echo -n " ($dirname failed)"

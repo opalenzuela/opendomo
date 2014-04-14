@@ -101,9 +101,9 @@ displayport() {
 
 # Only show tags with ports
 if test -z $SELECTEDZONE; then
-        PORTTAG=`cat $TMPFILE | awk '{print$5}' | cut -f2 -d= | uniq`
+        PORTTAG=`cat $TMPFILE | awk '{print$6}' | cut -f2 -d= | uniq`
 else
-        PORTTAG=`cat $TMPFILE | grep zone=$SELECTEDZONE | awk '{print$5}' | cut -f2 -d= | uniq`
+        PORTTAG=`cat $TMPFILE | grep zone=$SELECTEDZONE | awk '{print$6}' | cut -f2 -d= | uniq`
 fi
 
 for tag in $PORTTAG; do

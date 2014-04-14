@@ -154,14 +154,13 @@ else
 	else
 
 		# Create new configuration
-		rm -f $CFGPATH/$PORT.info
 		touch $CFGPATH/$PORT.info
 		chmod 0644 $CFGPATH/$PORT.info
 
 		pv=`echo $values | sed 's/-/,/g'`
 		desc=`echo $desc | sed 's/+/ /g'`
 		rm $CFGPATH/$PORT.desc
-		echo "desc='$desc'"	 	>> $CFGPATH/$PORT.info
+		echo "desc='$desc'"	 	> $CFGPATH/$PORT.info
 		echo "status='$3'"  	>> $CFGPATH/$PORT.info
 		echo "way='$way'"    	>> $CFGPATH/$PORT.info
 		echo "units='$units'" 	>> $CFGPATH/$PORT.info
