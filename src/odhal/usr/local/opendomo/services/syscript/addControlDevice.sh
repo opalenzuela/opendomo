@@ -3,7 +3,7 @@
 #package:odcontrol
 #type:local
 
-# Copyright(c) 2011 OpenDomo Services SL. Licensed under GPL v3 or later
+# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
 
 CFGPATH="/etc/opendomo/control"
 CTRLPATH="/var/opendomo/control"
