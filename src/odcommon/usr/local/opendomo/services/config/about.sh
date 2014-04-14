@@ -9,8 +9,6 @@ KERNELVERSION=`uname -r` 2> /dev/null
 
 if test -f /etc/VERSION; then
 	ODVERSION=`cat /etc/VERSION`
-else
-	ODVERSION=`cat /mnt/system/VERSION`
 fi
 
 echo "#> About"

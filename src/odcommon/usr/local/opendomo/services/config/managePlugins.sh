@@ -37,7 +37,7 @@ if test -z "$1"; then
 	fi
 	echo "actions:"
 	echo "	managePlugins.sh	Details"
-
+	echo "	updateSystem.sh	System update"
 else
 	# Parameter was passed (requesting plugin's details)
 	URL=`grep ^$1 $TMPDIR/repo.lst  | sort -r | head -n1 | cut -f2 -d';' `
