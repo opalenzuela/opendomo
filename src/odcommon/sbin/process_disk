@@ -129,11 +129,12 @@ if ! test -z $SWITCHDIR; then
 	done
 
 	# Move kernel filesystems to new rootfs
-	mount --move /dev  $SWITCHDIR/dev
-	mount --move /proc $SWITCHDIR/proc
-	mount --move /sys  $SWITCHDIR/sys
-	mount --move /tmp  $SWITCHDIR/tmp
-	mount --move /run  $SWICTHDIR/run
+	mount --move /dev  	$SWITCHDIR/dev
+	mount --move /proc 	$SWITCHDIR/proc
+	mount --move /sys  	$SWITCHDIR/sys
+	mount --move /tmp  	$SWITCHDIR/tmp
+	mount --move /run/lock  $SWICTHDIR/run/lock
+	mount --move /run  	$SWICTHDIR/run
 
 	# change root
 	exec pivot_root $SWITCHDIR $MNTINITRD
