@@ -8,7 +8,7 @@ else
 	ARCH="armhf"
 fi
 
-VERSION="2.0.0"
+VERSION="2.0.1"
 ODCOMPKG="odcommon_"$VERSION"_"$ARCH".deb"
 ODCGIPKG="odcgi_"$VERSION"_"$ARCH".deb"
 ODHALPKG="odhal_"$VERSION"_"$ARCH".deb"
