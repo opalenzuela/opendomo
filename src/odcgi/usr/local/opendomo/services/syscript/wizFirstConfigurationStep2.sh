@@ -11,7 +11,7 @@ if test "$stepfrom" = "1"; then
 	fullname="$2"
 	email="$3"
 	language="$4"
-	echo "fullname=$fullname"  > $TMPCFGFILE
+	echo "fullname=\"$fullname\""  > $TMPCFGFILE
 	echo "email=$email"	  >> $TMPCFGFILE
 	echo "language=$language" >> $TMPCFGFILE
 	echo "$language" > /etc/opendomo/i18n/lang

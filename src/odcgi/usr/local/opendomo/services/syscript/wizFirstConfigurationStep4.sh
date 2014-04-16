@@ -28,8 +28,6 @@ echo
 updateSystem.sh >/dev/null 2>/dev/null
 
 # Saving configuration
-echo "#LOADING Saving changes. Please wait!"
-echo
 saveSystemConfig.sh >/dev/null 2>/dev/null
 
 echo "#> Configuration finished"
