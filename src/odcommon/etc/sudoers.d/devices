@@ -1,0 +1,3 @@
+Cmnd_Alias      DEVICES = /bin/umount
+
+admin ALL=(ALL) NOPASSWD: DEVICES
