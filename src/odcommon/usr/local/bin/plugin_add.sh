@@ -62,7 +62,7 @@ fi
 echo "50" > $PROGRESS
 
 #Only update apt sources once a week
-APTFILE="/mnt/odconf/apt/lastupdate"
+APTFILE="/var/opendomo/apt-lastupdate.info"
 CURWEEK=`date +%W`
 if ! test -f $APTFILE || [ $CURWEEK != `cat $APTFILE` ]
 then

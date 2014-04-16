@@ -9,41 +9,34 @@ else
 fi
 
 VERSION="2.0.0"
-ODCOMPKG="odcommon_$VERSION_$ARCH.deb"
-ODCGIPKG="odcgi_$VERSION_$ARCH.deb"
-ODHALPKG="odhal_$VERSION_$ARCH.deb"
-PKGURL="http://es.opendomo.org/files/"
+ODCOMPKG="odcommon_"$VERSION"_"$ARCH".deb"
+ODCGIPKG="odcgi_"$VERSION"_"$ARCH".deb"
+ODHALPKG="odhal_"$VERSION"_"$ARCH".deb"
+PKGURL="http://es.opendomo.org/files"
 
 LOGFILE="/var/opendomo/log/updateSystem.log"
-
-APTFILE="/mnt/odconf/apt/lastupdate"
+APTFILE="/var/opendomo/apt-lastupdate.info"
 CURWEEK=`date +%W`
-
-if [ `whoami` != "root" ]; then
-	echo "#ERROR Only root can update system"
-	exit 1
-fi
 
 #Only update apt sources once a week
 if ! test -f $APTFILE || [ $CURWEEK != `cat $APTFILE` ]
 then
-    echo "#INFO Updating sources ..."
-    sudo apt-get update
+    echo "#INFO Updating sources ..." &>>$LOGFILE
+    sudo apt-get update &>>$LOGFILE
     date +%W >$APTFILE
 fi
 
 echo -n "#INFO Updating opendomo packages, please wait ..."
-LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive sudo apt-get --force-yes -yq upgrade &>$LOGFILE
-if wget $PKGURL/$ODCOMPKG $PKGURL/$ODCGIPKG $PKGURL/$ODHALPKG &>$LOGFILE; then
-	if test sudo dpkg -i $ODCOMPKG $ODCGIPKG $ODHALPKG &>$LOGFILE; then
+LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive sudo apt-get --force-yes -yq upgrade &>>$LOGFILE
+if wget $PKGURL/$ODCOMPKG $PKGURL/$ODCGIPKG $PKGURL/$ODHALPKG &>>$LOGFILE; then
+	if sudo dpkg -i $ODCOMPKG $ODCGIPKG $ODHALPKG &>>$LOGFILE; then
 		rm $ODCOMPKG $ODCGIPKG $ODHALPKG
 	else
 		# Fix dpkg database installing missing deps
-		LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive sudo apt-get --force-yes -fyq install &>$LOGFILE
+		LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive sudo apt-get --force-yes -fyq install &>>$LOGFILE
 		rm $ODCOMPKG $ODCGIPKG $ODHALPKG
 	fi
-fi
 	echo "   (done)"
 else
-	echo "#ERROR Sources can't be downloaded, check network connection"
+	echo "   (No updates found!)"
 fi
