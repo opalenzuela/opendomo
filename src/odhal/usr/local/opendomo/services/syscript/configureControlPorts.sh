@@ -140,6 +140,7 @@ else
 		elif test "$way" = "in"
 		then
 			echo "	units	Units	text	$units"
+			echo "	values	Values	hidden	none"
 			echo "	zone	Zone	list[$ZONES]	$zone"
 			echo "	type	Type	list[$TYPES]	$type"
 			echo "	tag	Tag	list[$TAGS]	$tag"
