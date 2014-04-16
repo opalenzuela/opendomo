@@ -1,9 +1,0 @@
-
-#manageSequence li.sequence a , #manageSequenceSteps li.sequence a{
-    background: url("/images/default/sequence.png") no-repeat scroll left center transparent;
-    padding-left: 32px;
-}
-
-.used {
-	text-decoration: underline;
-}
