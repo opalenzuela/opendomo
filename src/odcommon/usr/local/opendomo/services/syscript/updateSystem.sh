@@ -8,9 +8,10 @@ else
 	ARCH="armhf"
 fi
 
-ODCOMPKG="odcommon_current_$ARCH.deb"
-ODCGIPKG="odcgi_current_$ARCH.deb"
-ODHALPKG="odhal_current_$ARCH.deb"
+VERSION="2.0.0"
+ODCOMPKG="odcommon_$VERSION_$ARCH.deb"
+ODCGIPKG="odcgi_$VERSION_$ARCH.deb"
+ODHALPKG="odhal_$VERSION_$ARCH.deb"
 PKGURL="http://es.opendomo.org/files/"
 
 LOGFILE="/var/opendomo/log/updateSystem.log"
