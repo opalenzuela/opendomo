@@ -22,13 +22,9 @@ sudo manageusers.sh mod admin "$fullname" "$email" "$newpassword" >/dev/null 2>/
 FULLURL="$URLVAL?UID=$uid&VER=$ver&MAIL=$mail"
 wget -q -O /var/opendomo/tmp/activation.tmp $FULLURL 2>/dev/null
 
-# Updating system
-echo "#LOADING Updating system. Please wait!"
-echo
-updateSystem.sh >/dev/null 2>/dev/null
-
-# Saving configuration
-saveSystemConfig.sh >/dev/null 2>/dev/null
+# Updating system in background
+updateSystem.sh >/dev/null 2>/dev/null &
+saveSystemConfig.sh >/dev/null 2>/dev/null &
 
 echo "#> Configuration finished"
 echo "#INFO Your configuration was saved"

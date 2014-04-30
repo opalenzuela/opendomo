@@ -17,6 +17,8 @@ PKGURL="http://es.opendomo.org/files"
 LOGFILE="/var/opendomo/log/updateSystem.log"
 APTFILE="/var/opendomo/apt-lastupdate.info"
 CURWEEK=`date +%W`
+PIDFILE="/var/opendomo/run/updateSystem.pid"
+touch $PIDFILE
 
 #Only update apt sources once a week
 if ! test -f $APTFILE || [ $CURWEEK != `cat $APTFILE` ]
@@ -40,3 +42,5 @@ if wget $PKGURL/$ODCOMPKG $PKGURL/$ODCGIPKG $PKGURL/$ODHALPKG &>>$LOGFILE; then
 else
 	echo "   (No updates found!)"
 fi
+
+rm $PIDFILE
