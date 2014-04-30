@@ -37,7 +37,7 @@ else
 fi
 echo "list:$script	simple"
 
-if ! test -f /mnt/system/images/ctchange.img; then
+if ! test -f /mnt/system/images/ctchange.img && ! test -z `pstree | grep systemUpdate.sh`; then
 	echo "#INFO OpenDomo is not yet configured. Click Configuration wizard to configure it"
 	CFGWIZARD="1"
 fi

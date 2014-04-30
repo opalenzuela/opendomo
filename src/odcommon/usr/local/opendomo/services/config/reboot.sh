@@ -11,7 +11,7 @@ if test -f $SYSUPDATPID; then
 	echo "#ERRO System update is running, system can be reboot"
 	echo
 elif test -f $SAVECONFPID; then
-	echo "#ERRO System update is running, system can be reboot"
+	echo "#ERRO Save config is running, system can be reboot"
 	echo
 else
 	echo "# Rebooting ... Please wait"

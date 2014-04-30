@@ -1,3 +1,6 @@
+$ nano saveSystemConfig.sh 
+$ nano updateSystem.sh 
+$ cat updateSystem.sh 
 #!/bin/sh
 #desc: Update debian and opendomo packages
 
@@ -18,7 +21,14 @@ LOGFILE="/var/opendomo/log/updateSystem.log"
 APTFILE="/var/opendomo/apt-lastupdate.info"
 CURWEEK=`date +%W`
 PIDFILE="/var/opendomo/run/updateSystem.pid"
+
+# Check process
+if test -f $PIDFILE; then
+    echo "#ERRO System update is already running"
+fi
 touch $PIDFILE
+echo "#LOADING Updating opendomo packages, please wait ..."
+echo
 
 #Only update apt sources once a week
 if ! test -f $APTFILE || [ $CURWEEK != `cat $APTFILE` ]
@@ -28,19 +38,19 @@ then
     date +%W >$APTFILE
 fi
 
-echo -n "#INFO Updating opendomo packages, please wait ..."
 LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive sudo apt-get --force-yes -yq upgrade &>>$LOGFILE
 if wget $PKGURL/$ODCOMPKG $PKGURL/$ODCGIPKG $PKGURL/$ODHALPKG &>>$LOGFILE; then
-	if sudo dpkg -i $ODCOMPKG $ODCGIPKG $ODHALPKG &>>$LOGFILE; then
-		rm $ODCOMPKG $ODCGIPKG $ODHALPKG
-	else
-		# Fix dpkg database installing missing deps
-		LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive sudo apt-get --force-yes -fyq install &>>$LOGFILE
-		rm $ODCOMPKG $ODCGIPKG $ODHALPKG
-	fi
-	echo "   (done)"
-else
-	echo "   (No updates found!)"
+    if sudo dpkg -i $ODCOMPKG $ODCGIPKG $ODHALPKG &>>$LOGFILE; then
+        rm $ODCOMPKG $ODCGIPKG $ODHALPKG
+    else
+        # Fix dpkg database installing missing deps
+        LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive sudo apt-get --force-yes -fyq install &>>$LOGFILE
+        rm $ODCOMPKG $ODCGIPKG $ODHALPKG
+    fi
 fi
 
+# Return to manage plugins
+echo "#INFO System updated"
+echo
+/usr/local/opendomo/managePlugins.sh
 rm $PIDFILE
