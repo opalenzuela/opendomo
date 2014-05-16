@@ -53,6 +53,8 @@ do_start () {
 	chown -R admin:admin "/var/opendomo" 2>/dev/null
 	chown -R admin:admin "/var/www" 2>/dev/null
 	chown -R admin:admin "/usr/local/opendomo" 2>/dev/null
+	chown admin:admin "/run/mounts" 2>/dev/null
+	chown admin:admin "/media" 	2>/dev/null
 }
 
 case "$1" in
