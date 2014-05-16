@@ -29,7 +29,6 @@ delete_drive () {
 	cd /media
 	for disk in *; do
                 MOUNT=`ls -l $disk |  awk '{print$11}'`
-		echo $MOUNT
 		# Check changes in /proc/mount
 		if [ `grep -c -m1 "$MOUNT" /proc/mounts` = "0" ]; then
 			# Launch event
