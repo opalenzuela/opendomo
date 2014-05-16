@@ -9,16 +9,15 @@ process_drive () {
 	cd /media
 	for drive in *; do
 		# Check if disk isn't processed yet
-		if [ `cat $PIDFILE | grep -m1 -c $drive` = "0" ]; then
+		if [ `grep -m1 -c $drive $PIDFILE` = "0" ]; then
 
 			# Scanning drive
 			if test -f $drive/opendomo.cfg; then
-				for disktype in $(cat $drive/opendomo.cfg | grep DISKTYPE | cut -f2 -d"\""); do
+				for disktype in $(grep DISKTYPE $drive/opendomo.cfg | cut -f2 -d"\""); do
 					# Launch events
 					logevent add"$disktype"disk odcommon "$disktype disk type added" $drive
 				done
 			fi
-
 			echo "$drive" >>$PIDFILE
 		fi
 	done
@@ -29,10 +28,10 @@ delete_drive () {
 	# Delete unmount processed drives
 	cd /media
 	for disk in *; do
-		MOUNT=`ls -l $disk | cut -f12 -d" "`
-
+                MOUNT=`ls -l $disk |  awk '{print$11}'`
+		echo $MOUNT
 		# Check changes in /proc/mount
-		if [ `cat /proc/mounts | grep -c -m1 "$MOUNT"` = "0" ]; then
+		if [ `grep -c -m1 "$MOUNT" /proc/mounts` = "0" ]; then
 			# Launch event
 			logevent deldisk odcommon "disk deleted" $disk
 
