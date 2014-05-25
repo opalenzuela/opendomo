@@ -47,19 +47,29 @@ case $1 in
 	echo 'HOMEDEVICE="1"' >> $TARGETDIR/opendomo.cfg
 	echo "$OD_VERSION" > $INITRDDIR/etc/VERSION
 
-	# Creating raw file to move no critical files
-	if ! test -f $IMAGESDIR/$CHANGESIMG; then
-		if dd if=/dev/zero of=$IMAGESDIR/$CHANGESIMG bs=1024 count=400000 >/dev/null 2>/dev/null; then
+	# Creating raw image files
+	if ! test -f $IMAGESDIR/$DEFCHANGESIMG; then
+		if dd if=/dev/zero of=$IMAGESDIR/$DEFCHANGESIMG bs=1024 count=1500000 >/dev/null 2>/dev/null; then
 
 			# Creating fs and copy files
-			mkfs.ext2 -F $IMAGESDIR/$CHANGESIMG >/dev/null 2>/dev/null
-			mount -o loop $IMAGESDIR/$CHANGESIMG $MOUNTDIR 2>/dev/null
+			mkfs.ext2 -F $IMAGESDIR/$DEFCHANGESIMG >/dev/null 2>/dev/null
+			mount -o loop $IMAGESDIR/$DEFCHANGESIMG $MOUNTDIR 2>/dev/null
 			mkdir -p $MOUNTDIR/usr && mv $INITRDDIR/usr/share $MOUNTDIR/usr/ 2>/dev/null
 
 			# Unmount
 			while !	umount $MOUNTDIR 2>/dev/null; do
 				sleep 1
 			done
+
+			# Creating default changes and custom changes image
+			cp $IMAGESDIR/$DEFCHANGESIMG $IMAGESDIR/$CSTCHANGESIMG
+			gzip $DEFCHANGESIMG
+
+			# Creating home image
+			if ! test -f $HOMEFSIMG; then
+				dd if=/dev/zero of=$HOMEFSIMG bs=1024 count=10000
+				mkfs.ext2 -F $HOMEFSIMG
+        		fi
 		fi
 	fi
 
