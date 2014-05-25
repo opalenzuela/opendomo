@@ -54,6 +54,12 @@ then
 	echo "   (done)"
 else
 	echo "   (ERROR)"
+        # Unmount image
+        while ! umount $MOUNTDIR; do
+		sleep 1
+        done
+	rmdir $MOUNTDIR 2>/dev/null
+	exit 1
 fi
 
 # Delete missing files in image
