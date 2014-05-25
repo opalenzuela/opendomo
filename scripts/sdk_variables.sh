@@ -18,6 +18,7 @@ ARCH=`cat $ARCHCFG 2>/dev/null`
 ODPKG="odcommon odcgi odhal"
 OD_VERSION="2.0.0"
 IMGNAME="opendomo-$OD_VERSION-$ARCH"
+ROOTSTRAPPKG="build-essential make gcc cpp libncurses5-dev g++ bison flex gettext texinfo libjpeg8-dev libssl-dev libconfig-dev libsqlite3-dev libusb-dev debhelper devscripts bc"
 
 # Kernel version and downloads
 if [ "$ARCH" != "i386" ]; then
@@ -36,8 +37,10 @@ fi
 ROOTSTRAPCFG="$FILESDIR/rootstrap.conf"
 KERNELCFG="$FILESDIR/kernel.$ARCH.conf"
 INITRDIMG="$TMPDIR/initrd.$ARCH.tar.xz"
+HOMEFSIMG="homefs.img"
+DEFCHANGESIMG="dfchange.img"
+CSTCHANGESIMG="ctchange.img"
 FREESIZE="5000"
-CHANGESIMG="dfchange.img"
 
 # Downloads
 if [ "$ARCH" != "i386" ]; then
