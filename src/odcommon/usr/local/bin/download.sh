@@ -8,7 +8,7 @@ if test -z "$1"; then
 fi
 
 FNAME=`basename $1`
-if wget -q $1 -O $FNAME
+if wget --no-check-certificate -q $1 -O $FNAME
 then
 	exit 0
 else
