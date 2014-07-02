@@ -3,15 +3,15 @@ cd /
 for i in `find /usr/local/opendomo/services/ -type f`
 do
     bn=`basename $i`
-	# Solamente creamos wrapper si no existe
+	# Only create wrapper if it does not exist
     if ! test -f /usr/local/opendomo/$i; then
-		# Forzamos permisos de ejecucion
+		# Force execution privileges
 		chmod +x $i
-		# Creamos enlace simbólico
+		# Create symbolic link
 		ln -fs $i /usr/local/opendomo/ >/dev/null
     fi
 done
-# Creacion de los enlaces del CGI
+# Create CGI path links
 ROOTPATH="/var/opendomo/cgiroot"
 SCRIPTPATH="/usr/local/opendomo"
 for section in config control map tools
@@ -27,3 +27,6 @@ do
 	done
     fi
 done
+# Also, force execution for daemons and eventhandlers
+chmod +x /usr/local/opendomo/daemons/*.sh
+chmod +x /usr/local/opendomo/eventhandlers/*.sh
