@@ -58,17 +58,10 @@
 
 
 /*! \brief DOCTYPE Does not work until CSS3+HTML5 */
-#define W3C_DOCTYPE  "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//ES\" \n"\
-      " \"http://www.w3.org/TR/html4/strict.dtd\"> \n"
-/*
-#define W3C_DOCTYPE "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \n"\
-      " \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n"
-
-#define W3C_DOCTYPE ""
-*/
+#define W3C_DOCTYPE  "<!DOCTYPE html> \n"
 
 //! HTML Copyright fragment
-#define ODCOPYRIGHT "<a href='http://opendomo.org' target='od'>"\
+#define ODCOPYRIGHT "<a href='http://es.opendomo.org' target='od'>"\
 		"<img id='logo' src='/images/logo16.png' alt='logo' border='0'> "\
 		"</a> <a href='http://www.opendomo.com' "\
 		"target='od'>OpenDomo &copy; 2006-2014</a>"
@@ -203,17 +196,14 @@ odcgi_print_header (char *scriptname, const char *username)
       printf (W3C_DOCTYPE
 		"<html lang=\"%s\">\n"
 		"   <head>\n"
-		"\t<title>OpenDomo</title>\n"
+		"\t<meta http-equiv='X-UA-Compatible' content='IE=Edge'/>\n"
 		"\t<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\n"
-//		 "\t<meta name='viewport' content=\"width=320; initial-scale=1.0; "
 		"\t<meta name='viewport' content='width=device-width, maximum-scale=1.0, maximum-scale=1.0, user-scalable=0' />\n"
 		"\t<meta name='apple-mobile-web-app-capable' content='yes'/>\n"
 		"\t<link rel='shortcut icon' href='/images/logo16.png' type='image/x-icon'/>\n"
 		"\t<link rel='apple-touch-icon' href='/images/logo48.png'/>\n"
 		"\t<link rel='stylesheet' type='text/css' media='screen' href='/cgi-bin/css.cgi?%s'/>\n"
-		"\t<link rel='stylesheet' type='text/css' media='print' href='/css/print.css' />\n"
 		"\t<link rel='stylesheet' type='text/css' href='/css/%s.css'/>\n"
-		"\t<link rel='stylesheet' media='only screen and (max-device-width: 1024px)' href='/css/ipad.css' type='text/css' />\n"
 		"\t<script type='text/JavaScript' src='/scripts/jquery.min.js'></script>\n"
 		"\t<script type='text/JavaScript' src='/scripts/jquery.flot.min.js'></script>\n"
 		"\t<script type='text/JavaScript' src='/scripts/jquery.flot.pie.min.js'></script>\n"
@@ -225,7 +215,8 @@ odcgi_print_header (char *scriptname, const char *username)
 		"\t<script type='text/javascript' src='/scripts/scrollbars/jquery.jscrollpane.min.js'></script>\n"
 		"\t<script type='text/JavaScript' src='/scripts/common.js'></script>\n"
 		"\t<script type='text/JavaScript' src='/scripts/%s.js'></script>\n"
-		"\t<script type='text/JavaScript' src='/cgi-bin/%s'></script>\n"		 
+		"\t<script type='text/JavaScript' src='/cgi-bin/%s'></script>\n"	
+		"\t<title>OpenDomo OS</title>\n"		
 		"   </head>\n"
 		"   <body>\n"
 		"   <div id='logo_od'><img src='/images/default/logo.png'/>\n"
