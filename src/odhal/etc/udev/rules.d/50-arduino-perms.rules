@@ -1,2 +1,0 @@
-KERNEL=="ttyUSB*",        OWNER="root", GROUP="admin", MODE="0660", SYMLINK="arduino"
-KERNEL=="ttyACM*",        OWNER="root", GROUP="admin", MODE="0660", SYMLINK="arduino"
