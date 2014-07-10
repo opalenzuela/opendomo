@@ -536,10 +536,8 @@ script_process_list_body (char *id, char *desc, char *type, char *extra)
   {
     if(extra != NULL)
     {
-      snprintf (img, sizeof (img), "<a href='%s' target='popup' "
-		"onclick='openPopup(this.href); return false;'>"
-		"<img alt='%s' src='%s'/></a>", extra, id, extra);
-      snprintf (link, sizeof (link), "%s", extra);
+      snprintf (img, sizeof (img), "<img alt='%s' src='%s'/>", id, extra);
+      //snprintf (link, sizeof (link), "%s", extra);
     }
   }
   if(gui == html)
