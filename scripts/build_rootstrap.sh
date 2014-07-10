@@ -4,7 +4,6 @@
 
 SCRIPTSDIR="scripts"
 . $SCRIPTSDIR/sdk_variables.sh
-PACKAGES=`cat $ROOTSTRAPCFG`
 
 # Check and clean
 if ! test -f $INITRDIMG; then
@@ -20,10 +19,10 @@ fi
 cp -rp $INITRDDIR $ROOTSTRAPDIR
 
 # Update rootstrap apt sources
-cp /etc/resolv.conf $ROOTSTRAPDIR/etc/
+cp /etc/resolv.conf $ROOTSTRAPDIR/etc/ 2>/dev/null
 $CHROOT "$ROOTSTRAPDIR" /bin/bash -c "apt-get update"
 
 # Installing rootstrap packages
-$CHROOT "$ROOTSTRAPDIR" /bin/bash -c "LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive apt-get --force-yes -yq install $PACKAGES"
+$CHROOT "$ROOTSTRAPDIR" /bin/bash -c "LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive apt-get --force-yes -yq install $ROOTSTRAPPKG"
 $CHROOT "$ROOTSTRAPDIR" /bin/bash -c "LC_ALL=C LANGUAGE=C LANG=C dpkg-reconfigure --frontend=noninteractive debconf"
 $CHROOT "$ROOTSTRAPDIR" /bin/bash -c "apt-get clean"

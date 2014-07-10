@@ -15,8 +15,8 @@ RPIFILESDIR="$FILESDIR/rpifiles"
 # Opendomo packages and versions
 ARCHCFG="$TMPDIR/arch"
 ARCH=`cat $ARCHCFG 2>/dev/null`
-ODPKG="odcommon odcgi odhal"
-OD_VERSION="2.0.0"
+ODPKG="odcommon odcgi"
+OD_VERSION="2.0.1"
 IMGNAME="opendomo-$OD_VERSION-$ARCH"
 ROOTSTRAPPKG="build-essential make gcc cpp libncurses5-dev g++ bison flex gettext texinfo libjpeg8-dev libssl-dev libconfig-dev libsqlite3-dev libusb-dev debhelper devscripts bc"
 
@@ -28,8 +28,8 @@ if [ "$ARCH" != "i386" ]; then
 	KERNEL_URL="http://archive.raspbian.org/raspbian/pool/main/l/linux-3.6/$KERNEL_PACKAGE"
 else
         KERNEL_SOURCES="3.2"
-        KERNEL_PACKAGE="linux-source-3.2_3.2.54-2_all.deb"
-        KERNEL_VERSION="3.2.54-rt75"
+        KERNEL_PACKAGE="linux-source-3.2_3.2.57-3_all.deb"
+        KERNEL_VERSION="3.2.57-rt75"
         KERNEL_URL="http://ftp.debian.org/debian/pool/main/l/linux/$KERNEL_PACKAGE"
 fi
 

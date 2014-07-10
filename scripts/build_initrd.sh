@@ -36,6 +36,7 @@ case $1 in
 	fi
   ;;
   make )
+	echo "INFO: Creating images ..."
 	# Creating image basic structure
 	rm $TARGETDIR/initrd.gz 2>/dev/null
 	mkdir -p $IMAGESDIR 	2>/dev/null
@@ -63,12 +64,12 @@ case $1 in
 
 			# Creating default changes and custom changes image
 			cp $IMAGESDIR/$DEFCHANGESIMG $IMAGESDIR/$CSTCHANGESIMG
-			gzip $DEFCHANGESIMG
+			gzip $IMAGESDIR/$DEFCHANGESIMG
 
 			# Creating home image
-			if ! test -f $HOMEFSIMG; then
-				dd if=/dev/zero of=$HOMEFSIMG bs=1024 count=10000
-				mkfs.ext2 -F $HOMEFSIMG
+			if ! test -f $IMAGESDIR/$HOMEFSIMG; then
+				dd if=/dev/zero of=$IMAGESDIR/$HOMEFSIMG bs=1024 count=10000 2>/dev/null
+				mkfs.ext2 -F $IMAGESDIR/$HOMEFSIMG 2>/dev/null
         		fi
 		fi
 	fi

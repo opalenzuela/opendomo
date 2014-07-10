@@ -12,6 +12,6 @@ mkdir -p $EXPORTDIR
 
 # Download initrd
 if ! test -f $INITRDIMG; then
-	cd $TMPDIR
-	wget $INITRDURL
+	echo "INFO: Downloading files ..."
+	wget --directory-prefix=$TMPDIR $INITRDURL
 fi
