@@ -213,7 +213,7 @@ odcgi_print_header (char *scriptname, const char *username)
 		"\t<link href='/scripts/datepicker/css/datepicker.css' rel='stylesheet' type='text/css' />\n"
 		"\t<script type='text/javascript' src='/scripts/scrollbars/jquery.mousewheel.js'></script>\n"
 		"\t<script type='text/javascript' src='/scripts/scrollbars/jquery.jscrollpane.min.js'></script>\n"
-		"\t<script type='text/JavaScript' src='/scripts/common.js'></script>\n"
+		"\t<script type='text/JavaScript' src='/cgi-bin/js.cgi'></script>\n"
 		"\t<script type='text/JavaScript' src='/scripts/%s.js'></script>\n"
 		"\t<script type='text/JavaScript' src='/cgi-bin/%s'></script>\n"	
 		"\t<title>OpenDomo OS</title>\n"		
