@@ -1,29 +1,42 @@
-#managePlugins li.plugin label a {
-	background: url("/images/default/condition.png") no-repeat scroll left center transparent;
-	padding-left: 32px;
+#managePlugins li.plugin {
+	background-position: center;
+	background-size: 100px 100px;
+	height: 100px;
+	width: 100px;
+	overflow: hidden;
+}
+#managePlugins li.plugin label {
+	height: 100%;
+	position: absolute;
+}
+#managePlugins li.plugin label a{
+	position: absolute;
+	bottom: 0px;
 }
 
+
 #managePlugins li.installed {
-	background: #FFF url(/images/default/installed.png) no-repeat scroll bottom right;
 	-webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
 	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
 	border: 1px solid black;
 }
 #managePlugins li.new {
-	background: #FFF url(/images/default/new.png) no-repeat scroll bottom right;
 	-webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
 	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+	border: 1px dashed gray;
+}
+#managePlugins li.failed {
+	-webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+	border: 1px solid red;
 }
 
-#managePlugins #icon_li div.imgframe {
-	width: 100px;
-	height: 100px;
-	border: 2px solid #555;
-	border-radius: 20px;
-	overflow: hidden;
-	-webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
-	-moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
-	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+#managePlugins div.imgframe {
+	display: none;
+}
+#managePlugins label input {
+	display: none;
 }

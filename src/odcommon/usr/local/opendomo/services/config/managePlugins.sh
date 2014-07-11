@@ -27,9 +27,14 @@ if test -z "$1"; then
 		test -z "$DESC" && DESC="$ID"
 		if test -f "/var/opendomo/plugins/$ID.version"
 		then
-			echo "	-$ID	$DESC	image plugin installed	http://es.opendomo.org/files/$ID.png"
+			echo "	-$ID	$DESC	image plugin installed"
 		else
-			echo "	-$ID	$DESC	image plugin new	http://es.opendomo.org/files/$ID.png"
+			if test -f /var/opendomo/run/install-$ID.error
+			then
+				echo "	-$ID	$DESC	image plugin failed"
+			else
+				echo "	-$ID	$DESC	image plugin new"
+			fi
 		fi
 	done
 	if test -z "$ID"; then
