@@ -16,7 +16,7 @@ RPIFILESDIR="$FILESDIR/rpifiles"
 ARCHCFG="$TMPDIR/arch"
 ARCH=`cat $ARCHCFG 2>/dev/null`
 ODPKG="odcommon odcgi"
-OD_VERSION="2.0.1"
+OD_VERSION="2.1"
 IMGNAME="opendomo-$OD_VERSION-$ARCH"
 ROOTSTRAPPKG="build-essential make gcc cpp libncurses5-dev g++ bison flex gettext texinfo libjpeg8-dev libssl-dev libconfig-dev libsqlite3-dev libusb-dev debhelper devscripts bc"
 
@@ -29,7 +29,7 @@ if [ "$ARCH" != "i386" ]; then
 else
         KERNEL_SOURCES="3.2"
         KERNEL_PACKAGE="linux-source-3.2_3.2.57-3_all.deb"
-        KERNEL_VERSION="3.2.57-rt75"
+        KERNEL_VERSION="3.2.57-rt81"
         KERNEL_URL="http://ftp.debian.org/debian/pool/main/l/linux/$KERNEL_PACKAGE"
 fi
 

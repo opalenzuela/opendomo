@@ -53,7 +53,7 @@ case $1 in
 		if dd if=/dev/zero of=$IMAGESDIR/$DEFCHANGESIMG bs=1024 count=1500000 >/dev/null 2>/dev/null; then
 
 			# Creating fs and copy files
-			mkfs.ext2 -F $IMAGESDIR/$DEFCHANGESIMG >/dev/null 2>/dev/null
+			mkfs.ext2 -F $IMAGESDIR/$DEFCHANGESIMG >/dev/null >/dev/null 2>/dev/null
 			mount -o loop $IMAGESDIR/$DEFCHANGESIMG $MOUNTDIR 2>/dev/null
 			mkdir -p $MOUNTDIR/usr && mv $INITRDDIR/usr/share $MOUNTDIR/usr/ 2>/dev/null
 
@@ -69,7 +69,7 @@ case $1 in
 			# Creating home image
 			if ! test -f $IMAGESDIR/$HOMEFSIMG; then
 				dd if=/dev/zero of=$IMAGESDIR/$HOMEFSIMG bs=1024 count=10000 2>/dev/null
-				mkfs.ext2 -F $IMAGESDIR/$HOMEFSIMG 2>/dev/null
+				mkfs.ext2 -F $IMAGESDIR/$HOMEFSIMG >/dev/null 2>/dev/null
         		fi
 		fi
 	fi
@@ -103,9 +103,7 @@ case $1 in
 
 		# Force home directories permissions
 		chmod 700 $MOUNTDIR/home/admin
-		chmod 700 $MOUNTDIR/home/user
 		chown -R 1000:1000 $MOUNTDIR/home/admin
-		chown -R 1001:100  $MOUNTDIR/home/user
 
 		# Unmount initrd and compress
 		while !	umount $MOUNTDIR 2>/dev/null; do
