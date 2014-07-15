@@ -1,6 +1,6 @@
 ﻿/*****************************************************************************
  *  This file is part of the OpenDomo project.
- *  Copyright(C) 2011 OpenDomo Services SL
+ *  Copyright(C) 2014 OpenDomo Services SL
  *  
  *  Daniel Lerch Hostalot <dlerch@opendomo.com>
  *
@@ -187,33 +187,32 @@ script_process_comments (const char *buf)
 		}	
 		else if(SPELL3 (buf, 'E', 'R', 'R'))
 		{
-			printf ("\t<div class=imgframe></div><p class='error'>%s</p>\n", T (buf += 4));
+			printf ("\t<p class='error'>%s</p>\n", T (buf += 4));
 			fflush (stdout);
 		}
 		else if(SPELL3 (buf, 'W', 'A', 'R'))
 		{
-			printf ("\t<div class=imgframe></div><p class='warning'>%s</p>\n", T (buf += 5));
+			printf ("\t<p class='warning'>%s</p>\n", T (buf += 5));
 			fflush (stdout);
 		}
 		else if(SPELL3 (buf, 'I', 'N', 'F'))
 		{
-			printf ("\t<div class=imgframe></div><p class='info'>%s</p>\n", T (buf += 5));	
+			printf ("\t<p class='info'>%s</p>\n", T (buf += 5));	
 		}
 		else if(SPELL3 (buf, 'L', 'O', 'A'))
 		{
-			printf ("\t<div class=imgframe></div><p id='loadingbanner' class='loading'>%s</p>\n", 
-				T (buf += 8));
+			// The page might be slow at loading. Display a "loading" banner ...
+			printf ("\t<p class='loading'>%s</p>\n", T(buf += 8));
+			// ... and hide it when page is loaded.
 			printf ("<script type='text/Javascript'>\n"\
-				"window.onload = function() {\n"\
-				"	var lb = document.getElementById('loadingbanner');\n"\
-				"	if (lb) lb.style.display='none';\n"\
-				"	/* window.location.reload(); */ \n"\
-				"}\n"\
+				"$(function($){\n"\
+				"	$('p.loading').hide() ;\n"\
+				"});\n"\
 				"</script>\n");
 		}
 		else if(SPELL3 (buf, 'U', 'R', 'L'))
 		{
-			printf ("\t<div class=imgframe></div><p class='link'>"
+			printf ("\t<p class='link'>"
 			 "<a href='%s' target='_blank'>%s</a></p>\n", buf += 4, buf);
 		}
 		else if(SPELL3 (buf, 'T', 'I', 'P'))
@@ -224,10 +223,10 @@ script_process_comments (const char *buf)
 					i++;
 					printf ("\t<div id='%s_tt' class='tooltip'>%s</div>\n", 
 						tipname, T (buf+=i));
-/*					printf ("<script type='text/Javascript'>\n"
-						"$(\"#%s_lbl\").mouseenter(function(e){showTT('%s');})\n"
-						"$(\"#%s_lbl\").mouseleave(function(e){hideTT('%s');})\n"
-						"</script>",tipname, tipname, tipname, tipname); */
+					printf ("<script>\n"
+						"$(\"#%s_lbl\").on('mouseenter',function(){showTT('%s');})\n"
+						"$(\"#%s_lbl\").on('mouseleave',function(){hideTT('%s');})\n"
+						"</script>",tipname, tipname, tipname, tipname); 
 					return;		
 				} else {
 					tipname[i-4] = buf[i];
@@ -256,7 +255,7 @@ script_process_comments (const char *buf)
 		}
 	}	
 	else
-	{				/// XML output
+	{ /** XML OUTPUT **/
 		if(SPELL3 (buf, 'E', 'R', 'R') || SPELL3 (buf, 'e', 'r', 'r'))
 		{
 			printf ("\t<error description='%s'/>\n", CT (buf += 4));
@@ -344,7 +343,7 @@ script_process_form_header (char *id, char *legend, char *type)
 		}
 		printf ("\t\t\t<ul id='%s'>\n", id);
 	}
-	else
+	else /** XML OUTPUT **/
 	{
 		printf ("\t<gui action='%s.sh' title='%s'>\n", id, legend);
 	}
@@ -371,7 +370,7 @@ script_process_form_footer (char *cmdid)
     printf ("\t\t\t</div>\n");
     printf ("\t\t</fieldset>\n" "\t</form></div>\n");
   }
-  else
+  else /** XML OUTPUT **/
   {
     printf ("\t</gui>\n");
   }
@@ -402,7 +401,7 @@ script_process_list_header (char *id, char *title, char *type)
     printf ("\t\t\t<ul id='%s'>\n", id);
   }
   else
-  {
+  { /** XML OUTPUT **/
     printf ("\t<gui action='%s.sh' title='%s'>\n", id, title);
   }
 }
@@ -563,7 +562,7 @@ script_process_list_body (char *id, char *desc, char *type, char *extra)
     }
   }
   else
-  {
+  {/** XML OUTPUT **/
     if(strchr (link, '?') == NULL)
     {
       printf ("\t\t<item href='%s?GUI=XML' label=\"%s\"/>\n", link, CT (desc));
@@ -630,7 +629,7 @@ script_process_action_body (char *id, char *name, char *type)
 	}
   }
   else
-  {
+  {/** XML OUTPUT **/
     printf ("\t\t\t<action id='%s' description='%s' />\n", id, CT (name));
   }
 }
@@ -652,7 +651,7 @@ script_process_action_footer (char *cmdid)
     printf ("\t\t\t</div>\n" "\t\t</fieldset>\n" "\t</form></div>\n");
   }
   else
-  {
+  {/** XML OUTPUT **/
     printf ("\t\t</actions>\n");
   }
 }
@@ -957,10 +956,9 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 
   if(strstr (stype, "password"))
   {
-	printf ("\t\t\t\t<li id='%s_li' class='%s' "
-		"onmouseover=\"showTT('%s');\" onmouseout=\"hideTT('%s');\">"
+	printf ("\t\t\t\t<li id='%s_li' class='%s'>"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
-		id, cleantype, id, id, id, id, T (desc));
+		id, cleantype, id, id, T (desc));
 	printf ("<p><input name='%s' type='password' value=\"%s\"/></p></li>\n",
 		id, extra);
   }
@@ -974,20 +972,18 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
        "</li>\n",
        extra, id, extra, extra,extra);
      */
-	printf ("\t\t\t\t<li id='%s_li' class='%s' "
-		"onmouseover=\"showTT('%s');\" onmouseout=\"hideTT('%s');\">"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
-		id, cleantype, id, id, id, id, T (desc));     
+		id, cleantype, id, id, T (desc));     
 	printf ("<input name='%s' type='hidden' value=\"%s\"/>"
 		"<p id='%s' class='ro %s'>%s</p>" "</li>\n", id, extra, id, extra, extra);
   }
 
   else if(strstr (stype, "longtext"))
   {
-	printf ("\t\t\t\t<li id='%s_li' class='%s' "
-		"onmouseover=\"showTT('%s');\" onmouseout=\"hideTT('%s');\">"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
-		id, cleantype, id, id, id, id, T (desc));  
+		id, cleantype, id, id,  T (desc));  
 	//FIXME Open brackets for long text input, and return "1"
 	printf ("<br/><textarea name='%s'>%s</textarea></li>\n", id, extra);
   }
@@ -995,19 +991,17 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
   else if(strstr (stype, "separator"))
   {
   	sepopen=1;
-	printf ("\t\t\t\t<li id='%s_li' class='%s' "
-		"onmouseover=\"showTT('%s');\" onmouseout=\"hideTT('%s');\">"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
-		id, cleantype, id, id, id, id, T (desc));  	
+		id, cleantype, id, id, T (desc));  	
   	printf("<p>%s</p>\n",extra);
   }
 
   else if(strstr (stype, "list"))
   {
-	printf ("\t\t\t\t<li id='%s_li' class='%s' "
-		"onmouseover=\"showTT('%s');\" onmouseout=\"hideTT('%s');\">"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
-		id, cleantype, id, id, id, id, T (desc));  
+		id, cleantype, id, id, T (desc));  
 	printf ("<p><select name='%s' class='list'>\n", id);
 	if(parse_list (type, extra) != 0)
 	{
@@ -1018,10 +1012,9 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 
   else if(strstr (stype, "subcommand"))
   {
-	printf ("\t\t\t\t<li id='%s_li' class='%s' "
-		"onmouseover=\"showTT('%s');\" onmouseout=\"hideTT('%s');\">"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
-		id, cleantype, id, id, id, id, T (desc));  
+		id, cleantype, id, id, T (desc));  
 	if(strcmp (type, "subcommand[on,off]") == 0)
 	{
 		printf ("<p id='%s' title='%s' class='DO %s'>", id, extra, extra);
@@ -1058,10 +1051,9 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 
   else if(strstr (stype, "image"))
   {
-	printf ("\t\t\t\t<li id='%s_li' class='%s' "
-		"onmouseover=\"showTT('%s');\" onmouseout=\"hideTT('%s');\">"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
-		id, cleantype, id, id, id, id, T (desc));
+		id, cleantype, id, id, T (desc));
 	printf ("<div class='imgframe'>"
 		"<img id='imgframe_%s' class='imgfield' name='%s' src='%s' alt='%s'/></div></li>\n",
 		id, id, extra, CT (desc));
@@ -1069,10 +1061,9 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 
   else if(strstr (stype, "videofile"))
   {
-	printf ("\t\t\t\t<li id='%s_li' class='%s' "
-		"onmouseover=\"showTT('%s');\" onmouseout=\"hideTT('%s');\">"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
-		id, cleantype, id, id, id, id, T (desc));
+		id, cleantype, id, id,  T (desc));
 	printf ("<script>"
 	    "var drag_dealer; "
 	    "function %s_load_slider() {"
@@ -1128,10 +1119,9 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 
   else if(strstr (stype, "video"))
   {
-	printf ("\t\t\t\t<li id='%s_li' class='%s' "
-		"onmouseover=\"showTT('%s');\" onmouseout=\"hideTT('%s');\">"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
-		id, cleantype, id, id, id, id, T (desc));  
+		id, cleantype, id, id, T (desc));  
 	printf ("<div class='imgframe'>"
 		"<embed name='%s' class='%s' src='%s' alt='%s' /></div>"
 		"</li>\n", id, type, extra, CT (desc));
@@ -1139,20 +1129,18 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 
   else if(strstr (stype, "application"))
   {
-	printf ("\t\t\t\t<li id='%s_li' class='%s' "
-		"onmouseover=\"showTT('%s');\" onmouseout=\"hideTT('%s');\">"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<!-- <label id='%s_lbl' for='%s'>%s</label> -->\n\t\t\t\t\t",
-		id, cleantype, id, id, id, id, T (desc));  
+		id, cleantype, id, id, T (desc));  
 	printf ("<iframe name='frm%s' scrolling='auto' frameborder='no' "
 		"align='center' class='embeddedapp' src='%s'></iframe></li>\n",
 		id, extra);
   }
   else if(strstr (stype, "date"))
   {
-	printf ("\t\t\t\t<li id='%s_li' class='%s' "
-		"onmouseover=\"showTT('%s');\" onmouseout=\"hideTT('%s');\">"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
-		id, cleantype, id, id, id, id, T (desc));  
+		id, cleantype, id, id, T (desc));  
 	printf ("<p><input name='%s' id='id_%s' type='date' class='%s' value='%s' "\
 		" onkeyup=\"isValid(this,'^[0-3][0-9]/[0-1][0-9]/20[0-9][0-9]$')\"/>"
 		"</p></li>\n", id,id, type, extra);
@@ -1160,10 +1148,9 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
   }
   else if(strstr (stype, "text"))
   {
-	printf ("\t\t\t\t<li id='%s_li' class='%s' "
-		"onmouseover=\"showTT('%s');\" onmouseout=\"hideTT('%s');\">"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
-		id, cleantype, id, id, id, id, T (desc));  
+		id, cleantype, id, id, T (desc));  
 	if(type[4] == ':')		//text:[a-z0-9]
 	{
 		pch = type + 5;		// pch apunta a [
@@ -1182,10 +1169,9 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
   }
   else //TODO: Merge with "text", as the default option
   {
-	printf ("\t\t\t\t<li id='%s_li' class='%s' "
-		"onmouseover=\"showTT('%s');\" onmouseout=\"hideTT('%s');\">"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
-		id, cleantype, id, id, id, id, T (desc));  
+		id, cleantype, id, id, T (desc));  
 	printf ("<p><input name='%s' type='%s' class='%s' value='%s'/>"
 		"</p></li>\n", id, type, type, extra);
   }
