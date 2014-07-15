@@ -1010,6 +1010,26 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 	printf ("\t\t\t\t  </select></p></li>\n");
   }
 
+  else if(strstr (stype, "boolean"))
+  {
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
+		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
+		id, cleantype, id, id, T (desc));  
+	if (strstr(extra,"on") || strstr(extra,"true") ) {
+		printf ("<p><input name='%s' type='checkbox' checked='checked'></p></li>\n", id);
+	} else {
+		printf ("<p><input name='%s' type='checkbox'></p></li>\n", id);	
+	}
+  }
+  
+  else if(strstr (stype, "range"))
+  {
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
+		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
+		id, cleantype, id, id, T (desc));  
+	printf ("<p><input name='%s' type='range' value='%s'></p></li>\n", id, extra);
+  }  
+  
   else if(strstr (stype, "subcommand"))
   {
 	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
