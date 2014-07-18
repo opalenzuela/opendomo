@@ -34,6 +34,7 @@ else
 		exit 3
 	else
 		echo "#INFO Installing plugin $1"
+		logevent installplugin odcommon "Installing plugin [$1]" 
 		/usr/local/bin/plugin_add.sh $1 &>/dev/null &
 	fi
 

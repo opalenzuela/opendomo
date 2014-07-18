@@ -7,9 +7,9 @@
 
 TMPDIR="/var/opendomo/tmp"
 OSVER=`cat /etc/VERSION`
-REPOSITORY="http://cloud.opendomo.com/repo/$OSVER/index.php"
+REPOSITORY="http://cloud.opendomo.com/repo/$OSVER"
 if ! test -f $TMPDIR/repo.lst; then
-	if wget $REPOSITORY -O $TMPDIR/repo.tmp --no-check-certificate --max-redirect=0 2>/dev/null
+	if wget $REPOSITORY/index.php -O $TMPDIR/repo.tmp --no-check-certificate --max-redirect=0 2>/dev/null
 	then
 		echo "#INFO Repository updated"
 		grep -v "#" $TMPDIR/repo.tmp > $TMPDIR/repo.lst
