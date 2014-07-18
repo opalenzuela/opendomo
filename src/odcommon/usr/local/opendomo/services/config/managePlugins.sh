@@ -7,7 +7,7 @@
 
 TMPDIR="/var/opendomo/tmp"
 OSVER=`cat /etc/VERSION`
-REPOSITORY="http://cloud.opendomo.com/repo/$OSVER/"
+REPOSITORY="http://cloud.opendomo.com/repo/$OSVER/index.php"
 if ! test -f $TMPDIR/repo.lst; then
 	if wget $REPOSITORY -O $TMPDIR/repo.tmp --no-check-certificate --max-redirect=0 2>/dev/null
 	then
