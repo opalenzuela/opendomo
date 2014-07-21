@@ -4,7 +4,7 @@
 echo "Content-Type: text/javascript"
 echo "Cache-Control: max-age=3600"
 echo
-cd /var/www/script/common/
+cd /var/www/scripts/common/
 for file in *.js
 do
 	echo "/* File $file*/"
