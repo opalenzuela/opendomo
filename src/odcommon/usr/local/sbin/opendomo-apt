@@ -1,0 +1,140 @@
+#!/bin/sh
+#desc: Install plugins deps
+# opendomo-apt can be in 3 diferent states:
+#    busy - opendomo-apt is working, installing package, updating system, updating sources
+#    waiting - opendomo-apt is free, queue is emply and don't have other tasks pending
+#    spaceless - opendomo-apt can't install packages because don't free space available.
+#       Every task is canceled and is required save config and reboot to continue
+#
+
+# Files and directories
+PIDFILE="/var/opendomo/run/opendomo-apt.pid"
+LOGFILE="/var/opendomo/log/opendomo-apt.log"
+REPOFILE="/var/opendomo/tmp/repo.lst"
+DAEMONDIR="/var/opendomo/apt"
+QUEUEFILE="$DAEMONDIR/queue"
+SRCUPDATE="$DAEMONDIR/update"
+PLUGIN_DOWNDIR="$DAEMONDIR/plugins"
+PLUGIN_FILEDIR="/var/opendomo/plugins"
+
+# Commands options
+APTOPTS="--no-gui --without-recommends"
+CURWEEK=`date +%W`
+
+# Creating directories
+mkdir -p $DAEMONDIR $PLUGIN_DOWNDIR
+touch $QUEUEFILE
+chown -R admin:admin $QUEUEFILE $PLUGIN_DOWNDIR
+
+update_apt_sources () {
+    # Update source once a week
+    if ! test -f $SRCUPDATE || [ "$CURWEEK" != `cat $SRCUPDATE` ]; then
+	echo "Busy: Updating apt sources" > $PIDFILE
+        aptitude update >/dev/null 2>/dev/null
+        echo "Waiting"  > $PIDFILE
+        echo "$CURWEEK" > $SRCUPDATE
+    fi
+}
+
+install_deps_queued () {
+    for pkg in `cat $QUEUEFILE`; do
+        # Always clean downloaded packages before start
+        if ls /var/cache/apt/archives/*.deb >/dev/null 2>/dev/null; then
+            aptitude -q clean
+        fi
+
+        # Checking install sizes and convert all units
+        # in SIZEINFO, $1 $2 is download size and unit and $3 $4 is install size and unit
+        SIZEINFO=`echo 'n' | aptitude $APTOPTS -s install $pkg | awk '/^Need to get/ {print $4,$5,$10,$11}' | sed 's/,/./g'`
+        if [ `echo $SIZEINFO | cut -f2 -d" "` == "MB" ]; then
+            PKG_DOWNLOAD_SIZE=`echo $SIZEINFO | cut -f1 -d" "`
+            let PKG_DOWNLOAD_SIZE="`printf %.0f $PKG_DOWNLOAD_SIZE` * 1024"
+        else
+            PKG_DOWNLOAD_SIZE=`echo $SIZEINFO | cut -f1 -d" "`
+        fi
+        if [ `echo $SIZEINFO | cut -f4 -d" "` == "MB" ]; then
+            PKG_INSTALL_SIZE=`echo $SIZEINFO | cut -f3 -d" "`
+            let PKG_INSTALL_SIZE="`printf %.0f $PKG_INSTALL_SIZE` * 1024"
+        else
+            PKG_INSTALL_SIZE=`echo $SIZEINFO | cut -f3 -d" "`
+        fi
+
+        # Sum sizes and test free space
+        PACKAGE_MEMORY_FREE=`/usr/local/bin/get_mem_free.sh | grep PACKAGE_MEMORY_FREE | cut -f2 -d=`
+        let TOTAL_INSTALL_SIZE="$PKG_INSTALL_SIZE + $PKG_DOWNLOAD_SIZE + 5000"
+
+############################### TEST INFO ONLY FOR TESTING ##################################
+        echo "################### TEST INFO (ONLY FOR TESTING) ####################"
+	echo "SIZEINFO=$SIZEINFO"
+	echo "PKG_DOWNLOAD_SIZE=$PKG_DOWNLOAD_SIZE"
+	echo "PKG_INSTALL_SIZE=$PKG_INSTALL_SIZE"
+	echo "TOTAL_INSTALL_SIZE=$TOTAL_INSTALL_SIZE"
+	echo "PACKAGE_MEMORY_FREE=$PACKAGE_MEMORY_FREE"
+	echo "########################### END TEST INFO ###########################"
+
+######################################################################3
+
+        if [ "$TOTAL_INSTALL_SIZE" == "0" ]; then
+            # Package is installed, only clean queue
+            QUEUE=`cat $QUEUEFILE | grep -v $pkg`
+            echo "$QUEUE" > $QUEUEFILE
+
+	elif [ "$TOTAL_INSTALL_SIZE" -lt "$PACKAGE_MEMORY_FREE" ]; then
+                # Package can be installed
+                echo "Busy: Installing $pkg" > $PIDFILE
+	        if
+                LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive aptitude $APTOPTS -y -q install $pkg
+                then
+                    # Instalation complete, delete download files
+		    echo "Waiting" > $PIDFILE
+                    aptitude -q clean >/dev/null
+
+                    # Clean queue
+                    QUEUE=`cat $QUEUEFILE | grep -v $pkg`
+                    echo "$QUEUE" > $QUEUEFILE
+                else
+                    # Install is not complete, clean downloaded package and rebuild dpkg database
+                    echo "Busy: Rebuilding database" >$PIDFILE
+                    apt-get clean       >/dev/null 2>/dev/null
+                    dpkg -a --configure >/dev/null 2>/dev/null
+                    apt-get -f install  >/dev/null 2>/dev/null
+		    echo "Waiting" > $PIDFILE
+                fi
+	    else
+                # Package can't be installed, opendomo-apt is now in "spaceless mode"
+                echo "Spaceless" > $PIDFILE
+	    fi
+        done
+}
+
+install_plugins () {
+    cd $PLUGIN_DOWNDIR
+    for plugin in *; do
+        # Checking installed deps from repo
+        PLUGINDEPS=`grep $plugin $REPOFILE | cut -f4 -d";" | head -n1 | sed 's/ /\\|/g'`
+        QUEUEDEPS=`grep "$PLUGINSDEPS" $QUEUEFILE`
+
+        # Check installed deps and install plugin
+        if test -z "$QUEUEDEPS"; then
+            cd /
+            echo $plugin | grep ".tar.gz" - && /bin/tar -m --no-overwrite-dir -zxvf $plugin | grep -v /$ \
+                >$PLUGIN_FILEDIR/$PKGID.files 2>$PLUGIN_FILEDIR/$PKGID.error
+            echo $plugin | grep ".zip" - && /usr/local/bin/unzip -o $plugin | grep -v /$ | cut -f2 -d':' |sed 's/ //' \
+                >$PLUGIN_FILEDIR/$PKGID.files 2>$PLUGIN_FILEDIR/$PKGID.error
+
+            # Delete downloaded files
+            rm "$PLUGIN_DOWNDIR/$plugin"
+        fi
+    done
+}
+
+# Run loop while pid exist
+while test -f "$PIDFILE"; do
+    # Start if daemon is not in "spaceless" mode
+    if [ `cat $PIDFILE | cut -f1 -d:` != "Spaceless" ]; then
+        update_apt_sources
+        install_deps_queued
+        install_plugins
+        sleep 3
+    fi
+done

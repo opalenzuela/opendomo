@@ -23,8 +23,6 @@ FULLURL="$URLVAL?UID=$uid&VER=$ver&MAIL=$mail"
 wget -q -O /var/opendomo/tmp/activation.tmp $FULLURL 2>/dev/null
 
 # Updating system in background
-updateSystem.sh >/dev/null 2>/dev/null &
-sleep 1
 saveSystemConfig.sh >/dev/null 2>/dev/null &
 
 echo "#> Configuration finished"
