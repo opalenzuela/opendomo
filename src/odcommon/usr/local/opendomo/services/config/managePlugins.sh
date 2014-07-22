@@ -12,7 +12,7 @@ if ! test -f $TMPDIR/repo.lst; then
 	if wget $REPOSITORY/index.php -O $TMPDIR/repo.tmp --no-check-certificate --max-redirect=0 2>/dev/null
 	then
 		echo "#INFO Repository updated"
-		grep -v "#" $TMPDIR/repo.tmp > $TMPDIR/repo.lst
+		grep -v "#" $TMPDIR/repo.tmp | grep "-" > $TMPDIR/repo.lst
 	else
 		echo "#ERROR Cannot find repository for version [$OSVER]"
 		exit 1
