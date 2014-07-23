@@ -25,7 +25,7 @@ else
 		exit 3
 	fi
 	echo "#> Install plugin"
-	echo "list:$0"
+	echo "list:`basename $0`"
 	SIZE=`grep ^$1 $REPOFILE | sort | head -n1 | cut -f7 -d';' `
 	AVAIL=`/usr/local/bin/get_mem_free.sh | cut -f1 -d' '`
 	if test "0$SIZE" -gt "0$AVAIL"
