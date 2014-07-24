@@ -542,9 +542,7 @@ script_process_list_body (char *id, char *desc, char *type, char *extra)
   if(gui == html)
   {
     //TODO Remove all non-alphabetic chars of id
-    printf ("\t\t\t\t<li id='%s' class='%s' "
-    	    "onmouseover=\"showTT('%s');\" onmouseout=\"hideTT('%s');\">", 
-    	    	id, type, id, id);
+    printf ("\t\t\t\t<li id='%s' class='%s' >", id, type);
     printf ("<div class='imgframe'>%s</div>", img);
     printf ("<label id='%s_lbl'><input type='checkbox' name='option[]' value='%s'/>",
     	id, id);
