@@ -958,8 +958,8 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 	printf ("\t\t\t\t<li id='%s_li' class='%s'><a>"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
 		id, cleantype, id, id, T (desc));
-	printf ("<p><input name='%s' type='password' value=\"%s\"/></p></a></li>\n",
-		id, extra);
+	printf ("<p><input id='%s' name='%s' type='password' value=\"%s\"/></p></a></li>\n",
+		id, id, extra);
   }
 
   else if(strstr (stype, "readonly"))
@@ -974,8 +974,8 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 	printf ("\t\t\t\t<li id='%s_li' class='%s' ><a>"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
 		id, cleantype, id, id, T (desc));     
-	printf ("<input name='%s' type='hidden' value=\"%s\"/>"
-		"<p id='%s' class='ro %s'>%s</p>" "</a></li>\n", id, extra, id, extra, extra);
+	printf ("<input id='%s' name='%s' type='hidden' value=\"%s\"/>"
+		"<p id='%s' class='ro %s'>%s</p>" "</a></li>\n", id, id, extra, id, extra, extra);
   }
 
   else if(strstr (stype, "longtext"))
@@ -984,7 +984,8 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
 		id, cleantype, id, id,  T (desc));  
 	//FIXME Open brackets for long text input, and return "1"
-	printf ("<br/><textarea name='%s'>%s</textarea></a></li>\n", id, extra);
+	printf ("<br/><textarea name='%s' id='%s'>%s</textarea></a></li>\n", 
+		id, id, extra);
   }
 
   else if(strstr (stype, "separator"))
@@ -1001,7 +1002,7 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 	printf ("\t\t\t\t<li id='%s_li' class='%s' ><a>"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
 		id, cleantype, id, id, T (desc));  
-	printf ("<p><select name='%s' class='list'>\n", id);
+	printf ("<p><select id='%s' name='%s' class='list'>\n", id, id);
 	if(parse_list (type, extra) != 0)
 	{
 		printf ("<optgroup label='Invalid data'></optgroup>\n");
@@ -1015,9 +1016,10 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t<p>",
 		id, cleantype, id, id, T (desc));  
 	if (strstr(extra,"on") || strstr(extra,"true") ) {
-		printf ("<input name='%s' type='checkbox' checked='checked'>", id);
+		printf ("<input name='%s' id='%s' type='checkbox' checked='checked'>", 
+			id, id);
 	} else {
-		printf ("<input name='%s' type='checkbox'>", id);	
+		printf ("<input name='%s' id='%s' type='checkbox'>", id, id);	
 	}
 	printf("</p></a></li>\n");
   }
@@ -1027,7 +1029,8 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 	printf ("\t\t\t\t<li id='%s_li' class='%s' ><a>"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
 		id, cleantype, id, id, T (desc));  
-	printf ("<p><input name='%s' type='range' value='%s'></p></a></li>\n", id, extra);
+	printf ("<p><input name='%s' id='%s' type='range' value='%s'></p></a></li>\n", 
+		id, id, extra);
   }  
   
   else if(strstr (stype, "subcommand"))
