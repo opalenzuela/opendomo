@@ -24,7 +24,6 @@ for i in control map tools config; do
 			;;
 		esac
 		echo "	$i	$name	$class";		
-		cd ..
 	fi
 done
 echo 
