@@ -25,6 +25,14 @@ echo "actions:"
 echo "	$S	Refresh"
 echo
 
+echo "#>Multiselect list, with actions"
+echo "list:$S	multiselect"
+echo "	-item1	Item 1	item"
+echo "	-item2	Long description item 2	item"
+echo "actions:"
+echo "	$S	Refresh"
+echo
+
 echo "#>Detailed list"
 echo "list:$S	detailed"
 echo "	item1	Item 1	item	The detail"
