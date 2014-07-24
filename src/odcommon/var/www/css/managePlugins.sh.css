@@ -1,3 +1,4 @@
+/*
 #managePlugins li.plugin {
 	background-position: center;
 	background-size: 100px 100px;
@@ -13,7 +14,7 @@
 	position: absolute;
 	bottom: 0px;
 }
-
+*/
 
 #managePlugins li.installed {
 	-webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);

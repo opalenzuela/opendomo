@@ -9,7 +9,7 @@
 RUTA="/var/opendomo/cgiroot/"
 echo "tabs:"
 cd $RUTA
-for i in *; do
+for i in control tools config; do
 	if test -x $i && test -d $i ; then
 		name="$i"
 		if test -e "$i.name"; then
