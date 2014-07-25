@@ -267,12 +267,12 @@ odcgi_print_footer (const char *msg, int buttons, cgi_t * cgi)
 	{
 		printf ("\n<div id='footer'>\n\n");
 		printf
-			("\t\t<a id='logoutbutton' class='logout' "
+			("\t\t<a id='logoutbutton' class='tool' "
 			"href='?LOGOUT=1'>%s</a>\n", T (ODCGI_TEXT_LOGOUT));
 		//printf ("\t\t<a id='dbgbutton' class='dbg_button' href='#' "
 		//	"onclick='showDebug();'>%s</a>\n", T (ODCGI_TEXT_DEBUG));
 		if (1000 == getgid()) {
-			printf ("\t\t<a id='savebutton' class='savebutton' "
+			printf ("\t\t<a id='savebutton' class='tool' "
 				"href='/cgi-bin/od.cgi/manageConfiguration.sh' >%s</a>\n", 
 				T (ODCGI_TEXT_SAVE));			
 		}
