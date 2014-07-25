@@ -269,8 +269,8 @@ odcgi_print_footer (const char *msg, int buttons, cgi_t * cgi)
 		printf
 			("\t\t<a id='logoutbutton' class='logout subtab' "
 			"href='?LOGOUT=1'>%s</a>\n", T (ODCGI_TEXT_LOGOUT));
-		printf ("\t\t<a id='dbgbutton' class='dbg_button subtab' href='#' "
-			"onclick='showDebug();'>%s</a>\n", T (ODCGI_TEXT_DEBUG));
+		//printf ("\t\t<a id='dbgbutton' class='dbg_button subtab' href='#' "
+		//	"onclick='showDebug();'>%s</a>\n", T (ODCGI_TEXT_DEBUG));
 		if (1000 == getgid()) {
 			printf ("\t\t<a id='savebutton' class='savebutton subtab' "
 				"href='/cgi-bin/od.cgi/manageConfiguration.sh' >%s</a>\n", 
@@ -298,8 +298,8 @@ odcgi_print_footer (const char *msg, int buttons, cgi_t * cgi)
 	printf ("\tCGI_CONTENT_LENGTH: %d\n", cgi_get_content_length (cgi));
 	printf ("\tCGI_DECODED_URL: %s\n", cgi_get_decoded_url (cgi));
 	printf ("\n</pre>\n");
-	printf ("\n<button onclick='notifyProblem();'>Notify</button>");
-	printf ("\n<button onclick='putFlags();'>Translate</button>");
+	//printf ("\n<button onclick='notifyProblem();'>Notify</button>");
+	//printf ("\n<button onclick='putFlags();'>Translate</button>");
 	printf ("\n</div>\n");
 
 	printf ("      <p class='copyright'>" ODCOPYRIGHT " </p>\n"

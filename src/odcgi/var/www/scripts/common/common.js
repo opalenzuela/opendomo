@@ -180,11 +180,11 @@ function hideTT(id){
 }
 
 function notifyProblem(){
-	openPopup('http://es.opendomo.org/wiki/index.php?action=edit&title=Discusión:'+basename(location.pathname));
+	openPopup('http://www.opendomo.com/wiki/index.php?action=edit&title=Discusión:'+basename(location.pathname));
 }
 
 function help(topic){
-	window.open('http://es.opendomo.org/wiki/index.php?title='+topic,'help');
+	window.open('http://www.opendomo.com/wiki/index.php?title='+topic,'help');
 }
 
 
