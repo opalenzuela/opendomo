@@ -21,8 +21,8 @@ PLUGIN_FILEDIR="/var/opendomo/plugins"
 # Commands options
 APTOPTS="--no-gui --without-recommends"
 CURWEEK=`date +%W`
-REPOSITORY="http://cloud.opendomo.com/repo/$OSVER"
 source /etc/os-release
+REPOSITORY="http://cloud.opendomo.com/repo/$VERSION"
 
 # Creating directories
 mkdir -p $DAEMONDIR $PLUGIN_DOWNDIR
