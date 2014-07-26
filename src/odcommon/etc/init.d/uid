@@ -16,9 +16,10 @@
 . /lib/init/vars.sh
 . /lib/lsb/init-functions
 
+UIDFILE="/etc/opendomo/uid"
+HOSTSFILE="/etc/hosts"
+
 do_start () {
-	UIDFILE="/etc/opendomo/uid"
-	HOSTSFILE="/etc/hosts"
 
 	if ! test -f "$UIDFILE"
 	then
@@ -26,20 +27,15 @@ do_start () {
 		chown 1000:1000 $UIDFILE
 	fi
 
-	HOSTNAME="od`cat $UIDFILE`"
-	hostname $HOSTNAME
-
 	# Updating hosts files
 	OTHERHOSTS=`cat $HOSTSFILE | grep -v $HOSTNAME`
+	HOSTANAME=`cat /etc/hostname`
 	echo "127.0.0.1	$HOSTNAME" 	 >$HOSTSFILE
 	echo "$OTHERHOSTS"		>>$HOSTSFILE
-
-	/usr/bin/logger -p notice "Agent's UID `hostname`"
 }
 
 do_status () {
-	HOSTNAME=$(hostname)
-	if [ "$HOSTNAME" ] ; then
+	if test -f "$UIDFILE"; then
                 return 0
         else
                 return 4
@@ -48,7 +44,7 @@ do_status () {
 
 case "$1" in
   start|"")
-	log_action_begin_msg "Starting opendomo universal identification"
+	log_action_begin_msg "Creating OpendomoOS UID"
 	do_start
 	log_action_end_msg $?
         ;;
