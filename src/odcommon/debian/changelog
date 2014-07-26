@@ -1,3 +1,9 @@
+odcommon (2.0.1) experimental; urgency=low
+
+  * Adding opendomo-apt daemon
+
+ -- Javier Miras Blanco <jmirasb@gmail.com>  Sat, 26 Jul 2014 12:44:51 +0200
+
 odcommon (2.0.0) experimental; urgency=low
 
   * Bug fixes 
