@@ -51,12 +51,14 @@ install_deps_queued () {
             let PKG_DOWNLOAD_SIZE="`printf %.0f $PKG_DOWNLOAD_SIZE` * 1024"
         else
             PKG_DOWNLOAD_SIZE=`echo $SIZEINFO | cut -f1 -d" "`
+            PKG_DOWNLOAD_SIZE=`printf %.0f $PKG_DOWNLOAD_SIZE`
         fi
         if [ `echo $SIZEINFO | cut -f4 -d" "` == "MB" ]; then
             PKG_INSTALL_SIZE=`echo $SIZEINFO | cut -f3 -d" "`
             let PKG_INSTALL_SIZE="`printf %.0f $PKG_INSTALL_SIZE` * 1024"
         else
             PKG_INSTALL_SIZE=`echo $SIZEINFO | cut -f3 -d" "`
+            PKG_INSTALL_SIZE=`printf %.0f $PKG_INSTALL_SIZE`
         fi
 
         # Sum sizes and test free space
