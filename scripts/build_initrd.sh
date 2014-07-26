@@ -46,7 +46,18 @@ case $1 in
 	echo 'CONFDEVICE="1"' >> $TARGETDIR/opendomo.cfg
 	echo 'SYSDEVICE="1"' >> $TARGETDIR/opendomo.cfg
 	echo 'HOMEDEVICE="1"' >> $TARGETDIR/opendomo.cfg
-	echo "$OD_VERSION" > $INITRDDIR/etc/VERSION
+
+	# Adding opendomo version
+	echo "PRETTY_NAME=\"Opendomo OS version $OD_VERSION\"" 					 > $INITRDDIR/etc/os-release
+	echo "NAME=\"Opendomo OS\""								>> $INITRDDIR/etc/os-release
+ 	echo "VERSION_ID=$OD_VERSION"								>> $INITRDDIR/etc/os-release
+     	echo "VERSION=$OD_VERSION"								>> $INITRDDIR/etc/os-release
+    	echo "ID=opendomo"									>> $INITRDDIR/etc/os-release
+   	echo "ANSI_COLOR=\"1;31\""								>> $INITRDDIR/etc/os-release
+  	echo "HOME_URL=http://opendomo.org/"							>> $INITRDDIR/etc/os-release
+ 	echo "SUPPORT_URL=http://www.opendomo.com/wiki/index.php?title=P%C3%A1gina_Principal"	>> $INITRDDIR/etc/os-release
+	echo "BUG_REPORT_URL=https://github.com/opalenzuela/opendomo/issues"			>> $INITRDDIR/etc/os-release
+	echo "$OD_VERSION"									>> $INITRDDIR/etc/VERSION
 
 	# Creating raw image files
 	if ! test -f $IMAGESDIR/$DEFCHANGESIMG; then
