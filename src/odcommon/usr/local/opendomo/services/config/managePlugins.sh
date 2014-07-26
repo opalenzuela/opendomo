@@ -6,19 +6,7 @@
 # Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
 
 TMPDIR="/var/opendomo/tmp"
-OSVER=`cat /etc/VERSION`
-REPOSITORY="http://cloud.opendomo.com/repo/$OSVER"
-#TODO If this file can be downloaded elsewhere, remove this block from here
-if ! test -f $TMPDIR/repo.lst; then
-	if wget $REPOSITORY/ -O $TMPDIR/repo.tmp --no-check-certificate --max-redirect=0 2>/dev/null
-	then
-		#echo "#INFO Repository updated"
-		grep -v "#" $TMPDIR/repo.tmp | grep "-" > $TMPDIR/repo.lst
-	else
-		echo "#ERROR Cannot find repository for version [$OSVER]"
-		exit 1
-	fi
-fi
+
 if test -z "$1"; then
 	echo "#> Manage plugins"
 	echo  "list:managePlugins.sh	iconlist"
@@ -75,7 +63,5 @@ else
 	fi
 	echo "	goback	Back"
 	echo "	updatePlugins.sh	Update all"
-	#TODO Detect if it's necessary to reboot, and add the button!
-	echo "	reboot.sh	Reboot"
 fi
 echo

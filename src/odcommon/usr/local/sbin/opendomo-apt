@@ -11,6 +11,7 @@
 PIDFILE="/var/opendomo/run/opendomo-apt.pid"
 LOGFILE="/var/opendomo/log/opendomo-apt.log"
 REPOFILE="/var/opendomo/tmp/repo.lst"
+REPOTEMP="/var/opendomo/tmp/repo.tmp"
 DAEMONDIR="/var/opendomo/apt"
 QUEUEFILE="$DAEMONDIR/queue"
 SRCUPDATE="$DAEMONDIR/update"
@@ -20,19 +21,23 @@ PLUGIN_FILEDIR="/var/opendomo/plugins"
 # Commands options
 APTOPTS="--no-gui --without-recommends"
 CURWEEK=`date +%W`
+REPOSITORY="http://cloud.opendomo.com/repo/$OSVER"
+source /etc/os-release
 
 # Creating directories
 mkdir -p $DAEMONDIR $PLUGIN_DOWNDIR
 touch $QUEUEFILE
 chown -R admin:admin $QUEUEFILE $PLUGIN_DOWNDIR
 
-update_apt_sources () {
-    # Update source once a week
-    if ! test -f $SRCUPDATE || [ "$CURWEEK" != `cat $SRCUPDATE` ]; then
-	echo "Busy: Updating apt sources" > $PIDFILE
-        aptitude update >/dev/null 2>/dev/null
-        echo "Waiting"  > $PIDFILE
-        echo "$CURWEEK" > $SRCUPDATE
+update_sources () {
+    echo "Busy: Updating apt sources" > $PIDFILE
+    aptitude update >/dev/null 2>/dev/null
+    echo "Waiting"  > $PIDFILE
+    echo "$CURWEEK" > $SRCUPDATE
+
+    # Download plugins repository file
+    if wget $REPOSITORY/ -O $REPOTEMP --no-check-certificate --max-redirect=0; then
+        grep -v "#" $REPOTEMP | grep "-" > $REPOFILE
     fi
 }
 
@@ -119,13 +124,13 @@ install_plugins () {
         if test -z "$QUEUEDEPS"; then
             cd /
             echo "Busy: Install $PLUGINNAME" > $PIDFILE
-            echo $plugin | grep ".tar.gz" && /bin/tar -m --no-overwrite-dir -zxvf $PLUGIN_DOWNDIR/$plugin | grep -v /$              \
-               >$PLUGIN_FILEDIR/$PLUGINNAME.files 2>$PLUGIN_FILEDIR/$PLUGINNAME.error
-            echo $plugin | grep ".zip" && /usr/local/bin/unzip -o $PLUGIN_DOWNDIR/$plugin | grep -v /$ | cut -f2 -d':' |sed 's/ //' \
-               >$PLUGIN_FILEDIR/$PLUGINNAME.files 2>$PLUGIN_FILEDIR/$PLUGINMANE.error
-            chown admin $PLUGIN_FILEDIR/$PLUGINNAME.*
+            su admin -c "echo $plugin | grep ".tar.gz" && /bin/tar -m --no-overwrite-dir -zxvf $PLUGIN_DOWNDIR/$plugin | grep -v /$ 		 \
+               >$PLUGIN_FILEDIR/$PLUGINNAME.files 2>$PLUGIN_FILEDIR/$PLUGINNAME.error"
+            su admin -c "echo $plugin | grep ".zip" && /usr/local/bin/unzip -o $PLUGIN_DOWNDIR/$plugin | grep -v /$ | cut -f2 -d':' |sed 's/ //' \
+               >$PLUGIN_FILEDIR/$PLUGINNAME.files 2>$PLUGIN_FILEDIR/$PLUGINMANE.error"
 
-            # Delete downloaded files
+            # Creating wrappers and delete downloaded files
+            su admin -c "/usr/local/bin/createwrappers.sh"
             rm "$PLUGIN_DOWNDIR/$plugin" &>/dev/null
             echo "Waiting" > $PIDFILE
         fi
@@ -136,11 +141,12 @@ install_plugins () {
 while test -f "$PIDFILE"; do
     # Start if daemon is not in "spaceless" mode
     if [ `cat $PIDFILE | cut -f1 -d:` != "Spaceless" ]; then
-        update_apt_sources
-        install_deps_queued
-        if test -f $REPOFILE; then
-            install_plugins
+        # Update source once a week
+        if ! test -f $SRCUPDATE || [ "$CURWEEK" != `cat $SRCUPDATE` ]; then
+            update_sources
         fi
+        install_deps_queued
+        install_plugins
         sleep 3
     fi
 done

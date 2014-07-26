@@ -27,10 +27,12 @@ do
 	done
     fi
 done
+
 # Also, force execution for daemons and eventhandlers
-chmod +x /usr/local/opendomo/daemons/*.sh
-chmod +x /usr/local/opendomo/eventhandlers/*.sh
+chmod +x /usr/local/opendomo/daemons/*.sh 	2>/dev/null
+chmod +x /usr/local/opendomo/eventhandlers/*.sh 2>/dev/null
 # Cleaning possible Windows encoding EOL
-#sed -e 's/\r//g' -i /usr/local/opendomo/*.sh
-#sed -e 's/\r//g' -i /usr/local/opendomo/daemons/*.sh
-#sed -e 's/\r//g' -i /usr/local/opendomo/eventhandlers/*.sh
+sed -e 's/\r//g' -i /usr/local/opendomo/*.sh	           2>/dev/null
+sed -e 's/\r//g' -i /usr/local/opendomo/bin/*.sh           2>/dev/null
+sed -e 's/\r//g' -i /usr/local/opendomo/daemons/*.sh       2>/dev/null
+sed -e 's/\r//g' -i /usr/local/opendomo/eventhandlers/*.sh 2>/dev/null
