@@ -10,7 +10,8 @@
 # Description:       Read network configuration, select hostname and
 #		     UID opendomo configuration
 ### END INIT INFO
-### Copyright(c) 2011 OpenDomo Services SL. Licensed under GPL v3 or later
+
+### Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
 
 
 . /lib/init/vars.sh
@@ -29,7 +30,7 @@ do_start () {
 
 	# Updating hosts files
 	OTHERHOSTS=`cat $HOSTSFILE | grep -v $HOSTNAME`
-	HOSTANAME=`cat /etc/hostname`
+	HOSTNAME=`cat /etc/hostname`
 	echo "127.0.0.1	$HOSTNAME" 	 >$HOSTSFILE
 	echo "$OTHERHOSTS"		>>$HOSTSFILE
 }

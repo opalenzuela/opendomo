@@ -1,6 +1,8 @@
 #!/bin/sh
 #desc:Opendomo builder based on debian.
 
+### Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+
 # Selecting Variables
 
 SCRIPTSDIR="scripts"
@@ -92,9 +94,8 @@ case $1 in
 	echo "INFO: Clean SDK ..."
 	sudo $SCRIPTSDIR/sdk_clean.sh
   ;;
-  * )
+  * ) 
 	echo "ERROR: command selected is not valid"
 	$SCRIPTSDIR/sdk_help.sh
   ;;
 esac
-

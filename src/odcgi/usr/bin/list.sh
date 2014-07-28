@@ -10,7 +10,8 @@
 # Por razones de seguridad, seran eliminados de la ruta combinaciones de dos
 # puntos ".." y direccionadores estandar (<>)
 
-
+### Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+ 
 D="$1"
 # "control" dir by default
 if test -z "$1" || test "/" = "$1"; then
@@ -37,9 +38,14 @@ else
 fi
 echo "list:$script	simple"
 
+#FIXME This is wrong. We cannot prevent the FCW to appear because systemUpdate is on
 if ! test -f /mnt/system/images/ctchange.img && ! test -z `pstree | grep systemUpdate.sh`; then
 	echo "#INFO OpenDomo is not yet configured. Click Configuration wizard to configure it"
 	CFGWIZARD="1"
+	if test -x /usr/local/opendomo/wizFirstConfigurationStep1.sh; then
+		/usr/local/opendomo/wizFirstConfigurationStep1.sh
+		exit 0
+	fi
 fi
 
 for i in `find -maxdepth 1 -type d | cut -c 3-100 | sort && \
