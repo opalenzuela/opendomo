@@ -37,6 +37,7 @@ if test -z "$STYLE" || ! test -d "/var/www/themes/$STYLE"; then
 fi
 echo " /* STYLE $STYLE */"
 cat /var/www/themes/$STYLE/main.css
+#TODO sed -e '/\/\*/,/\*\//d' -e '/^\s*$/d' -e 's/[  ,\t]/ /g'
 echo
 
 ############# SKIN #################
