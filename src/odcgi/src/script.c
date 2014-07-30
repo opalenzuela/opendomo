@@ -1511,8 +1511,7 @@ script_exec (const char *cmd, const char *section, script_env_t * env)
 	}
 
 	// "form" Section
-	else if(SPELL4 (buf, 'f', 'o', 'r', 'm')
-	    || SPELL4 (buf, 'u', 's', 'a', 'g'))
+	else if(SPELL4 (buf, 'f', 'o', 'r', 'm'))
 	{
 		lsid = strtok (buf, ":\n");
 		lsname = strtok (NULL, "\t\n");
@@ -1522,6 +1521,7 @@ script_exec (const char *cmd, const char *section, script_env_t * env)
 		sstrncpy (script_name, lsname, sizeof (script_name));
 		lstype = strtok (NULL, "\t\n");
 		lsid = strtok (lsname, ".\n");
+		sstrncpy (cmdid, lsid, sizeof (cmdid));
 		// **********************************************************
 		opt = form;
 		if(usetabs == 0)
@@ -1586,8 +1586,7 @@ script_exec (const char *cmd, const char *section, script_env_t * env)
     }
 
 	// "actions" Section
-	else if(SPELL4 (buf, 'a', 'c', 't', 'i')
-		|| SPELL4 (buf, 'c', 'm', 'd', 's'))
+	else if(SPELL4 (buf, 'a', 'c', 't', 'i'))
 	{
 		if((opt == list) || (opt == form))
 		{
@@ -1631,10 +1630,6 @@ script_exec (const char *cmd, const char *section, script_env_t * env)
 	      strerror (errno), errno, cmd);
       printf (" <button onclick='history.back();'>%s</button>",
 	      T (ODCGI_TEXT_BACK));
-      //The following line is disabled. It should be in oddevel plugin instead
-      /*printf (" <button "
-	      "onclick=\"window.open('%s:%s','issues');\">%s</button>",
-	      ODCGI_URL_TRACKER, cmdid, T (ODCGI_TEXT_ERROR_TRACKER_LINK)); */
       printf ("</div>\n");
       syslog (LOG_ERR, "%s (%d): %s\n", strerror (errno), errno, cmd);
     }
@@ -1650,10 +1645,6 @@ script_exec (const char *cmd, const char *section, script_env_t * env)
 	      "onclick=\"window.open('%s%s#error%d','help');\">%s</button>",
 	      ODCGI_URL_HELP, cmdid, WEXITSTATUS (retval),
 	      T (ODCGI_TEXT_ERROR_HELP_LINK));
-      //The following line is disabled. It should be in oddevel plugin instead
-      /*printf (" <button "
-	      "onclick=\"window.open('%s:%s','issues');\">%s</button>",
-	      ODCGI_URL_TRACKER, cmdid, T (ODCGI_TEXT_ERROR_TRACKER_LINK)); */
       printf ("</div>\n");
 
       syslog (LOG_ERR, "return (%d): %s\n", WEXITSTATUS (retval), cmd);
