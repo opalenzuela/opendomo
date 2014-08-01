@@ -3,6 +3,9 @@
 #type:multiple
 #package:odcommon
 
+
+# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+
 CONFIGDIR="/etc/opendomo/udata"
 USER="$1"
 
