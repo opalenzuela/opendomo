@@ -38,7 +38,7 @@ ul
 	width: 100%;
 }
 fieldset ul li label input , fieldset ul li b input {display: none;}
-fieldset.multiselect ul li label input {display: inline!important;}
+fieldset.multiselect ul li label input, fieldset.multiselect ul li b input {display: inline!important;}
 
 li label {
 	display: inline-block;
@@ -80,7 +80,7 @@ li .imgframe {
 }
 .tabform ul li {
 	display: table-row;
-	height: 35px;
+	min-height: 35px;
 }
 .tabform ul li label {
 	display: table-cell;
@@ -101,14 +101,21 @@ li .imgframe {
 	padding: 5px;
 	background-position: center;
 	background-size: 100px 100px;
+	background-repeat: no-repeat;
 	height: 100px;
 	width: 100px;
 	overflow: hidden;
+	border-width: 1px;
+	border-style: solid;
 }
-.iconlist ul li label{
+.iconlist ul li a{
 	width: 100%;
 	height: 100%;
+	display: block;
+	border: 1px solid;
 }
+
+
 
 /* Exception: in rowforms, the fields are shown in the same row */
 .rowform ul{
@@ -395,8 +402,8 @@ fieldset
 	-webkit-border-radius: 10px;
 	margin: 0px;
 	padding: 0px;
-	margin-top: 10px;
-	margin-bottom: 30px;
+	margin-top: 30px;
+	margin-bottom: 10px;
 
 }
 
@@ -646,11 +653,8 @@ p {
 	max-height: 260px;
 }
 
-/* Width=200% is equivalent to colspan=2 */
 .embeddedapp {
-	display:block;
-	height:300px;
-	width:200%; 
+	width:inherit; 
 }
 
 .hidden {
