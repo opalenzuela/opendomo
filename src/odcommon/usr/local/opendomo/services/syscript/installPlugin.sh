@@ -25,8 +25,7 @@ else
 	echo -n "$PLUGINDEPS" >> $QUEUEFILE
 	cd $PLUGINSDIR
 	/usr/local/bin/download.sh $DOWNURL
-
-	echo "actions:"
-	echo "	managePlugins.sh	Back"
+	echo "# Installing plugin $1"
+	/usr/local/opendomo/managePlugins.sh
 fi
 echo
