@@ -116,8 +116,8 @@
 /// Configuration file where the selected skin is stored
 //#define OD_APP_SKIN_CONF "/etc/opendomo/cgi_skin"
 
-/// OpenDomo version file
-#define ODVERSION_FILE "/etc/VERSION"
+/// OpenDomo version file (deprecated in 2.1, use about.sh instead)
+//#define ODVERSION_FILE "/etc/VERSION"
 /// Read a file and stores the content in "var"
 #define read_config_file(fh,fname,var,default) if(!(fh=fopen(fname, "r"))) \
    {\
@@ -278,11 +278,11 @@ odcgi_print_footer (const char *msg, int buttons, cgi_t * cgi)
 		}
 	
 	// Debug block
-	read_config_file (fh, ODVERSION_FILE, value, "Unknown");
+	//read_config_file (fh, ODVERSION_FILE, value, "Unknown");
 	printf ("\n<div id='debug_box' class='debug'>\n"
 	 "<h2>Debug Info:</h2>\n<pre name='debuginfo'>\n");
 	printf ("\tODCGI BUILD: " __DATE__ " " __TIME__ "\n");
-	printf ("\tOD VERSION: %s\n", value);
+	//printf ("\tOD VERSION: %s\n", value);
 	printf ("\tUID: %d \n", getuid ());
 	printf ("\tGID: %d \n", getgid ());
 	printf ("\tCGI_SERVER_PROTOCOL: %s\n", cgi_get_server_protocol (cgi));

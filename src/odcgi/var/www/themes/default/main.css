@@ -37,7 +37,7 @@ ul
 	padding: 0px;
 	width: 100%;
 }
-fieldset ul li label input {display: none;}
+fieldset ul li label input , fieldset ul li b input {display: none;}
 fieldset.multiselect ul li label input {display: inline!important;}
 
 li label {

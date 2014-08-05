@@ -461,7 +461,7 @@ script_process_list_body (char *id, char *desc, char *type, char *extra)
     snprintf (link, sizeof (link), "/cgi-bin/od.cgi?GUI=none&amp;FILE=%s", id);
 
     printf ("<li id='%s'>"
-	    "<label><a href='%s.webm'>%s</a></label><br/>\n"
+	    "<a href='%s.webm'><b>%s</b></a><br/>\n"
 	    "<video id='%s' class='%s' controls='controls' poster='%s.jpg'>"
 	    "\t<source src='%s.mp4' type='video/mp4' />\n"
 	    "\t<source src='%s.webm' type='video/webm' />\n"
@@ -472,7 +472,7 @@ script_process_list_body (char *id, char *desc, char *type, char *extra)
 
   else if(SPELL4 (type, 's', 't', 'r', 'e'))	// stream
   {
-    printf ("<li id='%s' class='%s'><label>%s</label><br/>", id, type, desc);
+    printf ("<li id='%s' class='%s'><b>%s</b><br/>", id, type, desc);
     printf ("<a href='?option[]=%s'>\n", id);
     printf ("<img name='%s' src='%s' alt='%s' class='video %s' "
 	    "onerror='tryToReloadCam(this);'/><br/>",
@@ -544,9 +544,9 @@ script_process_list_body (char *id, char *desc, char *type, char *extra)
     printf ("\t\t\t\t<li id='%s' class='%s' >", id, type);
 	printf ("<a href='%s'>", link);
     //printf ("<div class='imgframe'>%s</div>", img);
-    printf ("<label id='%s_lbl'><input type='checkbox' name='option[]' value='%s'/>",
+    printf ("<b id='%s_lbl'><input type='checkbox' name='option[]' value='%s'/>",
     	id, id);
-    printf ("%s</label></a>", T (desc));
+    printf ("%s</b></a>", T (desc));
     if(extra != NULL)
     {
 		printf ("\n<!-- extra= %s -->\n", extra);
@@ -955,10 +955,10 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 
   if(strstr (stype, "password"))
   {
-	printf ("\t\t\t\t<li id='%s_li' class='%s'><a>"
+	printf ("\t\t\t\t<li id='%s_li' class='%s'>"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
 		id, cleantype, id, id, T (desc));
-	printf ("<p><input id='%s' name='%s' type='password' value=\"%s\"/></p></a></li>\n",
+	printf ("<p><input id='%s' name='%s' type='password' value=\"%s\"/></p></li>\n",
 		id, id, extra);
   }
 
@@ -971,35 +971,35 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
        "</li>\n",
        extra, id, extra, extra,extra);
      */
-	printf ("\t\t\t\t<li id='%s_li' class='%s' ><a>"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
 		id, cleantype, id, id, T (desc));     
 	printf ("<input id='%s' name='%s' type='hidden' value=\"%s\"/>"
-		"<p id='%s' class='ro %s'>%s</p>" "</a></li>\n", id, id, extra, id, extra, extra);
+		"<p id='%s' class='ro %s'>%s</p>" "</li>\n", id, id, extra, id, extra, extra);
   }
 
   else if(strstr (stype, "longtext"))
   {
-	printf ("\t\t\t\t<li id='%s_li' class='%s' ><a>"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
 		id, cleantype, id, id,  T (desc));  
 	//FIXME Open brackets for long text input, and return "1"
-	printf ("<br/><textarea name='%s' id='%s'>%s</textarea></a></li>\n", 
+	printf ("<br/><textarea name='%s' id='%s'>%s</textarea></li>\n", 
 		id, id, extra);
   }
 
   else if(strstr (stype, "separator"))
   {
   	sepopen=1;
-	printf ("\t\t\t\t<li id='%s_li' class='%s' ><a>"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
 		id, cleantype, id, id, T (desc));  	
-  	printf("<p>%s</p></a></li>\n",extra);
+  	printf("<p>%s</p></li>\n",extra);
   }
 
   else if(strstr (stype, "list"))
   {
-	printf ("\t\t\t\t<li id='%s_li' class='%s' ><a>"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
 		id, cleantype, id, id, T (desc));  
 	printf ("<p><select id='%s' name='%s' class='list'>\n", id, id);
@@ -1007,12 +1007,12 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 	{
 		printf ("<optgroup label='Invalid data'></optgroup>\n");
 	}
-	printf ("\t\t\t\t  </select></p></a></li>\n");
+	printf ("\t\t\t\t  </select></p></li>\n");
   }
 
   else if(strstr (stype, "boolean"))
   {
-	printf ("\t\t\t\t<li id='%s_li' class='%s' ><a>"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t<p>",
 		id, cleantype, id, id, T (desc));  
 	if (strstr(extra,"on") || strstr(extra,"true") ) {
@@ -1021,21 +1021,21 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 	} else {
 		printf ("<input name='%s' id='%s' type='checkbox'>", id, id);	
 	}
-	printf("</p></a></li>\n");
+	printf("</p></li>\n");
   }
   
   else if(strstr (stype, "range"))
   {
-	printf ("\t\t\t\t<li id='%s_li' class='%s' ><a>"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
 		id, cleantype, id, id, T (desc));  
-	printf ("<p><input name='%s' id='%s' type='range' value='%s'></p></a></li>\n", 
+	printf ("<p><input name='%s' id='%s' type='range' value='%s'></p></li>\n", 
 		id, id, extra);
   }  
   
   else if(strstr (stype, "subcommand"))
   {
-	printf ("\t\t\t\t<li id='%s_li' class='%s' ><a>"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
 		id, cleantype, id, id, T (desc));  
 	if(strcmp (type, "subcommand[on,off]") == 0)
@@ -1069,22 +1069,22 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 		}
 		pch = strtok (NULL, "[],");
 	}
-	printf ("\t\t\t\t  </p></a></li>\n");
+	printf ("\t\t\t\t  </p></li>\n");
   }
 
   else if(strstr (stype, "image"))
   {
-	printf ("\t\t\t\t<li id='%s_li' class='%s' ><a>"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
 		id, cleantype, id, id, T (desc));
 	printf ("<p><div class='imgframe'>"
-		"<img id='imgframe_%s' class='imgfield' name='%s' src='%s' alt='%s'/></div></p></a></li>\n",
+		"<img id='imgframe_%s' class='imgfield' name='%s' src='%s' alt='%s'/></div></p></li>\n",
 		id, id, extra, CT (desc));
   }
 
   else if(strstr (stype, "videofile"))
   {
-	printf ("\t\t\t\t<li id='%s_li' class='%s' ><a>"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
 		id, cleantype, id, id,  T (desc));
 	printf ("<script>"
@@ -1113,7 +1113,7 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 	printf
       ("<button class=\"pause_btn\" type=\"button\" onClick=\"window.stop()\"/></button>");
 
-	printf ("</div></a></li>\n");
+	printf ("</div></li>\n");
   }
   /* // Moved to list
      else if (strstr(stype,"stream"))
@@ -1142,36 +1142,36 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 
   else if(strstr (stype, "video"))
   {
-	printf ("\t\t\t\t<li id='%s_li' class='%s' ><a>"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
 		id, cleantype, id, id, T (desc));  
 	printf ("<div class='imgframe'>"
 		"<embed name='%s' class='%s' src='%s' alt='%s' /></div>"
-		"</a></li>\n", id, type, extra, CT (desc));
+		"</li>\n", id, type, extra, CT (desc));
   }
 
   else if(strstr (stype, "application"))
   {
-	printf ("\t\t\t\t<li id='%s_li' class='%s' ><a>"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<!-- <label id='%s_lbl' for='%s'>%s</label> -->\n\t\t\t\t\t",
 		id, cleantype, id, id, T (desc));  
 	printf ("<iframe name='frm%s' scrolling='auto' frameborder='no' "
-		"align='center' class='embeddedapp' src='%s'></iframe></a></li>\n",
+		"align='center' class='embeddedapp' src='%s'></iframe></li>\n",
 		id, extra);
   }
   else if(strstr (stype, "date"))
   {
-	printf ("\t\t\t\t<li id='%s_li' class='%s' ><a>"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
 		id, cleantype, id, id, T (desc));  
 	printf ("<p><input name='%s' id='id_%s' type='date' class='%s' value='%s' "\
 		" onkeyup=\"isValid(this,'^[0-3][0-9]/[0-1][0-9]/20[0-9][0-9]$')\"/>"
-		"</p></a></li>\n", id,id, type, extra);
+		"</p></li>\n", id,id, type, extra);
 
   }
   else if(strstr (stype, "text"))
   {
-	printf ("\t\t\t\t<li id='%s_li' class='%s' ><a>"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
 		id, cleantype, id, id, T (desc));  
 	if(type[4] == ':')		//text:[a-z0-9]
@@ -1188,15 +1188,15 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 		sprintf (rule, "");
 	}
 	printf ("<p><input name='%s' type='text' class='%s' value='%s' %s/>"
-		"</p></a></li>\n", id, type, extra, rule);
+		"</p></li>\n", id, type, extra, rule);
   }
   else //TODO: Merge with "text", as the default option
   {
-	printf ("\t\t\t\t<li id='%s_li' class='%s' ><a>"
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
 		id, cleantype, id, id, T (desc));  
 	printf ("<p><input name='%s' type='%s' class='%s' value='%s'/>"
-		"</p></a></li>\n", id, type, type, extra);
+		"</p></li>\n", id, type, type, extra);
   }
   free (cleantype);
   return 0;
