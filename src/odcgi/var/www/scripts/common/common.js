@@ -138,19 +138,6 @@ function getLastSelectedElementFromList(lstname){
 	return value;
 }
 
-function putFlags(){
-	untrans = document.getElementsByClassName("untrans");
-	for (i=0;i<untrans.length;i++) {
-		var transbutton = document.createElement("a");
-		transbutton.innerHTML="<img src='/images/trans.png' alt='translate'/>";
-		transbutton.onmousedown=function() {
-			translateMe(this.parentNode);
-			return false;
-		}
-		untrans[i].appendChild(transbutton);
-	}
-}
-
 function tryToReloadCam(image){
 	image.src="/images/nocam.png";
 }
@@ -179,10 +166,6 @@ function hideTT(id){
 	if (tt) tt.style.display='none'; 
 }
 
-function notifyProblem(){
-	openPopup('http://www.opendomo.com/wiki/index.php?action=edit&title=Discusión:'+basename(location.pathname));
-}
-
 function help(topic){
 	window.open('http://www.opendomo.com/wiki/index.php?title='+topic,'help');
 }
@@ -194,18 +177,7 @@ function addJavascript(filename){
 	  fileref.setAttribute("type","text/javascript")
 }
 
-function initialise(){
-	addJavascript("jquery.min.js");
-	/* Experimental assistive keyboard
-	ctrls = document.getElementsByTagName("INPUT");
-	for (i=0;i<ctrls.length;i++){
-		if (ctrls[i].type=="text" || ctrls[i].type=="password"){
-			helphtml = "<img src='' onclick=\"shKeyboard('"+ctrls[i].name+"');\"/>"
-			pn = ctrls[i].parentNode;
-			pn.innerHTML = pn.innerHTML + helphtml;
-		}
-	}
-	*/
+jQuery(function($) {
 	init_focus();
 
 	
@@ -256,35 +228,8 @@ function initialise(){
 		login.focus();
 	}	
 	if (window.init_form) init_form();
-}
+});
 
-function init_graph_lib(){
-	addJavascript("jquery.flot.min.js");
-}
-
-function translateMe(tag){
-	var text=tag.firstChild.data;
-	var id=tag.id;
-	var lang=tag.lang;
-	var url="http://cloud.opendomo.com/babel/trans.php";
-	var script="";
-	while (tag.parentNode.tagName!="BODY" && tag.parentNode) {
-		tag = tag.parentNode;
-		if (tag.tagName=="UL") script = tag.id + ".sh";
-	}
-	openPopup(url+"?data="+text+"&id="+id+"&lang="+lang+"&script="+script);
-}
-
-function advscreen(page){
-    tmp = new ajaxObject ('advpad', page);
-    tmp.update();
-}
-
-// Abbrev. of "Input Key", for the numeric keyboard
-function ik(key){
-	var passfield = document.getElementById("PASS");
-	passfield.value = passfield.value + key;
-}
 
 var iconlist='iconlist';
 var detailedlist='detailedlist';
@@ -329,6 +274,7 @@ function init_focus(){
 
 //http://www.bigbold.com/snippets/posts/show/2630
 function addClassName(objElement, strClass, blnMayAlreadyExist){
+	console.log("Using deprecated addClassName");
    if ( objElement.className ){
       var arrList = objElement.className.split(' ');
       if ( blnMayAlreadyExist ){
@@ -350,6 +296,7 @@ function addClassName(objElement, strClass, blnMayAlreadyExist){
 
 //http://www.bigbold.com/snippets/posts/show/2630
 function removeClassName(objElement, strClass){
+	console.log("Using deprecated removeClassName");
    if ( objElement.className ){
       var arrList = objElement.className.split(' ');
       var strClassUpper = strClass.toUpperCase();
@@ -364,60 +311,18 @@ function removeClassName(objElement, strClass){
 }
 
 function hasClassName(objElement, strClass){
-   if ( objElement.className ){
-      var arrList = objElement.className.split(' ');
-      var strClassUpper = strClass.toUpperCase();
-      for ( var i = 0; i < arrList.length; i++ ){
-         if ( arrList[i].toUpperCase() == strClassUpper ){
-            return true;
-         }
-      }
-      objElement.className = arrList.join(' ');
-   }
-   return false;
-}
-
-
-// Ajusta las imágenes a su contenedor
-/*function adjust_img(obj){
-        var ph = obj.parentNode.offsetHeight-10;
-        var pw = obj.parentNode.offsetWidth-10;
-        var H = obj.height;
-        var W = obj.width;
-
-        // Si la imagen no cabe en el marco, ajustar
-        if ((ph <= H) || (pw <= W)){
-//                document.title=("Image does not fit!"+H+"x"+W+" > "+ph+"x"+pw);
-                if(ph/H < pw/W){
-                        var R = ph/H;
-                }else{
-                        var R = pw/W;
-                }
-                obj.height = Math.round(H * R);
-                obj.width = Math.round(W * R);
-        }
-        //obj.style.display="block";
-}*/
-
-
-
-// Integración no instrusiva del evento onload
-function addEvent(obj, evType, fn){
- if (obj.addEventListener){
-   obj.addEventListener(evType, fn, false);
-   return true;
- } else if (obj.attachEvent){
-   var r = obj.attachEvent("on"+evType, fn);
-   return r;
- } else {
-   return false;
- }
-}
-addEvent(window, 'load', initialise);
-
-// Esta rutina deberá crear un teclado en pantalla para dispositivos táctiles
-function shKeyboard(fieldname){
-
+	console.log("Using deprecatedHasClassName");
+	if ( objElement.className ){
+		var arrList = objElement.className.split(' ');
+		var strClassUpper = strClass.toUpperCase();
+		for ( var i = 0; i < arrList.length; i++ ){
+		 if ( arrList[i].toUpperCase() == strClassUpper ){
+			return true;
+		 }
+		}
+		objElement.className = arrList.join(' ');
+	}
+	return false;
 }
 
 function isValid(ctrl,regexp){
@@ -596,177 +501,5 @@ function prepareTooltip(event, pos, item)
             }
 }
 /* END Funciones para las graficas*/
-
-
-/*error notifications
-var ntotalnotif = 0;
-var notifshowed = 0;
-function shower(class_name)
-{
-
-	$(class_name).each(function(index) 
-	{
-	notifshowed++;
-	if(index == 0)
-	{
- 	 $(this).attr('display', '');
-	 $(this).fadeIn(400);
-	}
-	else if(index == 1)
-	{
- 	 $(this).delay(4000);
- 	 $(this).attr('display', '');
-	 $(this).delay(1000).fadeIn(400);
-	}
-	else if(index == 2)
-	{
- 	 $(this).delay(4000);
- 	 $(this).attr('display', '');
-	 $(this).delay(1000).fadeIn(400);
-	}
-	else if(index == 3)
-	{
- 	 $(this).delay(4000);
- 	 $(this).attr('display', '');
-	 $(this).delay(1000).fadeIn(400);
-	}
-	if(notifshowed != ntotalnotif)
-	{
- 	 $(this).delay(4000).fadeOut(400);
-  	 $(this).attr('display', 'none');
-	}
-	});
-}
-
-
-function countAllNotifications()
-{
-ntotalnotif += $('.warning').length;
-ntotalnotif += $('.error').length;
-ntotalnotif += $('.validation').length;
-ntotalnotif += $('.success').length;
-ntotalnotif += $('.notice').length;
-ntotalnotif += $('.info').length;
-ntotalnotif += $('.errorcont').length;
-}
-
-$(document).ready(function()
-{
-countAllNotifications();
-// Ocultamos el los tabs si no tenemos h2
-var nh2 = $('h2').length;
-if(nh2 == 1) 
-{
-	//$('fieldset').append('<h2>Info</h2>');
-}
-
-
-
-
-
-function showAndHideMessages()
-{
-
-
-waiting = 0;
-var nerrors = $('.warning').length;
-if(nerrors > 0)
-{
-	setTimeout(
-	  function() 
-	  {
-	    shower(".warning");
-	    //do something special
-	  }, waiting);
-waiting+=3000;
-}
-
-var nerrors = $('.error').length;
-if(nerrors > 0)
-{
-	setTimeout(
-	  function() 
-	  {
-	    shower(".error");
-	    //do something special
-	  }, waiting);
-waiting+=3000;
-}
-var nerrors = $('.validation').length;
-if(nerrors > 0)
-{
-	setTimeout(
-	  function() 
-	  {
-	    shower(".validation");
-	    //do something special
-	  }, waiting);
-waiting+=3000;
-}
-var nerrors = $('.success').length;
-if(nerrors > 0)
-{
-	setTimeout(
-	  function() 
-	  {
-	    shower(".success");
-	    //do something special
-	  }, waiting);
-waiting+=3000;
-}
-var nerrors = $('.notice').length;
-if(nerrors > 0)
-{
-	setTimeout(
-	  function() 
-	  {
-	    shower(".notice");
-	    //do something special
-	  }, waiting);
-waiting+=3000;
-}
-
-var nerrors = $('.info').length;
-if(nerrors > 0)
-{
-	setTimeout(
-	  function() 
-	  {
-	    shower(".info");
-	    //do something special
-	  }, waiting);
-waiting+=3000;
-}
-var nerrors = $('.errorcont').length;
-if(nerrors > 0)
-{
-	setTimeout(
-	  function() 
-	  {
-	    shower(".errorcont");
-	    //do something special
-	  }, waiting);
-waiting+=3000;
-}
-}
-
-var pathname = window.location.pathname;
-
-if(pathname.indexOf("showEvents.sh") == -1)
-	showAndHideMessages();
-
-
-$(document).ready(function() 
-{
-	var themeActive = $("#theme-active").val();
-
-	if(themeActive == "simple")
-	{
-		$('#main').jScrollPane();
-	}
-});
-
-});
-*/
 
 
