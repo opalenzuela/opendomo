@@ -16,10 +16,14 @@ else
     # No user selected, see users list
     cd $CONFIGDIR
     echo "#> Available users"
-    echo "list:`basename $0`	selectable"
+    echo "list:`basename $0`	selectable iconlist"
     for user in `ls *.info | cut -f1 -d.`; do
-        FULLNAME=`grep ^FULLNAME= $user.info | sed 's/\"//g' | cut -f2 -d= `
-        echo "	-$user	$FULLNAME	user"
+		# Do not present "Admin" as a user
+		if test "$user" != "admin"
+		then
+			FULLNAME=`grep ^FULLNAME= $user.info | sed 's/\"//g' | cut -f2 -d= `
+			echo "	-$user	$FULLNAME	user"
+		fi
     done
     echo "action:"
     echo "	modifyUser.sh	Add / Modify"
