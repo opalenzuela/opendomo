@@ -22,11 +22,11 @@ HOSTSFILE="/etc/hosts"
 
 do_start () {
 
-	if ! test -f "$UIDFILE"
-	then
-		/sbin/ifconfig eth0 | grep HWaddr | cut -c 39-55 | sed -e 's/://g' > $UIDFILE
-		chown 1000:1000 $UIDFILE
-	fi
+	#if ! test -f "$UIDFILE"
+	#then
+	#	/sbin/ifconfig eth0 | grep HWaddr | cut -c 39-55 | sed -e 's/://g' > $UIDFILE
+	#	chown 1000:1000 $UIDFILE
+	#fi
 
 	# Updating hosts files
 	OTHERHOSTS=`cat $HOSTSFILE | grep -v $HOSTNAME`
@@ -45,7 +45,7 @@ do_status () {
 
 case "$1" in
   start|"")
-	log_action_begin_msg "Creating OpendomoOS UID"
+	log_action_begin_msg "Loading OpendomoOS UID"
 	do_start
 	log_action_end_msg $?
         ;;

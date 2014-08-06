@@ -38,9 +38,10 @@ else
 fi
 echo "list:$script	simple"
 
+UIDFILE="/etc/opendomo/uid"
 #FIXME This is wrong. We cannot prevent the FCW to appear because systemUpdate is on
-if ! test -f /mnt/system/images/ctchange.img && ! test -z `pstree | grep systemUpdate.sh`; then
-	echo "#INFO OpenDomo is not yet configured. Click Configuration wizard to configure it"
+if ! test -f $UIDFILE; then
+	echo "#INFO OpenDomo is not yet configured."
 	CFGWIZARD="1"
 	if test -x /usr/local/opendomo/wizFirstConfigurationStep1.sh; then
 		/usr/local/opendomo/wizFirstConfigurationStep1.sh
