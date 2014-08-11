@@ -2,6 +2,18 @@
 #desc:Opendomo builder based on debian.
 
 ### Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+##
+##Welcome to OpenDomo OS 2 SDK
+##USAGE:
+##
+##  ./sdk.sh build i386        - Build opendomo for i386 arch
+##  ./sdk.sh build arm         - Build opendomo for RaspberryPi
+##
+##  ./sdk.sh export sd dev     - Export opendomo distro to SD card (i386 only)
+##  ./sdk.sh export vmdk       - Export opendomo distro to VMDK image (i386 only)
+##  ./sdk.sh export rpi dev    - Export opendomo distro to RaspberryPI SD card
+##
+##  ./sdk.sh clean             - Clean images and custom configs
 
 # Selecting Variables
 
@@ -11,16 +23,14 @@ ARCHCFG="$TMPDIR/arch"
 
 # Previous checks
 if test -z $1; then
-	$SCRIPTSDIR/sdk_help.sh
+	#$SCRIPTSDIR/sdk_help.sh
+	grep "##" $0
 	exit 1
 fi
 
 # Check user and sudo
 if [ `whoami` != "root" ]; then
-	if ! sudo echo -n; then
-		echo "ERROR: You don't have permissions to execute this SDK"
-		exit 1
-	fi
+	echo
 else
 	echo "WARN: You are root, this SDK can't be executed by root"
 	exit 1
@@ -30,6 +40,12 @@ fi
 # Main
 case $1 in
   build )
+	# Check sudo
+	if ! sudo echo -n; then
+		echo "ERROR: You don't have permissions to execute this SDK"
+		exit 1
+	fi  
+  
 	# Checks
 	if test -z $2; then
 		echo "ERROR: You need select arch to build [i386 or arm]"
@@ -44,7 +60,8 @@ case $1 in
 		echo "$2" > $ARCHCFG
 	else
 		echo "ERROR: arch selected is not valid"
-		$SCRIPTSDIR/sdk_help.sh
+		#$SCRIPTSDIR/sdk_help.sh
+		grep "##" $0
 		exit 1
 	fi
 
@@ -63,6 +80,12 @@ case $1 in
 	sudo $SCRIPTSDIR/build_initrd.sh make
   ;;
   export )
+	# Check sudo
+	if ! sudo echo -n; then
+		echo "ERROR: You don't have permissions to execute this SDK"
+		exit 1
+	fi    
+  
 	# Extract sdk variables
 	. $SCRIPTSDIR/sdk_variables.sh
 
@@ -83,7 +106,8 @@ case $1 in
 	else
 		if ! test -x "$SCRIPTSDIR/export_$2.sh"; then
 			echo "ERROR: Image type don't exist"
-			$SCRIPTSDIR/sdk_help.sh
+			#$SCRIPTSDIR/sdk_help.sh
+			grep "##" $0
 			exit 1
 		else
 			sudo $SCRIPTSDIR/export_$2.sh $3
@@ -96,6 +120,7 @@ case $1 in
   ;;
   * ) 
 	echo "ERROR: command selected is not valid"
-	$SCRIPTSDIR/sdk_help.sh
+	#$SCRIPTSDIR/sdk_help.sh
+	grep "##" $0
   ;;
 esac
