@@ -1,7 +1,8 @@
 #!/bin/sh
 #desc:Opendomo builder based on debian.
 
-### Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+##
+## Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
 ##
 ##Welcome to OpenDomo OS 2 SDK
 ##USAGE:
@@ -14,6 +15,10 @@
 ##  ./sdk.sh export rpi dev    - Export opendomo distro to RaspberryPI SD card
 ##
 ##  ./sdk.sh clean             - Clean images and custom configs
+##
+##  ./sdk.sh update            - Update the source files (do it before building)
+##
+
 
 # Selecting Variables
 
@@ -39,6 +44,16 @@ fi
 
 # Main
 case $1 in
+  update)
+	echo "Updating files..."
+	if test -d ".svn"
+	then
+		svn update
+	else
+		git pull
+	fi
+	
+  ;;
   build )
 	# Check sudo
 	if ! sudo echo -n; then
