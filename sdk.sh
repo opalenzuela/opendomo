@@ -24,7 +24,7 @@ ARCHCFG="$TMPDIR/arch"
 # Previous checks
 if test -z $1; then
 	#$SCRIPTSDIR/sdk_help.sh
-	grep "##" $0
+	grep "^##" $0 | sed 's/##//'
 	exit 1
 fi
 
@@ -61,7 +61,7 @@ case $1 in
 	else
 		echo "ERROR: arch selected is not valid"
 		#$SCRIPTSDIR/sdk_help.sh
-		grep "##" $0
+		grep "^##" $0 | sed 's/##//'
 		exit 1
 	fi
 
@@ -107,7 +107,7 @@ case $1 in
 		if ! test -x "$SCRIPTSDIR/export_$2.sh"; then
 			echo "ERROR: Image type don't exist"
 			#$SCRIPTSDIR/sdk_help.sh
-			grep "##" $0
+			grep "^##" $0 | sed 's/##//'
 			exit 1
 		else
 			sudo $SCRIPTSDIR/export_$2.sh $3 || exit 1
@@ -121,6 +121,6 @@ case $1 in
   * ) 
 	echo "ERROR: command selected is not valid"
 	#$SCRIPTSDIR/sdk_help.sh
-	grep "##" $0
+	grep "^##" $0 | sed 's/##//'
   ;;
 esac
