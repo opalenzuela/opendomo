@@ -83,15 +83,22 @@ case $1 in
 	# Extract sdk variables
 	. $SCRIPTSDIR/sdk_variables.sh
 
-	echo "INFO: Build opendomo for $ARCH"
+	echo "INFO: Building OpenDomoOS for $ARCH ..."
 	# Build all
 	$SCRIPTSDIR/sdk_downloads.sh
+	echo "  Processing Initrd (1/7) ..." 
 	sudo $SCRIPTSDIR/build_initrd.sh extract || exit 1
+	echo "  Processing rootstrap (2/7) ..." 
 	sudo $SCRIPTSDIR/build_rootstrap.sh || exit 1
+	echo "  Making packages (3/7) ..." 
 	sudo $SCRIPTSDIR/build_odpkg.sh make || exit 1
+	echo "  Installing packages (4/7) ..." 
 	sudo $SCRIPTSDIR/build_odpkg.sh install || exit 1
+	echo "  Making kernel (5/7) ..." 
 	sudo $SCRIPTSDIR/build_kernel.sh make || exit 1
+	echo "  Installing kernel (6/7) ..." 
 	sudo $SCRIPTSDIR/build_kernel.sh install || exit 1
+	echo "  Building initrd (7/7) ..." 
 	sudo $SCRIPTSDIR/build_initrd.sh make || exit 1
   ;;
   export )
