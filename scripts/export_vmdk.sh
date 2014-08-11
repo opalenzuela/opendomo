@@ -12,7 +12,8 @@ if ! test -x "/usr/bin/qemu-img"; then
 	exit 1
 fi
 
-if ! test -x "/usr/bin/extlinux"; then
+if ! test -x "/usr/bin/extlinux" && ! test -x "/usr/sbin/extlinux";
+then
 	echo "ERROR: You need install extlinux first"
 	exit 1
 fi
