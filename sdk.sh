@@ -71,13 +71,13 @@ case $1 in
 	echo "INFO: Build opendomo for $ARCH"
 	# Build all
 	$SCRIPTSDIR/sdk_downloads.sh
-	sudo $SCRIPTSDIR/build_initrd.sh extract
-	sudo $SCRIPTSDIR/build_rootstrap.sh
-	sudo $SCRIPTSDIR/build_odpkg.sh make
-	sudo $SCRIPTSDIR/build_odpkg.sh install
-	sudo $SCRIPTSDIR/build_kernel.sh make
-	sudo $SCRIPTSDIR/build_kernel.sh install
-	sudo $SCRIPTSDIR/build_initrd.sh make
+	sudo $SCRIPTSDIR/build_initrd.sh extract || exit 1
+	sudo $SCRIPTSDIR/build_rootstrap.sh || exit 1
+	sudo $SCRIPTSDIR/build_odpkg.sh make || exit 1
+	sudo $SCRIPTSDIR/build_odpkg.sh install || exit 1
+	sudo $SCRIPTSDIR/build_kernel.sh make || exit 1
+	sudo $SCRIPTSDIR/build_kernel.sh install || exit 1
+	sudo $SCRIPTSDIR/build_initrd.sh make || exit 1
   ;;
   export )
 	# Check sudo
@@ -110,13 +110,13 @@ case $1 in
 			grep "##" $0
 			exit 1
 		else
-			sudo $SCRIPTSDIR/export_$2.sh $3
+			sudo $SCRIPTSDIR/export_$2.sh $3 || exit 1
 		fi
 	fi
   ;;
   clean )
 	echo "INFO: Clean SDK ..."
-	sudo $SCRIPTSDIR/sdk_clean.sh
+	sudo $SCRIPTSDIR/sdk_clean.sh || exit 1
   ;;
   * ) 
 	echo "ERROR: command selected is not valid"
