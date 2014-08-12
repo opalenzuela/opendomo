@@ -49,6 +49,16 @@ time, mark, audio, video {
     vertical-align: baseline;
 }
 
+small {
+	font-size: 85%;
+}
+
+html, body {
+	font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
+	color: #005799;
+}
+
+
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
@@ -57,9 +67,7 @@ footer, header, hgroup, menu, nav, section {
 body {
     line-height: 1;
 }
-ol, ul {
-    list-style: none;
-}
+
 blockquote, q {
     quotes: none;
 }
@@ -86,18 +94,18 @@ body {
     min-height: 740px;
 
     background: rgb(215, 215, 215);
-    background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 500, from(rgb(240, 240, 240)), to(rgb(190, 190, 190)));
-    background: -webkit-radial-gradient(rgb(240, 240, 240), rgb(190, 190, 190));
-    background:    -moz-radial-gradient(rgb(240, 240, 240), rgb(190, 190, 190));
-    background:     -ms-radial-gradient(rgb(240, 240, 240), rgb(190, 190, 190));
-    background:      -o-radial-gradient(rgb(240, 240, 240), rgb(190, 190, 190));
-    background:         radial-gradient(rgb(240, 240, 240), rgb(190, 190, 190));
+    background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 500, from(rgb(240, 240, 240)), to(rgb(90, 90, 90)));
+    background: -webkit-radial-gradient(rgb(240, 240, 240), rgb(90, 90, 90));
+    background:    -moz-radial-gradient(rgb(240, 240, 240), rgb(90, 90, 90));
+    background:     -ms-radial-gradient(rgb(240, 240, 240), rgb(90, 90, 90));
+    background:      -o-radial-gradient(rgb(240, 240, 240), rgb(90, 90, 90));
+    background:         radial-gradient(rgb(240, 240, 240), rgb(90, 90, 90));
 }
 
 /*
     Now let's bring some text styles back ...
 */
-b, strong { font-weight: bold }
+b, strong { font-weight: bolder; }
 i, em { font-style: italic }
 
 /*
@@ -207,6 +215,7 @@ a:focus {
     They cover everything what you see on first three steps of the demo.
 */
 .slide {
+	background: url("../images/logo.png") top left no-repeat;
     display: block;
 
     width: 900px;
@@ -221,7 +230,7 @@ a:focus {
     color: rgb(102, 102, 102);
     text-shadow: 0 2px 2px rgba(0, 0, 0, .1);
 
-    font-family: 'Open Sans', Arial, sans-serif;
+    font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
     font-size: 30px;
     line-height: 36px;
     letter-spacing: -1px;
@@ -231,7 +240,7 @@ a:focus {
     display: block;
     font-size: 30px;
     line-height: 72px;
-
+	min-height: 500px;
     margin-top: 100px;
 }
 
@@ -251,9 +260,31 @@ a:focus {
     First is the title step with a big <h1> (no room for padding) and some
     3D positioning along Z axis.
 */
+.free_list {
+	list-style: none;
+}
+.free_frame {
+	font-family: Sans;
+}
+.free_title {
+	margin: 20px;
+	font-size: 200%;
+}
 
-.vk_gy {
+.free_number {
+	float: left;
+	width: 40px;
+	display: block;
+	text-align: right;
+}
+
+.free_example {
 	color: gray;
+}
+.free_example,
+.free_definition {
+	display: block;
+	margin-left: 50px;
 }
 
 #title {
@@ -418,15 +449,20 @@ a:focus {
     It is not needed by webkit browsers, but it is in Firefox. It's hard to say
     which behaviour is correct as 3D transforms spec is not very clear about it.
 */
-#its-in-3d p {
+#plugins p {
     -webkit-transform-style: preserve-3d;
     -moz-transform-style:    preserve-3d; /* Y U need this Firefox?! */
     -ms-transform-style:     preserve-3d;
     -o-transform-style:      preserve-3d;
     transform-style:         preserve-3d;
 }
+img.icon {
+	float: right;
+	width: 200px;
+	height: 200px;
+}
 
-div.past .delayed,
+
 div.future .delayed {
 	-webkit-opacity: 0;
 	-moz-opacity: 0;
@@ -437,22 +473,33 @@ div.future .delayed {
 
 
 div.present .delayed {
-	-webkit-transition-property: all;
-	-moz-transition-property: all;
-	-o-transition-property: all;
-	transition-property: all;
-	
 	-webkit-opacity: 1;
 	-moz-opacity: 1;
 	-ms-opacity: 1;
 	-o-opacity: 1;	
 	opacity: 1;
 	
-    -webkit-transition: 1s;
-    -moz-transition:    1s;
-    -ms-transition:     1s;
-    -o-transition:      1s;
-    transition:         1s;	 
+    -webkit-transition: opacity 2s, -webkit-transform 0.5s 5s;
+    -moz-transition:    opacity 2s,    -moz-transform 0.5s 5s;
+    -ms-transition:     opacity 2s,     -ms-transform 0.5s 5s;
+    -o-transition:      opacity 2s,      -o-transform 0.5s 5s;
+    transition:         opacity 2s,         transform 0.5s 5s;
+}
+
+
+.twist {
+	display: inline-block;
+	font-size: 110%;
+	-webkit-transform-origin: bottom left;
+	-moz-transform-origin: bottom left;
+	-ms-transform-origin: bottom left;
+	-o-transform-origin: bottom left;
+	transform-origin: bottom left;
+    -webkit-transform: rotate(5deg);
+    -moz-transform:    rotate(5deg);
+    -ms-transform:     rotate(5deg);
+    -o-transform:      rotate(5deg);
+     transform:        rotate(5deg);
 }
 
 /*
@@ -461,8 +508,8 @@ div.present .delayed {
 
     Quite a simple idea, but lot's of styles and prefixes.
 */
-#its-in-3d span,
-#its-in-3d b {
+#plugins span,
+#plugins b {
     display: inline-block;
     -webkit-transform: translateZ(40px);
     -moz-transform:    translateZ(40px);
@@ -470,65 +517,65 @@ div.present .delayed {
     -o-transform:      translateZ(40px);
      transform:        translateZ(40px);
 
-    -webkit-transition: 0.5s;
-    -moz-transition:    0.5s;
-    -ms-transition:     0.5s;
-    -o-transition:      0.5s;
-    transition:         0.5s;
+    -webkit-transition: 3s;
+    -moz-transition:    3s;
+    -ms-transition:     3s;
+    -o-transition:      3s;
+    transition:         3s;
 }
 
-#its-in-3d .have {
-    -webkit-transform: translateZ(-40px);
-    -moz-transform:    translateZ(-40px);
-    -ms-transform:     translateZ(-40px);
-    -o-transform:      translateZ(-40px);
-    transform:         translateZ(-40px);
+#plugins .first {
+    -webkit-transform: translateZ(-140px);
+    -moz-transform:    translateZ(-140px);
+    -ms-transform:     translateZ(-140px);
+    -o-transform:      translateZ(-140px);
+    transform:         translateZ(-140px);
 }
 
-#its-in-3d .you {
-    -webkit-transform: translateZ(20px);
-    -moz-transform:    translateZ(20px);
-    -ms-transform:     translateZ(20px);
-    -o-transform:      translateZ(20px);
-    transform:         translateZ(20px);
+#plugins .second {
+    -webkit-transform: translateZ(720px);
+    -moz-transform:    translateZ(720px);
+    -ms-transform:     translateZ(720px);
+    -o-transform:      translateZ(720px);
+    transform:         translateZ(720px);
 }
 
-#its-in-3d .noticed {
-    -webkit-transform: translateZ(-40px);
-    -moz-transform:    translateZ(-40px);
-    -ms-transform:     translateZ(-40px);
-    -o-transform:      translateZ(-40px);
-    transform:         translateZ(-40px);
+#plugins .third {
+    -webkit-transform: translateZ(-1000px);
+    -moz-transform:    translateZ(-1000px);
+    -ms-transform:     translateZ(-1000px);
+    -o-transform:      translateZ(-1000px);
+    transform:         translateZ(-1000px);
 }
 
-#its-in-3d .its {
-    -webkit-transform: translateZ(60px);
-    -moz-transform:    translateZ(60px);
-    -ms-transform:     translateZ(60px);
-    -o-transform:      translateZ(60px);
-    transform:         translateZ(60px);
+#plugins .fourth {
+    -webkit-transform: translateZ(500px);
+    -moz-transform:    translateZ(500px);
+    -ms-transform:     translateZ(500px);
+    -o-transform:      translateZ(500px);
+    transform:         translateZ(500px);
 }
 
-#its-in-3d .in {
-    -webkit-transform: translateZ(-10px);
-    -moz-transform:    translateZ(-10px);
-    -ms-transform:     translateZ(-10px);
-    -o-transform:      translateZ(-10px);
-    transform:         translateZ(-10px);
+#plugins .fifth {
+    -webkit-transform: translateZ(-2000px);
+    -moz-transform:    translateZ(-2000px);
+    -ms-transform:     translateZ(-2000px);
+    -o-transform:      translateZ(-2000px);
+    transform:         translateZ(-2000px);
 }
 
-#its-in-3d .footnote {
+ .footnote {
     font-size: 32px;
 
-    -webkit-transform: translateZ(-10px);
-    -moz-transform:    translateZ(-10px);
-    -ms-transform:     translateZ(-10px);
-    -o-transform:      translateZ(-10px);
-    transform:         translateZ(-10px);
+    -webkit-transform: translateZ(-310px);
+    -moz-transform:    translateZ(-310px);
+    -ms-transform:     translateZ(-310px);
+    -o-transform:      translateZ(-310px);
+    transform:         translateZ(-310px);
 }
 
-#its-in-3d.present span,
-#its-in-3d.present b {
+#plugins.present span,
+#plugins.present b {
     -webkit-transform: translateZ(0px);
     -moz-transform:    translateZ(0px);
     -ms-transform:     translateZ(0px);
