@@ -229,15 +229,17 @@ a:focus {
 
 .slide q {
     display: block;
-    font-size: 50px;
+    font-size: 30px;
     line-height: 72px;
 
     margin-top: 100px;
 }
 
+/*
 .slide q strong {
     white-space: nowrap;
 }
+*/
 
 /*
     And now we start to style each step separately.
@@ -420,18 +422,33 @@ a:focus {
     transform-style:         preserve-3d;
 }
 
-strong.delayed {
-    -webkit-transform: translateZ(40px);
-    -moz-transform:    translateZ(40px);
-    -ms-transform:     translateZ(40px);
-    -o-transform:      translateZ(40px);
-     transform:        translateZ(40px);
+div.future .delayed {
+	-webkit-opacity: 0;
+	-moz-opacity: 0;
+	-ms-opacity: 0;
+	-o-opacity: 0;	
+	opacity: 0;
+}
 
-    -webkit-transition: 0.5s;
-    -moz-transition:    0.5s;
-    -ms-transition:     0.5s;
-    -o-transition:      0.5s;
-    transition:         0.5s;	 
+div.past .delayed,
+div.present .delayed {
+	-webkit-transition-property: all;
+	-moz-transition-property: all;
+	-o-transition-property: all;
+	transition-property: all;
+	
+	-webkit-opacity: 1;
+	-moz-opacity: 1;
+	-ms-opacity: 1;
+	-o-opacity: 1;	
+	opacity: 1;
+	
+	
+    -webkit-transition: 1s;
+    -moz-transition:    1s;
+    -ms-transition:     1s;
+    -o-transition:      1s;
+    transition:         1s;	 
 }
 
 /*
