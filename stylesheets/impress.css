@@ -704,9 +704,9 @@ div.present .delayed {
 .impress-enabled .hint { display: block }
 
 /*
-    ... and we will show it when the first step (with id 'bored') is active.
+    ... and we will show it when the first step (with id 'canyouimagine') is active.
 */
-.impress-on-bored .hint {
+.impress-on-canyouimagine .hint {
     /*
         We remove the transparency and position the hint in its default fixed
         position.
