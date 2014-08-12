@@ -252,6 +252,10 @@ a:focus {
     3D positioning along Z axis.
 */
 
+.vk_gy {
+	color: gray;
+}
+
 #title {
     padding: 0;
 }
