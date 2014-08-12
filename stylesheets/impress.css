@@ -422,6 +422,7 @@ a:focus {
     transform-style:         preserve-3d;
 }
 
+div.past .delayed,
 div.future .delayed {
 	-webkit-opacity: 0;
 	-moz-opacity: 0;
@@ -430,7 +431,7 @@ div.future .delayed {
 	opacity: 0;
 }
 
-div.past .delayed,
+
 div.present .delayed {
 	-webkit-transition-property: all;
 	-moz-transition-property: all;
@@ -442,7 +443,6 @@ div.present .delayed {
 	-ms-opacity: 1;
 	-o-opacity: 1;	
 	opacity: 1;
-	
 	
     -webkit-transition: 1s;
     -moz-transition:    1s;
