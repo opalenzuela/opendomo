@@ -14,6 +14,6 @@ echo "	sep	You must enter a new administrator password	separator"
 echo "	newpassword	New password	password"
 echo "	retype	Retype password	password"
 echo "actions:"
+echo "	goback	Previous"
 echo "	wizFirstConfigurationStep4.sh	Finish"
-echo "	wizFirstConfigurationStep2.sh	Previous"
 echo

@@ -3,6 +3,8 @@
 #package:odcgi
 #type:local
 
+# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+
 TMPCFGFILE="/var/opendomo/tmp/wizFirstConfiguration.cfg"
 ADMCFGFILE="/etc/opendomo/udata/admin.info"
 fullname=`grep ^FULLNAME= $ADMCFGFILE | sed 's/\"//g' | cut -f2 -d= `
@@ -19,8 +21,8 @@ if test -e /mnt/odconf ; then
 	echo "	fullname	Full user name	text:[a-zA-Z ]*	$fullname"
 	echo "	email	e-mail address	email	$email"
 	echo "	language	Language	list[en,es]	$language"
-	echo "#TIP(fullname) OpenDomo will address you with this name"
-	echo "#TIP(email) The e-mail address is used for sending notifications"
+	#echo "#TIP(fullname) OpenDomo will address you with this name"
+	#echo "#TIP(email) The e-mail address is used for sending notifications"
 	echo "actions:"
 	echo "	wizFirstConfigurationStep2.sh	Next"
 else

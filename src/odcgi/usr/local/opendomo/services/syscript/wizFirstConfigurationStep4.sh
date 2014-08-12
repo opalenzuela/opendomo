@@ -29,5 +29,5 @@ echo "#> Configuration finished"
 echo "#INFO Your configuration was saved"
 echo "#INFO You can now start using your OpenDomo"
 echo
-/usr/bin/list.sh /
+/usr/local/opendomo/managePlugins.sh
 echo
