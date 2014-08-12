@@ -67,7 +67,8 @@ header {
   padding-top: 40px;
   padding-bottom: 40px;
   font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif; 
-  background: #2e7bcf url(../images/header-bg.jpg) 0 0 repeat-x;
+  /* background: #2e7bcf url(../images/header-bg.jpg) 0 0 repeat-x; */
+  background-color: white;
   border-bottom: solid 1px #275da1;
 }
 
@@ -152,10 +153,17 @@ aside a.button {
   width: 138px;
   padding-left: 64px;
   display: block;
-  background: transparent url(../images/download-button.png) 0 0 no-repeat;
+  
   margin-bottom: 20px;
   font-size: 18px;
 }
+a.download {
+	background: transparent url(../images/download-button.png) 0 0 no-repeat;
+}
+a.tour {
+	background: transparent url(../images/tour-button.png) 0 0 no-repeat;
+}
+
 
 code, pre {
   font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
