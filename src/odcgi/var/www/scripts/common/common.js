@@ -175,6 +175,7 @@ function addJavascript(filename){
 	  var fileref=document.createElement('script')
 	  fileref.setAttribute("src", "/scripts/" + filename)
 	  fileref.setAttribute("type","text/javascript")
+	  document.head.appendChild(fileref);
 }
 
 jQuery(function($) {
