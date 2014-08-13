@@ -67,7 +67,7 @@ header {
   padding-top: 40px;
   padding-bottom: 40px;
   font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif; 
-  background: #2e7bcf url(../images/header-bg.jpg) 0 0 repeat-x;
+  background: #2879d0;
   border-bottom: solid 1px #275da1;
 }
 
@@ -155,6 +155,9 @@ aside a.button {
   
   margin-bottom: 20px;
   font-size: 18px;
+}
+a.downloadzip {
+	background: transparent url(../images/download-zip-button.png) 0 0 no-repeat;
 }
 a.download {
 	background: transparent url(../images/download-button.png) 0 0 no-repeat;
@@ -354,6 +357,7 @@ footer {
   padding-bottom: 30px;
   font-size: 13px;
   color: #aaa;
+  text-align: center;
 }
 
 footer a {
