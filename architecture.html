@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>OpenDomoOS Architecture</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>OpenDomoOS</h1>
+        <h2>The free OS for home automation</h2>
+        <a href="https://github.com/opalenzuela/opendomo" class="button">
+		<small>View project on</small>GitHub</a>
+      </div>
+    </header>
+	
+	<style>
+	div.arch-level>label {
+		float:left;
+		width:80px;
+	}
+	#archcontainer {
+		position: relative;
+		color: #005799;
+	}
+	div.arch-level {
+		position: absolute;
+		display: block;
+		border: 2px solid #005799;
+		border-radius: 5px;
+		padding: 10px;
+		height: 70px;
+	}
+	
+	b.label{
+		left: -45px;
+		top: 15px;
+		font-size: 12px;
+		display: block;
+		font-family: sans-serif;
+	}
+		
+	.fa-odcontrol,
+	.fa-odenergy	{
+		display: inline-block;
+	}
+	.fa-odcontrol:before {
+		content: " ";
+		display: inline-block;
+		background-image:url("data:image/svg+xml;utf8,<svg width='45' height='45' xmlns='http://www.w3.org/2000/svg'><g><title>ODControl</title><rect id='svg_1' height='45' width='45' y='0' x='0' stroke-width='5' stroke='%23005799' fill='%23005799'  rx='3' ry='3' ></rect><rect id='svg_2' height='30' width='43' y='7' x='1' stroke-width='5' stroke='%23005799' fill='%23fff'  rx='3' ry='3' ></rect><text xml:space='preserve' y='26' x='22' style='letter-spacing:-1' text-anchor='middle' font-family='Fantasy' font-size='9' font-stretch='ultra-condensed' id='svg_3' stroke-linecap='null' stroke-linejoin='null' stroke-width='0' stroke='%23000000' fill='%23005799'>ODControl</text></g></svg>");
+		height: 45px;
+		width: 45px;
+		-webkit-font-smoothing: antialiased;
+		margin-bottom: -4px;
+		border-radius: 3px;
+	}
+
+	.fa-odenergy:before {
+		content: " ";
+		display: inline-block;
+		background-image:url("data:image/svg+xml;utf8,<svg width='45' height='45' xmlns='http://www.w3.org/2000/svg'><g><title>ODEnergy</title><rect id='svg_1' height='45' width='45' y='0' x='0' stroke-width='5' stroke='%23005799' fill='%23005799'  rx='3' ry='3' ></rect><rect id='svg_2' height='30' width='43' y='7' x='1' stroke-width='5' stroke='%23005799' fill='%23fff'  rx='3' ry='3' ></rect><text xml:space='preserve' y='26' x='22' style='letter-spacing:-1' text-anchor='middle' font-family='Fantasy' font-size='9' font-stretch='ultra-condensed' id='svg_3' stroke-linecap='null' stroke-linejoin='null' stroke-width='0' stroke='%23000000' fill='%23005799'>ODEnergy</text></g></svg>");
+		height: 45px;
+		width: 45px;
+		-webkit-font-smoothing: antialiased;
+		margin-bottom: -4px;
+		border-radius: 3px;
+	}	
+
+	i.line {
+		display: inline-block;
+		height: 32px;
+		width: 45px;
+		border: none;
+		border-top-width: 2px;
+		border-top-color: #005799;
+		border-top-style: dashed;
+	}
+	i.vertline {
+		display: inline-block;
+		height: 36px;
+		width: 18px;
+		border: none;
+		border-right-width: 2px;
+		border-right-color: #005799;
+		border-right-style: dashed;
+		position: absolute;
+	}	
+	i.fa {
+		text-align: center;
+		cursor: pointer;
+	}
+	div.tooltip {
+		-webkit-transition: all 1s, -webkit-transform 0.5s 2s;
+		-moz-transition:    all 1s,    -moz-transform 0.5s 2s;
+		-ms-transition:     all 1s,     -ms-transform 0.5s 2s;
+		-o-transition:      all 1s,      -o-transform 0.5s 2s;
+		transition:         all 1s,         transform 0.5s 2s;	
+	}
+	div.tooltip {
+		display:block;
+		position: absolute;
+		width: 150px;
+		background-color: white;
+		border: 2px solid #005799;
+		font-size: 12px;
+		font-family: sans-serif;
+		opacity:0;
+		padding: 10px;
+	-webkit-box-shadow: 0 8px 6px -6px black;
+	   -moz-box-shadow: 0 8px 6px -6px black;
+	        box-shadow: 0 8px 6px -6px black;		
+	}
+	i.fa:hover div.tooltip {
+		opacity:1;
+		z-index:1000;
+	}
+
+	</style>
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+			<a name="architecture" class="anchor" href="#architecture">
+			<span class="octicon octicon-link"></span></a>Overview</h1>
+			<div id='archcontainer'>
+				<div class='arch-level' style='width: 46%;top: 0px; left:0px;'>
+					<label>Output</label>
+					<i class="fa fa-3x fa-comment-o"><b class="label">Notification</b><div class="tooltip">The system can be configured to send notifications when certain events take place</div></i>
+					<i class="fa fa-3x fa-bell-o"><b class="label">Alarms</b><div class="tooltip">Visual and auditive alarms are useful to warn the user when something important happened</div></i>
+					<i class="fa fa-3x fa-volume-up"><b class="label">Music</b><div class="tooltip">OpenDomoOS can use your MP3 files as background music</div></i>
+					<i class="fa fa-3x fa-unsorted"><b class="label">Blinds</b><div class="tooltip">Adjust blinds, shades and awnings automatically when it's too warm to keep your home fresh</div></i>
+					<i class="vertline" style="top:70px;left:242px;"></i>
+					<i class="fa fa-3x fa-lightbulb-o"><b class="label">Lights</b><div class="tooltip">Save energy using the lights only when necessary</div></i>					
+				</div>
+				<div class='arch-level' style='width: 50%;top: 0px; left: 50%;margin-right:50px;margin-left:0px;'>
+					<label style='float:right;'>Input</label>
+					<i class="fa fa-3x fa-square-o"><b class="label">Switches</b><div class="tooltip">Standard switches and push-buttons can be used with OpenDomoOS</div></i>
+					<i class="fa fa-3x fa-sun-o"><b class="label">Sensors</b><div class="tooltip">Temperature, humidity and light sensors will help to make a more comfortable space</div></i>
+					<i class="vertline" style="top:70px;left:16px;"></i>
+					<i class="fa fa-3x fa-video-camera"><b class="label">Camera</b><div class="tooltip">IP cameras are easy to install and they will provide the safety that your home needs</div></i>
+					<i class="fa fa-3x fa-microphone"><b class="label">Microphone</b><div class="tooltip">Voice commands can be used to control the whole system</div></i>
+				</div>			
+				
+				<div class='arch-level' style='width: 100%; top: 100px; left:0px;'>
+					<label >Control</label>
+					<i class="fa fa-3x fa-cloud"><b class="label">Cloud</b></i>
+					<i class="fa fa-3x fa-sitemap"><b class="label">Network</b><div class="tooltip">OpenDomoOS uses the standard IP network and it doesn't need any dedicated cabling; this makes it an even more affordable solution</div></i>
+					<i class="vertline" style="top:70px;left:143px;"></i>
+					<i class="fa fa-3x fa-odenergy"><b class="label">Meter</b><div class="tooltip">The ODEnergy meter is an excellent tool to measure the energy consumption in real time</div></i>
+					<i class="fa fa-3x fa-odcontrol"><b class="label">Controller</b><div class="tooltip">Each ODControl controller can handle up to 8 switches, 8 electric lines, 2 dimmers and 2 sensors, and you can stack as many as you need!</div></i>	
+					<i class="line"></i>
+					<i class="fa fa-3x fa-odcontrol"><b class="label">Controller</b><div class="tooltip">The ODControl controller can be installed anywhere in the house; it just need access to the network to connect in cascade with the other ODControl!</div></i>	
+					<i class="fa fa-3x fa-sitemap"><b class="label">Network</b><div class="tooltip">Using the IP network has multiple advantages, but the most important is that all the modern houses already have it deployed</div></i>
+					<i class="vertline" style="top:70px;left:410px;"></i>
+					<!-- <svg width="45" height="45" xmlns="http://www.w3.org/2000/svg">
+						<g>
+						<title>ODControl</title>
+						<rect id="svg_1" height="45" width="45" y="0" x="0" stroke-width="5" stroke="#005799" fill="#005799"  rx="3" ry="3" ></rect>
+						<rect id="svg_2" height="30" width="43" y="7" x="1" stroke-width="5" stroke="#005799" fill="#fff"  rx="3" ry="3" ></rect>
+						<text xml:space="preserve" y="26" x="22" text-anchor="middle" font-family="Fantasy" font-size="9" id="svg_3" stroke-linecap="null" stroke-linejoin="null" stroke-width="0" stroke="#000000" fill="#005799">ODControl</text>
+						</g>
+					</svg> -->
+				</div>			
+				
+				<div class='arch-level' style='width: 46%; top: 200px; left:0px;'>
+					<label>Monitoring</label>
+					<i class="fa fa-3x fa-desktop"><b class="label">Desktop</b><div class="tooltip">Using standard technologies as HTML5 has the advantage that all modern devices are compatible with it</div></i>
+					<i class="fa fa-3x fa-laptop"><b class="label">Laptop</b><div class="tooltip">From your home, at work or during your holidays, you can make sure that everything is going right</div></i>
+					<i class="fa fa-3x fa-mobile"><b class="label">Cellphone</b><div class="tooltip">If you prefer, there are also Apps for Android and iPhone with extended features</div></i>
+					<i class="fa fa-3x fa-tablet"><b class="label">Tablet</b><div class="tooltip">Try it on a tablet if you can; the interface is optimized for touch devices and it works great!</div></i>
+				</div>
+				<div class='arch-level' style='width: 50%; top: 200px; left:50%;'>
+					<label style="float:right;">Configuration</label>
+					<i class="fa fa-3x fa-desktop"><b class="label">Desktop</b><div class="tooltip">You don't need any specific software or licenses to configure the system</div></i>
+					<i class="fa fa-3x fa-laptop"><b class="label">Laptop</b><div class="tooltip">You don't need any specific software or licenses to configure the system</div></i>
+					<i class="fa fa-3x fa-mobile"><b class="label">Cellphone</b><div class="tooltip">You don't need any specific software or licenses to configure the system</div></i>
+					<i class="fa fa-3x fa-tablet"><b class="label">Tablet</b><div class="tooltip">You don't need any specific software or licenses to configure the system</div></i>
+				</div>				
+			</div>
+
+        </section>
+
+
+        <aside id="sidebar">
+          <a href="tour.html" class="tour button">
+            <small>Take a</small>
+            Quick Tour
+          </a>
+		  
+          <a href="http://es.opendomo.org/downloads" class="download button">
+            <small>Download OpenDomoOS</small>
+            Virtual Machine
+          </a>
+          <a href="http://es.opendomo.org/downloads" class="download button">
+            <small>Download OpenDomoOS</small>
+            Raspberry PI
+          </a>		  
+		  <a href="https://github.com/opalenzuela/opendomo/zipball/master" class="download button">
+            <small>Source code</small>
+            .zip file
+          </a>
+          <p class="repo-owner"><a href="https://github.com/opalenzuela/opendomo"></a> 
+		  is maintained by <a href="https://github.com/opalenzuela">opalenzuela</a>.</p>
+        
+			<img src='images/logo.png'/> 
+		</aside>
+      </div>
+    </div>
+
+	<script type="text/javascript">
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-13280727-7', 'auto');
+	  ga('send', 'pageview');
+
+	</script>
+
+	<footer>
+		<a href='www.opendomo.com' target='opendomoservices'>Copyright(c) OpenDomo Services S.L.</a>
+	</footer>
+  </body>
+</html>
