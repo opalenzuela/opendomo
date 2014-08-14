@@ -22,12 +22,10 @@ sudo manageusers.sh mod admin "$fullname" "$email" "$newpassword" >/dev/null 2>/
 FULLURL="$URLVAL?UID=$uid&VER=$ver&MAIL=$mail"
 wget -q -O /var/opendomo/tmp/activation.tmp $FULLURL 2>/dev/null
 
-# Updating system in background
-saveSystemConfig.sh >/dev/null 2>/dev/null &
+# Save system and reboot
+echo "#LOADING Save system config ..."
+saveConfigReboot.sh >/dev/null 2>/dev/null
 
-echo "#> Configuration finished"
-echo "#INFO Your configuration was saved"
-echo "#INFO You can now start using your OpenDomo"
-echo
-/usr/local/opendomo/managePlugins.sh
+echo "#> Configuration saved"
+echo "#INFO Your configuration was saved, rebooting system ..."
 echo

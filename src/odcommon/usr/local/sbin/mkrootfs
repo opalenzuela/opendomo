@@ -1,79 +1,76 @@
 #!/bin/sh
 #desc: Make opendomo squash filesystems
 
+# USAGE:
+#   mkrootfs              Save config
+#   mkrootfs    reboot    Save config anr reboot system
+#   mkrootfs    restore   Restore default config
+
 # Variables
 IMAGESDIR="/mnt/system/images"
-IMAGE="$IMAGESDIR/ctchange.img"
+DEFIMAGE="$IMAGESDIR/dfchange.img"
+CSTIMAGE="$IMAGESDIR/ctchange.img"
 MOUNTDIR="/run/mounts/changerw"
 CHANGEDIR="/run/mounts/change"
 TEMPFSDIR="/run/mounts/tmpfs"
+
 SYNCOPTS="--quiet --archive --exclude-from=/etc/mkrootfs.excludes"
-
 FINDCMD=`find $TEMPFSDIR -name ".wh.*" -not -name ".wh..*" | sed 's/tmpfs/changerw/'`
+SYSMODE="/var/opendomo/run/systembusy"
 
-# Checks
 if ! test -d $IMAGESDIR; then
-	echo "#ERR: System device is not mounted"
-	exit 1
-fi
+    echo "#ERRO System device is not mounted, the configuration can't be saved"
+    echo
+    exit 1
 
-# Select option or image
-case $1 in
-  custom )
-	# Copy an compress default image, only use in restore mode
-	if ! test -f $IMAGE && cp $IMAGESDIR/dfchange.img $IMAGE; then
-			gzip $IMAGESDIR/dfchange.img
-	fi
-  ;;
-  restore )
-	# Uncompress default and delete custom image
-	if test -f "$IMAGE" && gunzip $IMAGESDIR/dfchange.img.gz; then
-		rm "$IMAGE"
-		exit 0
-	else
-		echo "#ERR Default image can be uncompress"
-		exit 1
-	fi
-  ;;
-  * )
-	# Help
-	echo "USAGE: mkrootfs [ custom | restore ]"
-	exit 1
-  ;;
-esac
+elif test -f $SYSMODE; then
+    echo "#ERRO System is busy, wait a moment and try again"
+    exit 2
 
-# Mounting image
-mkdir -p $MOUNTDIR
-mount $IMAGE $MOUNTDIR || exit 1
+elif [ "$1" = "restore" ]; then
+    # Delete changes image and restore default config
+    echo "#LOADING Restoring default system ..."
+    echo
+    touch $SYSMODE
 
-# Copy new files in image
-echo -n "#INF: Creating rootfs, please wait "
-if
-	rsync $SYNCOPTS $TEMPFSDIR/ $MOUNTDIR/
-then
-	echo "   (done)"
+    rm -f $CSTIMAGE 2>/dev/null
+    gunzip $DEFIMAGE.gz
+    cp $DEFIMAGE $CSTIMAGE
+    rm $SYSMODE
+
 else
-	echo "   (ERROR)"
-        # Unmount image
-        while ! umount $MOUNTDIR; do
-		sleep 1
-        done
-	rmdir $MOUNTDIR 2>/dev/null
-	exit 1
+    # Save changes in custom image, first mount custom image in rw
+    touch $SYSMODE
+    mkdir -p $MOUNTDIR
+    mount $CSTIMAGE $MOUNTDIR || exit 1
+
+    # Copy new files in image
+    echo "#LOADING Save system configuration (please wait) ..."
+    echo
+    rsync $SYNCOPTS $TEMPFSDIR/ $MOUNTDIR/
+
+    # Delete missing files in image
+    for file in $FINDCMD; do
+        FILENAME=`basename $file | sed 's/.sh.//'`
+        DIRNAME=`dirname $file`
+        if test -f $DIRNAME/$FILENAME; then
+            echo "#INF Delete $FILENAME"
+            rm -r $DIRNAME/$FILENAME
+        fi
+    done
+
+    # Unmount image
+    while ! umount $MOUNTDIR; do
+        sleep 1
+    done
+
+    rmdir $MOUNTDIR 2>/dev/null
+    rm $SYSMODE
 fi
 
-# Delete missing files in image
-for file in $FINDCMD; do
-	FILENAME=`basename $file | sed 's/.sh.//'`
-	DIRNAME=`dirname $file`
-	if test -f $DIRNAME/$FILENAME; then
-		echo "#INF Delete $FILENAME"
-		rm -r $DIRNAME/$FILENAME
-	fi
-done
-
-# Unmount image
-while ! umount $MOUNTDIR; do
-	sleep 1
-done
-rmdir $MOUNTDIR 2>/dev/null
+# Check reboot system warrant
+if [ "$1" == "reboot" ]; then
+    echo "#WARN Reboting now ..."
+    echo
+    shutdown -r now
+fi
