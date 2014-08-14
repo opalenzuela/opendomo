@@ -7,7 +7,7 @@ OpenDomo OS
 The main website of this project is still 
 <a title="OpenDomo" href="http://en.opendomo.org">here</a>, but in <a href='https://github.com/opalenzuela/opendomo/wiki/OpenDomo'>this page</a> you can find useful information about it. 
 
-At the moment, <a href='https://github.com/search?q=opendomo+OS&ref=cmdform'> several sub-projects are already hosted in Github</a>.
+At the moment, <a href='https://github.com/search?q=opendomo&ref=cmdform'> several sub-projects are already hosted in Github</a>.
 
 Quick start
 ===========
