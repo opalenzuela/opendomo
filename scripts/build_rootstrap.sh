@@ -19,8 +19,8 @@ fi
 cp -rp $INITRDDIR $ROOTSTRAPDIR
 
 # Update rootstrap apt sources
-rm -fr $ROOTSTRAPDIR/etc/ resolv.conf
-cp /etc/resolv.conf $ROOTSTRAPDIR/etc/ 
+rm -fr $ROOTSTRAPDIR/etc/resolv.conf
+cp /etc/resolv.conf $ROOTSTRAPDIR/etc/
 $CHROOT "$ROOTSTRAPDIR" /bin/bash -c "apt-get update"
 
 # Installing rootstrap packages
