@@ -60,7 +60,7 @@ case $1 in
 	echo "$OD_VERSION"									>> $INITRDDIR/etc/VERSION
 
 	# Creating raw image files
-	if ! test -f $IMAGESDIR/$DEFCHANGESIMG; then
+	if ! test -f $IMAGESDIR/$DEFCHANGESIMG.gz; then
 		if dd if=/dev/zero of=$IMAGESDIR/$DEFCHANGESIMG bs=1024 count=1500000 >/dev/null 2>/dev/null; then
 
 			# Creating fs and copy files
