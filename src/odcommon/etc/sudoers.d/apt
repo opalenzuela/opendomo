@@ -1,5 +1,4 @@
-Cmnd_Alias      APT = /usr/bin/apt-get, \
-                      /usr/bin/dpkg, \
+Cmnd_Alias      APT = /usr/bin/dpkg, \
                       /usr/sbin/dpkg-reconfigure
 
 admin ALL=(ALL) NOPASSWD: APT

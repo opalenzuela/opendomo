@@ -17,7 +17,7 @@
 
 PIDFILE="/var/opendomo/run/opendomo-apt.pid"
 LOGFILE="/var/opendomo/log/opendomo-apt.log"
-ERRFILE="/var/opendomo/log/opendomo-apt-error"
+ERRFILE="/var/opendomo/log/opendomo-apt.err"
 
 do_start () {
 	log_action_begin_msg "Starting opendomo apt daemon"
@@ -29,7 +29,6 @@ do_start () {
 do_stop () {
 	log_action_begin_msg "Stoping opendomo apt daemon"
 	rm $PIDFILE 2>/dev/null
-	killall -TERM opendomo-apt >/dev/null 2>/dev/null
 	log_action_end_msg $?
 }
 

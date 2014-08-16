@@ -8,12 +8,6 @@ REPOFILE="/var/opendomo/tmp/repo.lst"
 PLUGINSDIR="/var/opendomo/apt/plugins"
 QUEUEFILE="/var/opendomo/apt/queue"
 
-if ! test -f "$REPOFILE"
-then
-	echo "#ERRO You must execute Manage Plugins first"
-	exit 1
-fi
-
 if test -z "$1"
 then
 	echo "#ERRO You must specify the plugin ID"

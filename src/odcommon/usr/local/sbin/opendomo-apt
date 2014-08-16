@@ -7,112 +7,141 @@
 #       Every task is canceled and is required save config and reboot to continue
 #
 
+# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+
+# Checking arch
+test `arch` == "i686"   && ARCH="i386"
+test `arch` == "armv6l" && ARCH="armhf"
+
 # Files and directories
 PIDFILE="/var/opendomo/run/opendomo-apt.pid"
 LOGFILE="/var/opendomo/log/opendomo-apt.log"
-REPOFILE="/var/opendomo/tmp/repo.lst"
-REPOTEMP="/var/opendomo/tmp/repo.tmp"
+DBGFILE="/var/opendomo/log/opendomo-apt.dbg"
+
 DAEMONDIR="/var/opendomo/apt"
 QUEUEFILE="$DAEMONDIR/queue"
 SRCUPDATE="$DAEMONDIR/update"
+REPOFILE="$DAEMONDIR/repository.lst"
+REPOTEMP="$DAEMONDIR/repository.tmp"
+
+ODCOMPKG="odcommon_current_$ARCH.deb"
+ODCGIPKG="odcgi_current_$ARCH.deb"
 PLUGIN_DOWNDIR="$DAEMONDIR/plugins"
 PLUGIN_FILEDIR="/var/opendomo/plugins"
 
-# Commands options
+# Commands options and messages
 APTOPTS="--no-gui --without-recommends"
 CURWEEK=`date +%W`
 source /etc/os-release
 REPOSITORY="http://cloud.opendomo.com/repo/$VERSION"
+PACKAGEURL="http://es.opendomo.org/files"
+
 
 # Creating directories
 mkdir -p $DAEMONDIR $PLUGIN_DOWNDIR
 touch $QUEUEFILE
 chown -R admin:admin $QUEUEFILE $PLUGIN_DOWNDIR
 
-update_sources () {
-    echo "Busy: Updating apt sources" > $PIDFILE
-    aptitude update >/dev/null 2>/dev/null
-    echo "Waiting"  > $PIDFILE
+### Add date to every line in log file
+### To use: $command | add_date_to_log
+
+add_date() {
+    while IFS= read -r line; do
+        echo "$(date "+%d/%m/%Y %R:%S -") $line"
+    done
+}
+
+### Update apt and opendomo repository sources.
+### You can active the funtion immediately using 'echo 0 > /var/opendomo/apt/update'
+
+update_sources() {
+    echo "Busy: Updating sources" > $PIDFILE
+    aptitude update | add_date
     echo "$CURWEEK" > $SRCUPDATE
+    chown admin:admin $SRCUPDATE
 
     # Download plugins repository file
-    if wget $REPOSITORY/ -O $REPOTEMP --no-check-certificate --max-redirect=0; then
-        grep -v "#" $REPOTEMP | grep "-" > $REPOFILE
+    rm $REPOTEMP $REPOFILE 2>/dev/null
+    (wget $REPOSITORY/ -O $REPOTEMP --no-check-certificate --max-redirect=0) | add_date && grep -v "#" $REPOTEMP | grep "-" > $REPOFILE
+    echo "Waiting"  > $PIDFILE
+}
+
+### Check package size and memory free. The function return void value if package can be installed.
+### The function need 2 arguments, $1 is action to do like install or safe-update and $2 is the package in install action
+
+check_free_memory() {
+    # Always clean downloaded packages before start
+    aptitude -q clean | add_date
+
+    # Check size info and convert units to Kb
+    SIZEINFO=`echo 'n' | aptitude $APTOPTS -s $1 $2 | awk '/^Need to get/ {print $4,$5,$10,$11}' | sed 's/,/./g'`
+    if [ `echo $SIZEINFO | cut -f2 -d" "` == "MB" ]; then
+        PKG_DOWNLOAD_SIZE=`echo $SIZEINFO | cut -f1 -d" "`
+        let PKG_DOWNLOAD_SIZE="`printf %.0f $PKG_DOWNLOAD_SIZE` * 1024"
+    else
+        PKG_DOWNLOAD_SIZE=`echo $SIZEINFO | cut -f1 -d" "`
+        PKG_DOWNLOAD_SIZE=`printf %.0f $PKG_DOWNLOAD_SIZE`
+    fi
+    if [ `echo $SIZEINFO | cut -f4 -d" "` == "MB" ]; then
+        PKG_INSTALL_SIZE=`echo $SIZEINFO | cut -f3 -d" "`
+        let PKG_INSTALL_SIZE="`printf %.0f $PKG_INSTALL_SIZE` * 1024"
+    else
+        PKG_INSTALL_SIZE=`echo $SIZEINFO | cut -f3 -d" "`
+        PKG_INSTALL_SIZE=`printf %.0f $PKG_INSTALL_SIZE`
+    fi
+
+    # Sum sizes and test free space
+    PACKAGE_MEMORY_FREE=`/usr/local/bin/get_mem_free.sh | grep PACKAGE_MEMORY_FREE | cut -f2 -d=`
+    let TOTAL_INSTALL_SIZE="$PKG_INSTALL_SIZE + $PKG_DOWNLOAD_SIZE + 5000"
+
+    # Package information
+    test -z $2 && echo "Update system info:"		 > $DBGFILE
+    test -z $2 || echo "Installing $2 info:"		 > $DBGFILE
+    echo "SIZEINFO=$SIZEINFO"                           >> $DBGFILE
+    echo "PKG_DOWNLOAD_SIZE=$PKG_DOWNLOAD_SIZE"         >> $DBGFILE
+    echo "PKG_INSTALL_SIZE=$PKG_INSTALL_SIZE"           >> $DBGFILE
+    echo "TOTAL_INSTALL_SIZE=$TOTAL_INSTALL_SIZE"       >> $DBGFILE
+    echo "PACKAGE_MEMORY_FREE=$PACKAGE_MEMORY_FREE"     >> $DBGFILE
+
+    # No space available for this package, active spaceless mode
+    test "$PACKAGE_MEMORY_FREE" -lt "$TOTAL_INSTALL_SIZE" && echo "-1" && echo "Spaceless" > $PIDFILE
+}
+
+### Update and install debian packages. If installation fail active apt db recovery
+### The function need 2 arguments, $1 is action to do like install or safe-update and $2 is the package in install action
+
+aptitude_install() {
+    # Always clean downloaded packages before start
+    aptitude -q clean | add_date
+
+    # Installing package or updating system
+    if [ "$1" == "install" ]; then
+        echo "Busy: Installing $pkg" > $PIDFILE
+    else
+        echo "Busy: Updating system" > $PIDFILE
+    fi
+    if
+    LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive aptitude $APTOPTS -y -q $1 $2 | add_date
+    then
+        # Instalation complete, delete download files and clean queue
+        echo "Waiting" > $PIDFILE
+        aptitude -q clean | add_date
+        /bin/sed -i "s/ $2//;/^$/d" $QUEUEFILE
+        /bin/sed -i "s/$2//;/^$/d"  $QUEUEFILE
+    else
+        # Install is not complete, clean downloaded package and rebuild dpkg database
+        echo "Busy: Rebuilding database" >$PIDFILE
+        apt-get clean       | add_date
+        dpkg -a --configure | add_date
+        apt-get -f install  | add_date
+        echo "Waiting" > $PIDFILE
     fi
 }
 
-install_deps_queued () {
-    for pkg in `cat $QUEUEFILE`; do
-        # Always clean downloaded packages before start
-        if ls /var/cache/apt/archives/*.deb >/dev/null 2>/dev/null; then
-            aptitude -q clean
-        fi
+### Install all plugin in $PLUGIN_FILEDIR, no need any argument to work
+### In normal exit, funtion return void
 
-        # Checking install sizes and convert all units
-        # in SIZEINFO, $1 $2 is download size and unit and $3 $4 is install size and unit
-        SIZEINFO=`echo 'n' | aptitude $APTOPTS -s install $pkg | awk '/^Need to get/ {print $4,$5,$10,$11}' | sed 's/,/./g'`
-        if [ `echo $SIZEINFO | cut -f2 -d" "` == "MB" ]; then
-            PKG_DOWNLOAD_SIZE=`echo $SIZEINFO | cut -f1 -d" "`
-            let PKG_DOWNLOAD_SIZE="`printf %.0f $PKG_DOWNLOAD_SIZE` * 1024"
-        else
-            PKG_DOWNLOAD_SIZE=`echo $SIZEINFO | cut -f1 -d" "`
-            PKG_DOWNLOAD_SIZE=`printf %.0f $PKG_DOWNLOAD_SIZE`
-        fi
-        if [ `echo $SIZEINFO | cut -f4 -d" "` == "MB" ]; then
-            PKG_INSTALL_SIZE=`echo $SIZEINFO | cut -f3 -d" "`
-            let PKG_INSTALL_SIZE="`printf %.0f $PKG_INSTALL_SIZE` * 1024"
-        else
-            PKG_INSTALL_SIZE=`echo $SIZEINFO | cut -f3 -d" "`
-            PKG_INSTALL_SIZE=`printf %.0f $PKG_INSTALL_SIZE`
-        fi
-
-        # Sum sizes and test free space
-        PACKAGE_MEMORY_FREE=`/usr/local/bin/get_mem_free.sh | grep PACKAGE_MEMORY_FREE | cut -f2 -d=`
-        let TOTAL_INSTALL_SIZE="$PKG_INSTALL_SIZE + $PKG_DOWNLOAD_SIZE + 5000"
-
-############################### TEST INFO ##################################
-        echo "################### TEST INFO ###########################"
-	echo "SIZEINFO=$SIZEINFO"
-	echo "PKG_DOWNLOAD_SIZE=$PKG_DOWNLOAD_SIZE"
-	echo "PKG_INSTALL_SIZE=$PKG_INSTALL_SIZE"
-	echo "TOTAL_INSTALL_SIZE=$TOTAL_INSTALL_SIZE"
-	echo "PACKAGE_MEMORY_FREE=$PACKAGE_MEMORY_FREE"
-	echo "################### END TEST INFO #######################"
-
-######################################################################3
-
-        if [ "$TOTAL_INSTALL_SIZE" == "5000" ]; then
-            # Package is installed, only clean queue
-            /bin/sed -i "s/ $pkg//;/^$/d" $QUEUEFILE
-            /bin/sed -i "s/$pkg//;/^$/d"  $QUEUEFILE
-
-	elif [ "$TOTAL_INSTALL_SIZE" -lt "$PACKAGE_MEMORY_FREE" ]; then
-                # Package can be installed
-                echo "Busy: Installing $pkg" > $PIDFILE
-	        if
-                LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive aptitude $APTOPTS -y -q install $pkg
-                then
-                    # Instalation complete, delete download files and clean queue
-		    echo "Waiting" > $PIDFILE
-                    aptitude -q clean >/dev/null
-                    /bin/sed -i "s/ $pkg//;/^$/d" $QUEUEFILE
-                    /bin/sed -i "s/$pkg//;/^$/d"  $QUEUEFILE
-                else
-                    # Install is not complete, clean downloaded package and rebuild dpkg database
-                    echo "Busy: Rebuilding database" >$PIDFILE
-                    apt-get clean       >/dev/null 2>/dev/null
-                    dpkg -a --configure >/dev/null 2>/dev/null
-                    apt-get -f install  >/dev/null 2>/dev/null
-		    echo "Waiting" > $PIDFILE
-                fi
-	    else
-                # Package can't be installed, opendomo-apt is now in "spaceless mode"
-                echo "Spaceless" > $PIDFILE
-	    fi
-        done
-}
-
-install_plugins () {
+plugins_install() {
     cd $PLUGIN_DOWNDIR
     for plugin in *; do
         # Checking installed deps from repo
@@ -123,30 +152,129 @@ install_plugins () {
         # Check installed deps and install plugin
         if test -z "$QUEUEDEPS"; then
             cd /
-            echo "Busy: Install $PLUGINNAME" > $PIDFILE
-            su admin -c "echo $plugin | grep ".tar.gz" && /bin/tar -m --no-overwrite-dir -zxvf $PLUGIN_DOWNDIR/$plugin | grep -v /$ 		 \
-               >$PLUGIN_FILEDIR/$PLUGINNAME.files 2>$PLUGIN_FILEDIR/$PLUGINNAME.error"
-            su admin -c "echo $plugin | grep ".zip" && /usr/local/bin/unzip -o $PLUGIN_DOWNDIR/$plugin | grep -v /$ | cut -f2 -d':' |sed 's/ //' \
-               >$PLUGIN_FILEDIR/$PLUGINNAME.files 2>$PLUGIN_FILEDIR/$PLUGINMANE.error"
+            echo "Busy: Installing: $PLUGINNAME" > $PIDFILE
+            if test `echo $plugin | grep ".tar.gz"`; then
+                echo "Installing $PLUGINNAME ..." | add_date
+                su admin -c "/bin/tar -m --no-overwrite-dir -zxvf $PLUGIN_DOWNDIR/$plugin | grep -v /$ \
+                    >$PLUGIN_FILEDIR/$PLUGINNAME.files 2>$PLUGIN_FILEDIR/$PLUGINNAME.error"
+
+            elif test `echo $plugin | grep ".zip"`; then
+                echo "Installing $PLUGINNAME ..." | add_date
+                su admin -c "/usr/local/bin/unzip -o $PLUGIN_DOWNDIR/$plugin | grep -v /$ \
+                    | cut -f2 -d':' | sed 's/ //' >$PLUGIN_FILEDIR/$PLUGINNAME.files 2>$PLUGIN_FILEDIR/$PLUGINMANE.error"
+
+            fi
 
             # Creating wrappers and delete downloaded files
             su admin -c "/usr/local/bin/createwrappers.sh"
+            manage_conf.sh copy &>/dev/null
             rm "$PLUGIN_DOWNDIR/$plugin" &>/dev/null
             echo "Waiting" > $PIDFILE
         fi
     done
 }
 
-# Run loop while pid exist
-while test -f "$PIDFILE"; do
+### Check installed plugin to find updates. When update is available, download plugin and enqueue dependecies
+### No exit errors or arguments required
+
+plugins_update() {
+   cd $PLUGIN_FILEDIR
+   for plugin in `ls -1 | grep version`; do
+        # Checking plugin version
+        PLUGIN=`echo $plugin | cut -f1 -d.`
+        INSTALLED_VERSION=`cat $plugin`
+        AVAILABLE_VERSION=`grep $PLUGIN $REPOFILE | head -n1 | cut -f1 -d";" | cut -f2 -d- | cut -f1 -d.`
+
+        # Update plugin
+        if [ $AVAILABLE_VERSION != $INSTALLED_VERSION ]; then
+            # Enqueue dependecies, only new will be installed
+            PLUGINDEPS=`grep $PLUGIN-$AVAILABLE_VERSION $REPOFILE | cut -f4 -d";" | sed 's/ /\\|/g'`
+            echo -n $PLUGINSDEPS >> $QUEUEFILE
+
+            # Download plugin
+            cd $PLUGINSDIR
+            /usr/local/bin/download.sh $DOWNURL | add_date
+            cd $PLUGINS_FILEDIR
+        fi
+    done
+}
+
+### Delete plugins marked to remove. For remove plugins only $plugin.remove file in plugins directory is required
+### No exit errors or arguments required
+
+plugins_remove() {
+    cd $PLUGIN_FILEDIR
+    for plugin in `ls -1 | grep remove`; do
+        # Updating package info
+        PLUGINNAME=`echo $plugin | cut -f1 -d.`
+        PLUGINDEPS=`sed -i 's/ /\n/g' $PLUGINNAME.deps`
+        echo "Deleting $PLUGINNAME ..." | add_date
+	echo "Busy: Deleting $PLUGINNAME" > $PIDFILE
+
+        # Delete plugins dependecies if not used anymore
+        rm $PLUGINNAME.deps 2>/dev/null
+        for dep in "$PLUGINDEPS"; do
+            grep $dep *.deps &>/dev/null || LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive aptitude $APTOPTS -y -q remove $dep | add_date
+        done
+
+        # Delete plugin files and emply directories
+        for file in `cat $PLUGINNAME.files`; do
+            DIRNAME=`dirname $file`
+            rm -v /$file | add_date
+            rmdir /$DIRNAME &> /dev/null
+        done
+
+        # Delete remaining files, and change status
+	rm $PLUGINNAME.* 2>/dev/null
+	echo "Waiting" > $PIDFILE
+    done
+}
+
+### Install opendomo packages, packages always are reinstalled, with or without update. This method prevent packages corruption
+### No exit errors or arguments required
+
+odpackage_update() {
+    # Downloading packages
+    cd $PLUGIN_DOWNDIR
+    /usr/local/bin/download.sh $PACKAGEURL/$ODCOMPKG
+    /usr/local/bin/download.sh $PACKAGEURL/$ODCGIPKG
+
+    # Installing packages and dependecies
+    if
+    dpkg -i $ODCOMPKG $ODCGIPKG
+    then
+        rm $ODCOMPKG $ODCGIPKG
+    else
+        LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive sudo apt-get --force-yes -fyq install | add_date
+        rm $ODCOMPKG $ODCGIPKG
+    fi
+}
+
+### Loop function while $PIDFILE exist. No arguments required
+
+while test -f $PIDFILE; do
     # Start if daemon is not in "spaceless" mode
     if [ `cat $PIDFILE | cut -f1 -d:` != "Spaceless" ]; then
-        # Update source once a week
+        # Update functions once a week (sources and upgrade dependencies and plugins
         if ! test -f $SRCUPDATE || [ "$CURWEEK" != `cat $SRCUPDATE` ]; then
             update_sources
+
+            # Checking memory before update system and plugins
+            test -z `check_free_memory safe-upgrade` && aptitude_install safe-upgrade
+            plugins_update
+#            odpackage_update
         fi
-        install_deps_queued
-        install_plugins
+
+        # Install dependecies and plugins
+        for pkg in `cat $QUEUEFILE`; do
+            # Checking memory before install package
+            test -z `check_free_memory install $pkg` && aptitude_install install $pkg
+        done
+        plugins_install
+
+        # Remove marked plugins
+        plugins_remove
+
         sleep 3
     fi
 done
