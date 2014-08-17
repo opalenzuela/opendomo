@@ -6,13 +6,15 @@ PLUGINSDIR="/var/opendomo/plugins"
 PLUGIN="$1"
 
 # Creating remove file for opendomo-apt
-if test -z $PLUGIN; then
+if test -z $1; then
     echo "#ERRO You need select plugin first"
 else
     cd $PLUGINSDIR
-    if test -f $PLUGIN.version; then
-        touch $PLUGIN.remove
-    else
-        echo "#ERRO Plugin is not installed yet"
-    fi
+    for plugin in $@; do
+        if test -f $plugin.files; then
+            touch $plugin.remove
+        else
+            echo "#ERRO Plugin $plugin not installed"
+        fi
+    done
 fi

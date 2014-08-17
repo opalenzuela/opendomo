@@ -36,7 +36,6 @@ source /etc/os-release
 REPOSITORY="http://cloud.opendomo.com/repo/$VERSION"
 PACKAGEURL="http://es.opendomo.org/files"
 
-
 # Creating directories
 mkdir -p $DAEMONDIR $PLUGIN_DOWNDIR
 touch $QUEUEFILE
@@ -62,7 +61,7 @@ update_sources() {
 
     # Download plugins repository file
     rm $REPOTEMP $REPOFILE 2>/dev/null
-    (wget $REPOSITORY/ -O $REPOTEMP --no-check-certificate --max-redirect=0) | add_date && grep -v "#" $REPOTEMP | grep "-" > $REPOFILE
+    wget $REPOSITORY/ -O $REPOTEMP --no-check-certificate --max-redirect=0 2>&1 | add_date && grep -v "#" $REPOTEMP | grep "-" > $REPOFILE
     echo "Waiting"  > $PIDFILE
 }
 
@@ -94,7 +93,7 @@ check_free_memory() {
     PACKAGE_MEMORY_FREE=`/usr/local/bin/get_mem_free.sh | grep PACKAGE_MEMORY_FREE | cut -f2 -d=`
     let TOTAL_INSTALL_SIZE="$PKG_INSTALL_SIZE + $PKG_DOWNLOAD_SIZE + 5000"
 
-    # Package information
+    # Package information, send to debug file
     test -z $2 && echo "Update system info:"		 > $DBGFILE
     test -z $2 || echo "Installing $2 info:"		 > $DBGFILE
     echo "SIZEINFO=$SIZEINFO"                           >> $DBGFILE
@@ -143,7 +142,7 @@ aptitude_install() {
 
 plugins_install() {
     cd $PLUGIN_DOWNDIR
-    for plugin in *; do
+    for plugin in `ls * 2>/dev/null`; do
         # Checking installed deps from repo
         PLUGINDEPS=`grep $plugin $REPOFILE | cut -f4 -d";" | head -n1 | sed 's/ /\\|/g'`
         PLUGINNAME=`echo $plugin | cut -f1 -d"-"`
@@ -153,13 +152,13 @@ plugins_install() {
         if test -z "$QUEUEDEPS"; then
             cd /
             echo "Busy: Installing: $PLUGINNAME" > $PIDFILE
+            echo "Installing $PLUGINNAME ..." | add_date
+
             if test `echo $plugin | grep ".tar.gz"`; then
-                echo "Installing $PLUGINNAME ..." | add_date
                 su admin -c "/bin/tar -m --no-overwrite-dir -zxvf $PLUGIN_DOWNDIR/$plugin | grep -v /$ \
                     >$PLUGIN_FILEDIR/$PLUGINNAME.files 2>$PLUGIN_FILEDIR/$PLUGINNAME.error"
 
             elif test `echo $plugin | grep ".zip"`; then
-                echo "Installing $PLUGINNAME ..." | add_date
                 su admin -c "/usr/local/bin/unzip -o $PLUGIN_DOWNDIR/$plugin | grep -v /$ \
                     | cut -f2 -d':' | sed 's/ //' >$PLUGIN_FILEDIR/$PLUGINNAME.files 2>$PLUGIN_FILEDIR/$PLUGINMANE.error"
 
@@ -188,6 +187,7 @@ plugins_update() {
         # Update plugin
         if [ $AVAILABLE_VERSION != $INSTALLED_VERSION ]; then
             # Enqueue dependecies, only new will be installed
+            echo "Updating $PLUGIN ..." | add_date
             PLUGINDEPS=`grep $PLUGIN-$AVAILABLE_VERSION $REPOFILE | cut -f4 -d";" | sed 's/ /\\|/g'`
             echo -n $PLUGINSDEPS >> $QUEUEFILE
 
@@ -207,20 +207,22 @@ plugins_remove() {
     for plugin in `ls -1 | grep remove`; do
         # Updating package info
         PLUGINNAME=`echo $plugin | cut -f1 -d.`
-        PLUGINDEPS=`sed -i 's/ /\n/g' $PLUGINNAME.deps`
         echo "Deleting $PLUGINNAME ..." | add_date
 	echo "Busy: Deleting $PLUGINNAME" > $PIDFILE
 
         # Delete plugins dependecies if not used anymore
-        rm $PLUGINNAME.deps 2>/dev/null
-        for dep in "$PLUGINDEPS"; do
-            grep $dep *.deps &>/dev/null || LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive aptitude $APTOPTS -y -q remove $dep | add_date
+        for dep in `cat $PLUGINNAME.deps`; do
+            rm $PLUGINNAME.deps 2>/dev/null
+            grep $dep *.deps &>/dev/null || LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive aptitude --no-gui -y -q remove "$dep" | add_date
         done
+
+	# Clean auto installed packages
+        LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive apt-get -y autoremove | add_date
 
         # Delete plugin files and emply directories
         for file in `cat $PLUGINNAME.files`; do
             DIRNAME=`dirname $file`
-            rm -v /$file | add_date
+            rm -v /$file 2>/dev/null | add_date
             rmdir /$DIRNAME &> /dev/null
         done
 
@@ -234,6 +236,8 @@ plugins_remove() {
 ### No exit errors or arguments required
 
 odpackage_update() {
+    echo "Busy: Updating opendomo packages" > $PIDFILE & echo "Updating opendomo packages" | add_date
+
     # Downloading packages
     cd $PLUGIN_DOWNDIR
     /usr/local/bin/download.sh $PACKAGEURL/$ODCOMPKG
@@ -248,6 +252,7 @@ odpackage_update() {
         LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive sudo apt-get --force-yes -fyq install | add_date
         rm $ODCOMPKG $ODCGIPKG
     fi
+    echo "Waiting" > $PIDFILE
 }
 
 ### Loop function while $PIDFILE exist. No arguments required
