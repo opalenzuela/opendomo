@@ -52,8 +52,11 @@ time, mark, audio, video {
 small {
 	font-size: 85%;
 }
+body {
+	font-family: Sans-serif;
+}
 
-html, body {
+h1, h2, h3 {
 	font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
 	color: #005799;
 }
@@ -230,7 +233,6 @@ a:focus {
     color: rgb(102, 102, 102);
     text-shadow: 0 2px 2px rgba(0, 0, 0, .1);
 
-    font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
     font-size: 30px;
     line-height: 36px;
     letter-spacing: -1px;
@@ -241,7 +243,7 @@ a:focus {
     font-size: 30px;
     line-height: 72px;
 	min-height: 500px;
-    margin-top: 100px;
+    margin-top: 50px;
 }
 
 /*
@@ -478,12 +480,18 @@ div.present .delayed {
 	-ms-opacity: 1;
 	-o-opacity: 1;	
 	opacity: 1;
-	
-    -webkit-transition: opacity 2s, -webkit-transform 0.5s 5s;
-    -moz-transition:    opacity 2s,    -moz-transform 0.5s 5s;
-    -ms-transition:     opacity 2s,     -ms-transform 0.5s 5s;
-    -o-transition:      opacity 2s,      -o-transform 0.5s 5s;
-    transition:         opacity 2s,         transform 0.5s 5s;
+/*	
+    -webkit-transition: opacity 5s, -webkit-transform linear 2s !important;
+    -moz-transition:    opacity 5s,    -moz-transform linear 2s !important; 
+    -ms-transition:     opacity 5s,     -ms-transform linear 2s !important;
+    -o-transition:      opacity 5s,      -o-transform linear 2s !important;
+    transition:         opacity 5s,         transform linear 2s !important;
+	*/
+    -webkit-transition: opacity 1s 2s;
+    -moz-transition:    opacity 1s 2s; 
+    -ms-transition:     opacity 1s 2s;
+    -o-transition:      opacity 1s 2s;
+    transition:         opacity 1s 2s;	
 }
 
 
