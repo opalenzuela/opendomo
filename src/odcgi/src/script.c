@@ -1187,16 +1187,16 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 	{
 		sprintf (rule, "");
 	}
-	printf ("<p><input name='%s' type='text' class='%s' value='%s' %s/>"
-		"</p></li>\n", id, type, extra, rule);
+	printf ("<p><input id='%s' name='%s' type='text' class='%s' value='%s' %s/>"
+		"</p></li>\n", id, id, type, extra, rule);
   }
   else //TODO: Merge with "text", as the default option
   {
 	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
 		id, cleantype, id, id, T (desc));  
-	printf ("<p><input name='%s' type='%s' class='%s' value='%s'/>"
-		"</p></li>\n", id, type, type, extra);
+	printf ("<p><input id='%s' name='%s' type='%s' class='%s' value='%s'/>"
+		"</p></li>\n", id, id, type, type, extra);
   }
   free (cleantype);
   return 0;
