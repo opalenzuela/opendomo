@@ -3,12 +3,12 @@
 #package:odcommon
 #type:multiple
 
-SYSMODE="/var/opendomo/run/systembusy"
+SYSSTATE="/var/opendomo/run/Systembusy.pid"
 
-# Check system status
-if test -f $SYSMODE; then
-    echo "#ERROR Configuration can't be saved, system busy"
-else
-    sudo /usr/local/sbin/mkrootfs
-fi
+# Wait to finish busy system state
+while test -f "$SYSSTATE"; do
+    sleep 1
+done
+
+sudo /usr/local/sbin/mkrootfs
 /usr/local/opendomo/manageConfiguration.sh

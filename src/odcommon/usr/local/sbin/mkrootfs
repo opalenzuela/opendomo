@@ -14,33 +14,35 @@ MOUNTDIR="/run/mounts/changerw"
 CHANGEDIR="/run/mounts/change"
 TEMPFSDIR="/run/mounts/tmpfs"
 
+SYSSTATE="/var/opendomo/run/Systembusy.pid"
 SYNCOPTS="--quiet --archive --exclude-from=/etc/mkrootfs.excludes"
 FINDCMD=`find $TEMPFSDIR -name ".wh.*" -not -name ".wh..*" | sed 's/tmpfs/changerw/'`
-SYSMODE="/var/opendomo/run/systembusy"
 
 if ! test -d $IMAGESDIR; then
     echo "#ERRO System device is not mounted, the configuration can't be saved"
     echo
     exit 1
 
-elif test -f $SYSMODE; then
-    echo "#ERRO System is busy, wait a moment and try again"
-    exit 2
-
 elif [ "$1" = "restore" ]; then
+    # Entering in busy system state
+    echo "Restoring system" > $SYSSTATE
+
     # Delete changes image and restore default config
     echo "#LOADING Restoring default system ..."
     echo
-    touch $SYSMODE
 
     rm -f $CSTIMAGE 2>/dev/null
     gunzip $DEFIMAGE.gz
     cp $DEFIMAGE $CSTIMAGE
-    rm $SYSMODE
+
+    # Deleting busy system state
+    rm $SYSSTATE
 
 else
+    # Entering in busy system state
+    echo "Saving configuration" > $SYSSTATE
+
     # Save changes in custom image, first mount custom image in rw
-    touch $SYSMODE
     mkdir -p $MOUNTDIR
     mount $CSTIMAGE $MOUNTDIR || exit 1
 
@@ -63,14 +65,20 @@ else
     while ! umount $MOUNTDIR; do
         sleep 1
     done
-
     rmdir $MOUNTDIR 2>/dev/null
-    rm $SYSMODE
+
+    # Deleting busy mode
+    rm $SYSSTATE
 fi
 
 # Check reboot system warrant
 if [ "$1" == "reboot" ]; then
-    echo "#WARN Reboting now ..."
+    echo "#> Configuration saved"
+    echo "#INFO Your configuration was saved, rebooting system ..."
     echo
     shutdown -r now
+else
+    echo "#> Configuration saved"
+    echo "#INFO Your configuration was saved"
+    echo
 fi

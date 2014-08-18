@@ -23,9 +23,4 @@ FULLURL="$URLVAL?UID=$uid&VER=$ver&MAIL=$mail"
 wget -q -O /var/opendomo/tmp/activation.tmp $FULLURL 2>/dev/null
 
 # Save system and reboot
-echo "#LOADING Save system config ..."
-saveConfigReboot.sh >/dev/null 2>/dev/null
-
-echo "#> Configuration saved"
-echo "#INFO Your configuration was saved, rebooting system ..."
-echo
+saveConfigReboot.sh
