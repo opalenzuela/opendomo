@@ -362,6 +362,7 @@ li.application {
 }
 li.application>iframe {
 	height: 250px;
+	width: 100%;
 }
 
 input[type=text], 
