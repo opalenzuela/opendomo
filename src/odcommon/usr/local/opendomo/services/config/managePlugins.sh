@@ -41,14 +41,14 @@ if test -z "$1"; then
 
 		# Check status
 		if   [ `echo $INSTALLED | grep -c1 $ID` == "1" ]; then
-			STATUS="Installed"
+			STATUS="installed"
 		elif [ `echo $INPROGRES | grep -c1 $ID` == "1" ]; then
-			STATUS="Inprogress"
+			STATUS="inprogress"
 		else
-			STATUS="New"
+			STATUS="new"
 		fi
 
-		echo "	-$ID	$DESC ($STATUS)	image plugin	$STATUS"
+		echo "	-$ID	$DESC	image plugin $STATUS	$STATUS"
 	done
 
 	echo "actions:"
