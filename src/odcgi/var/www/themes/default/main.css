@@ -361,7 +361,7 @@ button:hover, .buttonlnk:hover
 }
 
 li.application {
-	display: block;
+	display: block!important;
 }
 li.application>iframe {
 	height: 250px;
