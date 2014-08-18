@@ -64,12 +64,15 @@ li .imgframe {
 .detailed ul li {
 	display: table-row;
 }
-.detailed ul li label {
+.detailed ul li a {
 	display: table-cell;	
+	width: 50%;
+	padding-left: 5px;
 }
 .detailed ul li p{
 	display: table-cell;
 	vertical-align: middle;	
+	width: 50%;
 }
 /*.selectable ul li label input {
 	display: inline!important;
