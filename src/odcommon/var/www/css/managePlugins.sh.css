@@ -16,28 +16,43 @@
 }
 */
 
-#managePlugins li.installed {
-	-webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+fieldset.iconlist li.installed {
+/*	-webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
-	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5); */
 	border: 1px solid black;
 }
-#managePlugins li.new {
-	-webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
-	-moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
-	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
-	border: 1px dashed gray;
+fieldset.iconlist li.installed a {
+	background: url("/images/success.png") bottom right no-repeat;
 }
-#managePlugins li.failed {
-	-webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
-	-moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
-	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+fieldset.iconlist li.new {
+	border: 1px dashed gray; 
+}
+fieldset.iconlist li.new a {
+	background: url("/images/new.png") bottom right no-repeat;
+}
+fieldset.iconlist li.inprogress {
+	opacity: 0.5;
+}
+fieldset.iconlist li.inprogress a {
+	background: url("/images/loading.gif") bottom right no-repeat;
+}
+fieldset.iconlist li.failed {
 	border: 1px solid red;
 }
+fieldset.iconlist li.failed a {
+	background: url("/images/error.png") bottom right no-repeat;
+}
 
-#managePlugins div.imgframe {
+fieldset.iconlist label input {
 	display: none;
 }
-#managePlugins label input {
+
+/* Floating icon to the right */
+#icon_li {
+	display: block;
+}
+#icon_lbl {
 	display: none;
+	
 }

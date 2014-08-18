@@ -72,13 +72,25 @@ else
 		# to have a valid icon in PNG with the package's ID as filename.
 		WEB="http://es.opendomo.org/files"
 	fi
+	
+	# Check status
+	if   [ `echo $INSTALLED | grep -c1 $1` == "1" ]; then
+		STATUS="installed"
+	elif [ `echo $INPROGRES | grep -c1 $1` == "1" ]; then
+		STATUS="inprogress"
+	else
+		STATUS="new"
+	fi	
+	
 	echo "#> Plugin details"
 	echo "form:managePlugins.sh"
+	echo "	icon	Icon	image	$WEB/$1.png"
 	echo "	code	Code	readonly	$1"
 	echo "	desc	Description	readonly	$DESC"
 	echo "	deps	Dependences	readonly	$DEPS"
 	echo "	webp	Web page	readonly	$WEB"
-	echo "	icon	Icon	image	$WEB/$1.png"
+	echo "	stat 	Status	text	$STATUS"
+	
 	echo "actions:"
 	test -f "$INSTDIR/$1.files" && echo "	removePlugin.sh	Uninstall"
         test -f "$DOWNDIR/$FILE" || test -f "$INSTDIR/$1.files" || echo "	installPlugin.sh	Install"
