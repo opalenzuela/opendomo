@@ -49,10 +49,9 @@ fieldset.iconlist label input {
 }
 
 /* Floating icon to the right */
-#icon_li {
-	display: block;
-}
 #icon_lbl {
-	display: none;
-	
+	color: transparent;
+}
+#icon_li div.imgframe {
+	position: absolute;
 }
