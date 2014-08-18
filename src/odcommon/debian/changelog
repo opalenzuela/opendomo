@@ -1,3 +1,13 @@
+odcommon (2.0.99) experimental; urgency=low
+
+  * Final opendomo-apt implementation
+  * Adding system busy feature
+  * User manager interface modified
+  * Add lighttpd support
+  * Delete UID hostname 
+
+ -- Javier Miras Blanco <jmirasb@gmail.com>  Mon, 18 Aug 2014 18:20:53 +0200
+
 odcommon (2.0.1) experimental; urgency=low
 
   * Adding opendomo-apt daemon

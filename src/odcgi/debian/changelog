@@ -1,3 +1,11 @@
+odcgi (2.0.99) experimental; urgency=low
+
+  * Adding HTML5 support
+  * Fix styles
+  * Adding geopositioning support
+
+ -- Javier Miras Blanco <jmirasb@gmail.com>  Mon, 18 Aug 2014 18:26:55 +0200
+
 odcgi (2.0.0) experimental; urgency=low
 
   * Multiuser suport added
