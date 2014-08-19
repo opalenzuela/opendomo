@@ -16,18 +16,20 @@
 }
 */
 
+/*
 fieldset.iconlist li.installed {
-/*	-webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+	-webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
-	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5); */
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5); 
 	border: 1px solid black;
-}
+} */
 fieldset.iconlist li.installed a {
 	background: url("/images/success.png") bottom right no-repeat;
 }
+/*
 fieldset.iconlist li.new {
 	border: 1px dashed gray; 
-}
+} */
 fieldset.iconlist li.new a {
 	background: url("/images/new.png") bottom right no-repeat;
 }
@@ -37,9 +39,11 @@ fieldset.iconlist li.inprogress {
 fieldset.iconlist li.inprogress a {
 	background: url("/images/loading.gif") bottom right no-repeat;
 }
+/*
 fieldset.iconlist li.failed {
 	border: 1px solid red;
 }
+*/
 fieldset.iconlist li.failed a {
 	background: url("/images/error.png") bottom right no-repeat;
 }
