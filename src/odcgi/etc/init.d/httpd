@@ -22,13 +22,21 @@ PID="/var/opendomo/run/httpd.pid"
 HTTPD_OPTS="httpd -c $HTTPD_CONFIG -h $WEB_SERVICE"
 
 do_start () {
+	# Only start server without lighttpd
+	test -x /usr/sbin/lighttpd && exit 0
+
+	# Starting server
+	log_action_begin_msg "Starting HTTPD busybox server"
 	touch $PID
 	start-stop-daemon --start --quiet --oknodo --pidfile $PID --exec /bin/busybox -- $HTTPD_OPTS
+	log_action_end_msg $?
 }
 
 do_stop () {
+	log_action_begin_msg "Stoping HTTPD busybox server"
 	start-stop-daemon --stop --quiet --oknodo --signal TERM --exec /bin/busybox --pidfile $PID
 	killall -9 busybox 2>/dev/null
+	log_action_end_msg $?
 }
 
 do_status () {
@@ -42,20 +50,14 @@ do_status () {
 
 case "$1" in
   start|"")
-	log_action_begin_msg "Starting HTTPD busybox server"
 	do_start
-	log_action_end_msg $?
         ;;
   restart|reload|force-reload)
-	log_action_begin_msg "Restarting HTTPD Busybox server"
 	do_stop
 	do_start
-	log_action_end_msg $?
         ;;
   stop)
-	log_action_begin_msg "Stoping HTTPD busybox server"
         do_stop
-	log_action_end_msg $?
         ;;
   status)
         do_status
