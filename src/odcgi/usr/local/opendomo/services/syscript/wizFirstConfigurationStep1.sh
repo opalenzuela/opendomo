@@ -20,7 +20,7 @@ if test -e /mnt/odconf ; then
 	echo "	sep	Enter your name and e-mail	separator"
 	echo "	fullname	Full user name	text:[a-zA-Z ]*	$fullname"
 	echo "	email	e-mail address	email	$email"
-        echo "  language        Language        list[en:English,es:Español,ca:Català]     $language"
+        echo "	language	Language	list[en:English,es:Español,ca:Català]	$language"
 	#echo "#TIP(fullname) OpenDomo will address you with this name"
 	#echo "#TIP(email) The e-mail address is used for sending notifications"
 	echo "actions:"
