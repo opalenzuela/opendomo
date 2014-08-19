@@ -20,10 +20,20 @@ $(function(){
 			console.log("Error: "+e.message);
 		}
 		var location = loadJSON(url);
-		console.log ("Status: " + location.status);
-		if (location.status=="OK") {
-			console.log(location.results[0]);
-			$("#address").val(location.results[0].formatted_address);
+		try {
+			console.log ("Status: " + location.status);
+			if (location.status=="OK") {
+				console.log(location.results[0]);
+				var c = location.results[0].address_components;
+				for (var i=0;i<c.length;i++){
+					if (c[i].types[0]=="locality"||c[i].types[1]=="locality") {
+						$("#city").val(c[i].long_name);
+					}
+				} 
+				$("#address").val(location.results[0].formatted_address);
+			}
+		} catch(e) {
+			console.log("Error 2: "+e.message);
 		}
 	});
 
