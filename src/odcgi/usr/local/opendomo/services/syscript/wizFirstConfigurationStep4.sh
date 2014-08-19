@@ -3,6 +3,7 @@
 #package:odcgi
 #type:local
 
+GEOLOCFILE="/etc/opendomo/geo.conf"
 TMPCFGFILE="/var/opendomo/tmp/wizFirstConfiguration.cfg"
 . $TMPCFGFILE
 URLVAL="http://cloud.opendomo.com/activate/index.php"
@@ -14,6 +15,17 @@ then
 	/usr/local/opendomo/wizFirstConfigurationStep3.sh
 	exit 0
 fi
+
+# Save geolocation and configure timezone
+echo "latitude=$latitude"	 > $GEOLOCFILE
+echo "longitude=$longitude"	>> $GEOLOCFILE
+echo "timezone=$timezone"       >> $GEOLOCFILE
+echo "timezoneid=$timezoneid"   >> $GEOLOCFILE
+echo "city=$city"               >> $GEOLOCFILE
+echo "address=$address"         >> $GEOLOCFILE
+
+echo "$timezone" > /etc/timezone
+LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive sudo dpkg-reconfigure tzdata &>/dev/null
 
 # Saving new user data
 sudo manageusers.sh mod admin "$fullname" "$email" "$newpassword" >/dev/null 2>/dev/null
