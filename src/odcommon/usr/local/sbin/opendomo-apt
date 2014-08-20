@@ -148,6 +148,9 @@ aptitude_install() {
         echo "Waiting" > $PIDFILE
         rm $SYSSTATE
     fi
+
+    # Copy opendomo configuration files for new packages
+    manage_conf.sh copy &>/dev/null
 }
 
 ### Install all plugin in $PLUGIN_FILEDIR, no need any argument to work
