@@ -39,9 +39,9 @@ fi
 echo "list:$script	simple"
 
 UIDFILE="/etc/opendomo/uid"
-#FIXME This is wrong. We cannot prevent the FCW to appear because systemUpdate is on
+
 if ! test -f $UIDFILE; then
-	echo "#INFO OpenDomo is not yet configured."
+	echo "#INFO OpenDomoOS is not yet configured."
 	CFGWIZARD="1"
 	if test -x /usr/local/opendomo/wizFirstConfigurationStep1.sh; then
 		/usr/local/opendomo/wizFirstConfigurationStep1.sh
