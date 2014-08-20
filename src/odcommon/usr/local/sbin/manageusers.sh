@@ -46,7 +46,7 @@ case $1 in
             mkdir -p $CONFIGDIR
             echo "EMAIL=\"$EMAIL\""        > $CONFIGDIR/$USER.info
             echo "FULLNAME=\"$FULLNAME\"" >> $CONFIGDIR/$USER.info
-            chown admin:admin $CONFIGDIR/*.info
+	    chown $USER:admin $CONFIGDIR/$USER.info
         else
             help
         fi
@@ -88,7 +88,7 @@ case $1 in
                 echo "EMAIL=\"$EMAIL\""        > $CONFIGDIR/$USER.info
                 echo "FULLNAME=\"$FULLNAME\"" >> $CONFIGDIR/$USER.info
                 ch_password $USER $PASSWD
-                chown admin:admin $CONFIGDIR/*.info
+   	        chown $USER:admin $CONFIGDIR/$USER.info
             else
                 echo "#ERROR User $USER can be modified"
 		exit 1
