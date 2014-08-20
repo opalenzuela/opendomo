@@ -83,7 +83,7 @@ else
 	fi	
 	
 	echo "#> Plugin details"
-	echo "list:managePlugins.sh	detailed"
+	echo "form:managePlugins.sh	"
 	#echo "	icon	Icon	image	$WEB/$1.png"
 	echo "	code	Code	readonly	$1"
 	echo "	desc	Description	readonly	$DESC"
