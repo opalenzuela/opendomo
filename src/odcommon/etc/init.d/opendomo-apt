@@ -29,7 +29,7 @@ do_start () {
 do_stop () {
 	log_action_begin_msg "Stoping opendomo apt daemon"
 	rm $PIDFILE 2>/dev/null
-	bgshell "killall -TERM opendomo-apt"
+	/usr/local/bin/bgshell "killall -TERM opendomo-apt"
 	log_action_end_msg $?
 }
 
