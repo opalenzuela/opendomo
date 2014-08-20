@@ -3,10 +3,10 @@
 #author:opalenzuela
 #package:odcgi
 #
-# Este script genera el listado de elementos que formará las pestañas de la 
-# interfaz web de OpenDomo
+# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
 
 RUTA="/var/opendomo/cgiroot/"
+test -f /etc/opendomo/uid || exit 0
 echo "tabs:"
 cd $RUTA
 for i in control tools config; do
