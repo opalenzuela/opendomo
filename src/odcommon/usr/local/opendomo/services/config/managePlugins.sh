@@ -53,7 +53,7 @@ if test -z "$1"; then
 
 	echo "actions:"
 	echo "	managePlugins.sh	Details"
-	grep Spaceless $ODAPTPID &>/dev/null && echo "	saveConfigReboot.sh	Save config & reboot"
+	grep Spaceless $ODAPTPID &>/dev/null && echo "	saveConfigReboot.sh	Save and reboot"
 
 else
 	# Parameter was passed (requesting plugin's details)
@@ -83,7 +83,7 @@ else
 	fi	
 	
 	echo "#> Plugin details"
-	echo "form:managePlugins.sh"
+	echo "list:managePlugins.sh	detailed"
 	#echo "	icon	Icon	image	$WEB/$1.png"
 	echo "	code	Code	readonly	$1"
 	echo "	desc	Description	readonly	$DESC"
