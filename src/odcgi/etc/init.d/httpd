@@ -33,10 +33,12 @@ do_start () {
 }
 
 do_stop () {
-	log_action_begin_msg "Stoping HTTPD busybox server"
-	start-stop-daemon --stop --quiet --oknodo --signal TERM --exec /bin/busybox --pidfile $PID
-	killall -9 busybox 2>/dev/null
-	log_action_end_msg $?
+        if test -f $PID; then
+		log_action_begin_msg "Stoping HTTPD busybox server"
+		start-stop-daemon --stop --quiet --oknodo --signal TERM --exec /bin/busybox --pidfile $PID
+		killall -9 busybox 2>/dev/null
+		log_action_end_msg $?
+	fi
 }
 
 do_status () {
