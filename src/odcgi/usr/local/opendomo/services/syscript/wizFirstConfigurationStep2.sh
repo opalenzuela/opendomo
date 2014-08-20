@@ -6,7 +6,6 @@
 # Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
 
 TMPCFGFILE="/var/opendomo/tmp/wizFirstConfiguration.cfg"
-UIDFILE="/etc/opendomo/uid"
 touch $TMPCFGFILE
 . $TMPCFGFILE
 
@@ -25,8 +24,7 @@ if test "$stepfrom" = "1"; then
 	echo "language=$language" >> $TMPCFGFILE
 	echo "$language" > /etc/opendomo/i18n/lang
 	echo "#LOADING Updating language files"
-	MACADDRESS=`/sbin/ifconfig eth0 | grep HWaddr | cut -c 39-55 | sed -e 's/://g'` 
-	echo "$email `date` $MACADDRESS" | sha256sum | cut -f1 -d' ' > $UIDFILE 
+
 	echo
 
 	# Generating user config
