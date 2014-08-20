@@ -101,22 +101,28 @@ li .imgframe {
 .iconlist ul li {
 	display: inline-block;
 	margin: 5px;
-	padding: 5px;
-	background-position: center;
+	background-position: center top;
 	background-size: 100px 100px;
 	background-repeat: no-repeat;
-	height: 100px;
+	height: 120px;
 	width: 100px;
 	overflow: hidden;
-	border-width: 1px;
-	border-style: solid;
+	white-space: nowrap;
+	text-align: center;
 }
 .iconlist ul li a{
 	width: 100%;
 	height: 100%;
 	display: block;
+	position: relative;
 }
-
+.iconlist ul li a b{
+	position: absolute;
+	bottom: 0px;
+	white-space: nowrap;
+	font-weight: normal;
+	text-align: center;
+}
 
 
 /* Exception: in rowforms, the fields are shown in the same row */

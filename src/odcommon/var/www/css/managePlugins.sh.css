@@ -24,20 +24,20 @@ fieldset.iconlist li.installed {
 	border: 1px solid black;
 } */
 fieldset.iconlist li.installed a {
-	background: url("/images/success.png") bottom right no-repeat;
+	background: url("/images/success.png") top right no-repeat;
 }
 /*
 fieldset.iconlist li.new {
 	border: 1px dashed gray; 
 } */
 fieldset.iconlist li.new a {
-	background: url("/images/new.png") bottom right no-repeat;
+	background: url("/images/new.png") top right no-repeat;
 }
 fieldset.iconlist li.inprogress {
 	opacity: 0.5;
 }
 fieldset.iconlist li.inprogress a {
-	background: url("/images/loading.gif") bottom right no-repeat;
+	background: url("/images/loading.gif") top right no-repeat;
 }
 /*
 fieldset.iconlist li.failed {
@@ -45,7 +45,7 @@ fieldset.iconlist li.failed {
 }
 */
 fieldset.iconlist li.failed a {
-	background: url("/images/error.png") bottom right no-repeat;
+	background: url("/images/error.png") top right no-repeat;
 }
 
 fieldset.iconlist label input {
