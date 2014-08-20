@@ -31,7 +31,7 @@ echo "city='$city'"             | sed 's/+/ /g' >> $GEOLOCFILE
 echo "address='$address'"       | sed 's/+/ /g' >> $GEOLOCFILE
 
 # Setting timezone
-echo "$timezone" > /etc/timezone
+echo "$timezoneid" > /etc/timezone
 LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive sudo dpkg-reconfigure tzdata &>/dev/null
 
 # Saving new user data
