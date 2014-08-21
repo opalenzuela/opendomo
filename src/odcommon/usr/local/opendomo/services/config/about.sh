@@ -13,6 +13,7 @@ if ! test -f /etc/os-release; then
 fi
 source /etc/os-release
 
+
 echo "#> About"
 echo "list:`basename $0`"
 echo "#INF: OpenDomoOS v[$VERSION]"
@@ -20,7 +21,7 @@ echo "# OpenDomo is free software, created by OpenDomo Services and the communit
 echo "#URL:http://www.gnu.org/licenses/gpl-3.0.html"
 echo
 echo "#> Installed products"
-echo "list:`basename $0`	detailed"
+echo "list:managePlugins.sh	detailed"
 echo "	-kernel	Linux kernel	package	v.$KERNELVERSION GPL v3"
 cd /var/opendomo/plugins/
 
@@ -37,4 +38,5 @@ if ls *; then
 	done
 fi
 echo "actions:"
+
 echo
