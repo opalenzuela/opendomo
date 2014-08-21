@@ -60,20 +60,29 @@ if test -z "$1"; then
 	fi
 else
 	# Parameter was passed (requesting plugin's details)
-	FILE=`grep ^$1 $REPOFILE | sort -r  | head -n1 | cut -f1 -d';' `
-	URL=`grep ^$1 $REPOFILE  | sort -r  | head -n1 | cut -f2 -d';' `
-	DESC=`grep ^$1 $REPOFILE | sort -r  | head -n1 | cut -f3 -d';' `
-	DEPS=`grep ^$1 $REPOFILE | sort -r  | head -n1 | cut -f4 -d';' `
-	WEB=`grep ^$1 $REPOFILE  | head -n1 | cut -f6 -d';' `
+	if test "$1" == "kernel"
+	then
+		FILE="linux"
+		URL="http://linux.org"
+		DESC="Linux kernel"
+		DEPS="none"
+		WEB="http://linux.org"
+	else
+		
+		FILE=`grep ^$1 $REPOFILE | sort -r  | head -n1 | cut -f1 -d';' `
+		URL=`grep ^$1 $REPOFILE  | sort -r  | head -n1 | cut -f2 -d';' `
+		DESC=`grep ^$1 $REPOFILE | sort -r  | head -n1 | cut -f3 -d';' `
+		DEPS=`grep ^$1 $REPOFILE | sort -r  | head -n1 | cut -f4 -d';' `
+		WEB=`grep ^$1 $REPOFILE  | head -n1 | cut -f6 -d';' `
+	fi
 	if test -z "$DEPS"
 	then
 		DEPS="none"
 	fi
 	if test -z "$WEB"
 	then
-		# If website is not specified, we use the community one. We expect
-		# to have a valid icon in PNG with the package's ID as filename.
-		WEB="http://es.opendomo.org/files"
+		# If website is not specified, we use the community one.
+		WEB="http://es.opendomo.org/"
 	fi
 	
 	# Check status
