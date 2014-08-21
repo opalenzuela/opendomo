@@ -20,7 +20,7 @@ else
     cd $PLUGINSDIR
     /usr/local/bin/download.sh $DOWNURL
 
-    echo "#INFO Plugin $1 sent to install"
+    echo "#INFO Plugin [$1] sent to install"
     /usr/local/opendomo/managePlugins.sh
 fi
 echo
