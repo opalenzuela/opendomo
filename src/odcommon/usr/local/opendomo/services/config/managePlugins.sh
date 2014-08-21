@@ -54,7 +54,10 @@ if test -z "$1"; then
 	echo "actions:"
 	echo "	managePlugins.sh	Details"
 	grep Spaceless $ODAPTPID &>/dev/null && echo "	saveConfigReboot.sh	Save and reboot"
-
+	if test -x /usr/local/opendomo/installPluginFromGithub.sh
+	then
+		echo "	installPluginFromGithub.sh	Install from Github"
+	fi
 else
 	# Parameter was passed (requesting plugin's details)
 	FILE=`grep ^$1 $REPOFILE | sort -r  | head -n1 | cut -f1 -d';' `
