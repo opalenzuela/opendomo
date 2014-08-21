@@ -122,6 +122,9 @@ li .imgframe {
 	white-space: nowrap;
 	font-weight: normal;
 	text-align: center;
+	left: 0px;
+	display: block;
+	width: 100%;	
 }
 
 
