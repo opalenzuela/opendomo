@@ -13,6 +13,9 @@ USER="$1"
 if ! test -z $USER && test -f $CONFIGDIR/$USER.info; then
     /usr/local/opendomo/modifyUser.sh $USER
 else
+    # No users configured yet, see a message
+    test -z `ls --hide="admin.info" | head -c1` && echo "#INFO No users configured yet"
+
     # No user selected, see users list
     cd $CONFIGDIR
     echo "#> Available users"
