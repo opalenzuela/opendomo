@@ -8,6 +8,7 @@ TMPCFGFILE="/var/opendomo/tmp/wizFirstConfiguration.cfg"
 . $TMPCFGFILE
 URLVAL="http://cloud.opendomo.com/activate/index.php"
 UIDFILE="/etc/opendomo/uid"
+TZDATA="/usr/share/zoneinfo"
 
 # Checking password
 if test "$newpassword" != "$retype"
@@ -32,7 +33,8 @@ echo "address='$address'"       | sed 's/+/ /g' >> $GEOLOCFILE
 
 # Setting timezone
 echo "$timezoneid" > /etc/timezone
-LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive sudo dpkg-reconfigure tzdata &>/dev/null
+rm /etc/opendomo/system/localtime
+cp -rp "$TZDATA/$timezoneid" "/etc/opendomo/system/localtime"
 
 # Saving new user data
 sudo manageusers.sh mod admin "$fullname" "$email" "$newpassword" >/dev/null 2>/dev/null
