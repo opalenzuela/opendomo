@@ -19,6 +19,7 @@
 do_start () {
 	LOGFILE="/var/opendomo/log/loadcfg.log"
 	MNGFILE="/usr/local/bin/manage_conf.sh"
+	CGIFILE="/var/www/cgi-bin/od.cgi"
 	ODCFG="/mnt/odconf/opendomo.cfg"
 	touch $LOGFILE
 	chown admin:admin $LOGFILE
@@ -55,6 +56,12 @@ do_start () {
 	chown -R admin:admin "/usr/local/opendomo" 2>/dev/null
 	chown admin:admin "/run/mounts" 2>/dev/null
 	chown admin:admin "/media" 	2>/dev/null
+
+	# Force odcgi server permissions
+	if test -f $CGIFILE; then
+		chown root $CGIFILE
+		chmod +s   /var/www/cgi-bin/od.cgi
+	fi
 }
 
 case "$1" in
