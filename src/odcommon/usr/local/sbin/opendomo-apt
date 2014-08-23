@@ -30,6 +30,7 @@ ODCOMPKG="odcommon_current_$ARCH.deb"
 ODCGIPKG="odcgi_current_$ARCH.deb"
 PLUGIN_DOWNDIR="$DAEMONDIR/plugins"
 PLUGIN_FILEDIR="/var/opendomo/plugins"
+PLUGIN_SERVDIR="/usr/local/opendomo/daemons"
 
 # Commands options and messages
 APTOPTS="--no-gui --without-recommends"
@@ -187,6 +188,12 @@ plugins_install() {
             rm "$PLUGIN_DOWNDIR/$plugin" &>/dev/null
             echo "Waiting" > $PIDFILE
             rm $SYSSTATE
+
+            # Starting plugins services
+            for serv in `grep $PLUGIN_SERVDIR $PLUGIN_FILEDIR/$PLUGINNAME.files`; do
+                 SERVICE=`basename $serv`
+                 /usr/local/bin/changestate.sh service $SERVICE on | add_date
+            done
         fi
     done
 }
@@ -245,7 +252,8 @@ plugins_remove() {
             rmdir /$DIRNAME &> /dev/null
         done
 
-        # Delete remaining files, and change status
+        # Delete old wrappers, remaining files, and change status
+        su admin -c "/usr/local/bin/createwrappers.sh"
 	rm $PLUGINNAME.* 2>/dev/null
 	echo "Waiting" > $PIDFILE
         rm $SYSSTATE
