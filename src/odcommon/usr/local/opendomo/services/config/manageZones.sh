@@ -25,10 +25,10 @@ case $1 in
 		fi
 		touch $ZONEDIR/$code	
 		echo "description='$3'" | sed 's/+/ /g' > $ZONEDIR/$code
-		echo "coords='$4'" >> $ZONEDIR/$code
+		#echo "coords='$4'" >> $ZONEDIR/$code
 		# Creamos el enlace dentro de ./map, con el script único
-		ln -s $ODDIR/services/syscript/displayZone.sh $ETCDIR/$code 2>/dev/null
-		coords=""
+		#ln -s $ODDIR/services/syscript/displayZone.sh $ETCDIR/$code 2>/dev/null
+		#coords=""
 	;;
 #	"delete")
 #		rm -f $ZONEDIR/$2
@@ -42,7 +42,7 @@ case $1 in
 			echo "	action	action	hidden	update"
 			echo "	name	code	hidden	$1"
 			echo "	desc	Description	text	$description"
-			echo "	coord	Coordinates	text	$coords"
+			#echo "	coord	Coordinates	text	$coords"
 			echo
 			echo "#> Preview"
 			echo "list:displayZone.sh	map"
