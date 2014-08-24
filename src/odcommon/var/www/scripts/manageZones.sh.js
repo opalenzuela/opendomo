@@ -1,4 +1,4 @@
-setInterval(function(){
+/*setInterval(function(){
 	var manageZones_frm = document.getElementById("manageZones_frm");
 	var addZone_frm = document.getElementById("addZone_frm");
 	if (manageZones_frm) {
@@ -10,13 +10,6 @@ setInterval(function(){
 },1000);
 
 function updateMap(){
-/*	var manageZones_frm = document.getElementById("manageZones_frm");
-	var addZone_frm = document.getElementById("addZone_frm");
-	if (manageZones_frm) {
-		var c = manageZones_frm.coord.value;
-	} else {
-		var c = addZone_frm.coord.value;
-	} */
 	var f = $("input[name=coord]");
 	var c = f.val();
 	if (c) {
@@ -31,3 +24,4 @@ function updateMap(){
 		}
 	}
 }
+*/
