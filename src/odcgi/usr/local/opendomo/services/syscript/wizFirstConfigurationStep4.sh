@@ -9,6 +9,7 @@ TMPCFGFILE="/var/opendomo/tmp/wizFirstConfiguration.cfg"
 URLVAL="http://cloud.opendomo.com/activate/index.php"
 UIDFILE="/etc/opendomo/uid"
 TZDATA="/usr/share/zoneinfo"
+source /etc/os-release
 
 # Checking password
 if test "$newpassword" != "$retype"
@@ -44,7 +45,7 @@ cp -rp "$TZDATA/$timezoneid" "/etc/opendomo/system/localtime"
 sudo manageusers.sh mod admin "$fullname" "$email" "$newpassword" >/dev/null 2>/dev/null
 
 # Activate
-FULLURL="$URLVAL?UID=$uid&VER=$ver&MAIL=$mail"
+FULLURL="$URLVAL?UID=$uid&VER=$VERSION&MAIL=$mail"
 wget -q -O /var/opendomo/tmp/activation.tmp $FULLURL 2>/dev/null
 
 # Save system and reboot
