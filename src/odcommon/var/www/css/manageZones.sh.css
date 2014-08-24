@@ -1,6 +1,0 @@
-@import "/cgi-bin/map.cgi";
-.map #displayZone .zone {
-	display: block;
-	position: absolute;
-	border:3px solid blue;
-}
