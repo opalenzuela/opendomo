@@ -3,7 +3,7 @@
 #type:local
 #package:odcommon
 
-# Copyright(c) 2011 OpenDomo Services SL. Licensed under GPL v3 or later
+# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
 
 
 echo
@@ -12,7 +12,7 @@ echo "form:`basename $0`"
 echo "	action	action	hidden	add"
 echo "	zone	Code	hidden	"
 echo "	desc	Description	text"
-echo "	coord	Coordinates	text	10,10,100,200"
+#echo "	coord	Coordinates	text	10,10,100,200"
 echo "action:"
 echo "	manageZones.sh	Add"
 echo 
