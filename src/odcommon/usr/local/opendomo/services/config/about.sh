@@ -26,17 +26,17 @@ echo "	-kernel	Linux kernel	package	v.$KERNELVERSION GPL v3"
 cd /var/opendomo/plugins/
 
 # Checking plugins dir and see info
-if ls *; then
-	for plugin in `ls | cut -f1 -d. | uniq`; do
-		if iscfg.sh $plugin.info &>/dev/null; 
-		then
-			source $plugin.info 
-			echo "	-$plugin	$DESCRIPTION	package	$VERSION GLP v3"
-		else
-			echo "	-$plugin	$plugin 	package 	Unknown "
-		fi
-	done
-fi
-echo "actions:"
 
+for plugin in `ls | cut -f1 -d. | uniq`; do
+	if iscfg.sh $plugin.info &>/dev/null; 
+	then
+		VERSION=""
+		DESCRIPTION="$plugin plugin"
+		source ./$plugin.info  2> /dev/null
+		echo "	-$plugin	$DESCRIPTION	package	$VERSION GPLv3"
+	else
+		echo "	-$plugin	$plugin 	package 	Unknown "
+	fi
+done
+echo "actions:"
 echo
