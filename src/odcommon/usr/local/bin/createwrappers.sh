@@ -36,3 +36,7 @@ chmod +x /usr/local/opendomo/eventhandlers/*.sh 2>/dev/null
 sed -e 's/\r//g' -i /usr/local/opendomo/bin/*.sh           2>/dev/null
 sed -e 's/\r//g' -i /usr/local/opendomo/daemons/*.sh       2>/dev/null
 sed -e 's/\r//g' -i /usr/local/opendomo/eventhandlers/*.sh 2>/dev/null
+sed -e 's/\r//g' -i /usr/local/opendomo/services/syscript/*.sh	           2>/dev/null
+sed -e 's/\r//g' -i /usr/local/opendomo/services/config/*.sh	           2>/dev/null
+sed -e 's/\r//g' -i /usr/local/opendomo/services/control/*.sh	           2>/dev/null
+sed -e 's/\r//g' -i /usr/local/opendomo/services/tools/*.sh	           2>/dev/null
