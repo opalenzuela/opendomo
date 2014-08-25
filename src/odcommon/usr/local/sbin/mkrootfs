@@ -16,7 +16,7 @@ TEMPFSDIR="/run/mounts/tmpfs"
 
 SYSSTATE="/var/opendomo/run/Systembusy.pid"
 SYNCOPTS="--quiet --archive --exclude-from=/etc/mkrootfs.excludes"
-FINDCMD=`find $TEMPFSDIR -name ".wh.*" -not -name ".wh..*" | sed 's/tmpfs/changerw/'`
+TEMPFILE="/var/opendomo/tmp/mkrootfs.tmp"
 
 if ! test -d $IMAGESDIR; then
     echo "#ERRO System device is not mounted, the configuration can't be saved"
@@ -52,14 +52,11 @@ else
     rsync $SYNCOPTS $TEMPFSDIR/ $MOUNTDIR/
 
     # Delete missing files in image
-    for file in $FINDCMD; do
-        FILENAME=`basename $file | sed 's/.sh.//'`
-        DIRNAME=`dirname $file`
-        if test -f $DIRNAME/$FILENAME; then
-            echo "#INF Delete $FILENAME"
-            rm -r $DIRNAME/$FILENAME
-        fi
+    find $TEMPFSDIR -name ".wh.*" -not -name ".wh..*" | sed -e 's/tmpfs/changerw/' -e 's/.wh.//' > $TEMPFILE
+    for file in `cat $TEMPFILE`; do
+        rm -r "$file" 2>/dev/null
     done
+    rm $TEMPFILE
 
     # Unmount image
     while ! umount $MOUNTDIR; do

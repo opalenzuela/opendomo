@@ -3,7 +3,7 @@ run/**
 home/**
 var/opendomo/tmp/**
 var/opendomo/run/**
-var/opendomo/log/**
+var/opendomo/cgiroot/**
 var/log/**
 var/tmp/**
 var/run/**
