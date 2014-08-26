@@ -974,7 +974,7 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
 		id, cleantype, id, id, T (desc));     
-	printf ("<input id='%s' name='%s' type='text' readonly='readonly' value=\"%s\"/>"
+	printf ("<p><input id='%s' name='%s' type='text' readonly='readonly' value=\"%s\"/></p>"
 		"</li>\n", id, id, extra);
   }
 
