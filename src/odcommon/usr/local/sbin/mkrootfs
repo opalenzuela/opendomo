@@ -31,12 +31,18 @@ elif [ "$1" = "restore" ]; then
     echo "#LOADING Restoring default system ..."
     echo
 
-    rm -f $CSTIMAGE 2>/dev/null
-    gunzip $DEFIMAGE.gz
-    cp $DEFIMAGE $CSTIMAGE
+    # Mounting and delete data in changes image
+    mkdir -p $MOUNTDIR
+    mount $CSTIMAGE $MOUNTDIR || exit 1
+    rm -rf $MOUNTDIR/*
 
-    # Deleting busy system state
-    rm $SYSSTATE
+    # Umount and reboot
+    while ! umount $MOUNTDIR; do
+        sleep 1
+    done
+    echo "#INFO System restored, rebooting system ..."
+    echo
+    shutdown -r now
 
 else
     # Entering in busy system state
