@@ -1071,7 +1071,15 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 	}
 	printf ("\t\t\t\t  </p></li>\n");
   }
-
+  else if(strstr (stype, "file"))
+  {
+	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
+		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
+		id, cleantype, id, id, T (desc));
+	printf ("<p><iframe name='fileupload-%s' class='fileupload' scrolling='auto' frameborder='no' "
+		" src='/cgi-bin/fileupload.py?fname=%s'></iframe></p></li>\n",
+		id, extra);
+  }
   else if(strstr (stype, "image"))
   {
 	printf ("\t\t\t\t<li id='%s_li' class='%s' >"

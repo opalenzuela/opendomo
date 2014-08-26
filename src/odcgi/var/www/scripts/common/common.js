@@ -27,24 +27,6 @@ function loadTextFileAjaxSync(filePath, mimeType)
   }
 }
 
-/**
- * Filter the contents of a list
- * 
- * This function hides all the items in a list that doesn't match the specified string
- * 
- * @author	Oriol Palenzuela
- * @param listID	list's ID
- * @param text 		string to match the selection
- */
-function filterList(listID,text){
-	$("#" + listID+ " li").each(function(item){
-		if ($(this).text().indexOf(text)==-1){ 
-			$(this).addClass("hidden");
-		} else {
-			$(this).removeClass("hidden");
-		}
-	});
-}
 
 document.getElementsByClassName = function(cl) {
 	var retnode = [];
@@ -227,7 +209,7 @@ function addJavascript(filename){
 }
 
 jQuery(function($) {
-	init_focus();
+	//init_focus();
 
 	
 	/* BOTONES ON OFF */
@@ -264,19 +246,19 @@ jQuery(function($) {
 			add_listbox_toolbar(lists[i]);
 		}
 	}
-	*/
+	
 
 	cvs = document.getElementsByTagName("canvas");
 	if (cvs.length>0) init_graph_lib();
 	for (i=0;i<cvs.length;i++){
 	
 	}
-
+	*/
 	login = document.getElementById("USER");
 	if (login) {
 		login.focus();
 	}	
-	if (window.init_form) init_form();
+	/*if (window.init_form) init_form(); */
 });
 
 
@@ -298,7 +280,7 @@ function sel_view_mode(list,mode){
 //	alert(list.parentNode.parentNode.childNodes[4]+'.className= '+mode);
 	list.parentNode.parentNode.childNodes[4].className=mode;
 }
-
+/*
 function init_focus(){
 	if (document.forms.length>0) {
 		fields = document.forms[0].elements;
@@ -320,8 +302,9 @@ function init_focus(){
 		}
 	}
 }
-
+*/
 //http://www.bigbold.com/snippets/posts/show/2630
+/*
 function addClassName(objElement, strClass, blnMayAlreadyExist){
 	console.log("Using deprecated addClassName");
    if ( objElement.className ){
@@ -373,9 +356,11 @@ function hasClassName(objElement, strClass){
 	}
 	return false;
 }
+*/
 
 function isValid(ctrl,regexp){
-	var re = new RegExp(regexp);
+	console.log("Invoking deprecated function isValid");
+/*	var re = new RegExp(regexp);
 	var frm = ctrl.form;
 	if (ctrl.value.match(re)) {
 		removeClassName(ctrl,"errfield");
@@ -392,7 +377,7 @@ function isValid(ctrl,regexp){
 			}
 		}
 	}
-
+*/
 }
 
 function openPopup(url){
