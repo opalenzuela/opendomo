@@ -43,7 +43,7 @@ cd $STATESDIR
 for state in *; do
 	if test -d $state; then
 		if [ "$state" = "$CURSTATE" ]; then
-			echo "	$state	$state (current)	state"
+			echo "	$state	$state	state selected"
 		else
 			echo "	-$state	$state	state"
 		fi
