@@ -1077,8 +1077,8 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
 		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
 		id, cleantype, id, id, T (desc));
-	printf ("<p><div class='imgframe'>"
-		"<img id='imgframe_%s' class='imgfield' name='%s' src='%s' alt='%s'/></div></p></li>\n",
+	printf ("<div class='imgframe'>"
+		"<img id='imgframe_%s' class='imgfield' name='%s' src='%s' alt='%s'/></div></li>\n",
 		id, id, extra, CT (desc));
   }
 
