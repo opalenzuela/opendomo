@@ -29,7 +29,6 @@ else
 		fi
     done
     echo "action:"
-    echo "	modifyUser.sh	Add / Modify"
-    echo "	deleteUser.sh	Delete"
+    echo "	modifyUser.sh	Add"
     echo
 fi

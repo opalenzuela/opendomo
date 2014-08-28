@@ -17,6 +17,9 @@ if test -z $USER; then
     echo "	fullname	Full name	text $FULLNAME"
     echo "	email	Email	text	$EMAIL"
     echo "	passw	Password	password	$PASSWD"
+    echo "actions:"
+    echo "	goback	Back"
+    echo "	modifyUser.sh	Add"
     echo
 
 # With user but without passwd, see modify interface
@@ -31,6 +34,10 @@ elif ! test -z $USER && test -z $PASSWD; then
     echo "	fullname	Full name	text	$FULLNAME"
     echo "	email	Email	text	$EMAIL"
     echo "	passw	Password	password	$PASSWD"
+    echo "actions:"
+    echo "	goback	Back"
+    echo "	modifyUser.sh	Modify"
+    echo "	deleteUser.sh	Delete"
     echo
 
 # With passwd and user exist, modify user
