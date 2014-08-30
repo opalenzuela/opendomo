@@ -18,15 +18,19 @@
 
 do_start () {
 	LOGFILE="/var/opendomo/log/loadcfg.log"
-	MNGFILE="/usr/local/bin/manage_conf.sh"
 	CGIFILE="/var/www/cgi-bin/od.cgi"
+	UIDFILE="/etc/opendomo/uid"
 	ODCFG="/mnt/odconf/opendomo.cfg"
 	touch $LOGFILE
 	chown admin:admin $LOGFILE
 
-	log_action_begin_msg "Copy default configuration files"
-	$MNGFILE copy &>$LOGFILE
-	log_action_end_msg $?
+	# Copy and create default configuration
+	if test -f $UIDFILE; then
+		mkdir -p /usr/local/opendomo/defaults/states/sleeping /usr/local/opendomo/defaults/states/secured
+		log_action_begin_msg "Copy default configuration files"
+		/usr/local/bin/manage_conf.sh copy &>$LOGFILE
+		log_action_end_msg $?
+	fi
 
 	# Create wrapper scripts
 	log_action_begin_msg "Creating opendomo wrapper scripts"
