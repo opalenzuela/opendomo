@@ -36,11 +36,12 @@ done
 chmod +x /usr/local/opendomo/daemons/*.sh 	2>/dev/null
 chmod +x /usr/local/opendomo/eventhandlers/*.sh 2>/dev/null
 chmod +x /var/www/cgi-bin/*.sh 2>/dev/null
+
 # Cleaning possible Windows encoding EOL
-sed -e 's/\r//g' -i /usr/local/opendomo/bin/*.sh                 2>/dev/null
-sed -e 's/\r//g' -i /usr/local/opendomo/daemons/*.sh             2>/dev/null
-sed -e 's/\r//g' -i /usr/local/opendomo/eventhandlers/*.sh       2>/dev/null
-sed -e 's/\r//g' -i /usr/local/opendomo/services/syscript/*.sh	 2>/dev/null
-sed -e 's/\r//g' -i /usr/local/opendomo/services/config/*.sh	 2>/dev/null
-sed -e 's/\r//g' -i /usr/local/opendomo/services/control/*.sh	 2>/dev/null
-sed -e 's/\r//g' -i /usr/local/opendomo/services/tools/*.sh	     2>/dev/null
+ODDIR="/usr/local/opendomo"
+DIRS="$ODDIR/bin/ $ODDIR/daemons/ $ODDIR/eventhandlers/ $ODDIR/services/syscript/ \
+      $ODDIR/services/config/ $ODDIR/services/control/ $ODDIR/services/tools/"
+
+for dir in $DIRS; do
+	test -z `ls $dir/* | head -c1` || sed -e 's/\r//g' -i $dir/*.sh
+done
