@@ -106,8 +106,8 @@ if [ "$HOMEDEVICE" = "1" ]; then
 
 	# Mount and create user folders
 	mount $HOMEIMG $CHROOT/home
-	mkdir -p $CHROOT/home/admin
-	chown admin:admin $CHROOT/home/admin
+	test -d $CHROOT/home/admin || cp -r /etc/skel $CHROOT/home/admin
+	chown -R admin:admin $CHROOT/home/admin
 	chmod 700 $CHROOT/home/admin
 fi
 

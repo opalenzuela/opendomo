@@ -24,11 +24,7 @@ if test "$stepfrom" = "1"; then
 	echo "language=$language" >> $TMPCFGFILE
 	echo "$language" > /etc/opendomo/i18n/lang
 	echo "#LOADING Updating language files"
-
 	echo
-
-	# Generating user config
-	cp /etc/skel/.* /home/admin/
 
 	# Generating locales
 	if [ "$language" = "es" ]; then
