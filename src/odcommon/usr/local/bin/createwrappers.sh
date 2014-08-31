@@ -32,13 +32,18 @@ do
     fi
 done
 
+# Find and delete removed wrappers
+ODDIR="/usr/local/opendomo"
+CGIDIR="/var/opendomo/cgiroot"
+find -L $ODDIR/ -type l -delete
+find -L $CGIDIR/ -type l -delete
+
 # Also, force execution for daemons and eventhandlers
 chmod +x /usr/local/opendomo/daemons/*.sh 	2>/dev/null
 chmod +x /usr/local/opendomo/eventhandlers/*.sh 2>/dev/null
 chmod +x /var/www/cgi-bin/*.sh 2>/dev/null
 
 # Cleaning possible Windows encoding EOL
-ODDIR="/usr/local/opendomo"
 DIRS="$ODDIR/bin/ $ODDIR/daemons/ $ODDIR/eventhandlers/ $ODDIR/services/syscript/ \
       $ODDIR/services/config/ $ODDIR/services/control/ $ODDIR/services/tools/"
 
