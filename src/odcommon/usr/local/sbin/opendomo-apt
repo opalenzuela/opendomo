@@ -291,12 +291,12 @@ while test -f $PIDFILE; do
     if [ `cat $PIDFILE | cut -f1 -d:` != "Spaceless" ]; then
         # Update functions once a week (sources and upgrade dependencies and plugins
         if ! test -f $SRCUPDATE || [ "$CURWEEK" != `cat $SRCUPDATE` ]; then
+            odpackage_update
             update_sources
 
             # Checking memory before update system and plugins
             test -z `check_free_memory safe-upgrade` && aptitude_install safe-upgrade
             plugins_update
-            odpackage_update
         fi
 
         # Install dependecies and plugins

@@ -21,6 +21,11 @@ ERRFILE="/var/opendomo/log/opendomo-apt.err"
 
 do_start () {
 	log_action_begin_msg "Starting opendomo apt daemon"
+
+	# Waiting opendomo-apt to finish old jobs and start
+	while ! test -z `ps | grep opendomo-apt | head -c1`; do
+		sleep 1
+	done
 	echo "Waiting" > $PIDFILE
 	/usr/local/sbin/opendomo-apt >$LOGFILE 2>$ERRFILE &
 	log_action_end_msg $?
@@ -28,8 +33,7 @@ do_start () {
 
 do_stop () {
 	log_action_begin_msg "Stoping opendomo apt daemon"
-	rm $PIDFILE 2>/dev/null
-	/usr/local/bin/bgshell "killall -TERM opendomo-apt"
+	test -f $PIDFILE && rm $PIDFILE
 	log_action_end_msg $?
 }
 
@@ -38,7 +42,7 @@ do_status () {
 		echo "$basename $0 is running"
 		exit 0
 	else
-		eche "$basename $0 is not running"
+		echo "$basename $0 is not running"
 		exit 1
 	fi
 }
@@ -48,8 +52,8 @@ case "$1" in
 	do_start
         ;;
   restart|reload|force-reload)
-	do_start
 	do_stop
+	do_start
         exit 3
         ;;
   stop)
