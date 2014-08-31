@@ -106,11 +106,9 @@ if [ "$HOMEDEVICE" = "1" ]; then
 
 	# Mount and create user folders
 	mount $HOMEIMG $CHROOT/home
-	mkdir -p $CHROOT/home/admin $CHROOT/home/user
+	mkdir -p $CHROOT/home/admin
 	chown admin:admin $CHROOT/home/admin
-	chown user:users  $CHROOT/home/user
 	chmod 700 $CHROOT/home/admin
-	chmod 700 $CHROOT/home/user
 fi
 
 # Allways link drive to /media
