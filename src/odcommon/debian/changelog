@@ -1,3 +1,9 @@
+odcommon (2.1.0) experimental; urgency=low
+
+  * Bug fixes
+
+ -- Javier Miras Blanco <jmirasb@gmail.com>  Sat, 30 Aug 2014 10:05:23 +0200
+
 odcommon (2.0.99) experimental; urgency=low
 
   * Final opendomo-apt implementation
