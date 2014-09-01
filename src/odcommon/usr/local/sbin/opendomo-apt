@@ -160,6 +160,7 @@ plugins_install() {
         # Checking installed deps from repo
         PLUGINDEPS=`grep $plugin $REPOFILE | cut -f4 -d";" | head -n1 | sed 's/ /\\|/g'`
         PLUGINNAME=`echo $plugin | cut -f1 -d"-"`
+        PLUGINVERS=`grep $plugin $REPOFILE | cut -f2 -d"-" | cut -f1 -d.`
         QUEUEDEPS=`grep "$PLUGINSDEPS" $QUEUEFILE`
 
         # Check installed deps and install plugin
@@ -179,8 +180,9 @@ plugins_install() {
 
             fi
 
-            # Creating wrappers and delete downloaded files
+            # Creating wrappers, version and delete downloaded files
             su admin -c "/usr/local/bin/createwrappers.sh"
+            echo "$PLUGINVERS" >$PLUGIN_FILEDIR/$PLUGINNAME.version
             manage_conf.sh copy &>/dev/null
             rm "$PLUGIN_DOWNDIR/$plugin" &>/dev/null
             echo "Waiting" > $PIDFILE
