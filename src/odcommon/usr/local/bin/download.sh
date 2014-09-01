@@ -2,7 +2,7 @@
 #desc: download the specified file
 
 if test -z "$1"; then
-	echo "usage: $0 URL OUTPUT"
+	echo "usage: $0 URL"
 	echo
 	exit 1
 fi
