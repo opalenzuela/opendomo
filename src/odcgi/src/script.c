@@ -564,12 +564,13 @@ script_process_list_body (char *id, char *desc, char *type, char *extra)
   {/** XML OUTPUT **/
     if(strchr (link, '?') == NULL)
     {
-      printf ("\t\t<item href='%s?GUI=XML' label=\"%s\"/>\n", link, CT (desc));
+		printf ("\t\t<item href='%s?GUI=XML' label=\"%s\" class='%s'/>\n", 
+			link, CT (desc), extra);
     }
     else
     {
-      printf ("\t\t<item href='%s&amp;GUI=XML' label=\"%s\"/>\n",
-	      link, CT (desc));
+		printf ("\t\t<item href='%s&amp;GUI=XML' label=\"%s\" class='%s' />\n",
+			link, CT (desc), extra);
     }
   }
 }
