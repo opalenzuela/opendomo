@@ -216,6 +216,7 @@ plugins_update() {
             echo -n $PLUGINSDEPS >> $QUEUEFILE
 
             # Download plugin
+            DOWNURL=`grep $plugin $REPOFILE | tail -n1 | cut -f2 -d";"`
             cd $PLUGINSDIR
             /usr/local/bin/download.sh $DOWNURL | add_date
             cd $PLUGINS_FILEDIR
