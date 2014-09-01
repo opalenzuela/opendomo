@@ -201,7 +201,6 @@ plugins_install() {
 ### No exit errors or arguments required
 
 plugins_update() {
-
    cd $PLUGIN_FILEDIR
    for plugin in `ls -1 | grep version`; do
 
@@ -219,9 +218,8 @@ plugins_update() {
 
             # Download plugin
             DOWNURL=`grep $PLUGIN $REPOFILE | tail -n1 | cut -f2 -d";"`
-            cd $PLUGINSDIR
-            /usr/local/bin/download.sh $DOWNURL | add_date
-            cd $PLUGINS_FILEDIR
+            cd $PLUGIN_DOWNDIR
+            /usr/local/bin/download.sh $DOWNURL
         else
             echo "Plugin $PLUGIN is already updated" | add_date
         fi
