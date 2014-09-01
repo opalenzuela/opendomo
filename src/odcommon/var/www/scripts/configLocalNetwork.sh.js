@@ -1,10 +1,10 @@
-function init_form(){
+$(function(){
 	update_fields();
 	var t = document.getElementsByName("mode");
 	t[0].onchange = function() {
 		update_fields();
 	}	
-}
+});
 
 function update_fields(){
 	var t = document.getElementsByName("mode");
