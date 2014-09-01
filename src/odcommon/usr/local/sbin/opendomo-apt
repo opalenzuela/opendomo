@@ -182,7 +182,7 @@ plugins_install() {
 
             # Creating wrappers, version and delete downloaded files
             su admin -c "/usr/local/bin/createwrappers.sh"
-            echo "$PLUGINVERS" >$PLUGIN_FILEDIR/$PLUGINNAME.version
+            echo "$PLUGINVERS" >$PLUGIN_FILEDIR/$PLUGINNAME.version && chown admin:admin $PLUGIN_FILEDIR/$PLUGINNAME.version
             manage_conf.sh copy &>/dev/null
             rm "$PLUGIN_DOWNDIR/$plugin" &>/dev/null
             echo "Waiting" > $PIDFILE
