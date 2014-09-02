@@ -1,3 +1,7 @@
+#> Configuration saved
+#INFO Your configuration was saved
+
+root@OpenDomoOS:/usr/local/sbin# cat mkrootfs 
 #!/bin/sh
 #desc: Make opendomo squash filesystems
 
@@ -46,7 +50,8 @@ elif [ "$1" = "restore" ]; then
 
 else
     # Check filesystems before mount
-    fsck.ext2 -y $CSTIMAGE &>/dev/null
+    mount | grep $MOUNTDIR &>/dev/null && umount -f $MOUNTDIR
+    fsck.ext2 -y $CSTIMAGE #&>/dev/null
 
     # Mount changes image in rw and check tmpfs
     mkdir -p $MOUNTDIR
@@ -73,7 +78,7 @@ else
         sleep 1
     done
     rmdir $MOUNTDIR 2>/dev/null
-    fsck.ext2 -y $CSTIMAGE &>/dev/null
+    fsck.ext2 -y $CSTIMAGE #&>/dev/null
 
     # Deleting busy mode
     rm $SYSSTATE
