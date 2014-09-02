@@ -51,8 +51,8 @@ else
 
     # Mount changes image in rw and check tmpfs
     mkdir -p $MOUNTDIR
-    mount $CSTIMAGE $MOUNTDIR || exit 1
     test -d $TEMPFSDIR || exit 1
+    mount $CSTIMAGE $MOUNTDIR || exit 1
 
     # Entering in busy system state
     echo "Saving configuration" > $SYSSTATE
