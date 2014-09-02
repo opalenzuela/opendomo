@@ -64,7 +64,7 @@ if [ "$SYSDEVICE" = "1" ]; then
 
 	# Mounting new root parts
 	if ! test -z $CHANGEIMG; then
-		mount -o ro $CHANGEIMG $CHANGEDIR
+		mount -t ext2 -o ro $CHANGEIMG $CHANGEDIR
 	fi
 	mount -t tmpfs none $TEMPFSDIR
 	mount --bind / $INITRDDIR

@@ -45,12 +45,13 @@ elif [ "$1" = "restore" ]; then
     shutdown -r now
 
 else
-    # Entering in busy system state
-    echo "Saving configuration" > $SYSSTATE
-
-    # Save changes in custom image, first mount custom image in rw
+    # Mount changes image in rw and check tmpfs
     mkdir -p $MOUNTDIR
     mount $CSTIMAGE $MOUNTDIR || exit 1
+    test -d $TEMPFSDIR || exit 1
+
+    # Entering in busy system state
+    echo "Saving configuration" > $SYSSTATE
 
     # Copy new files in image
     echo "#LOADING Save system configuration (please wait) ..."
@@ -64,11 +65,12 @@ else
     done
     rm $TEMPFILE
 
-    # Unmount image
+    # Unmount and check image
     while ! umount $MOUNTDIR; do
         sleep 1
     done
     rmdir $MOUNTDIR 2>/dev/null
+    fsck.ext2 -y $CSTIMAGE &>/dev/null
 
     # Deleting busy mode
     rm $SYSSTATE
