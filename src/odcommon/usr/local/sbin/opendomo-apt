@@ -282,6 +282,7 @@ odpackage_update() {
     echo "Searching odcgi version $ODPKGMAJOR.$ODCOMUPD ..."     | add_date
     /usr/local/bin/download.sh $PACKAGEURL/$ODCOMPKG &>/dev/null && dpkg -i $ODCOMPKG | add_date
     /usr/local/bin/download.sh $PACKAGEURL/$ODCGIPKG &>/dev/null && dpkg -i $ODCGIPKG | add_date
+    rm $ODCGIPKG $ODCOMPKG
 
     # Install new dependecies
     LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive sudo apt-get --force-yes -fyq install | add_date
