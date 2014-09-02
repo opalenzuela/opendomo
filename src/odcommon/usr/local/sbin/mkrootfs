@@ -1,7 +1,3 @@
-#> Configuration saved
-#INFO Your configuration was saved
-
-root@OpenDomoOS:/usr/local/sbin# cat mkrootfs 
 #!/bin/sh
 #desc: Make opendomo squash filesystems
 
