@@ -45,6 +45,9 @@ elif [ "$1" = "restore" ]; then
     shutdown -r now
 
 else
+    # Check filesystems before mount
+    fsck.ext2 -y $CSTIMAGE &>/dev/null
+
     # Mount changes image in rw and check tmpfs
     mkdir -p $MOUNTDIR
     mount $CSTIMAGE $MOUNTDIR || exit 1
