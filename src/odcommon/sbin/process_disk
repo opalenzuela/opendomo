@@ -118,14 +118,6 @@ ln -s $DISKMOUNT $CHROOT/media/$LABEL
 if ! test -z $SWITCHDIR; then
 	mkdir -p $MNTINITRD
 
-	# Move mounted drives to new rootfs
-	cd $MOUNTSDIR
-	for drive in *; do
-		mkdir -p $CHROOT/$MOUNTSDIR/$drive
-		mount --move $drive $CHROOT/$MOUNTSDIR/$drive
-		rmdir $drive
-	done
-
 	# Move kernel filesystems to new rootfs
 	mount --move /dev  	$SWITCHDIR/dev
 	mount --move /proc 	$SWITCHDIR/proc
