@@ -11,7 +11,7 @@ At the moment, <a href='https://github.com/search?q=opendomo&ref=cmdform'> sever
 
 Quick start
 ===========
-If you don't want to go through the documents, and you just want to see things working, you should <a title="OpenDomo" href="http://en.opendomo.org/downloads">download from here</a> the last version of OpenDomoOS. In the same page you will find the instructions to install it in a Virtual Machine or on your Raspberry PI.
+If you don't want to go through the documents, and you just want to see things working, you should <a title="OpenDomo" href="http://es.opendomo.org/downloads">download from here</a> the last version of OpenDomoOS. In the same page you will find the instructions to install it in a Virtual Machine or on your Raspberry PI.
 
 If you are a brave developer, you can also checkout this repository and start executing the following command on the root:
 
