@@ -32,7 +32,7 @@ fi
 
 if test -z "$1"; then
 	echo "#> Manage plugins"
-	echo  "list:managePlugins.sh	iconlist"
+	echo  "list:managePlugins.sh	iconlist selectable"
 	for plugin in `cat $REPOFILE |  cut -f1 -d- | uniq`; do
 		# Extract plugin information
 		ID=`grep $plugin $REPOFILE | cut -f1 -d'-' | head -n1`
@@ -53,6 +53,7 @@ if test -z "$1"; then
 
 	echo "actions:"
 	echo "	managePlugins.sh	Details"
+	echo "	installPlugin.sh	Install"
 	grep Spaceless $ODAPTPID &>/dev/null && echo "	saveConfigReboot.sh	Save and reboot"
 	if test -x /usr/local/opendomo/installPluginFromGithub.sh
 	then

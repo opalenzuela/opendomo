@@ -12,15 +12,19 @@ if test -z "$1"; then
     echo "#ERRO You must specify the plugin ID"
     exit 2
 else
-    # Sending deps to queue and download file
-    DOWNURL=`grep $1 $REPOFILE  | tail -n1 | cut -f2 -d";"`
-    PLUGDEPS=`grep $1 $REPOFILE | tail -n1 | cut -f4 -d";"`
-    echo -n "$PLUGDEPS" >> $QUEUEFILE
+	cd $PLUGINSDIR
+	for plugin in $@
+	do
+		# Sending deps to queue and download file
+		DOWNURL=`grep $plugin $REPOFILE  | tail -n1 | cut -f2 -d";"`
+		PLUGDEPS=`grep $plugin $REPOFILE | tail -n1 | cut -f4 -d";"`
+		echo -n "$PLUGDEPS" >> $QUEUEFILE
 
-    cd $PLUGINSDIR
-    /usr/local/bin/download.sh $DOWNURL
+		echo "#INFO Plugin [$plugin] sent to install"
+		/usr/local/bin/download.sh $DOWNURL
+	done
 
-    echo "#INFO Plugin [$1] sent to install"
+    
     /usr/local/opendomo/managePlugins.sh
 fi
 echo
