@@ -3,6 +3,8 @@
 #package:odcgi
 #type:local
 
+# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+
 TMPCFGFILE="/var/opendomo/tmp/wizFirstConfiguration.cfg"
 touch $TMPCFGFILE
 . $TMPCFGFILE
