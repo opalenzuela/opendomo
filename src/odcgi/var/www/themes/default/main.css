@@ -18,7 +18,7 @@ h2[id*='_lgnd_h2'], #logo_od,.tabberactive, .tabbernav
 }
 
 .selectable input[type='checkbox']{
-	display: inline !important;
+	/* display: inline !important; */
 }
 
 .hidden {
@@ -30,15 +30,15 @@ h2[id*='_lgnd_h2'], #logo_od,.tabberactive, .tabbernav
 
 /* LISTS AND FORMS
  * General case: tabulated, hiding icon and details
- */
-ul
-{  
-	list-style-type:none; 
-	padding: 0px;
-	width: 100%;
-}
+ 
+
 fieldset ul li label input , fieldset ul li b input {display: none;}
 fieldset.multiselect ul li label input, fieldset.multiselect ul li b input {display: inline!important;}
+*/
+
+fieldset input[type=checkbox] {
+	display: none!important;
+}
 
 li label {
 	display: inline-block;
@@ -46,30 +46,30 @@ li label {
 li .imgframe {
 	display: none;
 }
-.listbox ul, .detailedlist ul, .tabform ul, {
-	list-style-type:none;
+.listbox ul, .detailed  ul, .tabform ul , .selectable ul, .iconlist ul{
+	list-style-type:none; 
 	padding: 0px;
+	width: 100%;
+	display: table;
 }
 .listbox ul li, .detailed ul li, .selectable ul li {
+	display: table-row;
 	height: 35px;
+	width: 100%;
+	vertical-align: middle;
+}
+.listbox ul li a, .selectable ul li a  {
+	display: table-cell;	
+	padding-left: 5px;
+	width: 100%;
+	vertical-align: middle;
 }
 .listbox ul li p , .iconlist ul li p, .selectable ul li p, .wizard ul li p{
 	display: none;
 }
 
 /* Exception: in detailed list, items and details are in a table row */
-.detailed ul {
-	display: table;
-}
-.detailed ul li {
-	display: table-row;
-}
-.detailed ul li a {
-	display: table-cell;	
-	width: 50%;
-	padding-left: 5px;
-	vertical-align: middle;
-}
+.detailed ul li a , 
 .detailed ul li p{
 	display: table-cell;
 	vertical-align: middle;	
@@ -105,8 +105,12 @@ li .imgframe {
 	background-position: center top;
 	background-size: 100px 100px;
 	background-repeat: no-repeat;
+	background-image: url("/images/default/pdtbg.png");
+	border-width: 2px;
+	border-style: solid;
+	border-radius: 10px;
 	height: 120px;
-	width: 100px;
+	width: 120px;
 	overflow: hidden;
 	white-space: nowrap;
 	text-align: center;
@@ -385,10 +389,11 @@ input[type=email],
 input[type=password],
 input[type=date] {
 	border-color: #AFAFAF;
-	border-radius: 3px 3px 3px 3px;
+	border-radius: 3px;
 	border-style: solid;
 	border-width: 1px;
 	box-shadow: 0 0 5px #CFCFCF inset;
+	text-indent: 5px;	
 }
 select,
 input[type=text], 
@@ -404,6 +409,13 @@ input[type=number]{
 	min-width: 200px;
 }
 
+iframe.fileupload
+{
+	width: 98%;
+	padding: 5px 0px 5px 0px;
+	min-width: 200px;
+	height: 32px;
+}
 
 fieldset 
 {
@@ -510,7 +522,7 @@ legend
 }
 
 .wizard ul{
-	margin: 40px 10px 40px 200px;
+	margin: 40px 10px 40px 200px; 
 	display: block;
 	width: auto!important;
 	height: 250px;
@@ -786,8 +798,21 @@ h2 {
 	color: #F00;
 }
 
+input.filterbox {
+    border: medium none;
+    margin: 2px;
+    padding: 2px 0px;
+	background: url('/images/filter.png') no-repeat scroll 3px 4px transparent;
+	text-indent: 20px;
+	height: 20px;	
+}
+
 
 @media (max-width:480px) {
+	input.filterbox {
+		width: 100%;
+		margin: 0px;
+	}
 	body {
 		width:100%;
 		margin: 0px;
@@ -804,11 +829,59 @@ h2 {
 		padding:0px;
 		width: 32px;
 		color:transparent;
+		padding-left: 0px;
+		padding-right: 0px;		
 		background-position: center center;
 		zoom: 1.2;
 	}
 }
-@media only screen and (min-width: 481px) {
+@media all and (orientation:portrait) {
+	input.filterbox {
+		width: 100%;
+		margin: 0px;
+	}
+	body {
+		width:100%;
+		margin: 0px;
+		border:none;
+	}
+	#header
+	{
+		height: 100px;
+	}
+	#cat-control a,
+	#cat-config a ,
+	#cat-tools a ,
+	#cat-map a {
+		background-position: center center;
+	}	
+}
+@media all and (orientation:landscape) {
+	input.filterbox {
+		float: right;
+	}
+	body {
+		width:100%;
+		margin: 0px;
+		border:none;
+	}
+	#header
+	{
+		height: 100px;
+	}
+	#cat-control a,
+	#cat-config a ,
+	#cat-tools a ,
+	#cat-map a {
+		padding-left: 32px;
+		padding-right: 32px;	
+		background-position: left center;
+	}	
+}
+@media only screen and (min-device-width: 1025px) {
+	input.filterbox {
+		float: right;
+	}
 	body {
 		padding: 2px;
 		width: 80%;
@@ -858,7 +931,6 @@ h2 {
 	font-weight: 600;
 	vertical-align: middle; 
 	height: 40px;
-	padding-left: 10px;
 	background:#E1E1E1 url(/images/default/frametoolbartop_bg.png) repeat-x 50% 0;
     line-height: 3em;
 	text-indent: 10px;
@@ -971,4 +1043,13 @@ ul#listControlPorts.tabform li div.off
 select option[disabled]
 {
 	background-color:gray;
+}
+
+
+fieldset.iconlist li.selected {
+	border: 2px solid gray!important;
+	border-radius: 10px;
+}
+fieldset li.selected {
+	background-color: #ddd!important;
 }

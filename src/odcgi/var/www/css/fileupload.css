@@ -1,0 +1,25 @@
+form {
+	margin: 0px;
+}
+body {
+	margin: 0px;
+	height: 24px;
+	font: 13px/20px "Droid Sans",Arial,"Helvetica Neue","Lucida Grande",sans-serif;
+}
+h1,h2,h3 {
+	font-size: 1em;
+}
+
+input[type="file"] {
+	left: -9999px;
+	position: absolute;
+}
+div.filecontainer {
+	border: 1px solid #4888C8;
+	color: #585858;
+	background-color: #F0F4F9;
+	padding: 1px 5px 2px 5px;
+	min-width: 100px;
+	text-align: center;
+	display: inline-block;
+}

@@ -47,7 +47,9 @@ h2 {
 	color: #F66;
 	background-color: #DFDFDF;
 }
-
+.iconlist ul li  {
+	border-color: #ddd;
+}
 
 
 .root, .applicationTitle{
@@ -58,7 +60,7 @@ h2 {
 {
 	font-weight: bold;
 	background-color: #FFF;
-	background-image: url(/images/default/logo.png);
+	background-image: url(/images/logo.png);
 	background-repeat: no-repeat;
 	border-color: #6E6E6E;
 
