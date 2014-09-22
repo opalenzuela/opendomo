@@ -103,6 +103,10 @@ else
 	echo "	deps	Dependences	readonly	$DEPS"
 	echo "	webp	Web page	readonly	$WEB"
 	echo "	stat 	Status	readonly	$STATUS"
+	if wget -q $WEB/CHANGELOG -O /var/opendomo/tmp/$1.changelog
+	then
+		head -n10 /var/opendomo/tmp/$1.changelog | sed 's/^/# /'
+	fi
 	
 	echo "actions:"
 	echo "	goback	Back"
