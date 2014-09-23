@@ -13,7 +13,7 @@ if test "$stepfrom" = "1"; then
 	fullname="$2"
 	email="$3"
 	language="$4"
-	if test -z "$3" || test -z "$2"
+	if test -z "$3" || test -z "$4"
 	then
 		echo "#ERR: Missing values"
 		/usr/local/opendomo/services/syscript/wizFirstConfigurationStep1.sh
