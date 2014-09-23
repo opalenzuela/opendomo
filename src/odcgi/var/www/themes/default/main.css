@@ -994,19 +994,19 @@ input.filterbox {
 }
 
 .listbox #manageCameras a, .listbox #camZonesConf a{
-	background: url('/images/default/cam.png') scroll no-repeat left center;
+	background: url('/images/default/cam.png') scroll no-repeat 10px center;
 	padding-left: 32px;
 	padding-right: 32px;	
 }
 
 .listbox #list a{
-	background: url('/images/default/circle.png') scroll no-repeat left center;
+	background: url('/images/default/circle.png') scroll no-repeat 10px center;
 	padding-left: 32px;
 	padding-right: 32px;	
 }
 
 .listbox #list .dir a{
-	background: url('/images/default/folder_sml.png') scroll no-repeat left center;
+	background: url('/images/default/folder_sml.png') scroll no-repeat 10px center;
 	padding-left: 32px;
 	padding-right: 32px;	
 }
