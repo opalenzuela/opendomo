@@ -28,6 +28,7 @@ REPOTEMP="$DAEMONDIR/repository.tmp"
 PLUGIN_DOWNDIR="$DAEMONDIR/plugins"
 PLUGIN_FILEDIR="/var/opendomo/plugins"
 PLUGIN_SERVDIR="/usr/local/opendomo/daemons"
+PACKAG_DOWNDIR="$DAEMONDIR/packages"
 
 # Commands options and messages
 APTOPTS="--no-gui --without-recommends"
@@ -38,9 +39,9 @@ PACKAGEURL="http://es.opendomo.org/files"
 ODPKGMAJOR=`echo "$VERSION" | awk -F. '{print$1"."$2}'`
 
 # Creating directories and file permissions
-mkdir -p $DAEMONDIR $PLUGIN_DOWNDIR
+mkdir -p $DAEMONDIR $PLUGIN_DOWNDIR $PACKAG_DOWNDIR
 touch $QUEUEFILE
-chown -R admin:admin $QUEUEFILE $PLUGIN_DOWNDIR $PIDFILE
+chown -R admin:admin $QUEUEFILE $PLUGIN_DOWNDIR $PIDFILE $PACKAG_DOWNDIR
 
 ### Add date to every line in log file
 ### To use: $command | add_date_to_log
@@ -79,6 +80,7 @@ check_free_memory() {
 
     # Check size info and convert units to Kb
     SIZEINFO=`echo 'n' | aptitude $APTOPTS -s $1 $2 | awk '/^Need to get/ {print $4,$5,$10,$11}' | sed 's/,/./g'`
+    test -z $SIZEINFO && SIZEINFO="0 MB 0 MB"
     if [ `echo $SIZEINFO | cut -f2 -d" "` == "MB" ]; then
         PKG_DOWNLOAD_SIZE=`echo $SIZEINFO | cut -f1 -d" "`
         let PKG_DOWNLOAD_SIZE="`printf %.0f $PKG_DOWNLOAD_SIZE` * 1024"
@@ -133,8 +135,8 @@ aptitude_install() {
         echo "Waiting" > $PIDFILE
         rm $SYSSTATE
         aptitude -q clean | add_date
-        /bin/sed -i "s/ $2//;/^$/d" $QUEUEFILE
-        /bin/sed -i "s/$2//;/^$/d"  $QUEUEFILE
+        /bin/sed -i "s/$2//"    $QUEUEFILE
+        /bin/sed -i 's/ \+/ /g' $QUEUEFILE
     else
         # Install is not complete, clean downloaded package and rebuild dpkg database
         echo "Busy: Rebuilding database" > $PIDFILE
@@ -277,12 +279,12 @@ odpackage_update() {
     ODCGIPKG="odcgi_"$ODPKGMAJOR"."$ODCGIUPD"_$ARCH.deb"
 
     # Download and install packages
-    cd $PLUGIN_DOWNDIR
+    cd $PACKAG_DOWNDIR
     echo "Searching odcommon version $ODPKGMAJOR.$ODCOMUPD ..."  | add_date
-    echo "Searching odcgi version $ODPKGMAJOR.$ODCOMUPD ..."     | add_date
+    echo "Searching odcgi version $ODPKGMAJOR.$ODCGIUPD ..."     | add_date
     /usr/local/bin/download.sh $PACKAGEURL/$ODCOMPKG &>/dev/null && dpkg -i $ODCOMPKG | add_date
     /usr/local/bin/download.sh $PACKAGEURL/$ODCGIPKG &>/dev/null && dpkg -i $ODCGIPKG | add_date
-    rm $ODCGIPKG $ODCOMPKG
+    rm $ODCGIPKG $ODCOMPKG 2>/dev/null
 
     # Install new dependecies
     LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive sudo apt-get --force-yes -fyq install | add_date
@@ -296,7 +298,7 @@ while test -f $PIDFILE; do
     # Start if daemon is not in "spaceless" mode
     if [ `cat $PIDFILE | cut -f1 -d:` != "Spaceless" ]; then
         # Update functions once a week (sources and upgrade dependencies and plugins
-        if ! test -f $SRCUPDATE || [ "$CURWEEK" != `cat $SRCUPDATE` ]; then
+        if ! test -f $SRCUPDATE || [ "$CURWEEK" -gt `cat $SRCUPDATE` ]; then
             odpackage_update
             update_sources
 

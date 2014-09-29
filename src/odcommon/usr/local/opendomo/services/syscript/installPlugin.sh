@@ -18,7 +18,7 @@ else
 		# Sending deps to queue and download file
 		DOWNURL=`grep $plugin $REPOFILE  | tail -n1 | cut -f2 -d";"`
 		PLUGDEPS=`grep $plugin $REPOFILE | tail -n1 | cut -f4 -d";"`
-		echo -n "$PLUGDEPS" >> $QUEUEFILE
+		echo -n " $PLUGDEPS " >> $QUEUEFILE
 
 		echo "#INFO Plugin [$plugin] sent to install"
 		/usr/local/bin/download.sh $DOWNURL
