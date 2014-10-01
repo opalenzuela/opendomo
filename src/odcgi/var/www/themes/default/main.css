@@ -987,7 +987,7 @@ input.filterbox {
 .listbox ul li label input[type=checkbox] {
 	display:none;
 }
-
+/*
 .listbox #manageCameras, .listbox #camZonesConf{
 	font-size: 16px;
 	font-weight: 600;
@@ -998,7 +998,7 @@ input.filterbox {
 	padding-left: 32px;
 	padding-right: 32px;	
 }
-
+*/
 .listbox #list a{
 	background: url('/images/default/circle.png') scroll no-repeat 10px center;
 	padding-left: 32px;
