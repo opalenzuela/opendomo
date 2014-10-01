@@ -31,11 +31,12 @@ for plugin in `ls | cut -f1 -d. | uniq`; do
 	if iscfg.sh $plugin.info &>/dev/null; 
 	then
 		VERSION=""
+		LICENSE="GPLv3"
 		DESCRIPTION="$plugin plugin"
 		source ./$plugin.info  2> /dev/null
-		echo "	-$plugin	$DESCRIPTION	package	$VERSION GPLv3"
+		echo "	-$plugin	$DESCRIPTION	package	$VERSION $LICENSE"
 	else
-		echo "	-$plugin	$plugin 	package 	Unknown "
+		echo "	-$plugin	$plugin 	package 	Missing info file "
 	fi
 done
 echo "actions:"
