@@ -101,6 +101,28 @@ case $1 in
 	echo "  Building initrd (7/7) ..." 
 	sudo $SCRIPTSDIR/build_initrd.sh make || exit 1
   ;;
+  
+  packages )
+	# Validating arch
+	if [ $2 = i386 ] || [ $2 = arm ]; then
+		echo "$2" > $ARCHCFG
+	else
+		echo "ERROR: arch selected is not valid"
+		#$SCRIPTSDIR/sdk_help.sh
+		grep "^##" $0 | sed 's/##//'
+		exit 1
+	fi
+
+	# Extract sdk variables
+	. $SCRIPTSDIR/sdk_variables.sh
+	echo "  Making packages (1/2) ..." 
+	sudo $SCRIPTSDIR/build_odpkg.sh make || exit 1
+	echo "  Publishing (2/2) ..." 
+	sudo cp tmp/rootstrap.$2/tmp/*.deb .
+	sudo chown $USER *.deb
+	ls *.deb
+  ;;
+  
   export )
 	# Check sudo
 	if ! sudo echo -n; then
