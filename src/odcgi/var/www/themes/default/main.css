@@ -74,6 +74,7 @@ li .imgframe {
 	display: table-cell;
 	vertical-align: middle;	
 	width: 50%;
+	text-indent: 5px;
 }
 /*.selectable ul li label input {
 	display: inline!important;
