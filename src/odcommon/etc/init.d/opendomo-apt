@@ -6,7 +6,7 @@
 # Should-Start:      glibc
 # Default-Start:     1 2 3 4 5
 # Default-Stop:      0 6
-# Short-Description: Opendomo apt daemon
+# Short-Description: Plugins installer
 # Description:       Install opendomo plugins, deps and update system daemon
 #
 ### END INIT INFO
