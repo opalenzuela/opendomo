@@ -27,16 +27,21 @@ echo "$email `date` $MACADDRESS" | sha256sum | cut -f1 -d' ' > $UIDFILE
 uid=`cat  $UIDFILE `
 
 # Save geolocation and configure timezone
-if ! test -z "$latitude"; then
-	echo "latitude='$latitude'"	 > $GEOLOCFILE
-	echo "longitude='$longitude'"	>> $GEOLOCFILE
-	echo "timezone='$timezone'"     >> $GEOLOCFILE
-	echo "timezoneid='$timezoneid'" | sed 's/+/ /g' >> $GEOLOCFILE
-	echo "city='$city'"             | sed 's/+/ /g' >> $GEOLOCFILE
-	echo "address='$address'"       | sed 's/+/ /g' >> $GEOLOCFILE
-else
+if test -z "$latitude"; then
 	timezoneid="Europe/Madrid"
+	latitide="41"
+	longitude="2"
+	timezone="1"
+	city="Madrid"
+	address=""
 fi
+
+echo "latitude='$latitude'"	 > $GEOLOCFILE
+echo "longitude='$longitude'"	>> $GEOLOCFILE
+echo "timezone='$timezone'"     >> $GEOLOCFILE
+echo "timezoneid='$timezoneid'" | sed 's/+/ /g' >> $GEOLOCFILE
+echo "city='$city'"             | sed 's/+/ /g' >> $GEOLOCFILE
+echo "address='$address'"       | sed 's/+/ /g' >> $GEOLOCFILE
 
 # Setting timezone
 echo "$timezoneid" > /etc/timezone
