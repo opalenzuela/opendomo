@@ -1,3 +1,11 @@
+odcommon (2.1.3) experimental; urgency=low
+
+  * Start/Stop opendomo apt in system states
+  * Fix clock bug
+  * Fix multiple plugins installation
+
+ -- Javier Miras Blanco <jmirasb@gmail.com>  Tue, 07 Oct 2014 16:25:08 +0200
+
 odcommon (2.1.2) experimental; urgency=low
 
   * Fix opendomo-apt update bug
