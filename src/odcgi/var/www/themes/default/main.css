@@ -879,7 +879,7 @@ input.filterbox {
 		background-position: left center;
 	}	
 }
-@media only screen and (min-device-width: 1025px) {
+@media only screen and (min-width: 481px) {
 	input.filterbox {
 		float: right;
 	}
