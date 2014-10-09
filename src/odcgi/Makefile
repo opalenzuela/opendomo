@@ -2,16 +2,16 @@ OPTS= -Wall -std=gnu99 -pedantic -O2 -s
 HDRS= -I /usr/include -I src/ -I ../odcommon/
 LIBS= -lssl -lcrypto -lcrypt -lconfig -ljpeg -lm
 
+# -- default ------------------------------------------------------------------
+default: odcgi
 
 # -- odcgi --------------------------------------------------------------------
 ODCM_FILES = ../odcommon/src/str.c ../odcommon/src/string.c ../odcommon/src/match.c ../odcommon/src/base64.c ../odcommon/src/jpeg.c  ../odcommon/src/image.c ../odcommon/src/mjpg.c
 ODCGI_OBJS = src/mjpg.o src/i18n.o src/user.o src/file.o src/util.o src/session.o src/cgi.o src/secfunc.o src/script.o
                 
-default:
+odcgi: $(ODCGI_OBJS) 
 	$(CC) $(OPTS) $(HDRS)  $(ODCM_FILES) $(ODCGI_OBJS) $(LIBCONFIG_FILES) src/odcgi.c -o var/www/cgi-bin/od.cgi -g $(LIBS)
 	#$(CC) $(OPTS) $(HDRS) src/secfunc.o src/user.o  src/test.c -o bin/test -l crypt
-	$(CC) $(FLAGS) $(HDRS) -fPIC -shared -o $(LIB_COELACANTH) $(SRC_COELACANTH) -I. 
-	$(CC) $(FLAGS) $(HDRS) src/bgshell.c -o usr/local/bin/bgshell
 
 # -- standard object ----------------------------------------------------------
 %.o: %.c %.h
@@ -19,5 +19,3 @@ default:
 
 clean:
 	rm -f */*.o 
-	rm -f usr/local/bin/bgshell
-	rm -f usr/lib/libcoelacanth.so	
