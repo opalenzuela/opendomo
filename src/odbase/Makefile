@@ -10,6 +10,7 @@ ODCGI_OBJS = src/mjpg.o src/i18n.o src/user.o src/file.o src/util.o src/session.
 default:  
 	$(CC) $(OPTS) $(HDRS)  $(ODCM_FILES) $(ODCGI_OBJS) $(LIBCONFIG_FILES) src/odcgi.c -o var/www/cgi-bin/od.cgi -g $(LIBS)
 	#$(CC) $(OPTS) $(HDRS) src/secfunc.o src/user.o  src/test.c -o bin/test -l crypt
+	$(CC) $(FLAGS) $(HDRS) src/bgshell.c -o usr/local/bin/bgshell
 
 # -- standard object ----------------------------------------------------------
 %.o: %.c %.h
@@ -17,3 +18,4 @@ default:
 
 clean:
 	rm -f */*.o 
+	rm -f usr/local/bin/bgshell
