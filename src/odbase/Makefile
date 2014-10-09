@@ -3,16 +3,16 @@ HDRS= -I /usr/include -I src/
 LIBS= -lssl -lcrypto -lcrypt -lconfig -ljpeg -lm
 
 # -- default ------------------------------------------------------------------
-default: odbase
+default: odcgi
 
-# -- odbase --------------------------------------------------------------------
-ODBASE_FILES = src/str.c src/string.c src/match.c .src/base64.c src/jpeg.c  src/image.c src/mjpg.c
-ODBASE_OBJS = src/mjpg.o src/i18n.o src/user.o src/file.o src/util.o src/session.o src/cgi.o src/secfunc.o src/script.o
+# -- odcgi --------------------------------------------------------------------
+ODCM_FILES = ../odcommon/src/str.c ../odcommon/src/string.c ../odcommon/src/match.c ../odcommon/src/base64.c ../odcommon/src/jpeg.c  ../odcommon/src/image.c ../odcommon/src/mjpg.c
+ODCGI_OBJS = src/mjpg.o src/i18n.o src/user.o src/file.o src/util.o src/session.o src/cgi.o src/secfunc.o src/script.o
                 
-odcgi: $(ODBASE_OBJS)   
-	$(CC) $(OPTS) $(HDRS)  $(ODBASE_FILES) $(ODBASE_OBJS) $(LIBCONFIG_FILES) src/odcgi.c -o var/www/cgi-bin/od.cgi -g $(LIBS)
-	#$(CC) $(OPTS) $(HDRS) src/secfunc.o src/user.o  src/test.c -o bin/test -l crypt
+odcgi: $(ODCGI_OBJS) 
+	$(CC) $(OPTS) $(HDRS)  $(ODCM_FILES) $(ODCGI_OBJS) $(LIBCONFIG_FILES) src/odcgi.c -o var/www/cgi-bin/od.cgi -g $(LIBS)
 	$(CC) $(FLAGS) $(HDRS) src/bgshell.c -o usr/local/bin/bgshell
+	#$(CC) $(OPTS) $(HDRS) src/secfunc.o src/user.o  src/test.c -o bin/test -l crypt
 
 # -- standard object ----------------------------------------------------------
 %.o: %.c %.h
@@ -20,4 +20,3 @@ odcgi: $(ODBASE_OBJS)
 
 clean:
 	rm -f */*.o 
-	rm -f usr/local/bin/bgshell
