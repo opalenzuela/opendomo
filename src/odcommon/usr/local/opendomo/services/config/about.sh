@@ -22,7 +22,14 @@ echo "#URL:http://www.gnu.org/licenses/gpl-3.0.html"
 echo
 echo "#> Installed products"
 echo "list:managePlugins.sh	detailed"
-echo "	-kernel	Linux kernel	package	v.$KERNELVERSION GPL v3"
+
+ODCGI_VER=`apt-cache show odcgi | grep Version| cut -f2 -d' '`
+ODCOMMON_VER=`apt-cache show odcommon | grep Version| cut -f2 -d' '`
+
+echo "	-kernel 	Linux kernel	package	v$KERNELVERSION GPL v3"
+echo "	-odcgi  	Web interface	package	v$ODCGI_VER GPL v3"
+echo "	-odcommon	Common files	package	v$ODCOMMON_VER GPL v3"
+
 cd /var/opendomo/plugins/
 
 # Checking plugins dir and see info
