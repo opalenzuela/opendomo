@@ -1,13 +1,16 @@
 OPTS= -Wall -std=gnu99 -pedantic -O2 -s
-HDRS= -I /usr/include -I src/ 
-LIBS= -lssl -lcrypto -lcrypt -lconfig -ljpeg -lm
+HDRS= -I /usr/include -I src/ -I.
+LIBS= -lssl -lcrypto -lcrypt -lconfig -lm
+#-ljpeg
 
 # -- default ------------------------------------------------------------------
 default: odcgi
 
 # -- odcgi --------------------------------------------------------------------
-ODCM_FILES = ../odcommon/src/str.c ../odcommon/src/string.c ../odcommon/src/match.c ../odcommon/src/base64.c ../odcommon/src/jpeg.c  ../odcommon/src/image.c ../odcommon/src/mjpg.c
-ODCGI_OBJS = src/mjpg.o src/i18n.o src/user.o src/file.o src/util.o src/session.o src/cgi.o src/secfunc.o src/script.o
+ODCM_FILES = src/str.c src/string.c src/match.c src/base64.c 
+# src/jpeg.c  src/image.c src/mjpg.c src/odcgi_mjpg.c
+ODCGI_OBJS = src/i18n.o src/user.o src/file.o src/util.o src/session.o src/cgi.o src/secfunc.o src/script.o
+#src/mjpg.o 
                 
 odcgi: $(ODCGI_OBJS) 
 	$(CC) $(OPTS) $(HDRS)  $(ODCM_FILES) $(ODCGI_OBJS) $(LIBCONFIG_FILES) src/odcgi.c -o var/www/cgi-bin/od.cgi -g $(LIBS)

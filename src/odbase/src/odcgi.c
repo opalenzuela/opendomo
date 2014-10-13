@@ -52,7 +52,8 @@
 #include "user.h"
 #include "script.h"
 #include "i18n.h"
-#include "mjpg.h"
+//#include "mjpg.h"
+//#include "odcgi_mjpg.h"
 #include "src/string.h"
 #include "src/str.h"
 
@@ -937,7 +938,7 @@ main (int argc, char *argv[])
     }
 
 
-  /* play mjpg file */
+  /* play mjpg file 
   if (strlen (http_play_mjpg) > 3)
 	{
 		syslog (LOG_NOTICE, "play: %s\n", http_play_mjpg);
@@ -957,9 +958,9 @@ main (int argc, char *argv[])
 		default:
 			cgi_http_header_begin ("text/plain");
 	}
+ */
 
-
-  /* Resource reference */
+  /* Resource reference
   //TODO Verificar permisos de usuario
   if (strlen (http_resource) > 3)
 	{
@@ -976,9 +977,7 @@ main (int argc, char *argv[])
 			cgi_free (cgi);
 			return 0;
 		}
-	}
-
-
+	} */
 
 	syslog (LOG_NOTICE, "1.session: %s\n", http_session);
 	cgi_http_header_set_cookie ("HTSESSID", http_session);

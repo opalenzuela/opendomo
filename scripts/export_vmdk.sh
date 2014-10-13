@@ -26,20 +26,22 @@ echo "INFO: Export opendomo to RAW image ..."
 rm $EXPORTDIR/$IMGNAME.img 2>/dev/null
 
 # Creating image
-qemu-img create -f raw $EXPORTDIR/$IMGNAME.img 2G >/dev/null
+qemu-img create -f raw $EXPORTDIR/$IMGNAME.img 2G 
 
 # Creating RAW image
 losetup -f $EXPORTDIR/$IMGNAME.img
-LOOPDEV=`losetup -a | grep -m1 "$EXPORTDIR/$IMGNAME.img" | cut -f1 -d: | tail -n1`
+echo "Listing devices"
+losetup -a
+LOOPDEV=`losetup -a | grep -m1 "opendomo" | cut -f1 -d: | tail -n1`
 
 if
-mkfs.vfat $LOOPDEV >/dev/null 2>/dev/null
+mkfs.vfat $LOOPDEV 
 then
 	mount $EXPORTDIR/$IMGNAME.img $MOUNTDIR
-	cp -r $TARGETDIR/* $MOUNTDIR/ 2>/dev/null
+	cp -r $TARGETDIR/* $MOUNTDIR/ 
 
 	# Installing bootloader
-	extlinux -i $MOUNTDIR >/dev/null 2>/dev/null
+	extlinux -i $MOUNTDIR 
 
 	# Wait for unmount
 	sleep 5
@@ -47,12 +49,12 @@ then
 
 	# Deleting all opendomo sdk loops
 	for lo in `losetup -a | grep -m1 "$EXPORTDIR/$IMGNAME.img" | cut -f1 -d: | tail -n1`; do
-		losetup -d $lo 2>/dev/null
+		losetup -d $lo 
 	done
 fi
 
 # Convert raw to vmdk
-qemu-img convert -O vmdk $EXPORTDIR/$IMGNAME.img $EXPORTDIR/$IMGNAME.vmdk >/dev/null
+qemu-img convert -O vmdk $EXPORTDIR/$IMGNAME.img $EXPORTDIR/$IMGNAME.vmdk 
 
 # Fix image perms
 chown $USER $EXPORTDIR/$IMGNAME.img 2>/dev/null
