@@ -211,19 +211,21 @@ plugins_update() {
         INSTALLED_VERSION=`cat $plugin`
         AVAILABLE_VERSION=`grep $PLUGIN $REPOFILE | head -n1 | cut -f1 -d";" | cut -f2 -d- | cut -f1 -d.`
 
-        # Update plugin
-        if [ $AVAILABLE_VERSION -gt $INSTALLED_VERSION ]; then
-            # Enqueue dependecies, only new will be installed
-            echo "Updating plugin: $PLUGIN to $AVAILABLE_VERSION" | add_date
-            PLUGINDEPS=`grep $PLUGIN-$AVAILABLE_VERSION $REPOFILE | cut -f4 -d";" | sed 's/ /\\|/g'`
-            echo -n $PLUGINSDEPS >> $QUEUEFILE
+        # Update plugin; only plugins in repository file can be updated
+        if ! test -z $AVAILABLE_VERSION; then
+            if [ $AVAILABLE_VERSION -gt $INSTALLED_VERSION ]; then
+                # Enqueue dependecies, only new will be installed
+                echo "Updating plugin: $PLUGIN to $AVAILABLE_VERSION" | add_date
+                PLUGINDEPS=`grep $PLUGIN-$AVAILABLE_VERSION $REPOFILE | cut -f4 -d";" | sed 's/ /\\|/g'`
+                echo -n $PLUGINSDEPS >> $QUEUEFILE
 
-            # Download plugin
-            DOWNURL=`grep $PLUGIN $REPOFILE | tail -n1 | cut -f2 -d";"`
-            cd $PLUGIN_DOWNDIR
-            /usr/local/bin/download.sh $DOWNURL
-        else
-            echo "Plugin $PLUGIN is already updated" | add_date
+                # Download plugin
+                DOWNURL=`grep $PLUGIN $REPOFILE | tail -n1 | cut -f2 -d";"`
+                cd $PLUGIN_DOWNDIR
+                /usr/local/bin/download.sh $DOWNURL
+            else
+                echo "Plugin $PLUGIN is already updated" | add_date
+            fi
         fi
     done
 }
