@@ -273,22 +273,40 @@ odpackage_update() {
     echo "Busy: Updating opendomo packages" > $PIDFILE
     echo "Updating opendomo packages"       > $SYSSTATE
     echo "Updating opendomo packages" | add_date
-
-    # Updateing installed versions
-    let ODCOMUPD=`apt-cache show odcommon | grep Version | awk '{print$2}' | cut -f3 -d.`+1
-    let ODCGIUPD=`apt-cache show odcgi    | grep Version | awk '{print$2}' | cut -f3 -d.`+1
-    ODCOMPKG="odcommon_"$ODPKGMAJOR"."$ODCOMUPD"_$ARCH.deb"
-    ODCGIPKG="odcgi_"$ODPKGMAJOR"."$ODCGIUPD"_$ARCH.deb"
-
-    # Download and install packages
     cd $PACKAG_DOWNDIR
-    echo "Searching odcommon version $ODPKGMAJOR.$ODCOMUPD ..."  | add_date
-    echo "Searching odcgi version $ODPKGMAJOR.$ODCGIUPD ..."     | add_date
-    /usr/local/bin/download.sh $PACKAGEURL/$ODCOMPKG &>/dev/null && dpkg -i $ODCOMPKG | add_date
-    /usr/local/bin/download.sh $PACKAGEURL/$ODCGIPKG &>/dev/null && dpkg -i $ODCGIPKG | add_date
-    rm $ODCGIPKG $ODCOMPKG 2>/dev/null
 
-    # Install new dependecies
+    # Searching last version of odcommon
+    let ODCOMUPD=`apt-cache show odcommon | grep Version | awk '{print$2}' | cut -f3 -d.`+1
+    while /usr/local/bin/download.sh $PACKAGEURL/odcommon_"$ODPKGMAJOR"."$ODCOMUPD"_$ARCH.deb; do
+	let ODCOMUPD="$ODCOMUPD"+1
+    done
+
+    # Updating last version of odcommon
+    let ODCOMUPD="$ODCOMUPD"-1
+    ODCOMPKG=odcommon_"$ODPKGMAJOR"."$ODCOMUPD"_$ARCH.deb
+    if test -f $ODCOMPKG; then
+        echo "Installing odcommon version $ODPKGMAJOR.$ODCOMUPD ..."  | add_date
+        dpkg -i $ODCOMPKG
+    fi
+
+    # Searching last version of odcgi
+    let ODCGIUPD=`apt-cache show odcgi | grep Version | awk '{print$2}' | cut -f3 -d.`+1
+    while /usr/local/bin/download.sh $PACKAGEURL/odcgi_"$ODPKGMAJOR"."$ODCGIUPD"_$ARCH.deb; do
+        let ODCGIUPD="$ODCGIUPD"+1
+    done
+
+    # Updating last version of odcgi
+    let ODCGIUPD="$ODCGIUPD"-1
+    ODCGIPKG=odcgi_"$ODPKGMAJOR"."$ODCGIUPD"_$ARCH.deb
+    if test -f $ODCGIPKG; then
+        echo "Installing odcgi version $ODPKGMAJOR.$ODCGIUPD ..."  | add_date
+        dpkg -i $ODCGIPKG
+    fi
+
+    # Cleaning packages
+    rm *.deb 2>/dev/null
+
+    # Installing new dependecies
     LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive sudo apt-get --force-yes -fyq install | add_date
     echo "Waiting" > $PIDFILE
     rm $SYSSTATE
