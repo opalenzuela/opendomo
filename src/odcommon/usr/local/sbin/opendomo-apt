@@ -32,7 +32,7 @@ PACKAG_DOWNDIR="$DAEMONDIR/packages"
 
 # Commands options and messages
 APTOPTS="--no-gui --without-recommends"
-CURWEEK=`date +%W`
+CURWEEK=`date +%j`
 source /etc/os-release
 REPOSITORY="http://cloud.opendomo.com/repo/$VERSION"
 PACKAGEURL="http://es.opendomo.org/files"
