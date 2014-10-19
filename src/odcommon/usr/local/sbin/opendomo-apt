@@ -309,6 +309,9 @@ while test -f $PIDFILE; do
             plugins_update
         fi
 
+        # Clean queue file for prevent file errors
+        grep -q -e [a-z] $QUEUEFILE || echo > $QUEUEFILE
+
         # Install dependecies and plugins
         for pkg in `cat $QUEUEFILE`; do
             # Checking memory before install package
