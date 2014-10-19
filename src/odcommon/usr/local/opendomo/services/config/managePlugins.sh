@@ -59,6 +59,10 @@ if test -z "$1"; then
 	then
 		echo "	installPluginFromGithub.sh	Install from Github"
 	fi
+	if test -x /usr/local/opendomo/updateSystem.sh
+	then
+		echo "	updateSystem.sh	Update system"
+	fi
 else
 	# Parameter was passed (requesting plugin's details)
 	if test "$1" == "kernel"
