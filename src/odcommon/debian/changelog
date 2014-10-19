@@ -1,3 +1,9 @@
+odcommon (2.1.4) experimental; urgency=low
+
+  * opendomo-apt updates bug fixes
+
+ -- Javier Miras Blanco <jmirasb@gmail.com>  Sun, 19 Oct 2014 11:40:36 +0200
+
 odcommon (2.1.3) experimental; urgency=low
 
   * Start/Stop opendomo apt in system states
