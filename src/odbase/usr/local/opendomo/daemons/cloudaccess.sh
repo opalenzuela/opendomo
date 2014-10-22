@@ -1,6 +1,6 @@
 #!/bin/sh
 ### BEGIN INIT INFO
-# Provides:          odauto
+# Provides:          cloudaccess
 # Required-Start:    
 # Required-Stop:
 # Should-Start:      
