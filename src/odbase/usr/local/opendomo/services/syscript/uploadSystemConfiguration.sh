@@ -1,6 +1,6 @@
 #!/bin/sh
 #desc:Upload configuration
-#package:odcommon
+#package:odbase
 #type:multiple
 
 CFGFILE="/mnt/odconf/sysconf/sysconf.tar"

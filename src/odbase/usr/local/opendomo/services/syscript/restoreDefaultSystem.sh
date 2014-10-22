@@ -1,6 +1,6 @@
 #!/bin/sh
 #desc:Restore default system
-#package:odcommon
+#package:odbase
 #type:multiple
 
 sudo /usr/local/sbin/mkrootfs restore

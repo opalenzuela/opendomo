@@ -1,6 +1,6 @@
 #!/bin/sh
 #desc:About
-#package:odcommon
+#package:odbase
 #type:local
 
 # Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
@@ -23,12 +23,12 @@ echo
 echo "#> Installed products"
 echo "list:managePlugins.sh	detailed"
 
-ODCGI_VER=`apt-cache show odcgi | grep Version| cut -f2 -d' '`
-ODCOMMON_VER=`apt-cache show odcommon | grep Version| cut -f2 -d' '`
+ODCGI_VER=`apt-cache show odbase | grep Version| cut -f2 -d' '`
+ODCOMMON_VER=`apt-cache show odbase | grep Version| cut -f2 -d' '`
 
 echo "	-kernel 	Linux kernel	package	v$KERNELVERSION GPL v3"
-echo "	-odcgi  	Web interface	package	v$ODCGI_VER GPL v3"
-echo "	-odcommon	Common files	package	v$ODCOMMON_VER GPL v3"
+echo "	-odbase  	Web interface	package	v$ODCGI_VER GPL v3"
+echo "	-odbase	Common files	package	v$ODCOMMON_VER GPL v3"
 
 cd /var/opendomo/plugins/
 

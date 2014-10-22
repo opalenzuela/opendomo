@@ -1,6 +1,6 @@
 #!/bin/sh
 #desc:Test interface
-#package:odcgi
+#package:odbase
 #type:local
 
 # This script contains all the possible blocks used in the CGI.

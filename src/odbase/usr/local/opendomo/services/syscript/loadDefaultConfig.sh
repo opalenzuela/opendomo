@@ -1,6 +1,6 @@
 #!/bin/sh
 #desc:Load default configuration
-#package:odcommon
+#package:odbase
 #type:local
 
 echo "#LOADING Load default configuration files ..."

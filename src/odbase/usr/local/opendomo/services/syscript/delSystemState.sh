@@ -1,7 +1,7 @@
 #!/bin/sh
 #desc:Delete state
 #type:local
-#package:odcommon
+#package:odbase
 
 # Copyright(c) 2011 OpenDomo Services SL. Licensed under GPL v3 or later
 

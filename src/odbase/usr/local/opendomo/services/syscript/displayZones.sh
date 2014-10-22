@@ -1,7 +1,7 @@
 #!/bin/sh
 #desc:Display zone
 #type:local
-#package:odcommon
+#package:odbase
 
 # Copyright(c) 2012 OpenDomo Services SL. Licensed under GPL v3 or later
 

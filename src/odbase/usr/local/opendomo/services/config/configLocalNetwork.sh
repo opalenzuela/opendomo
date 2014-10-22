@@ -1,7 +1,7 @@
 #!/bin/sh
 #desc:Network interface configuration
 #type:local
-#package:odcommon
+#package:odbase
 
 CFGFILE="/etc/opendomo/system/interfaces"
 

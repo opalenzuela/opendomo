@@ -1,6 +1,6 @@
 #!/bin/sh
 #desc:Save system configuration and reboot
-#package:odcommon
+#package:odbase
 #type:multiple
 
 SYSSTATE="/var/opendomo/run/Systembusy.pid"

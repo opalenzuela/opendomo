@@ -1,6 +1,6 @@
 #!/bin/sh
 #desc:Event reception
-#package:odcommon
+#package:odbase
 #type:local
 
 # Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
@@ -11,7 +11,7 @@ if test -z "$1" || test -z "$2" || test -z "$3"
 then
 	echo "Usage: $0 level module message [archivo]"
 	echo "	level=error|warn|notice|debug"
-	echo "	module=odcgi|odpkg|oddiscovery|any plugin or package installed"
+	echo "	module=odbase|odpkg|oddiscovery|any plugin or package installed"
 	echo "	message=description of the event"
 	exit 0
 fi

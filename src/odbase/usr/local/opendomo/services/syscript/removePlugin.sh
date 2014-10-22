@@ -1,6 +1,6 @@
 #!/bin/sh
 #type:local
-#package:odcommon
+#package:odbase
 
 PLUGINSDIR="/var/opendomo/plugins"
 PLUGIN="$1"

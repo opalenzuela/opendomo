@@ -1,7 +1,7 @@
 #!/bin/sh
 #desc:Manage users
 #type:multiple
-#package:odcommon
+#package:odbase
 
 
 # Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later

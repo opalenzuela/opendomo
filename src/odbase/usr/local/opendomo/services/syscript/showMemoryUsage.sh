@@ -1,7 +1,7 @@
 #!/bin/sh
 #desc:Show memory usage
 #type:local
-#package:odcgi_flot
+#package:odbase_flot
 
 #TODO Allow date selection
 MEMFILE="/var/opendomo/log/stats/loadmem.stats"

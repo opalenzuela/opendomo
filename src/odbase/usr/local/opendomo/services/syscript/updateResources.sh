@@ -1,6 +1,6 @@
 #!/bin/sh
 #desc: Measure system resources
-#package:odcommon
+#package:odbase
 #type:local
 H=`date +%H`
 if ! test -d /var/log/stats; then 

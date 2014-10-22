@@ -1,7 +1,7 @@
 #!/bin/sh
 #desc:Show CPU usage
 #type:local
-#package:odcgi_flot
+#package:odbase_flot
 
 #TODO Allow date selection
 CPUFILE="/var/opendomo/log/stats/loadcpu.stats"

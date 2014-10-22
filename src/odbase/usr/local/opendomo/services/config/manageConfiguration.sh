@@ -1,6 +1,6 @@
 #!/bin/sh
 #desc:Save configuration
-#package:odcommon
+#package:odbase
 #type:multiple
 
 echo "#> Saving data"

@@ -1,6 +1,6 @@
 #!/bin/sh
 #desc:Change state
-#package:odcommon
+#package:odbase
 #type:local
 
 # Checks

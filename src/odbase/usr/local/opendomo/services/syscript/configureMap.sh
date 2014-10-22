@@ -1,7 +1,7 @@
 #!/bin/sh
 #desc:Configure map
 #type:local
-#package:odcommon
+#package:odbase
 
 if test -f /etc/opendomo/map.conf
 then

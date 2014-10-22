@@ -1,7 +1,7 @@
 #!/bin/sh
 #name:Reboot
 #desc:Reboot
-#package:odcommon
+#package:odbase
 #type:local
 
 SYSUPDATPID="/var/opendomo/run/updateSystem.pid"

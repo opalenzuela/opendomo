@@ -1,7 +1,7 @@
 #!/bin/sh
 #desc:Manage users
 #type:multiple
-#package:odcommon
+#package:odbase
 
 CONFIGDIR="/etc/opendomo/udata"
 USER="$1"
