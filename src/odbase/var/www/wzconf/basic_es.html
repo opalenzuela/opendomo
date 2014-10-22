@@ -1,0 +1,37 @@
+<html>
+ <head>
+  	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+	<link rel="stylesheet" type="text/css" media="screen" href="wzconf_styles.css" />
+ </head>
+ <body>
+	<a name='top'></a>
+	<div class='toolbar'>
+		<a class='homebtn' href='/cgi-bin/wzconf.cgi'><img src='/images/index.gif'></a> 
+		<div style='float:right'>
+			<a class='closebtn' href='/cgi-bin/od.cgi/control/' target='_top'>
+				<img src='/images/close_small.gif'></a>	
+		</dev>
+	</div>
+	<h1>Primera configuración</h1>
+
+	<a name='login'><h2>Inicio de sesión</h2></a>
+	<p>Antes de empezar, es necesario iniciar sesión en el agente de OpenDomo. 
+	Para hacerlo, haz click <a href='/cgi-bin/od.cgi/control?LOGOUT=1' 
+	target='odcgi'>aquí</a> y escribe "admin" como nombre de usuario y 
+	"opendomo" como contraseña en la ventana de inicio de sesión 
+	(o la correspondiente, si la has cambiado).</p>
+	
+	<a name='user'><h2>Cambio de contraseña</h2></a>
+	<p>Es muy importante cambiar la contraseña del usuario "admin", ya que de 
+	otro modo tu sistema será muy fácilmente accesible desde el exterior. Si tu 
+	contraseña ya ha sido cambiada, ves al <a href='#save'>siguiente paso</a>. 
+	Si no haz click <a href='/cgi-bin/od.cgi/config/user/modUser.sh?option[]=admin' 
+	target='odcgi'>aquí</a> e introduce una nueva contraseña válida.</p> 
+
+	<a name='save'><h2>Guardar la configuración</h2></a>
+	<p>Una vez hechos los cambios esenciales, ya puedes guardar la configuración
+	haciendo click <a href='/cgi-bin/od.cgi/config/saveSystemConfiguration.sh' 
+	target='odcgi'>aquí</a>.</p>
+
+ </body>
+</html>

@@ -1,0 +1,37 @@
+<html>
+ <head>
+  	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+	<link rel="stylesheet" type="text/css" media="screen" href="wzconf_styles.css" />
+ </head>
+ <body>
+	<a name='top'></a>
+	<div class='toolbar'>
+		<a class='homebtn' href='/cgi-bin/wzconf.cgi'><img src='/images/index.gif'></a> 
+		<div style='float:right'>
+			<a class='closebtn' href='/cgi-bin/od.cgi/control/' target='_top'>
+				<img src='/images/close_small.gif'></a>	
+		</dev>
+	</div>
+	<h1>Configuración de red</h1>
+
+	<a name='login'><h2>Inicio de sesión</h2></a>
+	<p>Antes de empezar, es necesario iniciar sesión en el agente de OpenDomo. 
+	Para hacerlo, haz click <a href='/cgi-bin/od.cgi/control?LOGOUT=1' 
+	target='odcgi'>aquí</a> y escribe "admin" como nombre de usuario y 
+	"opendomo" como contraseña en la ventana de inicio de sesión 
+	(o la correspondiente, si la has cambiado).</p>
+	
+	<a name='net'><h2>Configuración de red</h2></a>
+	<p>Si has iniciado el equipo por primera vez, tal vez la configuración de
+	red obtenida no es la deseada. Por defecto el sistema asigna la IP
+	192.168.2.2, pero es posible emplear una configuración personalizada. 
+	Si deseas modificar la configuración haz click <a  target='odcgi' 
+	href='/cgi-bin/od.cgi/config/network/configLocalNetwork.sh' >aquí</a></p> 
+
+	<a name='save'><h2>Guardar la configuración</h2></a>
+	<p>Una vez hechos los cambios esenciales, ya puedes guardar la configuración
+	haciendo click <a href='/cgi-bin/od.cgi/config/saveSystemConfiguration.sh' 
+	target='odcgi'>aquí</a>.</p>
+
+ </body>
+</html>
