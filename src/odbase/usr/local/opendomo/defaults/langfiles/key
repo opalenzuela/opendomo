@@ -1,0 +1,809 @@
+19465:%s does not exist
+19105:%s is read-only
+19193:%s packages found
+19408:About
+12124:About %s
+19023:Accept
+19120:Access Denied, invalid user or password
+19312:Access denied!
+19241:Access to cameras
+19494:Access to cameras is disabled
+16007:Action
+19490:Activate access
+19162:active
+15008:Active agents
+19313:Active agents:
+12118:Add
+12105:Add a interface link
+15001:Add Agent to OpenDomo Network
+19019:Add Camera
+11007:Add condition
+14019:Add control device
+14010:Add control device %s
+19024:Add IP Camera
+19001:Add IP Camera %s
+12011:Add link
+19445:Add manual album
+19497:Add more features to OpenDomo from this module
+12060:Add network drive
+13159:Add network drive
+13120:Add network drive %s
+19076:Add new eventhandler
+17010:Add new repository
+11003:Add new rule
+19314:Add new state
+13173:Add new step
+17114:Add package repository
+17011:Add package repository %s
+17002:Add repository
+19230:Add requirement
+14052:Add scene
+19528:Add sequence
+13102:Add system state
+19183:Add tag
+15016:Add to OpenDomo
+12021:Add user
+19077:Add zone
+19008:Adding a new IP Camera
+19429:Adding camera
+19348:Adding thread file to motion.conf
+19233:Additional parameters (optional)
+12129:Admin password
+12112:Advanced
+19316:Agent %s information:
+13137:Agent Name
+15018:Agent name
+19198:Agent name changed
+15019:Agent password
+19315:Agent removed
+15011:Agent synchronized %s
+17104:AI functions
+19219:Alarm level detected
+19317:Alert: This procedure is experimental!
+19218:All
+18004:Amplitude
+19165:Apply
+19192:Apply changes
+14003:Apply device template %s
+16014:Apply filter
+17003:Apply profile %s
+14030:Apply template
+19482:Applying changes. Please wait!
+19529:Applying the same scene again. Ignored
+19274:Arduino driver
+19318:Are you sure?
+19207:Artificial Intelligence routines
+16001:Assign a new eventhandler
+10012:Assign a new eventhandler
+16017:Assign a new eventhandler %s
+19276:Atmospheric pressure
+14070:Available
+17013:Available packages
+19257:Available playlists
+11002:Available rules
+14050:Available scenes
+19164:Available sequences
+13106:Available services
+19533:Available states
+12130:Available users
+19052:Back
+19176:Back to list
+19269:Background music
+19446:Background music service
+17105:Backup manager
+14011:Board model
+19122:Browse captures
+19015:Browse captures %s
+12057:Browse files
+13001:Browse files and folders %s
+19451:Busybox
+19515:By default, a scene is created with the state that the ports have in the creation moment
+19500:By default, a scene is created with the state that the ports have in the creation moment. 
+19319:Calculated %s
+19014:Camera
+19041:Camera %s deleted successfuly
+19222:Camera covered or disabled
+19415:Camera deleted
+19026:Camera list
+19124:Camera Radar deleted successfuly
+19013:Camera removal
+19320:Camera update failed
+19180:Camera updated successfully
+19004:Cameras management %s
+19321:Candidate version of %s is higher than installed one
+19322:Cannot delete
+19045:Card number
+13132:Change admin password
+13133:Change admin password to all opendomo agents
+19323:Change agent name
+13130:Change agent name %s
+19444:Change default parameters
+12023:Change password
+13109:Change state
+13004:Change state %s
+19324:Change user data
+19261:Changes saved
+19031:Changes saved!
+13110:Changing to state %s
+19537:Checking available packages
+19136:cherokee
+13021:Cherokee web server
+19436:Choose action
+19434:Choose playlist
+19002:Choose storage %s
+19325:Choose the package you want to install
+19488:Choose your preferred language
+19326:Cleaning directory structure ...
+19156:climate
+19173:Close
+13151:Code
+14014:Code
+19053:Command
+17107:Common files
+19349:Community files not available
+19072:Condition removed
+11006:Conditions
+13140:Config local network %s
+18012:Configuration failed. Invalid TTS.
+19328:Configuration file %s not found
+19327:Configuration file is missing
+19200:Configuration path is read-only
+17121:Configuration restored
+12016:Configuration saved
+18008:Configuration updated!
+18011:Configuration updated. Custom values added.
+19477:Configuration wizard
+19174:Configuration wizards
+12012:Configure
+19332:Configure %s port
+12104:Configure agent name
+19311:Configure control devices
+19048:Configure control ports
+14020:Configure control ports %s
+10002:Configure e-mail
+19178:Configure input port
+12125:Configure interface
+12113:Configure interface %s
+19520:Configure map
+19260:Configure music player
+19329:Configure NFS parameters
+19330:Configure NTFS parameters
+19177:Configure output port
+19112:Configure port
+19331:Configure SMB parameters
+18013:Configure speech settings %s
+19249:Configure weather station
+17008:Configured repositories
+19333:Configuring as DHCP client
+19334:Configuring as DHCP server
+19335:Configuring as static
+19498:Connect your MP3 library and listen to your music files from OpenDomo
+19495:Contact information
+12073:Contents of %s
+19440:Continuos mode
+19470:Continuous mode
+12121:Control
+19256:Control background music 
+14009:Control board drivers
+19336:Control device
+14001:Control devices
+14041:Control ports
+19284:Convert video file format
+13153:Coordinates
+19090:Covered camera detection
+19254:CPU usage
+14073:Create scene
+19337:Creating captures folder
+19338:Creating config file for opendomo camera %s
+19034:Creating directory %s
+19054:Creating new rule
+19339:Creating thread file for camera %s
+19496:Credentials
+19033:Current dir
+13122:Current network drives
+19530:Current zone
+19078:Current zones
+19514:Customize scene
+19281:daily
+14082:Data
+19508:Data modified for %s
+19134:Date end
+19133:Date start
+19532:Datepicker library
+19058:day of the month
+12111:Debug
+19467:Default album
+17122:Default configuration not found
+19340:Default configuration will be loaded
+19267:Default playlist
+14078:Delete
+19413:Delete cameras
+19073:Delete condition
+19217:Delete eventhandler
+12106:Delete interface link
+17009:Delete package repository
+19229:Delete requirements
+19055:Delete rule
+19341:Delete states
+19050:Delete step
+13172:Delete steps
+13104:Delete system state
+19184:Delete tag
+12022:Delete user
+19074:Delete zone
+12048:Description
+19342:Description field missing
+19499:Descriptive name
+14031:Device
+14061:Device %s configured
+19234:Device already in use
+14017:Device stored
+19060:different
+19172:disabled
+19157:Display registered events
+19158:Display registered events %s
+17113:Distributed search engine
+13158:DNS server
+19351:Do you want to continue?
+19215:Domino (arduino) driver
+19265:Domino driver
+19343:Domino network devices can not be edited
+19346:download failed
+19345:Downloaded %s
+19344:Downloaded! Mounting...
+19464:Downloading %s, please wait
+19347:Downloading file %s ...
+19350:downloading from %s
+19455:Downloading package information
+19352:Drive selected
+15003:Dummy local service
+15004:Dummy multiple service
+15005:Dummy redundant service
+19235:Duplicated, please choose another name.
+12128:E-mail
+19479:e-mail address
+19353:e-mail settings not configured
+19199:Edit
+13007:Edit system state %s
+12110:Edit user
+19187:Editing %s
+17108:Electric devices controller
+17100:email SMTP Client
+19171:enabled
+19354:Encrypted backup found! Setting up restore wizard
+19511:Enter your name and e-mail
+19059:equal
+16011:Error creating %s
+19355:Error downloading package
+19422:Error downloading package %s
+19356:Error installing
+12017:Error saving configuration
+19358:Error saving configuration:
+14018:Error saving the device
+12018:Error, no drive found
+19357:Error, password can not be changed %s
+13022:eSpeak text reader
+17101:eSpeak voice synthetizer
+19075:Event
+16016:Event information
+16012:Event manager
+17110:Event manager
+10010:Event manager
+19361:Eventhandler %s created
+16009:Eventhandler couldn't be created
+16008:Eventhandler created
+16010:Eventhandler not found
+19359:Eventhandler not specified
+19360:Eventhandler removed
+16013:Events
+13171:Execute
+19232:Execute action or sequence
+19512:Exit current scene
+14015:Extra params
+19275:ffmpeg media encoder
+19362:File exists
+19363:File not found
+19364:Files missing!
+16015:Filter
+19441:Filter by artist
+19132:Filter by dates
+19505:Find how to solve this problem clicking the button &#39;More information&#39;
+19509:Finish
+19481:First configuration wizard
+17102:flite
+19272:Flot library
+19032:Folder
+19196:Found %s packages
+19069:friday
+12127:Full name
+19492:Full user name
+19365:function disabled
+13156:Gateway
+18002:Gender
+11004:General data
+19278:Generate statistics
+19366:Generated by %s
+19367:Generating .info file
+19109:GPL v3
+19061:greater than
+17103:gsmlib
+12007:GUI lang set to
+19449:Hardware Abstraction Layer
+13020:Hardware controllers
+17111:Hardware detection scripts
+19368:Hash file not found!
+12065:Help
+19093:High
+13125:Host
+15012:Host %s added to the network
+19089:Host/path or device
+19057:hour
+19007:HTTP Authentication (user:pass)
+19025:HTTP Authentication (user:pass)
+19040:HTTP password authentication
+19039:HTTP user authentication
+19289:ï»¿Invalid language file
+19231:If all requirements are acomplished
+19525:If you want to modify the state of each port in this scene, go to Customize scene
+19369:include Info file for opendomo camera %s exists!
+12034:Incorrect new password
+12032:Incorrect password
+16004:Information about %s
+19370:Initrd found
+19371:INITRD is up to date
+19372:initrd updates unavailable
+17025:Install package %s
+17006:Install selected packages
+16003:Installed eventhandlers
+10013:Installed eventhandlers
+19373:Installed packages will be lost after restart!
+19108:Installed products
+17018:Installing packages ...
+19374:Installing version %s of %s ...
+12063:Interface
+19375:Invalid data
+19376:Invalid day %s
+19377:Invalid name
+19378:Invalid name %s
+19478:Invalid password
+19379:Invalid path %s
+19381:Invalid port %s
+19380:Invalid port name
+19382:Invalid repository %s
+19383:Invalid saving path
+19384:Invalid scene
+19385:Invalid state
+19029:Invalid target directory
+18009:Invalid TTS
+19386:Invalid URL %s
+19387:Invalid zone %s
+13155:IP
+15020:ip
+19036:IP camera added succesfully
+19038:IP camera adding failed, check log for more inform
+19388:IP camera adding failed, check log for more information
+19225:is different than %s
+19224:is equal to %s
+19226:is greater than %s
+19227:is smaller than %s
+19271:jQuery library
+19389:Kernel found
+19390:Kernel is up to date
+19391:kernel updates unavailable
+13010:Key
+19288:keymaps
+13127:Label
+12008:Language
+12009:Language selection
+19290:Launch sequence
+13170:Launch sequence %s
+13174:Launching %s
+16006:Level
+19454:Level %s entered
+19486:License
+19083:License information for %s
+19155:light
+19392:Lights are off
+12109:Link not specified
+19209:Linux kernel
+14002:List controllers %s
+19493:Load default configuration
+19517:loadcpu
+19396:Loading %s
+19393:Loading compressed configuration ...
+19394:Loading configuration ...
+19395:Loading default configuration
+19518:loadmem
+12006:Login
+12019:Logout
+19094:Low
+19082:Manage camera zones
+19096:Manage camera zones %s
+19020:Manage cameras
+14062:Manage control devices
+14060:Manage control devices %s
+19307:Manage control systems
+14080:Manage cron tasks %s
+12115:Manage existing tags %s
+11001:Manage rules %s
+14074:Manage scenes
+14006:Manage scenes %s
+13175:Manage sequences
+14007:Manage sequences %s
+13107:Manage system services %s
+13103:Manage system states
+13008:Manage system states %s
+19447:Manage tags
+13009:Manage tags %s
+19489:Manage zones
+12116:Manage zones %s
+12120:Map
+19236:Measure system resources
+19255:Memory usage
+19208:Micropik driver
+19397:Missing file %s
+19398:Missing initrd in %s or write-protected
+19399:Missing kernel file in %s or write-protected
+19310:Missing param
+19400:Missing parameter
+19401:Missing parameters
+19402:Missing privilege
+19403:Missing privileges
+18010:Missing TTS parameter
+19088:Mixer
+13154:Mode
+19065:monday
+19129:monthday
+12070:More information
+19223:Motion detected
+19047:Motion detection
+13023:Motion detector
+19405:Motion is not running
+19017:Motion is not running on the system!
+19406:Motion is running
+19087:Mount drives
+19407:Mounted! Copying files...
+19011:Move captures
+19266:Music folder
+19424:Music player is running, stoping ...
+19468:Music volume
+19046:Must specify rule
+12024:Name
+19005:Name
+19425:Name cannot be empty.
+19423:Needs restart
+12047:Network
+12114:network
+19426:Network drive added.
+13124:Network drives
+19202:Network interface configuration
+15013:Network password established
+17109:Network synchronisation
+19206:Network synchronizer
+12122:New
+13135:New admin password
+12028:New password
+14077:New scene
+19097:New Zone
+19103:New zone saved!
+19485:Next
+19212:NFS tools
+15021:No agent to remove
+19414:No camera specified
+19168:No cameras found
+13150:No controllable items found
+19409:No option selected
+14040:No ports found
+19300:No rule condition specified
+19304:No rule specified
+19297:No scene specified
+14071:No scenes found
+19519:No scenes were created. Please ask your installer.
+19051:No sequence specified
+19527:No steps defined yet. Select the action in the menu and press Add.
+19491:No zones were defined. Press Manage zones to add yours
+19179:none
+14051:None defined
+19181:notassigned
+19524:notdefined
+12103:Notify the error
+19450:ODControl driver
+19474:odMusic not configured
+19242:odvision
+19197:Official repository of OpenDomo
+13134:Old admin password
+15009:Old agents
+12027:Old password
+19504:OpenDomo cannot find a proper unit to save configuration
+19452:OpenDomo is free software, created by OpenDomo Services and the community and distributed under the GPLv3 license
+19476:OpenDomo is not yet configured. Click Configuration wizard to configure it
+19240:OpenDomo Services theme
+19086:OpenDomo v.%s
+19463:OpenDomo Vision
+12020:OpenDomo Web Access
+19487:OpenDomo will address you with this name
+19191:Operation in process
+19190:Operation in progress. Please wait
+13111:Operation successful
+19469:Organized music
+16100:Output to the standard logfile
+16104:Output to the syslog facility
+19248:Outside temperature
+16005:Package
+19213:Package %s already installed!
+17022:Package %s not found
+17005:Package information
+19466:Package installed sucessfully
+19421:Package list updated
+19205:Package manager
+17024:Package requires %s, not installed
+19194:Package updated
+17023:Package with installed dependencies
+17001:Packages
+12117:packages
+19419:Packages updated
+14084:Params
+12005:Password
+13136:Password changed %s
+15014:Password incorrect
+12035:Password modified for
+12033:Password too short
+19412:Passwords doesn&#39;t match
+12056:Path
+13126:Path
+14081:Period
+12029:Personalized themes
+19010:Pictures storage
+18005:Pitch
+13180:Play a sound
+19443:Play music
+19435:Player controls
+19268:Player options
+19160:Playing resource street-manual-20110720051418
+19308:Please, go to Requirements
+19433:Please, reboot your system
+19430:Please, save and reboot
+19417:Please, save configuration and restart
+14012:Port
+14022:Port information file not found
+19220:Port value changed
+19291:Ports stored in %s
+19116:Possible values
+19185:power
+17020:Preparing package %s to be installed ...
+19247:Pressure
+19534:Preview
+12126:Preview %s
+19483:Previous
+16102:Process rules
+12040:Profile does not exist
+16105:Publish to Twitter
+19439:Random
+19258:Random mode
+17021:Ready to be installed
+13131:Reboot %s
+19418:Rebooting ... Please wait
+19270:Recording tools
+14016:Refresh
+16101:Register output states
+12123:Remove
+17016:Remove a package repository %s
+15017:Remove agent
+19042:Remove IP Camera
+19003:Remove IP Camera %s
+12064:Remove link
+12061:Remove network drive
+13160:Remove network drive
+13123:Remove network drive %s
+12025:Repeat password
+19214:Repository manager
+19471:Requested script was not found
+19309:Requirement added
+19228:Requirements
+12038:Reset
+17120:Restore default configuration
+19431:Restoring configuration
+19484:Retype password
+13026:Ripple search engine
+12003:root has not access
+19279:Rotate log files
+19535:Rules available
+19070:saturday
+19306:Save
+11005:Save changes
+12014:Save configuration
+12015:Saving ...
+19460:Saving data
+19201:Saving data in %s. Please wait
+19427:Scene already exists
+19299:Scene name not especified
+14076:Scene saved
+14083:Script
+19064:Scripts
+19161:secured
+19531:security
+19442:Sekect album
+19516:Select album
+19437:Select artist
+19502:Select drive
+12107:Select interface skin
+17004:Select packages to be installed
+19111:Select port
+19138:Select ports
+14005:Select scene %s
+12071:Select the language
+14075:Select the ports involved in this scene
+12068:Select this theme
+19462:Select variable
+19188:Select voice options
+10001:Send e-mail
+10003:Send file by e-mail
+19277:Send file by email
+10009:Send to (e-mail)
+19091:Sensitivity
+19170:Sequence deleted %s
+19294:Sequence step added
+19063:Sequences
+13105:Services active in %s
+12002:Session Expired
+12072:Set agent name
+13183:Set all
+13182:Set port
+19292:Set scenes
+13108:Set system state
+19259:Settings
+13002:Show agent information
+15002:Show agent information
+13003:Show Agent List
+15006:Show agent list %s
+19018:Show cameras
+19016:Show cameras %s
+19456:Show energy usage 
+15015:Show information
+19453:Show statistics 
+19244:Show system resources
+10011:Show the current eventhandlers
+16002:Show the current eventhandlers %s
+12108:Show theme information
+18001:Sinthetizer
+18014:Sinthetizer not installed
+12067:Skin
+19035:Skipping URL validation, http authentication enabl
+19121:Skipping URL validation, http authentication enabled
+19062:smaller than
+10004:SMTP host
+10007:SMTP password
+10005:SMTP port
+10008:SMTP smtp
+10006:SMTP user
+13006:Sound
+19118:Sound control
+19210:Sound drivers
+19263:Soundtrack
+19264:Soundtrack not configured
+19204:Speech module
+18006:Speed
+19250:Station code
+19246:Statistic files not found
+19113:Status
+19169:Step removed
+19049:Steps
+19503:Steps in %s
+12039:Submit
+19071:sunday
+19186:surveillance
+13025:Surveillance system
+15007:Synchronize agents
+15010:Synchronizing...
+12045:System
+19245:System resources
+13005:System state
+13101:System states
+19182:Tag created
+19410:Tag deleted
+19457:Tag file corrupted. Click Manage tags to fix it
+19458:Tag management
+19115:Tags
+14085:Task
+14032:Template
+19480:The e-mail address is used for sending notifications
+12059:The operation was not completed
+19137:The scene will store the current state of the selected ports
+19472:The script was not found. Maybe the function you are requiring is not installed in this system
+19028:The Url provided seems not to be working or the ht
+12066:Theme
+12031:Theme does not exist
+12030:Theme selected successfully
+19303:There are no control devices. Please, go to Add.
+19302:There are no rules. Please, go to Add.
+19298:There are no scenes. Please, go to Add.
+19523:There are no sequences. Please ask your installer.
+19522:There are no sequences. Please, go to Add.
+19305:There are no sequences. Please, go to manage sequences.
+19459:There are no tags. Please, go to Add.
+19037:There is a camera with the same name already.
+17123:This action cannot be undone
+19521:This function is experimental
+19084:This is free software. You can find more information about the terms of this license in the following link:
+19044:This location is empty
+19536:This package allow the access to all the resources in the network
+19252:This package uses the %s API or resources
+19110:This software is released under the GPL v.3 license.
+19068:thursday
+13157:Time server
+19506:To perform a system upgrade, is necessary to upload the configuration to the Cloud
+12037:Tools
+19104:Translation files found
+19189:Translation files updated
+19239:Try again later
+19066:tuesday
+19238:Turn all lights off
+14021:Type
+19114:Units
+17017:Update base system
+19106:Update installed packages
+19107:Update installed packages %s
+19237:Update logic rules
+17007:Update package list
+19280:Update weather station
+17015:Updating installed packages
+19473:Updating language files
+17014:Updating package lists
+17019:Upgrade from ISO
+19507:Upload configuration to the Cloud
+19448:Uploading configuration file 
+19006:URL Streaming
+19211:USB camera drivers
+12036:User created
+12010:User management
+12004:Username
+12026:Username deleted
+14072:Using %s
+17012:Valid profiles
+19416:Validation required
+18003:Variant
+16103:Verbalize
+19092:Very high
+19095:Very low
+19021:Video
+19282:Video file saved
+19009:Video storage
+17112:Video surveillance
+19131:View all
+12062:View network drives
+13121:View network drives %s
+12069:View theme information
+19203:Vision
+18007:Voice
+13024:Voice synthetizer
+19117:Volume (%)
+19438:Volume level
+13181:Wait
+19221:Warning level detected
+19273:Weather station
+19251:Weather station updated
+17106:Web interface
+19067:wednesday
+19056:weekday
+12001:Welcome to OpenDomo
+19513:Write a descriptive name for the scene, so you can find it later on 
+19100:X Bottom right
+19098:X Top Left
+19216:X10 CM15a driver
+19101:Y Bottom right
+19099:Y Top Left
+19012:Yes
+19501:You can modify the individual state of each device in this page
+19510:You must enter a new administrator password
+19027:You need a valid target directory in order to set
+19175:You need a valid target directory in order to set a new IP Camera
+19253:You need to specify a folder to browse your captures
+19022:You need to specify a folder to store your capture
+19243:You need to specify a folder to store your captures
+19030:You need to speecify a camera name and the camera'
+19123:You need to speecify a camera name and the camera&#39;s direction
+19262:You should receive a confirmation e-mail
+13032:Zone
+19411:Zone deleted
+19287:Zones
+19428:Zoom out

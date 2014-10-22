@@ -1,0 +1,1 @@
+addJavascript("managePlugins.sh.js");

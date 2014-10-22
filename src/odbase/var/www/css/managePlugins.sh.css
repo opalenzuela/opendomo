@@ -1,0 +1,61 @@
+/*
+#managePlugins li.plugin {
+	background-position: center;
+	background-size: 100px 100px;
+	height: 100px;
+	width: 100px;
+	overflow: hidden;
+}
+#managePlugins li.plugin label {
+	height: 100%;
+	position: absolute;
+}
+#managePlugins li.plugin label a{
+	position: absolute;
+	bottom: 0px;
+}
+*/
+
+/*
+fieldset.iconlist li.installed {
+	-webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5); 
+	border: 1px solid black;
+} */
+fieldset.iconlist li.installed a {
+	background: url("/images/success.png") top right no-repeat;
+}
+/*
+fieldset.iconlist li.new {
+	border: 1px dashed gray; 
+} */
+fieldset.iconlist li.new a {
+	background: url("/images/new.png") top right no-repeat;
+}
+fieldset.iconlist li.inprogress {
+	opacity: 0.5;
+}
+fieldset.iconlist li.inprogress a {
+	background: url("/images/loading.gif") top right no-repeat;
+}
+/*
+fieldset.iconlist li.failed {
+	border: 1px solid red;
+}
+*/
+fieldset.iconlist li.failed a {
+	background: url("/images/error.png") top right no-repeat;
+}
+
+fieldset.iconlist label input {
+	display: none;
+}
+
+/* Floating icon to the right */
+#icon_lbl {
+	color: transparent;
+}
+#icon_li div.imgframe {
+	position: absolute;
+}
