@@ -1,0 +1,13 @@
+.**
+run/**
+home/**
+var/opendomo/tmp/**
+var/opendomo/run/**
+var/opendomo/cgiroot/**
+var/log/**
+var/tmp/**
+var/run/**
+proc/**
+sys/**
+media/**
+mnt/**

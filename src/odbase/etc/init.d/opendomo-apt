@@ -1,0 +1,73 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          opendomo-apt
+# Required-Start:    $network
+# Required-Stop:
+# Should-Start:      glibc
+# Default-Start:     1 2 3 4 5
+# Default-Stop:      0 6
+# Short-Description: Update manager
+# Description:       Install opendomo plugins, deps and update system daemon
+#
+### END INIT INFO
+### Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+
+. /lib/init/vars.sh
+. /lib/lsb/init-functions
+
+PIDFILE="/var/opendomo/run/opendomo-apt.pid"
+LOGFILE="/var/opendomo/log/opendomo-apt.log"
+ERRFILE="/var/opendomo/log/opendomo-apt.err"
+
+do_start () {
+	log_action_begin_msg "Starting opendomo apt daemon"
+
+	# Waiting opendomo-apt to finish old jobs and start
+	while ! test -z `grep -v changestate.sh | grep opendomo-apt | head -c1`; do
+		sleep 1
+	done
+	echo "Waiting" > $PIDFILE
+	/usr/local/sbin/opendomo-apt >$LOGFILE 2>$ERRFILE &
+	log_action_end_msg $?
+}
+
+do_stop () {
+	log_action_begin_msg "Stoping opendomo apt daemon"
+	test -f $PIDFILE && rm $PIDFILE
+	log_action_end_msg $?
+}
+
+do_status () {
+	if test -f $PIDFILE; then
+		echo "$basename $0 is running"
+		exit 0
+	else
+		echo "$basename $0 is not running"
+		exit 1
+	fi
+}
+
+case "$1" in
+  start|"")
+	do_start
+        ;;
+  restart|reload|force-reload)
+	do_stop
+	do_start
+        exit 3
+        ;;
+  stop)
+	do_stop
+        exit 3
+	;;
+  status)
+        do_status
+        exit $?
+        ;;
+  *)
+        echo "Usage: opendomo-apt [start|stop|restart|status]" >&2
+        exit 3
+        ;;
+esac
+
+:

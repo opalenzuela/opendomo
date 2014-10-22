@@ -1,0 +1,3 @@
+Cmnd_Alias      SOUND = /usr/sbin/alsactl
+
+admin ALL=(ALL) NOPASSWD: SOUND
