@@ -23,6 +23,8 @@ do_start () {
 	log_action_begin_msg "Starting opendomo apt daemon"
 
 	# Waiting opendomo-apt to finish old jobs and start
+	# FIXME: This loop cannot be in the launch script. A failure in the condition will render the system unavailable
+	# This condition should be, in any case, in the backgrounded script /usr/local/sbin/opendomo-apt
 	while ! test -z `ps | grep -v changestate.sh | grep opendomo-apt | head -c1`; do
 		sleep 1
 	done
