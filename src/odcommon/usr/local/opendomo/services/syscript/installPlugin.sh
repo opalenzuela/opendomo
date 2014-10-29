@@ -14,6 +14,7 @@ if test -z "$1"; then
     exit 2
 else
 	cd $PLUGINSDIR
+	echo "#INFO Plugin sent to install"
 	for plugin in $@
 	do
 		# Sending deps to queue and download file
@@ -23,7 +24,7 @@ else
 		if ! test -z "$DOWNURL"
 		then
 			echo -n " $PLUGDEPS " >> $QUEUEFILE
-			echo "#INFO Plugin [$plugin] sent to install"
+			#echo "#INFO Plugin [$plugin] sent to install"
 			test -f $PLUGINSDIR/$DOWNPKG || /usr/local/bin/download.sh $DOWNURL
 		fi
 	done
