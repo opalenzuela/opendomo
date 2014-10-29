@@ -275,32 +275,42 @@ odpackage_update() {
     echo "Updating opendomo packages" | add_date
     cd $PACKAG_DOWNDIR
 
-    # Searching last version of odbase
-    let ODCOMUPD=`apt-cache show odbase | grep Version | awk '{print$2}' | cut -f3 -d.`+1
-    while /usr/local/bin/download.sh $PACKAGEURL/odbase_"$ODPKGMAJOR"."$ODCOMUPD"_$ARCH.deb; do
-	let ODCOMUPD="$ODCOMUPD"+1
+    # Searching last version of odcommon
+    let ODCOMUPD=`apt-cache show odcommon | grep Version | awk '{print$2}' | cut -f3 -d.`+1
+    ODCOMPKG="odcommon_"$ODPKGMAJOR"."$ODCOMUPD"_$ARCH.deb"
+    while /usr/local/bin/download.sh "$PACKAGEURL/$ODCOMPKG"; do
+	let ODCOMUPD=$ODCOMUPD+1
+        ODCOMPKG="odcommon_"$ODPKGMAJOR"."$ODCOMUPD"_$ARCH.deb"
     done
 
-    # Updating last version of odbase
-    let ODCOMUPD="$ODCOMUPD"-1
-    ODCOMPKG=odbase_"$ODPKGMAJOR"."$ODCOMUPD"_$ARCH.deb
+    # Updating last version of odcommon
+    let ODCOMUPD=$ODCOMUPD-1
+    ODCOMPKG="odcommon_"$ODPKGMAJOR"."$ODCOMUPD"_$ARCH.deb"
+
     if test -f $ODCOMPKG; then
-        echo "Installing odbase version $ODPKGMAJOR.$ODCOMUPD ..."  | add_date
-        dpkg -i $ODCOMPKG
+        echo "Installing odcommon version $ODPKGMAJOR.$ODCOMUPD ..."  | add_date
+        LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive dpkg -i $ODCOMPKG
+    else
+    	echo "odcommon version "$ODPKGMAJOR"."$ODCOMUPD" don't exist yet" | add_date
     fi
 
-    # Searching last version of odbase
-    let ODCGIUPD=`apt-cache show odbase | grep Version | awk '{print$2}' | cut -f3 -d.`+1
-    while /usr/local/bin/download.sh $PACKAGEURL/odbase_"$ODPKGMAJOR"."$ODCGIUPD"_$ARCH.deb; do
-        let ODCGIUPD="$ODCGIUPD"+1
+    # Searching last version of odcgi
+    let ODCGIUPD=`apt-cache show odcgi | grep Version | awk '{print$2}' | cut -f3 -d.`+1
+    ODCGIPKG="odcgi_"$ODPKGMAJOR"."$ODCGIUPD"_$ARCH.deb"
+    while /usr/local/bin/download.sh "$PACKAGEURL/$ODCGIPKG" &>/dev/null; do
+        let ODCGIUPD=$ODCGIUPD+1
+        ODCGIPKG="odcgi_"$ODPKGMAJOR"."$ODCGIUPD"_$ARCH.deb"
     done
 
-    # Updating last version of odbase
-    let ODCGIUPD="$ODCGIUPD"-1
-    ODCGIPKG=odbase_"$ODPKGMAJOR"."$ODCGIUPD"_$ARCH.deb
+    # Updating last version of odcgi
+    let ODCGIUPD=$ODCGIUPD-1
+    ODCGIPKG="odcgi_"$ODPKGMAJOR"."$ODCGIUPD"_$ARCH.deb"
+
     if test -f $ODCGIPKG; then
-        echo "Installing odbase version $ODPKGMAJOR.$ODCGIUPD ..."  | add_date
-        dpkg -i $ODCGIPKG
+        echo "Installing odccgi version $ODPKGMAJOR.$ODCOMUPD ..."  | add_date
+        LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive dpkg -i $ODCGIPKG
+    else
+    	echo "odcgi version "$ODPKGMAJOR"."$ODCGIUPD" don't exist yet" | add_date
     fi
 
     # Cleaning packages
@@ -328,7 +338,7 @@ while test -f $PIDFILE; do
         fi
 
         # Clean queue file for prevent file errors
-        grep -q -e [a-z] $QUEUEFILE || echo > $QUEUEFILE
+	grep -q -e [a-z] $QUEUEFILE || echo > $QUEUEFILE
 
         # Install dependecies and plugins
         for pkg in `cat $QUEUEFILE`; do
