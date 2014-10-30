@@ -267,6 +267,7 @@ odcgi_print_footer (const char *msg, int buttons, cgi_t * cgi)
 	else
 	{
 		printf ("\n<div id='footer'>\n\n");
+		/* Moved to header in version 2.2
 		printf
 			("\t\t<a id='logoutbutton' class='tool' "
 			"href='?LOGOUT=1'>%s</a>\n", T (ODCGI_TEXT_LOGOUT));
@@ -277,6 +278,7 @@ odcgi_print_footer (const char *msg, int buttons, cgi_t * cgi)
 				"href='/cgi-bin/od.cgi/manageConfiguration.sh' >%s</a>\n", 
 				T (ODCGI_TEXT_SAVE));			
 		}
+		*/
 	
 	// Debug block
 	//read_config_file (fh, ODVERSION_FILE, value, "Unknown");
@@ -1131,21 +1133,31 @@ main (int argc, char *argv[])
   printf ("<!-- path: %s, path_info: %s-->\n", path, path_info);
 
   /* Check NOHEADER */
-  if ((gui == html) && (atoi (http_noheader) != 1))
+  if ((gui == html) && (atoi(http_noheader) != 1))
     {
-      string_assign_str (cmd, "/usr/bin/categories.sh ");
-      string_append (cmd, path_info);
+		printf("<div id='header'>");
+		printf("	<ul id='categ' class='categories'>"
+		"		<li id='cat-control' class='tab'><a href='/cgi-bin/od.cgi/control'>%s</a></li>"
+		"		<li id='cat-tools' class='tab'><a href='/cgi-bin/od.cgi/tools'>%s</a></li>"
+		"		<li id='cat-config' class='tab'><a href='/cgi-bin/od.cgi/config'>%s</a></li>"
+		"	</ul>", T("Control"), T("Tools"), T("Config"));
+		printf ("\t\t<a id='logoutbutton' class='tool' href='?LOGOUT=1'>%s</a>\n", T (ODCGI_TEXT_LOGOUT));
+		if (1000 == getgid()) {
+			printf ("\t\t<a id='savebutton' class='tool' href='/cgi-bin/od.cgi/manageConfiguration.sh' >%s</a>\n", T(ODCGI_TEXT_SAVE));			
+		}	
+		printf("</div>");
+	  
+	  //string_assign_str (cmd, "/usr/bin/categories.sh ");
+      //string_append (cmd, path_info);
 
-      script_exec (cmd->str, "header", &env);
-      if (strlen (path_info) < 2)
-	{
-	  printf
-	    ("  <div class='applicationTitle'><h1>OpenDomo</h1></div>\n");
-	}
-      else
-	{
-	  printf ("  <div class='root'><a href='" OD_URI "/'> </a></div>\n");
-	}
+      //script_exec (cmd->str, "header", &env);
+      //if (strlen (path_info) < 2)
+	//{
+	//  printf
+	//    ("  <div class='applicationTitle'><h1>OpenDomo</h1></div>\n");
+	//}    else	{
+	//  printf ("  <div class='root'><a href='" OD_URI "/'> </a></div>\n");
+	//}
     }
 
 
