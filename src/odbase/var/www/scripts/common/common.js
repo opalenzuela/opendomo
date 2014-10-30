@@ -6,6 +6,18 @@ function loadJSON(filePath) {
   return JSON.parse(json);
 }   
 
+function loadTXT(filePath) {
+  // Load TXT file;
+  var text = loadTextFileAjaxSync(filePath, "text/plain");
+  return text;
+}   
+
+function loadRAW(filePath) {
+  // Load TXT file;
+  var raw = loadTextFileAjaxSync(filePath, "application/octet-stream");
+  return raw;
+} 
+
 // Load text with Ajax synchronously: takes path to file and optional MIME type
 function loadTextFileAjaxSync(filePath, mimeType)
 {
