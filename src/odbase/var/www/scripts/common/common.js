@@ -41,6 +41,7 @@ function loadTextFileAjaxSync(filePath, mimeType)
 
 
 document.getElementsByClassName = function(cl) {
+	console.log("Deprecated function");
 	var retnode = [];
 	var myclass = new RegExp('\\b'+cl+'\\b');
 	var elem = this.getElementsByTagName('*');
@@ -179,12 +180,13 @@ function getLastSelectedElementFromList(lstname){
 	}
 	return value;
 }
-
+/*
 function tryToReloadCam(image){
 	image.src="/images/nocam.png";
 }
 
 function showTT(id){
+	console.log("Deprecated function");
 	var tt = document.getElementById(id+'_tt');
 	var lbl = document.getElementById(id+'_lbl');
 	var curleft = 20;
@@ -207,6 +209,7 @@ function hideTT(id){
 	var tt = document.getElementById(id+'_tt');
 	if (tt) tt.style.display='none'; 
 }
+*/
 
 function help(topic){
 	window.open('http://www.opendomo.com/wiki/index.php?title='+topic,'help');
