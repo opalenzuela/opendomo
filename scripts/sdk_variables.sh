@@ -15,7 +15,7 @@ RPIFILESDIR="$FILESDIR/rpifiles"
 # Opendomo packages and versions
 ARCHCFG="$TMPDIR/arch"
 ARCH=`cat $ARCHCFG 2>/dev/null`
-ODPKG="odcommon odcgi"
+ODPKG="odcommon odcgi odbase"
 OD_VERSION="2.1.0"
 IMGNAME="opendomo-$OD_VERSION-$ARCH"
 ROOTSTRAPPKG="build-essential make gcc cpp libncurses5-dev g++ bison flex gettext texinfo libjpeg8-dev libssl-dev libconfig-dev libsqlite3-dev libusb-dev debhelper devscripts bc"

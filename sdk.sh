@@ -1,10 +1,10 @@
 #!/bin/sh
-#desc:Opendomo builder based on debian.
+#desc:OpenDomoOS builder based on debian.
 
 ##
 ## Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
 ##
-##Welcome to OpenDomo OS 2 SDK
+##Welcome to OpenDomoOS 2 SDK
 ##USAGE:
 ##
 ##  ./sdk.sh build i386        - Build opendomo for i386 arch
