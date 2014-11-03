@@ -21,7 +21,7 @@
 ##
 
 FUNCDIR=files/scripts/
-source $FUNCDIR/ftc_vars
+source $FUNCDIR/fct_vars
 
 download_target() {
     if ! test -f $TEMPDIR/$ROOTFSPKG; then

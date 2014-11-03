@@ -23,7 +23,7 @@
 ##
 
 FUNCDIR=files/scripts/
-source $FUNCDIR/ftc_vars
+source $FUNCDIR/fct_vars
 
 # All options and programs to execute SDK
 if test -z "$1"; then
@@ -63,5 +63,5 @@ fi
 if [ "$1" = "update" ]; then
     $FUNCDIR_fh_sdk update
 else
-    sudo $FUNCDIR/ftc_main $1 $2 $3
+    sudo $FUNCDIR/fct_main $1 $2 $3
 fi

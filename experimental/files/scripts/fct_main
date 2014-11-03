@@ -1,9 +1,9 @@
 #!/bin/bash
 
 FUNCDIR=files/scripts/
-source $FUNCDIR/ftc_vars
-source $FUNCDIR/ftc_build
-source $FUNCDIR/ftc_export
+source $FUNCDIR/fct_vars
+source $FUNCDIR/fct_build
+source $FUNCDIR/fct_export
 mkdir -p $EXPORTDIR $TEMPDIR $LOGSDIR $IMAGESDIR
 chown $USER $EXPORTDIR $TEMPDIR $LOGSDIR $IMAGESDIR
 
