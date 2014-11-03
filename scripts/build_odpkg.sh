@@ -30,7 +30,9 @@ case $1 in
   ;;
   install )
 	echo "INFO: Installing package in initrd ..."
-	cp $ROOTSTRAPDIR/tmp/*.deb $INITRDDIR/tmp/
+	cp -v $ROOTSTRAPDIR/tmp/odcgi*.deb $INITRDDIR/tmp/
+	cp -v $ROOTSTRAPDIR/tmp/odcommon*.deb $INITRDDIR/tmp/
+	#cp -v $ROOTSTRAPDIR/tmp/odbase*.deb $INITRDDIR/tmp/
 	$CHROOT "$INITRDDIR" /bin/bash -c "dpkg -i /tmp/*.deb"
 	rm $INITRDDIR/tmp/*.deb 2>/dev/null
   ;;
