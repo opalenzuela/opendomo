@@ -1,0 +1,9 @@
+#! /bin/sh
+
+echo "Configuring busybox HTTPD service ..."
+
+insserv httpd 2>/dev/null
+
+# Change odcgi perms
+chown root /var/www/cgi-bin/od.cgi
+chmod +s   /var/www/cgi-bin/od.cgi

@@ -1,0 +1,6 @@
+odbase (2.2.0) experimental; urgency=low
+
+  * Transition from odcgi and odcommon
+
+ -- Javier Miras Blanco <jmirasb@Chiana>  Sun, 2 Nov 2014 11:43:53 +0200
+
