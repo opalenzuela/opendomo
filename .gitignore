@@ -12,3 +12,5 @@ experimental/files/mkrootimg/rootfs.i386
 experimental/files/mkrootimg/rootfs.arm
 experimental/files/mkrootimg/rootfs.i386.tar.xz
 experimental/files/mkrootimg/rootfs.arm.tar.xz
+experimental/files/mkrootimg/logs
+
