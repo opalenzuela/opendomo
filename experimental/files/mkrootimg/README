@@ -1,0 +1,11 @@
+This is opendomo initrd image creator. 
+
+WARNING: You need any version of debian distribution and multistrap installed to use it.
+
+USAGE:  ./build.sh --arch=$arch build or make
+
+   --arch=$arch       Arch to use, i386 or arm
+
+     build            Build multistrap debian or raspian image
+     make             Configure and make package for opendomo base
+

@@ -1,0 +1,145 @@
+#!/bin/bash
+
+##
+## Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+##
+## Welcome to OpenDomo OS 2 SDK
+## USAGE:
+##
+##   ./sdk.sh clean             - Clean images and custom configs
+##   ./sdk.sh update            - Update the source files (do it before building)
+##
+##   ./sdk.sh build i386        - Build opendomo for i386 arch
+##   ./sdk.sh build arm         - Build opendomo for RaspberryPi
+##
+##   ./sdk.sh packages i386     - Build opendomo packages i386 arch
+##   ./sdk.sh packages arm      - Build opendomo packages RaspberryPi
+##
+##   ./sdk.sh export sd dev     - Export opendomo distro to SD card (i386 only)
+##   ./sdk.sh export vmdk       - Export opendomo distro to VMDK image (i386 only)
+##   ./sdk.sh export rpi dev    - Export opendomo distro to RaspberryPI SD card
+##
+
+FUNCDIR=files/scripts/
+source $FUNCDIR/ftc_vars
+
+download_target() {
+    if ! test -f $TEMPDIR/$ROOTFSPKG; then
+        if wget -nc -q --directory-prefix=$TEMPDIR --no-check-certificate $ROOTFSURL; then
+	    echo -e "(${DONE}done${NORL})"
+        else
+            echo -e "(${ERRO}failed${NORL})"
+            exit 1
+        fi
+    else
+        echo -e "(${OMIT}omited${NORL})"
+    fi
+}
+
+extract_target() {
+    # Clean old image and create folders
+    rm -r $IMAGESDIR 2>/dev/null
+    mkdir -p $IMAGESDIR
+
+    # Extract rootfs image
+    if ! test -d $ROOTFSDIR; then
+        cd $TEMPDIR
+        if tar xfJp $ROOTFSPKG 2>/dev/null; then
+            echo -e "(${DONE}done${NORL})"
+        else
+            echo -e "(${ERRO}failed${NORL})"
+            exit 1
+        fi
+        cd ..
+    else
+        echo -e "(${OMIT}omited${NORL})"
+    fi
+}
+
+build_target() {
+    # Create raw image and copy files
+    if
+    dd if=/dev/zero of=$ROOTFSIMG bs=1024 count=1500000 &>/dev/null; then
+        # Format and copy data
+	if mkfs.ext2 -F $ROOTFSIMG >/dev/null >/dev/null 2>/dev/null && mount -o loop $ROOTFSIMG $MOUNTDIR 2>/dev/null; then
+            echo -ne "(${DONE}make${NORL}) "
+        else
+            echo -ne "(${ERRO}make${NORL}) "
+        fi
+
+        # Copy files, kernel and initrd
+        if cp -rp $ROOTFSDIR/* $MOUNTDIR/ && cp $INITRDIMG $TARGETDIR/initrd.gz && cp $KERNELIMG $TARGETDIR/linux; then
+            echo -e "(${DONE}copy${NORL}) "
+        else
+            echo -e "(${ERRO}copy${NORL}) "
+        fi
+
+        # Umount image
+        while !	umount $MOUNTDIR 2>/dev/null; do
+            sleep 1
+        done
+    fi
+}
+
+build_rootstrap() {
+    # Copy initrd to create rootstrap
+    if ! test -d $ROOTSTDIR; then
+        cp -rp $ROOTFSDIR $ROOTSTDIR
+        rm -fr $ROOTSTDIR/etc/resolv.conf
+        cp /etc/resolv.conf $ROOTSTDIR/etc/
+
+        # Update rootstrap apt sources
+        if $CHROOT $ROOTSTDIR /bin/bash -c "apt-get update" &>> $LOGSDIR/rootstrap.log; then
+            echo -ne "(${DONE}sources${NORL}) "
+        else
+            echo -ne "(${ERRO}sources${NORL}) "
+        fi
+        if $CHROOT $ROOTSTDIR /bin/bash -c "LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive \
+            apt-get --force-yes -yq install $RPKGS" &>> $LOGSDIR/rootstrap.log; then
+            echo -e "(${DONE}install${NORL}) "
+        else
+            echo -e "(${DONE}install${NORL}) "
+        fi
+    else
+        echo -e "(${OMIT}omited${NORL})"
+    fi
+}
+create_packages() {
+    # Clean old packages
+    rm -r $ROOTSTDIR/tmp/* 2>/dev/null
+    for pkg in $ODPKG; do
+        # Copy package into rootstrap and build
+        cp -r $ODPKGDIR/$pkg $ROOTSTDIR/tmp/ 2>/dev/null
+        if $CHROOT "$ROOTSTDIR" /bin/bash -c "cd /tmp/$pkg && dpkg-buildpackage 2>/dev/null >/dev/null" &>/dev/null; then
+            echo -ne "(${DONE}$pkg${NORL}) "
+        else
+            echo -ne "(${ERRO}$pkg${NORL}) "
+        fi
+    done
+    echo
+}
+
+install_packages() {
+    # Select opendomo packages to install
+    if ls $ROOTSTDIR/tmp/*.deb 2>/dev/null; then
+        cp $ROOTSTDIR/tmp/*.deb $ROOTFSDIR/tmp/ 2>/dev/null
+    else
+        # Download packages
+        for pkg in $ODPKGURLS; do
+            wget -nc -q --directory-prefix=$ROOTFSDIR/tmp --no-check-certificate "$pkg" &>/dev/null
+        done
+    fi
+
+    # Install opendomo packages
+    for deb in `ls -r1 $ROOTFSDIR/tmp/*.deb 2>/dev/null`; do
+        PKG=`basename $deb`
+        NAME=`echo $PKG | cut -f1 -d'_'`
+        if $CHROOT "$ROOTFSDIR" /bin/bash -c "dpkg -i tmp/$PKG" &>/dev/null; then
+            echo -ne "(${DONE}$NAME${NORL}) "
+        else
+            echo -ne "(${ERRO}$NAME${NORL}) "
+        fi
+    done
+    echo
+    $CHROOT "$ROOTFSDIR" /bin/bash -c "apt-get -f install" &>/dev/null
+}

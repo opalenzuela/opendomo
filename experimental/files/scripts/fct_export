@@ -1,0 +1,72 @@
+#!/bin/bash
+
+FUNCDIR=files/scripts/
+source $FUNCDIR/ftc_vars
+
+export_to_vmdk() {
+    # Force arch, vmdk only can be exportde for i386
+    ROOTFSDIR=$TEMPDIR/rootfs.i386
+    TARGETDIR=$TEMPDIR/image.i386
+    IMAGENAME="opendomo-$ODVER-i386"
+
+    # Delete old images and copy isofiles
+    rm $EXPORTDIR/$IMAGENAME.img $EXPORTDIR/$IMAGENAME.vmdk 2>/dev/null
+    cp -r $ISOFILES/* $TARGETDIR/
+
+    # Creating loodev
+    echo -ne "[${INFO} INFO  ${NORL}] Creating raw image (1/3) ...                      "
+    if qemu-img create -f raw $EXPORTDIR/$IMAGENAME.img 2G &>/dev/null; then
+        losetup -f $EXPORTDIR/$IMAGENAME.img 
+        LOOPDEV=`losetup -a | grep -m1 "opendomo" | cut -f1 -d: | tail -n1`
+        echo -e "(${DONE}done${NORL})"
+    else
+        echo -e "(${ERRO}failed${NORL})"
+        exit 1
+    fi
+
+    # Format, mount and copy files
+    echo -ne "[${INFO} INFO  ${NORL}] Formatting raw image (2/3) ...                    "
+    if mkfs.ext4 $LOOPDEV &>/dev/null; then
+        mount $EXPORTDIR/$IMAGENAME.img $MOUNTDIR
+        cp -r $TARGETDIR/* $MOUNTDIR/
+
+        # Installing bootloader
+        extlinux -i $MOUNTDIR &>/dev/null
+
+        # Unmount
+        while ! umount $MOUNTDIR 2>/dev/null; do
+            sleep 1
+        done
+
+        # Deleting all opendomo sdk loops
+        for lo in `losetup -a | grep -m1 "$EXPORTDIR/$IMAGENAME.img" | cut -f1 -d: | tail -n1`; do
+            losetup -d $lo
+        done
+        echo -e "(${DONE}done${NORL})"
+    else
+        echo -e "(${ERRO}failed${NORL})"
+    fi
+
+    # Convert raw to vmdk
+   echo -ne "[${INFO} INFO  ${NORL}] Converting raw to vmdk image (3/3) ...             "
+    if qemu-img convert -O vmdk $EXPORTDIR/$IMAGENAME.img $EXPORTDIR/$IMAGENAME.vmdk; then
+        chown `users | cut -f1 -d" "` $EXPORTDIR/$IMAGENAME.*
+        echo -e "(${DONE}done${NORL})"
+    else
+        echo -e "(${ERRO}failed${NORL})"
+    fi
+}
+
+export_to_sd() {
+    # Force arch
+    ROOTFSDIR=$TEMPDIR/rootfs.i386
+    TARGETDIR=$TEMPDIR/image.i386
+
+    #TODO
+}
+
+export_to_rpi() {
+    # Force arch
+    ROOTFSDIR=$TEMPDIR/rootfs.arm
+    TARGETDIR=$TEMPDIR/image.arm
+}

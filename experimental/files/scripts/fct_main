@@ -1,0 +1,61 @@
+#!/bin/bash
+
+FUNCDIR=files/scripts/
+source $FUNCDIR/ftc_vars
+source $FUNCDIR/ftc_build
+source $FUNCDIR/ftc_export
+mkdir -p $EXPORTDIR $TEMPDIR $LOGSDIR $IMAGESDIR
+chown $USER $EXPORTDIR $TEMPDIR $LOGSDIR $IMAGESDIR
+
+case $1 in
+    update )
+        echo -e "########## Updating OpenDomoOS SDK ##########"
+        echo
+        echo -e "[${INFO} 1/1 ${NORL}] Updating SDK ..."
+        git pull &> $LOGSDIR/update.log
+        echo
+    ;;
+    clean )
+        echo -e "########## Cleaning OpenDomoOS SDK ##########"
+        echo
+        echo -e "[${INFO} 1/1 ${NORL}] Cleaning SDK ..."
+	rm -r $TEMPDIR/* &>/dev/null
+        echo
+    ;;
+    build )
+        echo -e "########## Building OpenDomoOS for $2 ##########"
+        echo
+        echo -ne "[${INFO} 1/4 ${NORL}] Downloading rootfs package ...           "
+        download_target
+        echo -ne "[${INFO} 2/4 ${NORL}] Extract rootfs package ...               "
+        extract_target
+        echo -ne "[${INFO} 3/4 ${NORL}] Install opendomo packages in rootfs ...  "
+        install_packages
+        echo -ne "[${INFO} 4/4 ${NORL}] Build rootfs image ...                   "
+        build_target
+        echo
+    ;;
+    packages )
+        echo -e "########## Building OpenDomoOS packages for $2 ##########"
+        echo
+        echo -ne "[${INFO} 1/6 ${NORL}] Downloading rootfs package ...              "
+        download_target
+        echo -ne "[${INFO} 2/6 ${NORL}] Extract rootfs package ...                  "
+        extract_target
+        echo -ne "[${INFO} 3/6 ${NORL}] Build rootstrap image ...                   "
+        build_rootstrap
+        echo -ne "[${INFO} 4/6 ${NORL}] Creating opendomo packages ...              "
+        create_packages
+        echo -ne "[${INFO} 5/6 ${NORL}] Install opendomo packages in rootfs ...     "
+        install_packages
+        echo -ne "[${INFO} 6/6 ${NORL}] Build rootfs image ...                      "
+        build_target
+        echo
+    ;;
+    export )
+        echo -e "########## Exporting OpenDomoOS to $2 ##########"
+        echo
+        export_to_$2
+        echo
+    ;;
+esac

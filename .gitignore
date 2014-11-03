@@ -4,4 +4,11 @@ exports/
 files/isofiles/syslinux.cfg
 files/isofiles/isolinux.cfg
 files/rpifiles/cmdline.txt
-files/sysconf
+experimental/mnt/
+experimental/tmp/
+experimental/exports/
+experimental/logs/
+experimental/files/mkrootimg/rootfs.i386
+experimental/files/mkrootimg/rootfs.arm
+experimental/files/mkrootimg/rootfs.i386.tar.xz
+experimental/files/mkrootimg/rootfs.arm.tar.xz

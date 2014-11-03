@@ -1,0 +1,69 @@
+#!/bin/sh
+#desc: Mount rootfs based in aufs (tmpfs + image)
+
+# Variables
+BOOTFSDEV=/dev/sda   # sda is for V.M. only. RasberryPi use mmcblk0p1
+BOOTFSDIR=/boot
+MOUNTSDIR=/mnt/
+CHANGEDIR=$MOUNTSDIR/change
+ROOTFSDIR=$MOUNTSDIR/rootfs
+TEMPFSDIR=$MOUNTSDIR/tmpfs
+ROOTIMAGE=/boot/images/rootfs.img
+#BOOTLABEL="opendomodistro"
+
+# Only activate aufs with "aufs=tmpfs" boot kernel option
+# You can don't use aufs and start rootfs in real rw mode
+case $1 in
+prereqs)
+    exit 0
+    ;;
+esac
+
+export aufs
+for x in $(cat /proc/cmdline); do
+    case $x in
+        root=*)
+            ROOTNAME=${x#root=}
+        ;;
+        aufs=*)
+            aufs=${x#aufs=}
+            case $aufs in
+                tmpfs-debug)
+                    aufs=tmpfs
+                    aufsdebug=1
+                ;;
+            esac
+        ;;
+    esac
+done
+
+if [ "$aufs" != "tmpfs" ]; then
+    exit 0
+fi
+
+echo
+echo "       rootmount:  Setting up aufs on ${rootmnt} as root file system "
+echo
+
+# Load modules and make mountpoints
+modprobe aufs
+mkdir -p $BOOTFSDIR $CHANGEDIR $TEMPFSDIR $ROOTFSDIR
+mount -t ext4 $BOOTFSDEV $BOOTFSDIR
+
+# Mount aufs parts
+mount -t tmpfs aufs-tmpfs $TEMPFSDIR
+mount  $ROOTIMAGE $CHANGEDIR || echo "ERROR: Changes images can't be mounted or don't exist"
+
+# Mount aufs and move aufs parts
+mount -t aufs -o dirs=$TEMPFSDIR:$CHANGEDIR=ro aufs $ROOTFSDIR || echo "ERROR: Aufs can't be mounted"
+mkdir -p $ROOTFSDIR/$CHANGEDIR $ROOTFSDIR/$TEMPFSDIR
+mount --move $CHANGEDIR $ROOTFSDIR/$CHANGEDIR
+mount --move $TEMPFSDIR $ROOTFSDIR/$TEMPFSDIR
+mount --move $BOOTFSDIR $ROOTFSDIR/$BOOTFSDIR
+
+# Remove root and swap from fstab
+cat $ROOTFSDIR/$CHANGEDIR/etc/fstab|grep -v ' / ' | grep -v swap >> $ROOTFSDIR/etc/fstab
+
+# Move root
+mount --move $ROOTFSDIR ${rootmnt}
+exit 0
