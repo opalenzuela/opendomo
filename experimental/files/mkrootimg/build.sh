@@ -15,7 +15,7 @@ help() {
 }
 
 # Colors and visual effects
-ERRO='\e[0;31m'; INFO='\e[0;32m' ; WARN='\e[0;33m'; NORL='\e[0m'
+ERRO='\e[0;31m'; INFO='\e[1;34m' ; WARN='\e[0;33m' ; OMIT='\e[1;33m'; DONE='\e[1;32m'; NORL='\e[0m'
 
 # Checking options
 if [ "$1" != "--arch=i386" ] && [ "$1" != "--arch=arm" ]; then
@@ -57,6 +57,7 @@ else
 fi
 
 # Variables
+LOGFILE="logs/mkrootfs-$DEVICE.log"
 OD_VERSION="2.2"
 CONFIGSDIR="configs"
 MULTISTRAP="/usr/sbin/multistrap"
@@ -185,8 +186,8 @@ installpkg_arm() {
 
 download_kernel() {
     # Install kernel and update initramfs
-    wget -q --directory-prefix=$TARGET/tmp --no-check-certificate $KERNLIMGLURL
-    wget -q --directory-prefix=$TARGET/tmp --no-check-certificate $INITRAMFSURL
+    wget --directory-prefix=$TARGET/tmp --no-check-certificate $KERNLIMGLURL
+    wget --directory-prefix=$TARGET/tmp --no-check-certificate $INITRAMFSURL
     $CHROOT "$TARGET" /bin/bash -c "LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive cd /tmp && dpkg -i *.deb"
     rm $TARGET/tmp/* 2> /dev/null
 }
@@ -203,10 +204,13 @@ fix_multistrap_configs() {
 
 case $2 in
     build )
-        echo; echo -e "[${INFO} INFO  ${NORL}] Building image (1/4) ..."; echo
+        echo -ne "[${INFO} 1/4 ${NORL}] Building image ...                      "
         rm -r $TARGET 2> /dev/null
+        mkdir logs 2> /dev/null
 
-        if LC_ALL=C LANGUAGE=C LANG=C $MULTISTRAP -f $CONFIG; then
+        if LC_ALL=C LANGUAGE=C LANG=C $MULTISTRAP -f $CONFIG &>> $LOGFILE; then
+            echo -e "(${DONE}done${NORL})"
+
             # Selecting emulator for raspberrypi systems
             [ $DEVICE = arm ] && cp /usr/bin/qemu-arm-static $TARGET/usr/bin/qemu-arm-static 2>/dev/null
 
@@ -218,16 +222,28 @@ case $2 in
             mount --rbind /dev/pts $TARGET/dev/pts
 
             # Fix multistrap instalation
-            echo -e "[${INFO} INFO  ${NORL}] Configuring packages (2/4) ..."
-            fix_multistrap_configs &>/dev/null
+            echo -ne "[${INFO} 2/4 ${NORL}] Configuring packages ...                "
+            if fix_multistrap_configs &>/dev/null; then
+                echo -e "(${DONE}done${NORL})"
+            else
+                echo -e "(${ERRO}failed${NORL})"
+            fi
 
             # Install packages
-            echo -e "[${INFO} INFO  ${NORL}] Installing extra packages (3/4) ..."; echo
-            installpkg_$DEVICE
+            echo -ne "[${INFO} 3/4 ${NORL}] Installing extra packages ...           "
+            if installpkg_$DEVICE &>> $LOGFILE; then
+                echo -e "(${DONE}done${NORL})"
+            else
+                echo -e "(${ERRO}failed${NORL})"
+            fi
 
             # Install kernel and new initramfs-tools
-            echo; echo -e "[${INFO} INFO  ${NORL}] Downloading and installing kernel (4/4) ..."; echo
-            download_kernel
+            echo -ne "[${INFO} 4/4 ${NORL}] Downloading and installing kernel ...   "
+            if download_kernel &>> $LOGFILE; then
+                echo -e "(${DONE}done${NORL})"
+            else
+                echo -e "(${ERRO}failed${NORL})"
+            fi
 
             # Unmount kernel fs
             umount -fl $TARGET/dev/pts
@@ -235,7 +251,7 @@ case $2 in
             umount -fl $TARGET/sys/
             umount -fl $TARGET/proc/
         else
-             echo; echo -e "[${ERRO} ERROR ${NORL}] Multistrap fail. Check configuration"; echo
+            echo -e "(${ERRO}failed${NORL})"
         fi
     ;;
     make )
@@ -243,15 +259,27 @@ case $2 in
         [ $DEVICE = arm ] && cp /usr/bin/qemu-arm-static $TARGET/usr/bin/qemu-arm-static 2>/dev/null
 
         # Configure image
-        echo -e "[${INFO} INFO  ${NORL}] Configuring image (1/3) ..."
-        configure_all
-        configure_$DEVICE
+        echo -ne "[${INFO} 1/3 ${NORL}] Configuring image ...                   "
+        if configure_all 2>> $LOGFILE && configure_$DEVICE 2>> $LOGFILE; then
+            echo -e "(${DONE}done${NORL})"
+        else
+            echo -e "(${ERRO}failed${NORL})"
+        fi
 
         # Creating package
-	echo -e "[${INFO} INFO  ${NORL}] Creating package (2/3) ..."
-        tar cfp $TARGET.tar $TARGET
-	echo -e "[${INFO} INFO  ${NORL}] Compressing package (3/3) ..."
-        xz -z $TARGET.tar
+	echo -ne "[${INFO} 2/3 ${NORL}] Creating package ...                    "
+        if tar cfp $TARGET.tar $TARGET 2>> $LOGFILE; then
+            echo -e "(${DONE}done${NORL})"
+        else
+            echo -e "(${ERRO}failed${NORL})"
+        fi
+
+	echo -ne "[${INFO} 3/3 ${NORL}] Compressing package ...                 "
+        if xz -z $TARGET.tar 2>> $LOGFILE; then
+            echo -e "(${DONE}done${NORL})"
+        else
+            echo -e "(${ERRO}failed${NORL})"
+        fi
         chown `users | cut -f1 -d" "` $TARGET.tar.xz
     ;;
 esac
