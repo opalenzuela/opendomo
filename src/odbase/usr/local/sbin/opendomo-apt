@@ -275,43 +275,60 @@ odpackage_update() {
     echo "Updating opendomo packages" | add_date
     cd $PACKAG_DOWNDIR
 
-    # Searching last version of odcommon
-    let ODCOMUPD=`apt-cache show odcommon | grep Version | awk '{print$2}' | cut -f3 -d.`+1
-    ODCOMPKG="odcommon_"$ODPKGMAJOR"."$ODCOMUPD"_$ARCH.deb"
-    while /usr/local/bin/download.sh "$PACKAGEURL/$ODCOMPKG"; do
-	let ODCOMUPD=$ODCOMUPD+1
-        ODCOMPKG="odcommon_"$ODPKGMAJOR"."$ODCOMUPD"_$ARCH.deb"
+    ## Searching last version of odcommon
+    #let ODCOMUPD=`apt-cache show odcommon | grep Version | awk '{print$2}' | cut -f3 -d.`+1
+    #ODCOMPKG="odcommon_"$ODPKGMAJOR"."$ODCOMUPD"_$ARCH.deb"
+    #while /usr/local/bin/download.sh "$PACKAGEURL/$ODCOMPKG"; do
+	#let ODCOMUPD=$ODCOMUPD+1
+    #    ODCOMPKG="odcommon_"$ODPKGMAJOR"."$ODCOMUPD"_$ARCH.deb"
+    #done
+
+    ## Updating last version of odcommon
+    #let ODCOMUPD=$ODCOMUPD-1
+    #ODCOMPKG="odcommon_"$ODPKGMAJOR"."$ODCOMUPD"_$ARCH.deb"
+    #if test -f $ODCOMPKG; then
+    #    echo "Installing odcommon version $ODPKGMAJOR.$ODCOMUPD ..."  | add_date
+    #    LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive dpkg -i $ODCOMPKG
+    #else
+    #	echo "odcommon version "$ODPKGMAJOR"."$ODCOMUPD" don't exist yet" | add_date
+    #fi
+
+    ## Searching last version of odcgi
+    #let ODCGIUPD=`apt-cache show odcgi | grep Version | awk '{print$2}' | cut -f3 -d.`+1
+    #ODCGIPKG="odcgi_"$ODPKGMAJOR"."$ODCGIUPD"_$ARCH.deb"
+    #while /usr/local/bin/download.sh "$PACKAGEURL/$ODCGIPKG" &>/dev/null; do
+    #    let ODCGIUPD=$ODCGIUPD+1
+    #    ODCGIPKG="odcgi_"$ODPKGMAJOR"."$ODCGIUPD"_$ARCH.deb"
+    #done
+
+    ## Updating last version of odcgi
+    #let ODCGIUPD=$ODCGIUPD-1
+    #ODCGIPKG="odcgi_"$ODPKGMAJOR"."$ODCGIUPD"_$ARCH.deb"
+    #if test -f $ODCGIPKG; then
+    #    echo "Installing odccgi version $ODPKGMAJOR.$ODCOMUPD ..."  | add_date
+    #    LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive dpkg -i $ODCGIPKG
+    #else
+    #	echo "odcgi version "$ODPKGMAJOR"."$ODCGIUPD" don't exist yet" | add_date
+    #fi
+	
+	# Searching last version of odbase
+    let ODBASEUPD=`apt-cache show odbase | grep Version | awk '{print$2}' | cut -f3 -d.`+1
+    ODBASEPKG="odbase_"$ODPKGMAJOR"."$ODBASEUPD"_$ARCH.deb"
+    while /usr/local/bin/download.sh "$PACKAGEURL/$ODBASEPKG" &>/dev/null; do
+        let ODBASEUPD=$ODBASEUPD+1
+        ODBASEPKG="odbase_"$ODPKGMAJOR"."$ODBASEUPD"_$ARCH.deb"
     done
 
-    # Updating last version of odcommon
-    let ODCOMUPD=$ODCOMUPD-1
-    ODCOMPKG="odcommon_"$ODPKGMAJOR"."$ODCOMUPD"_$ARCH.deb"
+    # Updating last version of odbase
+    let ODBASEUPD=$ODBASEUPD-1
+    ODBASEPKG="odbase_"$ODPKGMAJOR"."$ODBASEUPD"_$ARCH.deb"
 
-    if test -f $ODCOMPKG; then
-        echo "Installing odcommon version $ODPKGMAJOR.$ODCOMUPD ..."  | add_date
-        LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive dpkg -i $ODCOMPKG
+    if test -f $ODBASEPKG; then
+        echo "Installing odbase version $ODPKGMAJOR.$ODCOMUPD ..."  | add_date
+        LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive dpkg -i $ODBASEPKG
     else
-    	echo "odcommon version "$ODPKGMAJOR"."$ODCOMUPD" don't exist yet" | add_date
-    fi
-
-    # Searching last version of odcgi
-    let ODCGIUPD=`apt-cache show odcgi | grep Version | awk '{print$2}' | cut -f3 -d.`+1
-    ODCGIPKG="odcgi_"$ODPKGMAJOR"."$ODCGIUPD"_$ARCH.deb"
-    while /usr/local/bin/download.sh "$PACKAGEURL/$ODCGIPKG" &>/dev/null; do
-        let ODCGIUPD=$ODCGIUPD+1
-        ODCGIPKG="odcgi_"$ODPKGMAJOR"."$ODCGIUPD"_$ARCH.deb"
-    done
-
-    # Updating last version of odcgi
-    let ODCGIUPD=$ODCGIUPD-1
-    ODCGIPKG="odcgi_"$ODPKGMAJOR"."$ODCGIUPD"_$ARCH.deb"
-
-    if test -f $ODCGIPKG; then
-        echo "Installing odccgi version $ODPKGMAJOR.$ODCOMUPD ..."  | add_date
-        LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive dpkg -i $ODCGIPKG
-    else
-    	echo "odcgi version "$ODPKGMAJOR"."$ODCGIUPD" don't exist yet" | add_date
-    fi
+    	echo "odbase version "$ODPKGMAJOR"."$ODBASEUPD" don't exist yet" | add_date
+    fi	
 
     # Cleaning packages
     rm *.deb 2>/dev/null
