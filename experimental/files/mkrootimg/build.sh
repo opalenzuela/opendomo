@@ -61,8 +61,8 @@ LOGFILE="logs/mkrootfs-$DEVICE.log"
 OD_VERSION="2.2"
 CONFIGSDIR="configs"
 MULTISTRAP="/usr/sbin/multistrap"
-ALLPACKAGES="busybox isc-dhcp-client net-tools ifupdown openssh-server libsqlite3-0 sudo libjpeg8 libconfig9 usbutils \
-             psmisc rsync ntpdate resolvconf module-init-tools aptitude wget ntp linux-base lighttpd dialog klibc-utils cpio"
+ALLPACKAGES="busybox isc-dhcp-client net-tools ifupdown openssh-server libsqlite3-0 sudo libjpeg8 libconfig9 usbutils syslog-ng \
+             psmisc rsync ntpdate resolvconf module-init-tools aptitude wget ntp linux-base lighttpd dialog klibc-utils cpio cron"
 ARMPACKAGES="raspberrypi-bootloader-nokernel libraspberrypi0"
 
 if [ $DEVICE = arm ]; then
