@@ -62,7 +62,9 @@ OD_VERSION="2.2"
 CONFIGSDIR="configs"
 MULTISTRAP="/usr/sbin/multistrap"
 ALLPACKAGES="busybox isc-dhcp-client net-tools ifupdown openssh-server libsqlite3-0 sudo libjpeg8 libconfig9 usbutils syslog-ng \
-             psmisc rsync ntpdate resolvconf module-init-tools aptitude wget ntp linux-base lighttpd dialog klibc-utils cpio cron"
+             psmisc rsync ntpdate resolvconf module-init-tools aptitude wget ntp linux-base lighttpd dialog klibc-utils cpio cron \
+             console-data keyboard-configuration"
+
 ARMPACKAGES="raspberrypi-bootloader-nokernel libraspberrypi0"
 
 if [ $DEVICE = arm ]; then
@@ -119,6 +121,8 @@ configure_all() {
     cp $CONFIGSDIR/issue $TARGET/etc/issue
     # Copy default hostname
     cp $CONFIGSDIR/hostname $TARGET/etc/hostname
+    # Copy default keyboard configuration
+    cp $CONFIGSDIR/keyboard $TARGET/etc/default/keyboard
     # Copy initramfs custom configuration and update initrd
     cp $CONFIGSDIR/initramfs/rootmount $TARGET/etc/initramfs-tools/scripts/init-bottom/rootmount
     cp $CONFIGSDIR/initramfs/modules   $TARGET/etc/initramfs-tools/modules

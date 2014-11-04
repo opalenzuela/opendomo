@@ -1,0 +1,10 @@
+# KEYBOARD CONFIGURATION FILE
+
+# Consult the keyboard(5) manual page.
+
+XKBMODEL=""
+XKBLAYOUT="es"
+XKBVARIANT=""
+XKBOPTIONS=""
+
+BACKSPACE="guess"
