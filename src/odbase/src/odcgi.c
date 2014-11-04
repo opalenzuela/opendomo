@@ -1136,15 +1136,15 @@ main (int argc, char *argv[])
   if ((gui == html) && (atoi(http_noheader) != 1))
     {
 		printf("<div id='header'>");
-		printf("	<ul id='categ' class='categories'>"
-		"		<li id='cat-control' class='tab'><a href='/cgi-bin/od.cgi/control'>%s</a></li>"
-		"		<li id='cat-tools' class='tab'><a href='/cgi-bin/od.cgi/tools'>%s</a></li>"
-		"		<li id='cat-config' class='tab'><a href='/cgi-bin/od.cgi/config'>%s</a></li>"
-		"	</ul>", T("Control"), T("Tools"), T("Config"));
-		printf ("\t\t<a id='logoutbutton' class='tool' href='?LOGOUT=1'>%s</a>\n", T (ODCGI_TEXT_LOGOUT));
+		printf("	<ul id='categ' class='categories'>");
+		printf("		<li id='cat-control' class='tab'><a href='/cgi-bin/od.cgi/control'>%s</a></li>",T("Control"));
+		printf("		<li id='cat-tools'  class='tab'><a href='/cgi-bin/od.cgi/tools'>%s</a></li>",T("Applications"));
+		printf("		<li id='cat-config' class='tab'><a href='/cgi-bin/od.cgi/config'>%s</a></li>",T("Config"));
+		printf("		<li id='cat-logout' class='tab'><a href='?LOGOUT=1'>%s</a></li>\n", T (ODCGI_TEXT_LOGOUT));
 		if (1000 == getgid()) {
-			printf ("\t\t<a id='savebutton' class='tool' href='/cgi-bin/od.cgi/manageConfiguration.sh' >%s</a>\n", T(ODCGI_TEXT_SAVE));			
+			printf ("\t\t<li id='cat-save' class='tab'><a href='/cgi-bin/od.cgi/manageConfiguration.sh' >%s</a></li>\n", T(ODCGI_TEXT_SAVE));			
 		}	
+		printf("	</ul>");
 		printf("</div>");
 	  
 	  //string_assign_str (cmd, "/usr/bin/categories.sh ");
