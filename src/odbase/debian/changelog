@@ -1,3 +1,9 @@
+odbase (2.2.1) experimental; urgency=low
+
+  * Package self-update is now stable
+
+ -- Javier Miras Blanco <jmirasb@Chiana>  Tue, 4 Nov 2014 11:43:53 +0200
+
 odbase (2.2.0) experimental; urgency=low
 
   * Transition from odcgi and odcommon
