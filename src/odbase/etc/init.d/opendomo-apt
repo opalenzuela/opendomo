@@ -22,10 +22,7 @@ ERRFILE="/var/opendomo/log/opendomo-apt.err"
 do_start () {
 	log_action_begin_msg "Starting opendomo apt daemon"
 
-	# Waiting opendomo-apt to finish old jobs and start
-	while ! test -z `grep -v changestate.sh | grep opendomo-apt | head -c1`; do
-		sleep 1
-	done
+
 	echo "Waiting" > $PIDFILE
 	/usr/local/sbin/opendomo-apt >$LOGFILE 2>$ERRFILE &
 	log_action_end_msg $?
