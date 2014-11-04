@@ -4,8 +4,8 @@ FUNCDIR=files/scripts/
 source $FUNCDIR/fct_vars
 source $FUNCDIR/fct_build
 source $FUNCDIR/fct_export
-mkdir -p $EXPORTDIR $TEMPDIR $LOGSDIR $IMAGESDIR
-chown $USER $EXPORTDIR $TEMPDIR $LOGSDIR $IMAGESDIR
+mkdir -p $EXPORTDIR $TEMPDIR $LOGSDIR $IMAGESDIR $MOUNTDIR
+chown $USER $EXPORTDIR $TEMPDIR $LOGSDIR $IMAGESDIR $MOUNTDIR
 
 case $1 in
     update )
