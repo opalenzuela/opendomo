@@ -1,2 +1,7 @@
-Copyright: OpenDomo Services S.L.
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Contact: Javier Miras < jmirasb@gmail.com >
+Source: https://github.com/opalenzuela/opendomo
 
+Files: *
+Copyright: OpenDomo Services S.L.
+License: GPL-3+

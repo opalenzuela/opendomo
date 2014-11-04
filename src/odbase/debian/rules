@@ -9,7 +9,8 @@ override_dh_auto_configure:
 	dh_auto_configure
 	mkdir -p var/opendomo/cgiroot/control var/opendomo/cgiroot/config \
 		 var/opendomo/cgiroot/map var/opendomo/cgiroot/tools \
-		 etc/opendomo
+		 etc/opendomo var/opendomo/log var/opendomo/log/stats \ 
+                 var/opendomo/run var/opendomo/tmp var/opendomo/plugins
 	
 
 override_dh_install:
@@ -21,7 +22,10 @@ override_dh_fixperms:
 	dh_fixperms
 	chown -R 1000:1000 debian/odbase/etc/opendomo
 	chown -R 1000:1000 debian/odbase/usr/local/opendomo
-	chown -R 1000:1000 debian/odbase/var/opendomo/cgiroot
+	chown -R 1000:1000 debian/odbase/var/opendomo
 	chown -R 1000:1000 debian/odbase/var/www
+        chown -R root:root /etc/sudoers.d
+        chmod 0555 /etc/sudoers.d
+        chmod 0440 /etc/sudoers.d/*
 
 override_dh_usrlocal:

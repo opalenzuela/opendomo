@@ -14,7 +14,7 @@ ODCGI_OBJS = src/i18n.o src/user.o src/file.o src/util.o src/session.o src/cgi.o
                 
 odcgi: $(ODCGI_OBJS) 
 	$(CC) $(OPTS) $(HDRS)  $(ODCM_FILES) $(ODCGI_OBJS) $(LIBCONFIG_FILES) src/odcgi.c -o var/www/cgi-bin/od.cgi -g $(LIBS)
-	$(CC) $(FLAGS) $(HDRS) src/bgshell.c -o usr/local/bin/bgshell
+	$(CC) $(FLAGS) $(HDRS) src/bgshell.c -o usr/bin/bgshell
 	#$(CC) $(OPTS) $(HDRS) src/secfunc.o src/user.o  src/test.c -o bin/test -l crypt
 
 # -- standard object ----------------------------------------------------------
