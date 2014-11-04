@@ -2,7 +2,7 @@
 
 # Versions, names and packages
 ARCH="$2"
-ODPKG="odcommon odcgi"
+ODPKG="odbase"
 ODVER="2.2.0"
 RPKGS="build-essential make gcc cpp libncurses5-dev g++ bison flex gettext texinfo libjpeg8-dev libssl-dev \
           libconfig-dev libsqlite3-dev libusb-dev debhelper devscripts bc"
