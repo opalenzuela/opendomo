@@ -36,7 +36,8 @@ CURWEEK=`date +%j`
 source /etc/os-release
 REPOSITORY="http://cloud.opendomo.com/repo/$VERSION"
 PACKAGEURL="http://es.opendomo.org/files"
-ODPKGMAJOR=`echo "$VERSION" | awk -F. '{print$1"."$2}'`
+#ODPKGMAJOR=`echo "$VERSION" | awk -F. '{print$1"."$2}'`
+ODPKGMAJOR="2.2"
 
 # Creating directories and file permissions
 mkdir -p $DAEMONDIR $PLUGIN_DOWNDIR $PACKAG_DOWNDIR
