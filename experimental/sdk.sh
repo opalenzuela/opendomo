@@ -38,10 +38,10 @@ elif [ "$1" = "build" ] && test -z $2; then
 elif [ "$1" = "build" ] && [ "$2" != "arm" ] && [ "$2" != "i386" ]; then
     echo -e "[${ERRO} ERROR ${NORL}] $pkg Selected arch is not valid [ i386 or arm ]"
     exit 1
-elif [ "$1" = "packages" ] && test -z $2; then
+elif [ "$1" = "assemble" ] && test -z $2; then
     echo -e "[${ERRO} ERROR ${NORL}] $pkg You need select a valid arch [ i386 or arm ]"
     exit 1
-elif [ "$1" = "packages" ] && [ "$2" != "arm" ] && [ "$2" != "i386" ]; then
+elif [ "$1" = "assemble" ] && [ "$2" != "arm" ] && [ "$2" != "i386" ]; then
     echo -e "[${ERRO} ERROR ${NORL}] $pkg Selected arch is not valid"
     grep "^##" $0 | sed 's/##//'
     exit 1

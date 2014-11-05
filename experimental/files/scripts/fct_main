@@ -5,7 +5,7 @@ source $FUNCDIR/fct_vars
 source $FUNCDIR/fct_build
 source $FUNCDIR/fct_export
 mkdir -p $EXPORTDIR $TEMPDIR $LOGSDIR $IMAGESDIR $MOUNTDIR
-chown $USER $EXPORTDIR $TEMPDIR $LOGSDIR $IMAGESDIR $MOUNTDIR
+chown `users | cut -f1 -d" "` $EXPORTDIR $TEMPDIR $LOGSDIR $IMAGESDIR $MOUNTDIR
 
 case $1 in
     update )

@@ -1,9 +1,16 @@
 #!/bin/bash
 
+# Selecting arch
+if [ "$2" = "i386" ] || [ "$2" = "sd" ] || [ "$2" = "vmdk" ]; then
+    ARCH=i386
+elif [ "$2" = "rpi" ] || [ "$2" = "arm" ]; then
+    ARCH=arm
+fi
+
 # Versions, names and packages
-ARCH="$2"
 ODPKG="odbase"
 ODVER="2.2.0"
+INAME="opendomo-$ODVER-$ARCH"
 RPKGS="build-essential make gcc cpp libncurses5-dev g++ bison flex gettext texinfo libjpeg8-dev libssl-dev \
           libconfig-dev libsqlite3-dev libusb-dev debhelper devscripts bc"
 
@@ -26,8 +33,8 @@ ROOTFSIMG=$IMAGESDIR/rootfs.img
 if [ "$ARCH" != "i386" ]; then
 	ROOTFSURL="https://www.dropbox.com/s/ynnn5zo5xpx561i/rootfs.arm.tar.xz"
         ROOTFSPKG="rootfs.arm.tar.xz"
-        INITRDIMG=$ROOTFSDIR/boot/initrd.img-3.12-1.bpo.1-486
-        KERNELIMG=$ROOTFSDIR/boot/vmlinuz-3.12-1.bpo.1-486
+        INITRDIMG=$ROOTFSDIR/boot/initrd.img-3.12-1-rpi
+        KERNELIMG=$ROOTFSDIR/boot/vmlinuz-3.12-1-rpi
         ODPKGURLS="https://www.dropbox.com/s/nd8y8rott9xjr5y/odbase_current_armhf.deb"
 else
 	ROOTFSURL="https://www.dropbox.com/s/95nbpmue86r8t1n/rootfs.i386.tar.xz"

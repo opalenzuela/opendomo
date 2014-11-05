@@ -4,10 +4,11 @@ FUNCDIR=files/scripts/
 source $FUNCDIR/fct_vars
 
 create_image() {
-    # Delete old image and delete emulator
+    # Delete old image delete emulator
     echo -ne "[${INFO} 1/4 ${NORL}] Build rootfs image ...                   "
-    rm -f $ROOTFSIMG
-    [ "$ARCH" = "arm" ] && rm $ROOTFSDIR/usr/bin 2>/dev/null
+    mkdir -p $IMAGESDIR
+    rm -f $ROOTFSIMG 2>/dev/null
+    [ "$ARCH" = "arm" ] && rm $ROOTFSDIR/usr/bin/qemu-arm-static 2>/dev/null
 
     # Create raw image and copy files
     if
@@ -34,19 +35,14 @@ create_image() {
 }
 
 export_to_vmdk() {
-    # Force arch, vmdk only can be exportde for i386
-    ROOTFSDIR=$TEMPDIR/rootfs.i386
-    TARGETDIR=$TEMPDIR/image.i386
-    IMAGENAME="opendomo-$ODVER-i386"
-
     # Delete old images and copy isofiles
-    rm $EXPORTDIR/$IMAGENAME.img $EXPORTDIR/$IMAGENAME.vmdk 2>/dev/null
+    rm $EXPORTDIR/$NAME.img $EXPORTDIR/$INAME.vmdk 2>/dev/null
     cp -r $ISOFILES/* $TARGETDIR/
 
     # Creating loodev
     echo -ne "[${INFO} 2/4 ${NORL}] Creating raw image ...                   "
-    if qemu-img create -f raw $EXPORTDIR/$IMAGENAME.img 2G &>/dev/null; then
-        losetup -f $EXPORTDIR/$IMAGENAME.img 
+    if qemu-img create -f raw $EXPORTDIR/$INAME.img 2G &>/dev/null; then
+        losetup -f $EXPORTDIR/$INAME.img 
         LOOPDEV=`losetup -a | grep -m1 "opendomo" | cut -f1 -d: | tail -n1`
         echo -e "(${DONE}done${NORL})"
     else
@@ -57,7 +53,7 @@ export_to_vmdk() {
     # Format, mount and copy files
     echo -ne "[${INFO} 3/4 ${NORL}] Formatting raw image ...                 "
     if mkfs.ext4 $LOOPDEV &>/dev/null; then
-        mount $EXPORTDIR/$IMAGENAME.img $MOUNTDIR
+        mount $EXPORTDIR/$INAME.img $MOUNTDIR
         cp -r $TARGETDIR/* $MOUNTDIR/
 
         # Installing bootloader
@@ -69,7 +65,7 @@ export_to_vmdk() {
         done
 
         # Deleting all opendomo sdk loops
-        for lo in `losetup -a | grep -m1 "$EXPORTDIR/$IMAGENAME.img" | cut -f1 -d: | tail -n1`; do
+        for lo in `losetup -a | grep -m1 "$EXPORTDIR/$INAME.img" | cut -f1 -d: | tail -n1`; do
             losetup -d $lo
         done
         echo -e "(${DONE}done${NORL})"
@@ -79,8 +75,8 @@ export_to_vmdk() {
 
     # Convert raw to vmdk
     echo -ne "[${INFO} 4/4 ${NORL}] Converting raw to vmdk image ...         "
-    if qemu-img convert -O vmdk $EXPORTDIR/$IMAGENAME.img $EXPORTDIR/$IMAGENAME.vmdk; then
-        chown `users | cut -f1 -d" "` $EXPORTDIR/$IMAGENAME.*
+    if qemu-img convert -O vmdk $EXPORTDIR/$INAME.img $EXPORTDIR/$INAME.vmdk; then
+        chown `users | cut -f1 -d" "` $EXPORTDIR/$INAME.*
         echo -e "(${DONE}done${NORL})"
     else
         echo -e "(${ERRO}failed${NORL})"
@@ -88,15 +84,11 @@ export_to_vmdk() {
 }
 
 export_to_sd() {
-    # Force arch
-    ROOTFSDIR=$TEMPDIR/rootfs.i386
-    TARGETDIR=$TEMPDIR/image.i386
-
     #TODO
+    echo -ne "[${INFO} 1/1 ${NORL}] Exporting to SD ...                      "
 }
 
 export_to_rpi() {
-    # Force arch
-    ROOTFSDIR=$TEMPDIR/rootfs.arm
-    TARGETDIR=$TEMPDIR/image.arm
+    echo -ne "[${INFO} 1/1 ${NORL}] Exporting to RPI ...                     "
+    #TODO
 }
