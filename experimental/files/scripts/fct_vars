@@ -28,15 +28,13 @@ if [ "$ARCH" != "i386" ]; then
         ROOTFSPKG="rootfs.arm.tar.xz"
         INITRDIMG=$ROOTFSDIR/boot/initrd.img-3.12-1.bpo.1-486
         KERNELIMG=$ROOTFSDIR/boot/vmlinuz-3.12-1.bpo.1-486
-        ODPKGURLS="https://www.dropbox.com/s/phd6c7venpwm6d5/odcgi_2.1.4_armhf.deb \
-                   https://www.dropbox.com/s/q64f8ux6voa0eb4/odcommon_2.1.4_armhf.deb"
+        ODPKGURLS="https://www.dropbox.com/s/nd8y8rott9xjr5y/odbase_current_armhf.deb"
 else
 	ROOTFSURL="https://www.dropbox.com/s/95nbpmue86r8t1n/rootfs.i386.tar.xz"
         ROOTFSPKG="rootfs.i386.tar.xz"
         INITRDIMG=$ROOTFSDIR/boot/initrd.img-3.12-0.bpo.1-486
         KERNELIMG=$ROOTFSDIR/boot/vmlinuz-3.12-0.bpo.1-486
-        ODPKGURLS="https://www.dropbox.com/s/r0sdsf69df8vta1/odcgi_2.1.4_i386.deb \
-                   https://www.dropbox.com/s/mqp6rb8dgdsdab5/odcommon_2.1.4_i386.deb"
+        ODPKGURLS="https://www.dropbox.com/s/gt4dms8u5j8tluv/odbase_current_i386.deb"
 fi
 
 # Colors and visual effects
