@@ -36,7 +36,7 @@ extract_target() {
     fi
 
     # Copy qemu static emulator to target (only in arm)
-    test [ "$ARCH" = "arm" ] && cp /usr/bin/qemu-arm-static $ROOTFSDIR/usr/bin 2>/dev/null
+    [ "$ARCH" = "arm" ] && cp /usr/bin/qemu-arm-static $ROOTFSDIR/usr/bin 2>/dev/null
 }
 
 build_rootstrap() {
