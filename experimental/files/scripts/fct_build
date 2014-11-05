@@ -56,31 +56,6 @@ extract_target() {
     fi
 }
 
-build_target() {
-    # Create raw image and copy files
-    if
-    dd if=/dev/zero of=$ROOTFSIMG bs=1024 count=1500000 &>/dev/null; then
-        # Format and copy data
-	if mkfs.ext2 -F $ROOTFSIMG >/dev/null >/dev/null 2>/dev/null && mount -o loop $ROOTFSIMG $MOUNTDIR 2>/dev/null; then
-            echo -ne "(${DONE}make${NORL}) "
-        else
-            echo -ne "(${ERRO}make${NORL}) "
-        fi
-
-        # Copy files, kernel and initrd
-        if cp -rp $ROOTFSDIR/* $MOUNTDIR/ && cp $INITRDIMG $TARGETDIR/initrd.gz && cp $KERNELIMG $TARGETDIR/linux; then
-            echo -e "(${DONE}copy${NORL}) "
-        else
-            echo -e "(${ERRO}copy${NORL}) "
-        fi
-
-        # Umount image
-        while !	umount $MOUNTDIR 2>/dev/null; do
-            sleep 1
-        done
-    fi
-}
-
 build_rootstrap() {
     # Copy initrd to create rootstrap
     if ! test -d $ROOTSTDIR; then
@@ -110,7 +85,8 @@ create_packages() {
     for pkg in $ODPKG; do
         # Copy package into rootstrap and build
         cp -r $ODPKGDIR/$pkg $ROOTSTDIR/tmp/ 2>/dev/null
-        if $CHROOT "$ROOTSTDIR" /bin/bash -c "cd /tmp/$pkg && dpkg-buildpackage 2>/dev/null >/dev/null" &>/dev/null; then
+#        if $CHROOT "$ROOTSTDIR" /bin/bash -c "cd /tmp/$pkg && dpkg-buildpackage 2>/dev/null >/dev/null" &>/dev/null; then
+        if $CHROOT "$ROOTSTDIR" /bin/bash -c "cd /tmp/$pkg && dpkg-buildpackage"; then
             echo -ne "(${DONE}$pkg${NORL}) "
         else
             echo -ne "(${ERRO}$pkg${NORL}) "

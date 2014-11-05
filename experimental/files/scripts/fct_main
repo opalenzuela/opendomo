@@ -23,38 +23,34 @@ case $1 in
         echo
     ;;
     build )
-        echo -e "########## Building OpenDomoOS for $2 ##########"
-        echo
-        echo -ne "[${INFO} 1/4 ${NORL}] Downloading rootfs package ...           "
-        download_target
-        echo -ne "[${INFO} 2/4 ${NORL}] Extract rootfs package ...               "
-        extract_target
-        echo -ne "[${INFO} 3/4 ${NORL}] Install opendomo packages in rootfs ...  "
-        install_packages
-        echo -ne "[${INFO} 4/4 ${NORL}] Build rootfs image ...                   "
-        build_target
-        echo
-    ;;
-    packages )
         echo -e "########## Building OpenDomoOS packages for $2 ##########"
         echo
-        echo -ne "[${INFO} 1/6 ${NORL}] Downloading rootfs package ...              "
+        echo -ne "[${INFO} 1/5 ${NORL}] Downloading rootfs package ...              "
         download_target
-        echo -ne "[${INFO} 2/6 ${NORL}] Extract rootfs package ...                  "
+        echo -ne "[${INFO} 2/5 ${NORL}] Extract rootfs package ...                  "
         extract_target
-        echo -ne "[${INFO} 3/6 ${NORL}] Build rootstrap image ...                   "
+        echo -ne "[${INFO} 3/5 ${NORL}] Build rootstrap image ...                   "
         build_rootstrap
-        echo -ne "[${INFO} 4/6 ${NORL}] Creating opendomo packages ...              "
+        echo -ne "[${INFO} 4/5 ${NORL}] Creating opendomo packages ...              "
         create_packages
-        echo -ne "[${INFO} 5/6 ${NORL}] Install opendomo packages in rootfs ...     "
+        echo -ne "[${INFO} 5/5 ${NORL}] Install opendomo packages in rootfs ...     "
         install_packages
-        echo -ne "[${INFO} 6/6 ${NORL}] Build rootfs image ...                      "
-        build_target
+        echo
+    ;;
+    assemble )
+        echo -e "########## Building OpenDomoOS for $2 ##########"
+        echo
+        echo -ne "[${INFO} 1/3 ${NORL}] Downloading rootfs package ...           "
+        download_target
+        echo -ne "[${INFO} 2/3 ${NORL}] Extract rootfs package ...               "
+        extract_target
+        echo -ne "[${INFO} 3/3 ${NORL}] Install opendomo packages in rootfs ...  "
+        install_packages
         echo
     ;;
     export )
         echo -e "########## Exporting OpenDomoOS to $2 ##########"
-        echo
+        create_image
         export_to_$2
         echo
     ;;

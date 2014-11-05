@@ -13,8 +13,8 @@
 ##  ./sdk.sh build i386        - Build opendomo for i386 arch
 ##  ./sdk.sh build arm         - Build opendomo for RaspberryPi
 ##
-##  ./sdk.sh packages i386     - Build opendomo packages for i386 arch
-##  ./sdk.sh packages arm      - Build opendomo packages for RaspberryPi
+##  ./sdk.sh assemble i386     - Assemble opendomo for i386 arch (using downloaded files)
+##  ./sdk.sh assemble arm      - Assemble opendomo for RaspberryPi (using downloaded files)
 ##
 ##  ./sdk.sh export sd dev     - Export opendomo distro to SD card (i386 only)
 ##  ./sdk.sh export vmdk       - Export opendomo distro to VMDK image (i386 only)

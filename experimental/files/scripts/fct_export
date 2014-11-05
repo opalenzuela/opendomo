@@ -3,6 +3,32 @@
 FUNCDIR=files/scripts/
 source $FUNCDIR/fct_vars
 
+create_image() {
+    echo -ne "[${INFO} 1/4 ${NORL}] Build rootfs image ...                   "
+    # Create raw image and copy files
+    if
+    dd if=/dev/zero of=$ROOTFSIMG bs=1024 count=1500000 &>/dev/null; then
+        # Format and copy data
+	if mkfs.ext2 -F $ROOTFSIMG >/dev/null >/dev/null 2>/dev/null && mount -o loop $ROOTFSIMG $MOUNTDIR 2>/dev/null; then
+            echo -ne "(${DONE}make${NORL}) "
+        else
+            echo -ne "(${ERRO}make${NORL}) "
+        fi
+
+        # Copy files, kernel and initrd
+        if cp -rp $ROOTFSDIR/* $MOUNTDIR/ && cp $INITRDIMG $TARGETDIR/initrd.gz && cp $KERNELIMG $TARGETDIR/linux; then
+            echo -e "(${DONE}copy${NORL}) "
+        else
+            echo -e "(${ERRO}copy${NORL}) "
+        fi
+
+        # Umount image
+        while !	umount $MOUNTDIR 2>/dev/null; do
+            sleep 1
+        done
+    fi
+}
+
 export_to_vmdk() {
     # Force arch, vmdk only can be exportde for i386
     ROOTFSDIR=$TEMPDIR/rootfs.i386
