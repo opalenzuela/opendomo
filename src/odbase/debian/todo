@@ -1,7 +1,0 @@
-- Acelerar la carga
-- Establecer duracion maxima de una sesion.
-- Mejorar la seguridad.
-- Permitir POSTS largos (envíos de texto largos, por ejemplo)
-- Corregir la ambigüedad de los caracteres " " convertidos a "+" por el browser
-- Añadir ruta del script activa para facilitar la navegación
-- Habilitar Javascript para colapsar/expandir elementos

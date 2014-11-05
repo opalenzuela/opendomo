@@ -8,4 +8,5 @@ Standards-Version:38
 Package: odbase
 Architecture: i386 armhf
 Depends: ${shlibs:Depends}, libc6 (>= 2.7), libssl1.0.0 (>= 1.0.1), libjpeg8 (>= 8c), libconfig9 (>= 1.4.8), rsync (>= 3.0.9), ntpdate (>= 4.2.6), aptitude (>=0.6.8)
+Replaces: odcommon, odcgi
 Description: OpenDomoOS base system

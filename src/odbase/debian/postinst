@@ -1,6 +1,5 @@
 #! /bin/sh
 
-
 echo "Configuring opendomo services ..."
 insserv uid  2>/dev/null
 insserv odloadconf  2>/dev/null
