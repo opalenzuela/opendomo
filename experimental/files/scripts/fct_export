@@ -4,9 +4,10 @@ FUNCDIR=files/scripts/
 source $FUNCDIR/fct_vars
 
 create_image() {
-    # Delete old image
+    # Delete old image and delete emulator
     echo -ne "[${INFO} 1/4 ${NORL}] Build rootfs image ...                   "
     rm -f $ROOTFSIMG
+    test [ "$ARCH" = "arm" ] && rm $ROOTFSDIR/usr/bin 2>/dev/null
 
     # Create raw image and copy files
     if

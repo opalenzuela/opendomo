@@ -54,6 +54,9 @@ extract_target() {
     else
         echo -e "(${OMIT}omited${NORL})"
     fi
+
+    # Copy qemu static emulator to target (only in arm)
+    test [ "$ARCH" = "arm" ] && cp /usr/bin/qemu-arm-static $ROOTFSDIR/usr/bin 2>/dev/null
 }
 
 build_rootstrap() {
@@ -64,13 +67,13 @@ build_rootstrap() {
         cp /etc/resolv.conf $ROOTSTDIR/etc/
 
         # Update rootstrap apt sources
-        if $CHROOT $ROOTSTDIR /bin/bash -c "apt-get update" &>> $LOGSDIR/rootstrap.log; then
+        if $CHROOT $ROOTSTDIR /bin/bash -c "apt-get update" &>> $LOGSDIR/rootstrap.$ARCH.log; then
             echo -ne "(${DONE}sources${NORL}) "
         else
             echo -ne "(${ERRO}sources${NORL}) "
         fi
         if $CHROOT $ROOTSTDIR /bin/bash -c "LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive \
-            apt-get --force-yes -yq install $RPKGS" &>> $LOGSDIR/rootstrap.log; then
+            apt-get --force-yes -yq install $RPKGS" &>> $LOGSDIR/rootstrap.$ARCH.log; then
             echo -e "(${DONE}install${NORL}) "
         else
             echo -e "(${DONE}install${NORL}) "
@@ -79,14 +82,14 @@ build_rootstrap() {
         echo -e "(${OMIT}omited${NORL})"
     fi
 }
+
 create_packages() {
     # Clean old packages
     rm -r $ROOTSTDIR/tmp/* 2>/dev/null
     for pkg in $ODPKG; do
         # Copy package into rootstrap and build
         cp -r $ODPKGDIR/$pkg $ROOTSTDIR/tmp/ 2>/dev/null
-#        if $CHROOT "$ROOTSTDIR" /bin/bash -c "cd /tmp/$pkg && dpkg-buildpackage 2>/dev/null >/dev/null" &>/dev/null; then
-        if $CHROOT "$ROOTSTDIR" /bin/bash -c "cd /tmp/$pkg && dpkg-buildpackage"; then
+        if $CHROOT "$ROOTSTDIR" /bin/bash -c "cd /tmp/$pkg && dpkg-buildpackage 2>/dev/null >/dev/null" &>/dev/null; then
             echo -ne "(${DONE}$pkg${NORL}) "
         else
             echo -ne "(${ERRO}$pkg${NORL}) "
@@ -97,7 +100,7 @@ create_packages() {
 
 install_packages() {
     # Select opendomo packages to install
-    if ls $ROOTSTDIR/tmp/*.deb 2>/dev/null; then
+    if ls $ROOTSTDIR/tmp/*.deb &>/dev/null; then
         cp $ROOTSTDIR/tmp/*.deb $ROOTFSDIR/tmp/ 2>/dev/null
     else
         # Download packages
