@@ -4,7 +4,10 @@ FUNCDIR=files/scripts/
 source $FUNCDIR/fct_vars
 
 create_image() {
+    # Delete old image
     echo -ne "[${INFO} 1/4 ${NORL}] Build rootfs image ...                   "
+    rm -f $ROOTFSIMG
+
     # Create raw image and copy files
     if
     dd if=/dev/zero of=$ROOTFSIMG bs=1024 count=1500000 &>/dev/null; then
@@ -40,7 +43,7 @@ export_to_vmdk() {
     cp -r $ISOFILES/* $TARGETDIR/
 
     # Creating loodev
-    echo -ne "[${INFO} INFO  ${NORL}] Creating raw image (1/3) ...                      "
+    echo -ne "[${INFO} 2/4 ${NORL}] Creating raw image ...                   "
     if qemu-img create -f raw $EXPORTDIR/$IMAGENAME.img 2G &>/dev/null; then
         losetup -f $EXPORTDIR/$IMAGENAME.img 
         LOOPDEV=`losetup -a | grep -m1 "opendomo" | cut -f1 -d: | tail -n1`
@@ -51,7 +54,7 @@ export_to_vmdk() {
     fi
 
     # Format, mount and copy files
-    echo -ne "[${INFO} INFO  ${NORL}] Formatting raw image (2/3) ...                    "
+    echo -ne "[${INFO} 3/4 ${NORL}] Formatting raw image ...                 "
     if mkfs.ext4 $LOOPDEV &>/dev/null; then
         mount $EXPORTDIR/$IMAGENAME.img $MOUNTDIR
         cp -r $TARGETDIR/* $MOUNTDIR/
@@ -74,7 +77,7 @@ export_to_vmdk() {
     fi
 
     # Convert raw to vmdk
-   echo -ne "[${INFO} INFO  ${NORL}] Converting raw to vmdk image (3/3) ...             "
+    echo -ne "[${INFO} 4/4 ${NORL}] Converting raw to vmdk image ...         "
     if qemu-img convert -O vmdk $EXPORTDIR/$IMAGENAME.img $EXPORTDIR/$IMAGENAME.vmdk; then
         chown `users | cut -f1 -d" "` $EXPORTDIR/$IMAGENAME.*
         echo -e "(${DONE}done${NORL})"
