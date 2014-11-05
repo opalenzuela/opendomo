@@ -75,6 +75,9 @@ create_packages() {
             echo -ne "(${ERRO}$pkg${NORL}) "
         fi
     done
+
+    # Copy packages to export directory
+    cp $ROOTSTDIR/tmp/*.deb $EXPORTDIR/ 2>/dev/null
     echo
 }
 
@@ -100,5 +103,9 @@ install_packages() {
         fi
     done
     echo
+
+    # Rebuild apt database (just in case) and clean packages
     $CHROOT "$ROOTFSDIR" /bin/bash -c "apt-get -f install" &>/dev/null
+    rm $ROOTFSDIR/tmp/*.deb 2>/dev/null
+    rm $ROOTSTDIR/tmp/*.deb 2>/dev/null
 }
