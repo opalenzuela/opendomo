@@ -10,7 +10,14 @@ insserv diskmanager 2>/dev/null
 insserv opendomo-apt 2>/dev/null
 insserv ntpdate 2>/dev/null
 
-# Change odcgi perms and create links
-ln -fs /usr/local/opendomo/services/syscript/logEvent.sh /usr/bin/logevent
+# Change opendomo perms
 chown root /var/www/cgi-bin/od.cgi
 chmod +s   /var/www/cgi-bin/od.cgi
+
+# Create links and wrapper scripts
+echo "Create wrapper scripts ..."
+ln -fs /usr/local/opendomo/services/syscript/logEvent.sh /usr/bin/logevent
+su -c /usr/bin/createwrappers.sh admin 2>/dev/null
+
+echo "Creating default configuration ..."
+/usr/bin/manage_conf.sh copy 2>/dev/null
