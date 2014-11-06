@@ -24,7 +24,7 @@ do_start () {
 
 
 	echo "Waiting" > $PIDFILE
-	/usr/local/sbin/opendomo-apt >$LOGFILE 2>$ERRFILE &
+	/usr/sbin/opendomo-apt >$LOGFILE 2>$ERRFILE &
 	log_action_end_msg $?
 }
 

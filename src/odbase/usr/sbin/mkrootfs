@@ -7,12 +7,11 @@
 #   mkrootfs    restore   Restore default config
 
 # Variables
-IMAGESDIR="/mnt/system/images"
-DEFIMAGE="$IMAGESDIR/dfchange.img"
-CSTIMAGE="$IMAGESDIR/ctchange.img"
-MOUNTDIR="/run/mounts/changerw"
-CHANGEDIR="/run/mounts/change"
-TEMPFSDIR="/run/mounts/tmpfs"
+IMAGESDIR="/boot/images"
+CSTIMAGE="$IMAGESDIR/rootfs.img"
+MOUNTDIR="/mnt/rootfs-rw"
+CHANGEDIR="/mnt/change"
+TEMPFSDIR="/mnt/tmpfs"
 
 SYSSTATE="/var/opendomo/run/Systembusy.pid"
 SYNCOPTS="--quiet --archive --exclude-from=/etc/mkrootfs.excludes"

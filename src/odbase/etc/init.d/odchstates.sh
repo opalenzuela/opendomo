@@ -18,7 +18,7 @@
 
 do_start () {
 	DEFSTATE="active"
-	STATEEXEC="/usr/local/bin/changestate.sh"
+	STATEEXEC="/usr/bin/changestate.sh"
 	DAEMONDIR="/usr/local/opendomo/daemons"
 	INITRDDIR="/etc/init.d/"
 
