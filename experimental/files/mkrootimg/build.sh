@@ -61,9 +61,9 @@ LOGFILE="logs/mkrootfs-$DEVICE.log"
 OD_VERSION="2.2"
 CONFIGSDIR="configs"
 MULTISTRAP="/usr/sbin/multistrap"
-ALLPACKAGES="busybox isc-dhcp-client net-tools ifupdown openssh-server libsqlite3-0 sudo libjpeg8 libconfig9 usbutils syslog-ng \
-             psmisc rsync ntpdate resolvconf module-init-tools aptitude wget ntp linux-base lighttpd dialog klibc-utils cpio cron \
-             console-data keyboard-configuration console-setup"
+ALLPACKAGES="busybox isc-dhcp-client net-tools ifupdown openssh-server libsqlite3-0 sudo libjpeg8 libconfig9 usbutils psmisc rsync \
+             ntpdate resolvconf module-init-tools aptitude wget ntp linux-base lighttpd dialog klibc-utils cpio cron console-data \
+             keyboard-configuration console-setup"
 
 ARMPACKAGES="raspberrypi-bootloader-nokernel libraspberrypi0"
 
@@ -146,8 +146,12 @@ configure_all() {
 #   $CHROOT "$TARGET" /bin/bash -c "insserv -rf mountnfs.sh"
 #   $CHROOT "$TARGET" /bin/bash -c "insserv -rf hwclock.sh"
 
-    # Clean packages
-    $CHROOT "$TARGET" /bin/bash -c "apt-get clean"
+    # Clean packages and apt sources
+    $CHROOT $TARGET /bin/bash -c "apt-get clean"
+    SOURCES=`cat $TARGET/etc/apt/sources.list`
+    echo "# $SOURCES" > $TARGET/etc/apt/sources.list
+    $CHROOT $TARGET /bin/bash -c "apt-get update" &>/dev/null
+    echo "$SOURCES"   > $TARGET/etc/apt/sources.list
 }
 
 configure_arm() {
