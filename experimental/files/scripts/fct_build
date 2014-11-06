@@ -78,6 +78,7 @@ create_packages() {
 
     # Copy packages to export directory
     cp $ROOTSTDIR/tmp/*.deb $EXPORTDIR/ 2>/dev/null
+    chown `users | cut -f1 -d" "` $EXPORTDIR/*.deb
     echo
 }
 
