@@ -10,6 +10,12 @@ create_image() {
     rm -f $ROOTFSIMG 2>/dev/null
     [ "$ARCH" = "arm" ] && rm $ROOTFSDIR/usr/bin/qemu-arm-static 2>/dev/null
 
+    # Clean apt sources before create image
+    SOURCES=`cat $ROOTFSDIR/etc/apt/sources.list`
+    echo "# $SOURCES" > $ROOTFSDIR/etc/apt/sources.list
+    $CHROOT $ROOTFSDIR /bin/bash -c "apt-get update" &>/dev/null
+    echo "$SOURCES"   > $ROOTFSDIR/etc/apt/sources.list
+
     # Create raw image and copy files
     if
     dd if=/dev/zero of=$ROOTFSIMG bs=1024 count=1500000 &>/dev/null; then
