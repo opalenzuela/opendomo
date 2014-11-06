@@ -2,9 +2,9 @@
 
 # Consult the keyboard(5) manual page.
 
-XKBMODEL=""
+XKBMODEL="pc105"
 XKBLAYOUT="es"
-XKBVARIANT=""
+XKBVARIANT="cat"
 XKBOPTIONS=""
 
 BACKSPACE="guess"
