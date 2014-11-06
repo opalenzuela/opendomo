@@ -63,7 +63,7 @@ CONFIGSDIR="configs"
 MULTISTRAP="/usr/sbin/multistrap"
 ALLPACKAGES="busybox isc-dhcp-client net-tools ifupdown openssh-server libsqlite3-0 sudo libjpeg8 libconfig9 usbutils syslog-ng \
              psmisc rsync ntpdate resolvconf module-init-tools aptitude wget ntp linux-base lighttpd dialog klibc-utils cpio cron \
-             console-data keyboard-configuration"
+             console-data keyboard-configuration console-setup"
 
 ARMPACKAGES="raspberrypi-bootloader-nokernel libraspberrypi0"
 
@@ -123,12 +123,6 @@ configure_all() {
     cp $CONFIGSDIR/hostname $TARGET/etc/hostname
     # Copy default keyboard configuration
     cp $CONFIGSDIR/keyboard $TARGET/etc/default/keyboard
-    # Copy initramfs custom configuration and update initrd
-    cp $CONFIGSDIR/initramfs/rootmount $TARGET/etc/initramfs-tools/scripts/init-bottom/rootmount
-    cp $CONFIGSDIR/initramfs/modules   $TARGET/etc/initramfs-tools/modules
-    chmod 0755 $TARGET/etc/initramfs-tools/scripts/init-bottom/rootmount
-    mv $TARGET/etc/initramfs-tools/scripts/init-bottom/rootmount $TARGET/etc/initramfs-tools/scripts/init-bottom/__rootmount
-    $CHROOT "$TARGET" /bin/bash -c "update-initramfs -u &>/dev/null"
 
     # Adding opendomo version
     echo "PRETTY_NAME=\"Opendomo OS version $OD_VERSION\""                                   > $TARGET/etc/os-release
