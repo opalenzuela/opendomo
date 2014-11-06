@@ -1,6 +1,9 @@
 odbase (2.2.1) experimental; urgency=low
 
   * Package self-update is now stable
+  * Clean old scripts and configs
+  * New initrd and mountroot
+  * Disk event manager rewritten
 
  -- Javier Miras Blanco <jmirasb@gmail.com>  Tue, 4 Nov 2014 11:43:53 +0200
 

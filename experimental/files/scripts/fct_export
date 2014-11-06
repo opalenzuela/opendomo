@@ -42,7 +42,7 @@ export_to_vmdk() {
     # Creating loodev
     echo -ne "[${INFO} 2/4 ${NORL}] Creating raw image ...                   "
     if qemu-img create -f raw $EXPORTDIR/$INAME.img 2G &>/dev/null; then
-        losetup -f $EXPORTDIR/$INAME.img 
+        losetup -f $EXPORTDIR/$INAME.img
         LOOPDEV=`losetup -a | grep -m1 "opendomo" | cut -f1 -d: | tail -n1`
         echo -e "(${DONE}done${NORL})"
     else
@@ -52,7 +52,7 @@ export_to_vmdk() {
 
     # Format, mount and copy files
     echo -ne "[${INFO} 3/4 ${NORL}] Formatting raw image ...                 "
-    if mkfs.ext4 $LOOPDEV &>/dev/null; then
+    if mkfs.ext4 -L opendomodistro $LOOPDEV &>/dev/null; then
         mount $EXPORTDIR/$INAME.img $MOUNTDIR
         cp -r $TARGETDIR/* $MOUNTDIR/
 
