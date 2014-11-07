@@ -365,8 +365,7 @@ script_process_form_footer (char *cmdid)
     //printf("\t\t\t\t<button type='button' "
     //     "onclick='history.back()'>%s</button>\n", CT(ODCGI_TEXT_BACK));
     printf ("\t\t\t\t<button type='button' "
-	    "onclick=\"window.open('%s%s','help');\">%s</button>\n",
-	    ODCGI_URL_HELP, cmdid, CT (ODCGI_TEXT_HELP));
+	    "onclick=\"help('%s');\">%s</button>\n", cmdid, CT (ODCGI_TEXT_HELP));
     printf ("\t\t\t</div>\n");
     printf ("\t\t</fieldset>\n" "\t</form></div>\n");
   }
