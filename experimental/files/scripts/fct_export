@@ -5,7 +5,7 @@ source $FUNCDIR/fct_vars
 
 create_image() {
     # Delete old image delete emulator
-    echo -ne "[${INFO} 1/4 ${NORL}] Build rootfs image ...                   "
+    echo -ne "[${INFO} 1/4 ${NORL}] Build rootfs image ...                      "
     mkdir -p $IMAGESDIR
     rm -f $ROOTFSIMG 2>/dev/null
     [ "$ARCH" = "arm" ] && rm $ROOTFSDIR/usr/bin/qemu-arm-static 2>/dev/null
@@ -27,7 +27,7 @@ create_image() {
         fi
 
         # Copy files, kernel and initrd
-        if cp -rp $ROOTFSDIR/* $MOUNTDIR/ && cp $INITRDIMG $TARGETDIR/initrd.gz && cp $KERNELIMG $TARGETDIR/linux; then
+        if cp -rp $ROOTFSDIR/* $MOUNTDIR/ && cp $ROOTFSDIR/boot/$INITRDIMG $TARGETDIR/ && cp $ROOTFSDIR/boot/$KERNELIMG $TARGETDIR/; then
             echo -e "(${DONE}copy${NORL}) "
         else
             echo -e "(${ERRO}copy${NORL}) "
@@ -45,8 +45,11 @@ export_to_vmdk() {
     rm $EXPORTDIR/$NAME.img $EXPORTDIR/$INAME.vmdk 2>/dev/null
     cp -r $ISOFILES/* $TARGETDIR/
 
+    # Creating syslinx file
+    echo "DEFAULT $KERNELIMG initrd=$INITRDIMG rw quiet loglevel=0 aufs=yes bootdev=/dev/sda" > $TARGETDIR/syslinux.cfg
+
     # Creating loodev
-    echo -ne "[${INFO} 2/4 ${NORL}] Creating raw image ...                   "
+    echo -ne "[${INFO} 2/4 ${NORL}] Creating raw image ...                      "
     if qemu-img create -f raw $EXPORTDIR/$INAME.img 2G &>/dev/null; then
         losetup -f $EXPORTDIR/$INAME.img
         LOOPDEV=`losetup -a | grep -m1 "opendomo" | cut -f1 -d: | tail -n1`
@@ -57,7 +60,7 @@ export_to_vmdk() {
     fi
 
     # Format, mount and copy files
-    echo -ne "[${INFO} 3/4 ${NORL}] Formatting raw image ...                 "
+    echo -ne "[${INFO} 3/4 ${NORL}] Formatting raw image ...                    "
     if mkfs.ext4 -L opendomodistro $LOOPDEV &>/dev/null; then
         mount $EXPORTDIR/$INAME.img $MOUNTDIR
         cp -r $TARGETDIR/* $MOUNTDIR/
@@ -80,7 +83,7 @@ export_to_vmdk() {
     fi
 
     # Convert raw to vmdk
-    echo -ne "[${INFO} 4/4 ${NORL}] Converting raw to vmdk image ...         "
+    echo -ne "[${INFO} 4/4 ${NORL}] Converting raw to vmdk image ...            "
     if qemu-img convert -O vmdk $EXPORTDIR/$INAME.img $EXPORTDIR/$INAME.vmdk; then
         chown `users | cut -f1 -d" "` $EXPORTDIR/$INAME.*
         echo -e "(${DONE}done${NORL})"
@@ -91,10 +94,10 @@ export_to_vmdk() {
 
 export_to_sd() {
     #TODO
-    echo -ne "[${INFO} 1/1 ${NORL}] Exporting to SD ...                      "
+    echo -ne "[${INFO} 1/1 ${NORL}] Exporting to SD ...                         "
 }
 
 export_to_rpi() {
-    echo -ne "[${INFO} 1/1 ${NORL}] Exporting to RPI ...                     "
+    echo -ne "[${INFO} 1/1 ${NORL}] Exporting to RPI ...                        "
     #TODO
 }

@@ -33,14 +33,14 @@ ROOTFSIMG=$IMAGESDIR/rootfs.img
 if [ "$ARCH" != "i386" ]; then
 	ROOTFSURL="https://www.dropbox.com/s/ynnn5zo5xpx561i/rootfs.arm.tar.xz"
         ROOTFSPKG="rootfs.arm.tar.xz"
-        INITRDIMG=$ROOTFSDIR/boot/initrd.img-3.12-1-rpi
-        KERNELIMG=$ROOTFSDIR/boot/vmlinuz-3.12-1-rpi
+        INITRDIMG=initrd.img-3.12-1-rpi
+        KERNELIMG=vmlinuz-3.12-1-rpi
         ODPKGURLS="https://www.dropbox.com/s/nd8y8rott9xjr5y/odbase_current_armhf.deb"
 else
 	ROOTFSURL="https://www.dropbox.com/s/95nbpmue86r8t1n/rootfs.i386.tar.xz"
         ROOTFSPKG="rootfs.i386.tar.xz"
-        INITRDIMG=$ROOTFSDIR/boot/initrd.img-3.12-0.bpo.1-486
-        KERNELIMG=$ROOTFSDIR/boot/vmlinuz-3.12-0.bpo.1-486
+        INITRDIMG=initrd.img-3.12-0.bpo.1-486
+        KERNELIMG=vmlinuz-3.12-0.bpo.1-486
         ODPKGURLS="https://www.dropbox.com/s/gt4dms8u5j8tluv/odbase_current_i386.deb"
 fi
 
