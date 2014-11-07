@@ -5,10 +5,6 @@ insserv odchstates.sh  2>/dev/null
 insserv opendomo-apt 2>/dev/null
 insserv ntpdate 2>/dev/null
 
-# Change opendomo perms
-chown root /var/www/cgi-bin/od.cgi
-chmod +s   /var/www/cgi-bin/od.cgi
-
 # Create links and wrapper scripts
 echo "Creating opendomo configuration ..."
 ln -fs /usr/local/opendomo/services/syscript/logEvent.sh /usr/bin/logevent
