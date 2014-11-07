@@ -16,17 +16,4 @@ override_dh_install:
 	find . -maxdepth 1 -mindepth 1 -not -name Makefile -not -name debian -not -name src -print0 | \
 		xargs -0 -r -i cp -a {} debian/$(PACKAGE)
 
-override_dh_fixperms:
-	dh_fixperms
-	chown -R 1000:1000 debian/odbase/etc/opendomo
-	chown -R 1000:1000 debian/odbase/usr/local/opendomo
-	chown -R 1000:1000 debian/odbase/var/opendomo
-	chown -R 1000:1000 debian/odbase/var/www
-	chown -R root:root debian/odbase/etc/sudoers.d
-	chmod 0555         debian/odbase/etc/sudoers.d
-	chmod 0440         debian/odbase/etc/sudoers.d/*
-        chown root         debian/odbase/var/www/cgi-bin/od.cgi
-        chmod +s           debian/odbase/var/www/cgi-bin/od.cgi
-        chmod 0744         debian/odbase/etc/initramfs-tools/scripts/init-bottom/rootmount
-
 override_dh_usrlocal:

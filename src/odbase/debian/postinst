@@ -5,6 +5,17 @@ insserv odchstates.sh  2>/dev/null
 insserv opendomo-apt 2>/dev/null
 insserv ntpdate 2>/dev/null
 
+# Modify opendomo permissions
+chown -R 1000:1000 /etc/opendomo
+chown -R 1000:1000 /usr/local/opendomo
+chown -R 1000:1000 /var/opendomo
+chown -R 1000:1000 /var/www
+chmod 0555         /etc/sudoers.d
+chmod 0440         /etc/sudoers.d/*
+chown root         /var/www/cgi-bin/od.cgi
+chmod +s           /var/www/cgi-bin/od.cgi
+chmod 0744         /etc/initramfs-tools/scripts/init-bottom/rootmount
+
 # Create links and wrapper scripts
 echo "Creating opendomo configuration ..."
 ln -fs /usr/local/opendomo/services/syscript/logEvent.sh /usr/bin/logevent
@@ -12,5 +23,5 @@ su -c /usr/bin/createwrappers.sh admin &>/dev/null
 /usr/bin/manage_conf.sh copy &>/dev/null
 
 # Modify files and create new initramfs image
-echo "aufs" >> /etc/initramfs-tools/modules
+[ `grep -c1 aufs /etc/initramfs-tools/modules` -eq 1 ] || echo "aufs" >> /etc/initramfs-tools/modules
 /usr/sbin/update-initramfs -u
