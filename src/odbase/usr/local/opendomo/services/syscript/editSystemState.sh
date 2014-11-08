@@ -34,22 +34,17 @@ case $2 in
             echo "form:`basename $0`"
 
             cd $DAEMONSDIR
-            for service in `ls -1 * | grep -v .name`; do
-                # Ignoring boot services and missing services
-                if ! test -h "$DAEMONSDIR/$service" || test -x "$INITRDDIR/$service"; then
-                    RUNLEVEL=`cat $service | grep "# Default-Start:" | awk '{print $3}'`
+            for service in *; do
+                # Check service information and status
+                DESC=`grep "Name:" $service | awk -F: '{print$2}'`
+                test -z "$DESC" && DESC=`grep "# Short-Description" $service | cut -f2 -d:`
 
-                        if [ "$RUNLEVEL" != "S" ]; then
-                            test -f $service.name && DESC=`cat $service.name`
-                            test -f $service.name || DESC=`grep "# Short-Description" $service | cut -f2 -d:`
-                            if test -f $CONFIGSDIR/$1/$service; then
-                                STATUS=on
-                            else
-                                STATUS=off
-                            fi
-                            echo "	$service	$DESC	subcommand[on,off]	$STATUS"
-                        fi
+                if ./$service status >/dev/null 2>/dev/null ; then
+                    STATUS=on
+                else
+                    STATUS=off
                 fi
+                echo "      $service        $DESC   subcommand[on,off]      $STATUS"
             done
             echo "action:"
             echo "	manageSystemStates.sh	Back"

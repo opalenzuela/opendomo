@@ -1,1 +1,2 @@
-/etc/init.d/ssh
+Type: System service
+Name: Command line access

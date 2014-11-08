@@ -1,1 +1,2 @@
-/etc/init.d/alsa-utils
+Type: System service
+Name: Sound system

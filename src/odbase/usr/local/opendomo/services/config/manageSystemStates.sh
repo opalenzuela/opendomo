@@ -10,7 +10,7 @@ TEMPSTATE=/var/opendomo/tmp/state.tmp
 STATE="$1"
 
 # Always check blacklist
-changestate.sh blacklist
+odstatesmng blacklist
 
 # $1 only can be a state selected to configure
 if ! test -z $STATE && test -d $STATESDIR/$STATE; then
