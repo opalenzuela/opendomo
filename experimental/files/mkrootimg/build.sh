@@ -76,9 +76,6 @@ else
 fi
 
 configure_all() {
-    # Configure basic files
-    touch $TARGET/etc/fstab
-
     echo "" 					 	 	 > $TARGET/etc/motd
     echo "Welcome to opendomo: Security and free domotics"	>> $TARGET/etc/motd
     echo ""						 	>> $TARGET/etc/motd
@@ -111,6 +108,12 @@ configure_all() {
     cp $TARGET/etc/skel/.* $TARGET/home/admin/ 2>/dev/null
     chown -R 1000:1000 $TARGET/home/admin
 
+    # Creating fstab file
+    touch $TARGET/etc/fstab
+    # Creating mtab symlink (prevent boot warning)
+    ln -s /proc/mounts $TARGET/etc/mtab
+    # Fix adjtime file
+    echo "LOCAL" > $TARGET/etc/adjtime
     # Copy sshd configuration (no root access allow)
     cp $CONFIGSDIR/sshd_config $TARGET/etc/ssh/sshd_config
     # Copy new profile file (added opendomo folder to $PATH)
