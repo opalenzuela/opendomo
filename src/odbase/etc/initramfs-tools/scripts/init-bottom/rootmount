@@ -2,68 +2,63 @@
 #desc: Mount rootfs based in aufs (tmpfs + image)
 
 # Variables
-BOOTFSDEV=/dev/sda   # sda is for V.M. only. RasberryPi use mmcblk0p1
 BOOTFSDIR=/boot
 MOUNTSDIR=/mnt/
-CHANGEDIR=$MOUNTSDIR/change
+CHANGEDIR=$MOUNTSDIR/rootimg
 ROOTFSDIR=$MOUNTSDIR/rootfs
 TEMPFSDIR=$MOUNTSDIR/tmpfs
 ROOTIMAGE=/boot/images/rootfs.img
-#BOOTLABEL="opendomodistro"
 
-# Only activate aufs with "aufs=tmpfs" boot kernel option
+# Only activate aufs with "aufs=yes" boot kernel option
 # You can don't use aufs and start rootfs in real rw mode
 case $1 in
 prereqs)
     exit 0
     ;;
 esac
-
 export aufs
 for x in $(cat /proc/cmdline); do
     case $x in
-        root=*)
-            ROOTNAME=${x#root=}
+        bootdev=*)
+            BOOTFSDEV=${x#bootdev=}
         ;;
         aufs=*)
             aufs=${x#aufs=}
-            case $aufs in
-                tmpfs-debug)
-                    aufs=tmpfs
-                    aufsdebug=1
-                ;;
-            esac
         ;;
     esac
 done
 
-if [ "$aufs" != "tmpfs" ]; then
+# Using diferents configs
+if   [ "$aufs" == "yes" ]; then
+    # Make mountpoint and mount /boot and aufs parts
+    mkdir -p $BOOTFSDIR $CHANGEDIR $TEMPFSDIR $ROOTFSDIR
+    mount -t ext4 $BOOTFSDEV $BOOTFSDIR  || echo "[error] Boot disk can't be mounted or don't exist"
+    mount -t tmpfs aufs-tmpfs $TEMPFSDIR
+    mount -o ro $ROOTIMAGE $CHANGEDIR || echo "[error] Rootfs image can't be mounted or don't exist"
+
+    # Mount aufs and move aufs parts to new root
+    mount -t aufs -o dirs=$TEMPFSDIR:$CHANGEDIR=ro aufs $ROOTFSDIR || echo "[error] Aufs can't be mounted"
+    mkdir -p $ROOTFSDIR/$CHANGEDIR $ROOTFSDIR/$TEMPFSDIR
+    mount --move $CHANGEDIR $ROOTFSDIR/$CHANGEDIR
+    mount --move $TEMPFSDIR $ROOTFSDIR/$TEMPFSDIR
+    mount --move $BOOTFSDIR $ROOTFSDIR/$BOOTFSDIR
+
+    # Move root
+    mount --move $ROOTFSDIR ${rootmnt}
+    clear & exit 0
+
+elif [ "$aufs" == "no" ]; then
+    # Make mountpoint and mount /boot
+    mkdir -p $BOOTFSDIR $ROOTFSDIR
+    mount -t ext4 $BOOTFSDEV $BOOTFSDIR || echo "[error] Boot disk can't be mounted or don't exist"
+
+    # Mount rootfs image in rw mode and move
+    mount -o rw  $ROOTIMAGE $ROOTFSDIR || echo "[error] Rootfs image can't be mounted or don't exist"
+    mount --move $BOOTFSDIR $ROOTFSDIR/$BOOTFSDIR
+    mount --move $ROOTFSDIR ${rootmnt}
+
+    clear && echo "[warn] Using development mode, rootfs is in read-write mode."
+    exit 0
+else
     exit 0
 fi
-
-echo
-echo "       rootmount:  Setting up aufs on ${rootmnt} as root file system "
-echo
-
-# Load modules and make mountpoints
-modprobe aufs
-mkdir -p $BOOTFSDIR $CHANGEDIR $TEMPFSDIR $ROOTFSDIR
-mount -t ext4 $BOOTFSDEV $BOOTFSDIR
-
-# Mount aufs parts
-mount -t tmpfs aufs-tmpfs $TEMPFSDIR
-mount  $ROOTIMAGE $CHANGEDIR || echo "ERROR: Changes images can't be mounted or don't exist"
-
-# Mount aufs and move aufs parts
-mount -t aufs -o dirs=$TEMPFSDIR:$CHANGEDIR=ro aufs $ROOTFSDIR || echo "ERROR: Aufs can't be mounted"
-mkdir -p $ROOTFSDIR/$CHANGEDIR $ROOTFSDIR/$TEMPFSDIR
-mount --move $CHANGEDIR $ROOTFSDIR/$CHANGEDIR
-mount --move $TEMPFSDIR $ROOTFSDIR/$TEMPFSDIR
-mount --move $BOOTFSDIR $ROOTFSDIR/$BOOTFSDIR
-
-# Remove root and swap from fstab
-cat $ROOTFSDIR/$CHANGEDIR/etc/fstab|grep -v ' / ' | grep -v swap >> $ROOTFSDIR/etc/fstab
-
-# Move root
-mount --move $ROOTFSDIR ${rootmnt}
-exit 0
