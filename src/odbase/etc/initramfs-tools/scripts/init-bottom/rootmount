@@ -4,8 +4,8 @@
 # Variables
 BOOTFSDIR=/boot
 MOUNTSDIR=/mnt/
-CHANGEDIR=$MOUNTSDIR/rootimg
-ROOTFSDIR=$MOUNTSDIR/rootfs
+ROOTFSDIR=$MOUNTSDIR/rootimg
+CHANGEDIR=$MOUNTSDIR/rootfs
 TEMPFSDIR=$MOUNTSDIR/tmpfs
 ROOTIMAGE=/boot/images/rootfs.img
 
@@ -32,30 +32,30 @@ done
 if   [ "$aufs" == "yes" ]; then
     # Make mountpoint and mount /boot and aufs parts
     mkdir -p $BOOTFSDIR $CHANGEDIR $TEMPFSDIR $ROOTFSDIR
-    mount -t ext4 $BOOTFSDEV $BOOTFSDIR  || echo "[error] Boot disk can't be mounted or don't exist"
+    mount -t vfat $BOOTFSDEV $BOOTFSDIR || echo "[error] Boot disk can't be mounted or don't exist"
     mount -t tmpfs aufs-tmpfs $TEMPFSDIR
-    mount -o ro $ROOTIMAGE $CHANGEDIR || echo "[error] Rootfs image can't be mounted or don't exist"
+    mount -t ext2 -o ro $ROOTIMAGE $ROOTFSDIR || echo "[error] Rootfs image can't be mounted or don't exist"
 
     # Mount aufs and move aufs parts to new root
-    mount -t aufs -o dirs=$TEMPFSDIR:$CHANGEDIR=ro aufs $ROOTFSDIR || echo "[error] Aufs can't be mounted"
-    mkdir -p $ROOTFSDIR/$CHANGEDIR $ROOTFSDIR/$TEMPFSDIR
-    mount --move $CHANGEDIR $ROOTFSDIR/$CHANGEDIR
-    mount --move $TEMPFSDIR $ROOTFSDIR/$TEMPFSDIR
-    mount --move $BOOTFSDIR $ROOTFSDIR/$BOOTFSDIR
+    mount -t aufs -o dirs=$TEMPFSDIR:$ROOTFSDIR=ro aufs $CHANGEDIR || echo "[error] Aufs can't be mounted"
+    mkdir -p $CHANGEDIR/$ROOTFSDIR $CHANGEDIR/$TEMPFSDIR
+    mount --move $ROOTFSDIR $CHANGEDIR/$ROOTFSDIR
+    mount --move $TEMPFSDIR $CHANGEDIR/$TEMPFSDIR
+    mount --move $BOOTFSDIR $CHANGEDIR/$BOOTFSDIR
 
     # Move root
-    mount --move $ROOTFSDIR ${rootmnt}
+    mount --move $CHANGEDIR ${rootmnt}
     clear & exit 0
 
 elif [ "$aufs" == "no" ]; then
     # Make mountpoint and mount /boot
-    mkdir -p $BOOTFSDIR $ROOTFSDIR
-    mount -t ext4 $BOOTFSDEV $BOOTFSDIR || echo "[error] Boot disk can't be mounted or don't exist"
+    mkdir -p $BOOTFSDIR $CHANGEDIR
+    mount -t vfat $BOOTFSDEV $BOOTFSDIR || echo "[error] Boot disk can't be mounted or don't exist"
 
     # Mount rootfs image in rw mode and move
-    mount -o rw  $ROOTIMAGE $ROOTFSDIR || echo "[error] Rootfs image can't be mounted or don't exist"
-    mount --move $BOOTFSDIR $ROOTFSDIR/$BOOTFSDIR
-    mount --move $ROOTFSDIR ${rootmnt}
+    mount -t ext2 -o rw  $ROOTIMAGE $CHANGEDIR || echo "[error] Rootfs image can't be mounted or don't exist"
+    mount --move $BOOTFSDIR $CHANGEDIR/$BOOTFSDIR
+    mount --move $CHANGEDIR ${rootmnt}
 
     clear && echo "[warn] Using development mode, rootfs is in read-write mode."
     exit 0

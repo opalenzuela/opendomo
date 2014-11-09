@@ -61,7 +61,7 @@ export_to_vmdk() {
 
     # Format, mount and copy files
     echo -ne "[${INFO} 3/4 ${NORL}] Formatting raw image ...                    "
-    if mkfs.ext4 -L opendomodistro $LOOPDEV &>/dev/null; then
+    if mkfs.vfat -n oddistro $LOOPDEV &>/dev/null; then
         mount $EXPORTDIR/$INAME.img $MOUNTDIR
         cp -r $TARGETDIR/* $MOUNTDIR/
 

@@ -15,6 +15,7 @@ chmod 0440         /etc/sudoers.d/*
 chown root         /var/www/cgi-bin/od.cgi
 chmod +s           /var/www/cgi-bin/od.cgi
 chmod 0744         /etc/initramfs-tools/scripts/init-bottom/rootmount
+chmod 0744         /etc/initramfs-tools/hooks/create_fstab
 
 # Create links and wrapper scripts
 echo "Creating opendomo configuration ..."
@@ -22,6 +23,9 @@ ln -fs /usr/local/opendomo/services/syscript/logEvent.sh /usr/bin/logevent
 su -c /usr/bin/createwrappers.sh admin &>/dev/null
 /usr/bin/manage_conf.sh copy &>/dev/null
 
-# Modify files and create new initramfs image
-[ `grep -c1 aufs /etc/initramfs-tools/modules` -eq 1 ] || echo "aufs" >> /etc/initramfs-tools/modules
+# Add modules and create new initramfs image
+[ `grep -c1 nls_cp437 /etc/initramfs-tools/modules` -eq 1 ] || echo "nls_cp437" >> /etc/initramfs-tools/modules
+[ `grep -c1 nls_utf8  /etc/initramfs-tools/modules` -eq 1 ] || echo "nls_utf8"  >> /etc/initramfs-tools/modules
+[ `grep -c1 vfat      /etc/initramfs-tools/modules` -eq 1 ] || echo "vfat"      >> /etc/initramfs-tools/modules
+[ `grep -c1 aufs      /etc/initramfs-tools/modules` -eq 1 ] || echo "aufs"      >> /etc/initramfs-tools/modules
 /usr/sbin/update-initramfs -u
