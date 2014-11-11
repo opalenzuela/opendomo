@@ -131,7 +131,7 @@ configure_all() {
     # Copy default console configuration
     cp $CONFIGSDIR/console-setup $TARGET/etc/default/console-setup
     # Creating busybox links
-    ln -s /bin/busybox /bin/vi
+    ln -s /bin/busybox $TARGET/bin/vi
 
     # Adding opendomo version
     echo "PRETTY_NAME=\"Opendomo OS version $OD_VERSION\""                                   > $TARGET/etc/os-release
