@@ -1,23 +1,27 @@
 #!/bin/sh
-#desc: Make opendomo squash filesystems
+#desc: Save changes permanently
 
 # USAGE:
-#   mkrootfs              Save config
-#   mkrootfs    reboot    Save config anr reboot system
-#   mkrootfs    restore   Restore default config
+#   mkrootfs              Save changes
+#   mkrootfs    reboot    Save changes and reboot system
+#   mkrootfs    restore   Restore default system
 
 # Variables
 IMAGESDIR="/boot/images"
-CSTIMAGE="$IMAGESDIR/rootfs.img"
+ROOTIMAGE="$IMAGESDIR/rootfs.img"
 MOUNTDIR="/mnt/rootfs-rw"
-CHANGEDIR="/mnt/change"
-TEMPFSDIR="/mnt/tmpfs"
+TMPFSDIR="/mnt/tmpfs"
 
-SYSSTATE="/var/opendomo/run/Systembusy.pid"
 SYNCOPTS="--quiet --archive --exclude-from=/etc/mkrootfs.excludes"
 TEMPFILE="/var/opendomo/tmp/mkrootfs.tmp"
 
-if ! test -d $IMAGESDIR; then
+# Checking state and image mount
+if grep -c1 aufs=no "/proc/cmdline" &>/dev/null; then
+    echo "#ERRO System is in read-write mode"
+    echo
+    exit 0
+
+elif ! test -d $IMAGESDIR; then
     echo "#ERRO System device is not mounted, the configuration can't be saved"
     echo
     exit 1
@@ -25,44 +29,28 @@ if ! test -d $IMAGESDIR; then
 elif [ "$1" = "restore" ]; then
     # Entering in busy system state
     echo "Restoring system" > $SYSSTATE
-
-    # Delete changes image and restore default config
-    echo "#LOADING Restoring default system ..."
-    echo
-
-    # Mounting and delete data in changes image
-    mkdir -p $MOUNTDIR
-    mount $CSTIMAGE $MOUNTDIR || exit 1
-    rm -rf $MOUNTDIR/*
-
-    # Umount and reboot
-    while ! umount $MOUNTDIR; do
-        sleep 1
-    done
-    echo "#INFO System restored, rebooting system ..."
-    echo
-    shutdown -r now
+    #TODO: New restore system required
 
 else
     # Check filesystems before mount
-    mount | grep $MOUNTDIR &>/dev/null && umount -f $MOUNTDIR
-    fsck.ext2 -y $CSTIMAGE #&>/dev/null
+    mount | grep $MOUNTDIR  &>/dev/null && umount -f $MOUNTDIR
+    fsck.ext2 -y $ROOTIMAGE &>/dev/null
 
     # Mount changes image in rw and check tmpfs
     mkdir -p $MOUNTDIR
-    test -d $TEMPFSDIR || exit 1
-    mount $CSTIMAGE $MOUNTDIR || exit 1
+    test -d $TMPFSDIR || exit 1
+    mount $ROOTIMAGE $MOUNTDIR || exit 1
 
     # Entering in busy system state
-    echo "Saving configuration" > $SYSSTATE
+    # TODO: System busy state is will be in jsaon format
 
     # Copy new files in image
     echo "#LOADING Save system configuration (please wait) ..."
     echo
-    rsync $SYNCOPTS $TEMPFSDIR/ $MOUNTDIR/
+    rsync $SYNCOPTS $TMPFSDIR/ $MOUNTDIR/
 
     # Delete missing files in image
-    find $TEMPFSDIR -name ".wh.*" -not -name ".wh..*" | sed -e 's/tmpfs/changerw/' -e 's/.wh.//' > $TEMPFILE
+    find $TMPFSDIR -name ".wh.*" -not -name ".wh..*" | sed -e 's/tmpfs/rootfs-rw/' -e 's/.wh.//' > $TEMPFILE
     for file in `cat $TEMPFILE`; do
         rm -r "$file" 2>/dev/null
     done
@@ -73,10 +61,7 @@ else
         sleep 1
     done
     rmdir $MOUNTDIR 2>/dev/null
-    fsck.ext2 -y $CSTIMAGE #&>/dev/null
-
-    # Deleting busy mode
-    rm $SYSSTATE
+    fsck.ext2 -y $ROOTIMAGE &>/dev/null
 fi
 
 # Check reboot system warrant
