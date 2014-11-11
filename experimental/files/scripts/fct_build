@@ -83,6 +83,9 @@ create_packages() {
 }
 
 install_packages() {
+    # Mount dev device
+    mount --bind /dev $ROOTFSDIR/dev 2>/dev/null
+
     # Select opendomo packages to install
     if ls $ROOTSTDIR/tmp/*.deb &>/dev/null; then
         cp $ROOTSTDIR/tmp/*.deb $ROOTFSDIR/tmp/ 2>/dev/null
@@ -105,8 +108,9 @@ install_packages() {
     done
     echo
 
-    # Rebuild apt database (just in case) and clean packages
+    # Rebuild apt database (just in case), clean packages and umount dev
     $CHROOT "$ROOTFSDIR" /bin/bash -c "apt-get -f install" &>/dev/null
-    rm $ROOTFSDIR/tmp/*.deb 2>/dev/null
-    rm -r $ROOTSTDIR/tmp/*  2>/dev/null
+    rm $ROOTFSDIR/tmp/*.deb   2>/dev/null
+    rm -r $ROOTSTDIR/tmp/*    2>/dev/null
+    umount -fl $ROOTFSDIR/dev 2>/dev/null
 }
