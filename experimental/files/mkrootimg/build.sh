@@ -63,7 +63,7 @@ CONFIGSDIR="configs"
 MULTISTRAP="/usr/sbin/multistrap"
 ALLPACKAGES="busybox isc-dhcp-client net-tools ifupdown openssh-server libsqlite3-0 sudo libjpeg8 libconfig9 usbutils psmisc rsync \
              ntpdate resolvconf module-init-tools aptitude wget ntp linux-base lighttpd dialog klibc-utils cpio cron console-data \
-             keyboard-configuration console-setup"
+             keyboard-configuration console-setup vi"
 
 ARMPACKAGES="raspberrypi-bootloader-nokernel libraspberrypi0"
 
@@ -126,6 +126,10 @@ configure_all() {
     cp $CONFIGSDIR/hostname $TARGET/etc/hostname
     # Copy default keyboard configuration
     cp $CONFIGSDIR/keyboard $TARGET/etc/default/keyboard
+    # Copy default lighttpd configuration
+    cp $CONFIGSDIR/lighttpd.conf $TARGET/etc/lighttpd/lighttpd.conf
+    # Copy default console configuration
+    cp $CONFIGSDIR/console-setup $TARGET/etc/default/console-setup
 
     # Adding opendomo version
     echo "PRETTY_NAME=\"Opendomo OS version $OD_VERSION\""                                   > $TARGET/etc/os-release
