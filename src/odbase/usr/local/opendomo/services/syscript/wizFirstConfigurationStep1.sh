@@ -13,7 +13,7 @@ language="es"
 touch $TMPCFGFILE
 . $TMPCFGFILE
 
-if test -e /mnt/odconf ; then
+if test -f /boot/images/rootfs; then
 	echo "#> First configuration wizard [1/3]"
 	echo "form:`basename $0`	wizard"
 	echo "	stepfrom	step	hidden	1"
