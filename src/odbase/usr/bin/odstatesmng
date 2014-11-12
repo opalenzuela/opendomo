@@ -19,7 +19,7 @@ daemons_blacklist() {
     for script in *; do
         for blackdaemon in $BLACKLIST; do
             # If script is in blacklist, can be used by plugins, so clean.
-            if [ $blackdaemon = $script ] && [ `grep -c1 "Type: System service" $script` -eq 1 ]; then
+            if [ $blackdaemon = $script ] && [ `head -c9` != "#!/bin/sh" ]; then
                 echo "#ERROR $script is service in blacklist, can be used by plugins, cleaning ..."
                 rm $script &>/dev/null
             # This is a boot service in "S" level, can be used either, so clean
@@ -75,12 +75,12 @@ case $1 in
         fi
    ;;
     service )
-        if   [ `grep -c1 "Type: System service" $script` -eq 1 ]; then
+        if   [ `head -c9` != "#!/bin/sh" ]; then
 	    # This a system service, check blacklist and change state
 	    daemons_blacklist
             [ "$3" = "start" ] && service $2 start 2>/dev/null
             [ "$3" = "stop"  ] && service $2 stop  2>/dev/null
-        elif [ `grep -c1 "Type: System service" $script` -eq 1 ]; then
+        elif [ `head -c9` == "#!/bin/sh" ]; then
             # This a opendomo service, start with admin user
 	    [ "$3" = "start" ] && sudo -u admin $DAEMONSDIR/$2 start
             [ "$3" = "stop"  ] && sudo -u admin $DAEMONSDIR/$2 stop
