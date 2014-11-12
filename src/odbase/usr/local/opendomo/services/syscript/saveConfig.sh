@@ -10,5 +10,5 @@ while test -f "$SYSSTATE"; do
     sleep 1
 done
 
-sudo /usr/local/sbin/mkrootfs
+sudo mkrootfs
 /usr/local/opendomo/manageConfiguration.sh

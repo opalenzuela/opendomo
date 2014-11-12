@@ -25,7 +25,7 @@ else
 		then
 			echo -n " $PLUGDEPS " >> $QUEUEFILE
 			#echo "#INFO Plugin [$plugin] sent to install"
-			test -f $PLUGINSDIR/$DOWNPKG || /usr/local/bin/download.sh $DOWNURL
+			test -f $PLUGINSDIR/$DOWNPKG || download.sh $DOWNURL
 		fi
 	done
 

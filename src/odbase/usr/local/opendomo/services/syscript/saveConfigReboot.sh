@@ -11,4 +11,4 @@ while test -f "$SYSSTATE"; do
 done
 
 # Send spaceless mode to opendomo apt
-sudo /usr/local/sbin/mkrootfs reboot
+sudo mkrootfs reboot
