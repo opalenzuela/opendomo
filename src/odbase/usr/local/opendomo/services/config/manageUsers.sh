@@ -3,32 +3,27 @@
 #type:multiple
 #package:odbase
 
-
 # Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
 
-CONFIGDIR="/etc/opendomo/udata"
-USER="$1"
-
 # If $1 modify user
-if ! test -z $USER && test -f $CONFIGDIR/$USER.info; then
-    /usr/local/opendomo/modifyUser.sh $USER
+if ! test -z $1; then
+    /usr/local/opendomo/userModify.sh $1
+
+elif [ `grep -c "/bin/bash" /etc/passwd | grep -v "root:" | grep -v "admin:"` -eq 2 ]; then
+    # The list is emply
+    echo "#INFO No users configured yet"
+
 else
-    # No user selected, see users list
+    # No user selected, see users list ignoring admin
     cd $CONFIGDIR
     echo "#> Available users"
-    echo "list:`basename $0`	selectable iconlist"
-    # No users configured yet, see a message
-    test -z `ls --hide="admin.info" | head -c1` && echo "#INFO No users configured yet"
-
-    for user in `ls *.info | cut -f1 -d.`; do
-		# Do not present "Admin" as a user
-		if test "$user" != "admin"
-		then
-			FULLNAME=`grep ^FULLNAME= $user.info | sed 's/\"//g' | cut -f2 -d= `
-			echo "	-$user	$FULLNAME	user"
-		fi
+    echo "list:`basename $0`    selectable iconlist"
+    IFS=$'\n'; for user in `grep "/bin/bash" /etc/passwd | grep -v "root:" | grep -v "admin:"`; do
+        USER=`grep $user /etc/passwd | awk -F: '{print$1}'`
+        INFO=`grep $user /etc/passwd | awk -F: '{print$5}'`
+        echo "  -$USER  $INFO   user"
     done
     echo "action:"
-    echo "	modifyUser.sh	Add"
+    echo "      userModify.sh   Add"
     echo
 fi

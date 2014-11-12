@@ -58,7 +58,7 @@ fi
 
 # Variables
 LOGFILE="logs/mkrootfs-$DEVICE.log"
-OD_VERSION="2.2"
+OD_VERSION="2.2.0"
 CONFIGSDIR="configs"
 MULTISTRAP="/usr/sbin/multistrap"
 ALLPACKAGES="busybox isc-dhcp-client net-tools ifupdown openssh-server libsqlite3-0 sudo libjpeg8 libconfig9 usbutils psmisc rsync \
@@ -99,7 +99,7 @@ configure_all() {
 
     # Creating groups and users
     $CHROOT "$TARGET" /bin/bash -c "addgroup --gid 1000 admin >/dev/null 2>/dev/null"
-    $CHROOT "$TARGET" /bin/bash -c "useradd -G disk,audio,video,plugdev -p opendomo -g 1000 -u 1000 admin 2>/dev/null"
+    $CHROOT "$TARGET" /bin/bash -c "useradd -s /bin/bash -c 'System administrator <admin@opendomoos.org>' -G disk,audio,video,plugdev -p opendomo -g 1000 -u 1000 admin 2>/dev/null"
     $CHROOT "$TARGET" /bin/bash -c "echo -e 'opendomo\nopendomo' | (passwd admin) 2>/dev/null"
     $CHROOT "$TARGET" /bin/bash -c "echo -e 'opendomo\nopendomo' | (passwd root)  2>/dev/null"
 

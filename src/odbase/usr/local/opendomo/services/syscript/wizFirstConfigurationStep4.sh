@@ -49,14 +49,12 @@ rm /etc/opendomo/system/localtime
 cp -rp "$TZDATA/$timezoneid" "/etc/opendomo/system/localtime"
 
 # Saving new user data
-sudo manageusers.sh mod admin "$fullname" "$email" "$newpassword" >/dev/null 2>/dev/null
+sudo usermod -c "System administrator <$email>" admin
+echo -e "$newpassword\n$newpassword" | (sudo passwd admin) 2>/dev/null
 
 # Activate
 FULLURL="$URLVAL?UID=$uid&VER=$VERSION&MAIL=$email"
 wget -q -O /var/opendomo/tmp/activation.tmp $FULLURL 2>/dev/null
-
-# Save system and reboot
-#saveConfigReboot.sh
 
 echo "#>System configured"
 echo "list:`basename $0`"

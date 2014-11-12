@@ -3,11 +3,12 @@
 #type:multiple
 #package:odbase
 
-CONFIGDIR="/etc/opendomo/udata"
 USER="$1"
 FULLNAME="$2"
 EMAIL="$3"
 PASSWD="$4"
+GROUPUID="100"
+USERGROUPS="disk,audio,video"
 
 # Without params, see add interface
 if test -z $USER; then
@@ -19,15 +20,16 @@ if test -z $USER; then
     echo "	passw	Password	password	$PASSWD"
     echo "actions:"
     echo "	goback	Back"
-    echo "	modifyUser.sh	Add"
+    echo "	userModify.sh	Add"
     echo
 
 # With user but without passwd, see modify interface
 elif ! test -z $USER && test -z $PASSWD; then
-    if test -f $CONFIGDIR/$USER.info; then
-        FULLNAME=`grep ^FULLNAME= $CONFIGDIR/$USER.info | sed 's/\"//g' | cut -f2 -d= `
-        EMAIL=`grep ^EMAIL= $CONFIGDIR/$USER.info | sed 's/\"//g' | cut -f2 -d= `
-    fi
+    # Extract username and email
+    USERINFO=`grep $USER: /etc/passwd | awk -F: '{print$5}'`
+    FULLNAME=`echo $USERINFO | cut -f1 -d"<"`
+    EMAIL=`echo $USERINFO | cut -f2 -d"<" | cut -f1 -d">"`
+
     echo "#> Modify user"
     echo "form:`basename $0`"
     echo "	user	User	hidden	$USER"
@@ -36,17 +38,19 @@ elif ! test -z $USER && test -z $PASSWD; then
     echo "	passw	Password	password	$PASSWD"
     echo "actions:"
     echo "	goback	Back"
-    echo "	modifyUser.sh	Modify"
-    echo "	deleteUser.sh	Delete"
+    echo "	userModify.sh	Modify"
+    echo "	userDelete.sh	Delete"
     echo
 
 # With passwd and user exist, modify user
-elif ! test -z `cat "/etc/passwd" | cut -f1 -d: | grep $USER` && ! test -z $PASSWD; then
-    sudo manageusers.sh mod "$USER" "$FULLNAME" "$EMAIL" "$PASSWD"
+elif [ `grep -c1 $USER: /etc/passwd` -eq 1 ] && ! test -z $PASSWD; then
+    sudo usermod -c "$FULLNAME <$EMAIL>" $USER  &>/dev/null
+    echo -e "$PASSWD\n$PASSWD" | (passwd $USER) 2>/dev/null
     manageUsers.sh
 
 # With passwd and user don't exist, add user
-elif test -z `cat "/etc/passwd" | cut -f1 -d: | grep $USER` && ! test -z $PASSWD; then
-    sudo manageusers.sh add "$USER" "$FULLNAME" "$EMAIL" "$PASSWD"
+elif [ `grep -c1 $USER: /etc/passwd` -eq 0 ] && ! test -z $PASSWD; then
+    sudo useradd -s /bin/bash -c "$FULLNAME <$EMAIL>" -g $GROUPUID -G $USERGROUPS -m $USER &>/dev/null
+    echo -e "$PASSWD\n$PASSWD" | (passwd $USER) 2>/dev/null
     manageUsers.sh
 fi
