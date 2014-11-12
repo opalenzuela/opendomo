@@ -1178,104 +1178,99 @@ main (int argc, char *argv[])
     }
   else
     {
-      /* if file: execute */
-      // The path might be a redirection (no actual link in ..opendomo/root/)
-      if (!file_is_file (&fs))
-	{
-	  snprintf (path, sizeof (path), "/usr/local/opendomo/%s",
-		    basename (scriptname));
-	  printf ("\n<!-- debug paths: %s / %s [%s] -->\n", path, path_info,
-		  scriptname);
-	  file_set_filename (&fs, path);
-	  if (!file_is_file (&fs))	// If it's still not a valid path, abort
-	    {
-	      odcgi_msg_error (ODCGI_ERROR__SCRIPT_NOT_FOUND,
-			 "The script was not found. "
-			 "Maybe the function you are requiring "
-			 "is not installed in this system");
-	      printf ("<!-- BASENAME: %s -->\n", basename (scriptname));
-	      odcgi_print_footer ("", 0, cgi);
-	      cgi_free (cgi);
-	      return 1;
-	    }
-	}
-      //printf("<!-- debug path: %s -->\n", path);
-      //char *p = strrchr(path, '/');
-      if (has_option /*&& p */ )
-	{
-	  string_assign_str (cmd, path);
-	  string_append (cmd, " ");
-	  string_append (cmd, options);
-	}
-      else
-	{
-	  string_assign_str (cmd, path);
-	  string_append (cmd, " ");
-	}
-      printf ("\n<!-- decoded_url: %s \n\tquery_string: %s-->\n", 
-      	cgi->decoded_url->str, cgi->query_string->str);
-      int i = 0;
-      while (cgi_get_param_by_index (cgi, i++,
-				     name, sizeof (name), value,
-				     sizeof (value)))
-	{
-		if (strcmp (name, ODCGI_SESSION_NAME) == 0)
+		  /* if file: execute */
+		  // The path might be a redirection (no actual link in ..opendomo/root/)
+		  if (!file_is_file (&fs))
 		{
-			// Ignoring session name var ...
+		  snprintf (path, sizeof (path), "/usr/local/opendomo/%s",
+				basename (scriptname));
+		  printf ("\n<!-- debug paths: %s / %s [%s] -->\n", path, path_info,
+			  scriptname);
+		  file_set_filename (&fs, path);
+		  if (!file_is_file (&fs))	// If it's still not a valid path, abort
+			{
+			  odcgi_msg_error (ODCGI_ERROR__SCRIPT_NOT_FOUND,
+				 "The script was not found. "
+				 "Maybe the function you are requiring "
+				 "is not installed in this system");
+			  printf ("<!-- BASENAME: %s -->\n", basename (scriptname));
+			  odcgi_print_footer ("", 0, cgi);
+			  cgi_free (cgi);
+			  return 1;
+			}
 		}
-		else if (strncmp (name, "GUI", 3) == 0)
+		//printf("<!-- debug path: %s -->\n", path);
+		//char *p = strrchr(path, '/');
+		if (has_option /*&& p */ )
 		{
-			// Ignoring GUI param
-		}
-		else if (strncmp (name, "submit_", 7) == 0)
-		{
-			// Ignoring possible submit redirection ...
+			string_assign_str (cmd, path);
+			string_append (cmd, " ");
+			string_append (cmd, options);
 		}
 		else
 		{
-			//for (i = 0; i < sizeof(value); i++){
-			//	if (value[i]=='+') value[i]=' ';
-			//}
-			// Avoid overwritting a defined environment var
-			if (getenv (name) == NULL)
-				setenv (name, value, 1);
-			string_append (cmd, " \"");
-			string_append (cmd, value);
-			string_append (cmd, "\" ");
+			string_assign_str (cmd, path);
+			string_append (cmd, " ");
 		}
-	}
-	string_replace (cmd, "+", " ");
-	string_replace (cmd, "'", "&apos;");
+		printf ("\n<!-- decoded_url: %s \n\tquery_string: %s-->\n", 
+			cgi->decoded_url->str, cgi->query_string->str);
+		int i = 0;
+		while (cgi_get_param_by_index (cgi, i++,
+			name, sizeof (name), value, sizeof (value)))
+		{
+			if (strcmp (name, ODCGI_SESSION_NAME) == 0)
+			{
+				// Ignoring session name var ...
+			}
+			else if (strncmp (name, "GUI", 3) == 0)
+			{
+				// Ignoring GUI param
+			}
+			else if (strncmp (name, "submit_", 7) == 0)
+			{
+				// Ignoring possible submit redirection ...
+			}
+			else
+			{
+				//for (i = 0; i < sizeof(value); i++){
+				//	if (value[i]=='+') value[i]=' ';
+				//}
+				// Avoid overwritting a defined environment var
+				if (getenv (name) == NULL)
+					setenv (name, value, 1);
+				string_append (cmd, " \"");
+				string_append (cmd, value);
+				string_append (cmd, "\" ");
+			}
+		}
+		string_replace (cmd, "+", " ");
+		string_replace (cmd, "'", "&apos;");
 
-     printf ("<!-- cmd (file): %s -->\n", cmd->str);
-      //fflush(stdout); // Force flush, otherwise an error will preceed stdout
-      // Check the returned value of script_exec()
+		printf ("<!-- cmd (file): %s -->\n", cmd->str);
+		//fflush(stdout); // Force flush, otherwise an error will preceed stdout
+		// Check the returned value of script_exec()
 
 
-      int ret = script_exec (cmd->str, "main", &env);
-      if (ret != 0)
-	{
-	  /* else: empty div */
-	  printf ("<div id='main'><p class='error'>%s</p></div>",
-		  ODCGI_ERROR__SCRIPT_NOT_FOUND);
-	}
+		int ret = script_exec (cmd->str, "main", &env);
+		if (ret != 0)
+		{
+			/* else: empty div */
+			printf ("<div id='main'><p class='error'>%s</p></div>",
+				ODCGI_ERROR__SCRIPT_NOT_FOUND);
+		}
     }
-  /* Print scripts */
-  //odcgi_print_script(path); DEPRECATED
+	/* Print scripts */
+	//odcgi_print_script(path); DEPRECATED
 
-  /* HTML end */
-  if (atoi (http_noheader) != 1)
+	/* HTML end */
+	if (atoi (http_noheader) != 1)
     {
       odcgi_print_footer ("", BUTTON_LOGOUT + BUTTON_DEBUG, cgi);
     }
 
-  string_free (cmd);
-  cgi_free (cgi);
-  closelog ();
-  return 0;
+	string_free (cmd);
+	cgi_free (cgi);
+	closelog ();
+	return 0;
 }
-
 // }}}
-
-
-
