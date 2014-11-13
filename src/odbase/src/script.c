@@ -469,6 +469,14 @@ script_process_list_body (char *id, char *desc, char *type, char *extra)
     return;
   }
 
+  else if(strstr (stype, "separator"))
+  {
+	printf ("\t\t\t\t<div id='%s_sep' class='separator' >"
+		"<label id='%s_lbl'>%s</label>\n\t\t\t\t\t",
+		id, id, T (desc));  	
+  	printf("<p>&nbsp;</p></div>\n");
+  }  
+  
   else if(SPELL4 (type, 's', 't', 'r', 'e'))	// stream
   {
     printf ("<li id='%s' class='%s'><b>%s</b><br/>", id, type, desc);
@@ -990,10 +998,10 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
   else if(strstr (stype, "separator"))
   {
   	sepopen=1;
-	printf ("\t\t\t\t<li id='%s_li' class='%s' >"
-		"<label id='%s_lbl' for='%s'>%s</label>\n\t\t\t\t\t",
-		id, cleantype, id, id, T (desc));  	
-  	printf("<p>%s</p></li>\n",extra);
+	printf ("\t\t\t\t<div id='%s_sep' class='separator' >"
+		"<label id='%s_lbl'>%s</label>\n\t\t\t\t\t",
+		id, id, T (desc));  	
+  	printf("<p>&nbsp;</p></div>\n");
   }
 
   else if(strstr (stype, "list"))
