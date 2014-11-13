@@ -16,16 +16,13 @@
 PIDFILE="/var/opendomo/run/cloudaccess.pid"
 TMPFILE="/var/opendomo/tmp/cloudaccess.tmp"
 UIDFILE="/etc/opendomo/uid"
-ADMININFO="/etc/opendomo/udata/admin.info"
 
 do_background() {
 	echo "ON" >$PIDFILE
-	
-	
-	uid=`cat  $UIDFILE `
-	#source /etc/os-release
-	source $ADMININFO
-		
+	uid=`cat  $UIDFILE`
+	source /etc/os-release
+	EMAIL=`grep $user /etc/passwd | awk -F: '{print$5}' | cut -f2 -d"<" | cut -f1 -d">"`
+
 	while test -f $PIDFILE
 	do
 		URL="http://cloud.opendomo.com/activate/index.php?UID=$uid&VER=$VERSION&MAIL=$EMAIL"
@@ -40,7 +37,7 @@ do_background() {
 
 do_start(){
 	log_action_begin_msg "Starting Cloud access service"
-	$0 background > /dev/null &
+	test -f $PIDFILE || $0 background > /dev/null &
 	log_action_end_msg $?
 }
 
@@ -74,7 +71,6 @@ case "$1" in
 		;;
 	stop)
 		do_stop
-		exit 3
 	;;
 	status)
 		do_status
