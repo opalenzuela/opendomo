@@ -1,0 +1,27 @@
+#! /bin/sh
+#desc: Opendomo configuration manager
+
+# Variables
+DIRCONF="/etc/opendomo"
+DEFCONF="/usr/local/opendomo/defaults"
+SYSCONF="/usr/local/opendomo/defaults/system"
+BLACKLIST="network/interfaces group group- gshadow gshadow- shadow shadow- passwd passwd- fstab sudoers sudoers.d VERSION debian_version os-release os-release.orig mtab"
+RSYNCOPTS="--ignore-existing --exclude 'system' --recursive --perms"
+
+# Sync opendomo configuration
+rsync $RSYNCOPTS $DEFCONF $DIRCONF
+
+# Checking blacklist. Files in this list can be used by opendomo
+cd $SYSCONF
+SYSFILES=`find ./ | sed 's/^..//'`
+for file in $SYSFILES; do
+    if test -f $file; then
+        MATCH=`echo $BLACKLIST | grep $file | head -c1`
+        test -z $MATCH || echo "Se borra $file"
+    fi
+done
+
+# Change permissions in system configuration
+for file in *; do
+    test -f $file && cp -r $file /etc/$file && chown -R admin:admin /etc/$file
+done

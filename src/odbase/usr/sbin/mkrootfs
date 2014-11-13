@@ -1,17 +1,10 @@
 #!/bin/sh
 #desc: Save changes permanently
 
-# USAGE:
-#   mkrootfs              Save changes
-#   mkrootfs    reboot    Save changes and reboot system
-#   mkrootfs    restore   Restore default system
-
-# Variables
 IMAGESDIR="/boot/images"
 ROOTIMAGE="$IMAGESDIR/rootfs.img"
 MOUNTDIR="/mnt/rootfs-rw"
 TMPFSDIR="/mnt/tmpfs"
-
 SYNCOPTS="--quiet --archive --exclude-from=/etc/mkrootfs.excludes"
 TEMPFILE="/var/opendomo/tmp/mkrootfs.tmp"
 
@@ -21,15 +14,11 @@ if grep -c1 aufs=no "/proc/cmdline" &>/dev/null; then
     echo
     exit 0
 
+# Check roofs image
 elif ! test -d $IMAGESDIR; then
     echo "#ERRO System device is not mounted, the configuration can't be saved"
     echo
     exit 1
-
-elif [ "$1" = "restore" ]; then
-    # Entering in busy system state
-    echo "Restoring system" > $SYSSTATE
-    #TODO: New restore system required
 
 else
     # Check filesystems before mount
@@ -40,9 +29,6 @@ else
     mkdir -p $MOUNTDIR
     test -d $TMPFSDIR || exit 1
     mount $ROOTIMAGE $MOUNTDIR || exit 1
-
-    # Entering in busy system state
-    # TODO: System busy state is will be in jsaon format
 
     # Copy new files in image
     echo "#LOADING Save system configuration (please wait) ..."
@@ -62,16 +48,4 @@ else
     done
     rmdir $MOUNTDIR 2>/dev/null
     fsck.ext2 -y $ROOTIMAGE &>/dev/null
-fi
-
-# Check reboot system warrant
-if [ "$1" == "reboot" ]; then
-    echo "#> Configuration saved"
-    echo "#INFO Your configuration was saved, rebooting system ..."
-    echo
-    shutdown -r now
-else
-    echo "#> Configuration saved"
-    echo "#INFO Your configuration was saved"
-    echo
 fi
