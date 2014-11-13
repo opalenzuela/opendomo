@@ -469,7 +469,7 @@ script_process_list_body (char *id, char *desc, char *type, char *extra)
     return;
   }
 
-  else if(strstr (stype, "separator"))
+  else if(strstr (type, "separator"))
   {
 	printf ("\t\t\t\t<div id='%s_sep' class='separator' >"
 		"<label id='%s_lbl'>%s</label>\n\t\t\t\t\t",
