@@ -21,7 +21,7 @@ do_background() {
 	echo "ON" >$PIDFILE
 	uid=`cat  $UIDFILE`
 	source /etc/os-release
-	EMAIL=`grep $user /etc/passwd | awk -F: '{print$5}' | cut -f2 -d"<" | cut -f1 -d">"`
+	EMAIL=`grep admin: /etc/passwd | awk -F: '{print$5}' | cut -f2 -d"<" | cut -f1 -d">"`
 
 	while test -f $PIDFILE
 	do
