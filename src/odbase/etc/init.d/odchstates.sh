@@ -18,6 +18,7 @@
 
 do_start () {
     STATEDIR="/etc/opendomo/states/active"
+    STATEPID="/var/opendomo/run/state.pid"
     echo "active" > $STATEPID
 
     # Start services in default state and create pid
