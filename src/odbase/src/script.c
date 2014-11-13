@@ -630,9 +630,9 @@ script_process_action_body (char *id, char *name, char *type)
 			T(name));	
 	} else {
 	    // With the name of the field we can know the target script:
-	    printf ("\t\t\t<button type='submit' name='submit_%s' "\
+	    printf ("\t\t\t<button type='submit' id='submit-%s' name='submit_%s' "\
 	    		" formaction='/cgi-bin/od.cgi/%s'>%s</button>\n",
-		    id, id, T(name));
+		    id, id, id, T(name));
 	}
   }
   else
