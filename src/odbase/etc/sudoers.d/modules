@@ -1,4 +1,0 @@
-Cmnd_Alias      MODULES = /sbin/rmmod, \
-                          /sbin/modprobe  
-
-admin ALL=(ALL) NOPASSWD: MODULES

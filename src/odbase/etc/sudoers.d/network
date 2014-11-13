@@ -1,3 +1,0 @@
-Cmnd_Alias      NETWORK = /sbin/ifconfig
-
-admin ALL=(ALL) NOPASSWD: NETWORK

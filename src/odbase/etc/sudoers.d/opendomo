@@ -1,5 +1,4 @@
-Cmnd_Alias      OPENDOMO = /usr/bin/manage_conf.sh, \
-                           /usr/bin/odservice, \
+Cmnd_Alias      OPENDOMO = /usr/bin/odservice, \
                            /usr/sbin/mkrootfs, \
                            /usr/sbin/passwd, \
                            /usr/sbin/useradd, \

@@ -3,6 +3,6 @@ Cmnd_Alias      DEVICES = /bin/umount, \
                           /sbin/fsck.ext2, \
                           /sbin/fsck.ext3, \
                           /sbin/fsck.ext4, \
-                          /sbin/mkfs.vfat
+                          /sbin/fsck.vfat
 
 admin ALL=(ALL) NOPASSWD: DEVICES
