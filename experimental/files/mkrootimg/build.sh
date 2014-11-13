@@ -144,16 +144,12 @@ configure_all() {
     echo "SUPPORT_URL=http://www.opendomo.com/wiki/index.php?title=P%C3%A1gina_Principal"   >> $TARGET/etc/os-release
     echo "BUG_REPORT_URL=https://github.com/opalenzuela/opendomo/issues"                    >> $TARGET/etc/os-release
 
-    # Delete services (no used anymore)
-#   $CHROOT "$TARGET" /bin/bash -c "insserv -rf mountall-bootclean.sh"
-#   $CHROOT "$TARGET" /bin/bash -c "insserv -rf mountall.sh"
-#   $CHROOT "$TARGET" /bin/bash -c "insserv -rf mtab.sh"
-#   $CHROOT "$TARGET" /bin/bash -c "insserv -rf checkfs.sh"
-#   $CHROOT "$TARGET" /bin/bash -c "insserv -rf checkroot-bootclean.sh"
-#   $CHROOT "$TARGET" /bin/bash -c "insserv -rf checkroot.sh"
-#   $CHROOT "$TARGET" /bin/bash -c "insserv -rf mountnfs-bootclean.sh"
-#   $CHROOT "$TARGET" /bin/bash -c "insserv -rf mountnfs.sh"
-#   $CHROOT "$TARGET" /bin/bash -c "insserv -rf hwclock.sh"
+    # Delete services
+    $CHROOT "$TARGET" /bin/bash -c "insserv -rf checkfs.sh"
+    $CHROOT "$TARGET" /bin/bash -c "insserv -rf checkroot-bootclean.sh"
+    $CHROOT "$TARGET" /bin/bash -c "insserv -rf checkroot.sh"
+    $CHROOT "$TARGET" /bin/bash -c "insserv -rf mountnfs-bootclean.sh"
+    $CHROOT "$TARGET" /bin/bash -c "insserv -rf mountnfs.sh"
 
     # Clean packages and apt sources
     $CHROOT $TARGET /bin/bash -c "apt-get clean"

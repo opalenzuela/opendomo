@@ -50,6 +50,7 @@ case $1 in
     ;;
     export )
         echo -e "########## Exporting OpenDomoOS to $2 ##########"
+        echo
         create_image
         export_to_$2
         echo
