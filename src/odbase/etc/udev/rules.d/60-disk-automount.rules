@@ -19,7 +19,7 @@ ACTION=="add", RUN+="/usr/bin/oddiskevent add $env{ID_FS_LABEL}"
 
 # Clean up after removal
 ACTION=="remove", RUN+="/bin/umount -l /dev/%k", RUN+="/bin/rmdir /media/$env{mount_point}"
-ACTION=="add", RUN+="/usr/bin/oddiskevent remove $env{mount_point}"
+ACTION=="remove", RUN+="/usr/bin/oddiskevent remove $env{mount_point}"
 
 # Exit
 LABEL="mnt_auto_mount_end"
