@@ -1,0 +1,33 @@
+#!/bin/sh
+#desc: Opendomo services manager
+
+test -z $2 && echo "Usage: $0 $service [ start | stop | status ]"
+DAEMONSDIR="/usr/local/opendomo/daemons"
+BLACKLIST="motd mtab.sh checkfs.sh checkroot-bootclean.sh checkroot.sh hwclock.sh"
+INITDIR="/etc/init.d"
+
+# Check plugins daemons
+cd $DAEMONSDIR
+for script in *; do
+    if [ `echo $BLACKLIST | grep -w $script` ]; then
+        # If script is in blacklist, can be used by plugins, so clean.
+        echo "#ERROR $script is service in blacklist, can be used by plugins, cleaning ..."
+        rm $script &>/dev/null
+    else
+        # This is a survivor, remove sysvinit control to the service
+        insserv -r $script 2>/dev/null
+    fi
+done
+
+# Change service state
+if test -f $INITDIR/$1; then
+    # This a system service, only root
+    [ `whoami` = "root"  ] && service $1 $2
+elif test -f $DAEMONSDIR/$1; then
+    # This a opendomo service, start with admin user
+    if   [ `whoami` = "root" ]; then
+        sudo -u admin $DAEMONSDIR/$1 $2
+    elif [ `whoami` = "admin" ]; then
+        $DAEMONSDIR/$1 $2
+    fi
+fi

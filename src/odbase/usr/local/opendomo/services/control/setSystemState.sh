@@ -3,27 +3,35 @@
 #package:odbase
 #type:local
 
-# Checks
-if test `whoami` = "root"; then
-    echo "#ERR This script cannot be called as root!"
-    exit 1
-fi
-
-# Always check blacklist
-sudo odstatesmng blacklist
+# Variables
+DAEMONSDIR="/usr/local/opendomo/daemons"
+CONFIGSDIR="/etc/opendomo/states"
+STATEDIR="$CONFIGSDIR/$1"
+STATEPID="/var/opendomo/run/states.pid"
+INITDIR="/etc/init.d"
 
 # With parameter, execute changes
 if test -z $2; then
     if ! test -z $1; then
-        # Change system state
-        sudo odstatesmng state $1 &>/dev/null
+       # Change system state
+       cd $DAEMONSDIR
+       for daemon in *; do
+           # Start/Stop service in state
+           if test -f $STATEDIR/$daemon; then
+               sudo odservice $daemon start 2>/dev/null
+           else
+               sudo odservice $daemon stop  2>/dev/null
+           fi
+       done
+       # Change state in pidfile
+       echo "$1" > $STATEPID
     fi
 else
-    # Start / Stop service, Ignoring boot services
+    # Start / Stop service
     if ! test -z $1 && [ "$2" = "on" ]; then
-        sudo odstatesmng service $1 start &>/dev/null
+        sudo odservice $1 start &>/dev/null
     elif ! test -z $1 && [ "$2" = "off" ]; then
-        sudo odstatesmng service $1 stop  &>/dev/null
+        sudo odservice $1 stop  &>/dev/null
     fi
 fi
 
@@ -57,8 +65,7 @@ echo "form:`basename $0`"
 cd $DAEMONSDIR
 for service in *; do
     # Check service information and status
-    DESC=`grep "Name:" $service | awk -F: '{print$2}'`
-    test -z "$DESC" && DESC=`grep "# Short-Description" $service | cut -f2 -d:`
+    DESC=`grep "# Short-Description" $service | cut -f2 -d:`
 
     if ./$service status >/dev/null 2>/dev/null ; then
         STATUS=on

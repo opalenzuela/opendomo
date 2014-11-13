@@ -17,34 +17,32 @@
 . /lib/lsb/init-functions
 
 do_start () {
-	DEFSTATE="active"
-	STATEEXEC="/usr/bin/odstatesmng"
-	DAEMONDIR="/usr/local/opendomo/daemons"
-	INITRDDIR="/etc/init.d/"
+    STATEDIR="/etc/opendomo/states/active"
+    echo "active" > $STATEPID
 
-	# Starting services in default state
-	log_daemon_msg "Loading default state"
-	echo -n " $DEFSTATE"
-	log_end_msg $?
-	$STATEEXEC state $DEFSTATE
+    # Start services in default state and create pid
+    cd $STATEDIR
+    for daemon in *; do
+        odservice $daemon start
+    done
 }
 
 case "$1" in
-  start|"")
-	do_start
+    start|"")
+        do_start
         ;;
-  restart|reload|force-reload)
+    restart|reload|force-reload)
         echo "Error: argument '$1' not supported" >&2
         exit 3
         ;;
-   status)
+    status)
         echo "Error: argument '$1' not supported" >&2
         exit 3
         ;;
- stop)
+    stop)
         # No-op
         ;;
-  *)
+    *)
         echo "Usage: odchstates.sh [start]" >&2
         exit 3
         ;;

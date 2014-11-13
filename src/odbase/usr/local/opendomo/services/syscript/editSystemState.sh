@@ -36,8 +36,7 @@ case $2 in
             cd $DAEMONSDIR
             for service in *; do
                 # Check service information and status
-                DESC=`grep "Name:" $service | awk -F: '{print$2}'`
-                test -z "$DESC" && DESC=`grep "# Short-Description" $service | cut -f2 -d:`
+                DESC=`grep "# Short-Description" $service | cut -f2 -d:`
 
                 if ./$service status >/dev/null 2>/dev/null ; then
                     STATUS=on
