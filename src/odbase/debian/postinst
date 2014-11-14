@@ -23,6 +23,11 @@ ln -fs /usr/local/opendomo/services/syscript/logEvent.sh /usr/bin/logevent
 su -c /usr/bin/createwrappers.sh admin &>/dev/null
 odconfmng &>/dev/null
 
+# Creating default states
+mkdir -p /etc/opendomo/states/sleeping /etc/opendomo/states/secured
+touch /etc/opendomo/states/sleeping/opendomo-apt /etc/opendomo/states/secured/opendomo-apt
+touch /etc/opendomo/states/active/opendomo-apt /etc/opendomo/states/active/ssh
+
 # Add modules and create new initramfs image
 [ `grep -c1 nls_cp437 /etc/initramfs-tools/modules` -eq 1 ] || echo "nls_cp437" >> /etc/initramfs-tools/modules
 [ `grep -c1 nls_utf8  /etc/initramfs-tools/modules` -eq 1 ] || echo "nls_utf8"  >> /etc/initramfs-tools/modules
