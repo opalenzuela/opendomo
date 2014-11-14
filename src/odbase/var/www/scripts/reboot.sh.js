@@ -2,7 +2,8 @@ setTimeout(checkIfRestarted,5000); // First wait for 5 seconds
 
 function checkIfRestarted() {
 	var url = "/data/status.json";
- 
+	//$("#reboot_frm").html("<center></center>")
+	
 	$.post(url)
 	.done(function(data) {
 		//TODO: check the contents of "data"
