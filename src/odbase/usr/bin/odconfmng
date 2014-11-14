@@ -5,23 +5,27 @@
 DIRCONF="/etc/opendomo"
 DEFCONF="/usr/local/opendomo/defaults"
 SYSCONF="/usr/local/opendomo/defaults/system"
-BLACKLIST="network/interfaces group group- gshadow gshadow- shadow shadow- passwd passwd- fstab sudoers sudoers.d VERSION debian_version os-release os-release.orig mtab"
+BLACKLIST="group group- gshadow gshadow- shadow shadow- passwd passwd- sudoers sudoers.d debian_version os-release os-release.orig mtab"
 RSYNCOPTS="--ignore-existing --exclude 'system' --recursive --perms"
 
 # Sync opendomo configuration
-rsync $RSYNCOPTS $DEFCONF $DIRCONF
+rsync $RSYNCOPTS $DEFCONF/* $DIRCONF
+chown -R admin:admin /etc/opendomo/
 
-# Checking blacklist. Files in this list can be used by opendomo
+# Checking blacklist (files in this list can be used by opendomo) and copy survivors
 cd $SYSCONF
 SYSFILES=`find ./ | sed 's/^..//'`
 for file in $SYSFILES; do
-    if test -f $file; then
-        MATCH=`echo $BLACKLIST | grep $file | head -c1`
-        test -z $MATCH || echo "Se borra $file"
+    if [ `echo "$BLACKLIST" | grep -c "$file"` -eq 1 ]; then
+        # File or directory in blacklist, will be deleted
+        echo "$file is deleted, can be used by plugins" & rm -r "$file"
+    else
+        if   test -f "$file"; then
+            # Only copy root files (other files already copied)
+            [ `ls -n "/etc/$file" | awk '{print$3}'` -eq 0 ] && cp -pr "$file" "/etc/$file"
+        elif test -d "$file"; then
+            # When directory is emply force permissions in all files in directory
+            test -e $file/* || chown -R admin:admin "/etc/$file"
+        fi
     fi
-done
-
-# Change permissions in system configuration
-for file in *; do
-    test -f $file && cp -r $file /etc/$file && chown -R admin:admin /etc/$file
 done
