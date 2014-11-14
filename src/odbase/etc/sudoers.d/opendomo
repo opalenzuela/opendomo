@@ -1,4 +1,5 @@
 Cmnd_Alias      OPENDOMO = /usr/bin/odservice, \
+                           /usr/bin/odconfmng, \
                            /usr/sbin/mkrootfs, \
                            /usr/sbin/passwd, \
                            /usr/sbin/useradd, \
