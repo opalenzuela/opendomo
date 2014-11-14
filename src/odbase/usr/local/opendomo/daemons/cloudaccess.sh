@@ -20,13 +20,12 @@ UIDFILE="/etc/opendomo/uid"
 do_background() {
 	echo "ON" >$PIDFILE
 	uid=`cat  $UIDFILE`
-	source /etc/os-release
+	ODVER=`apt-cache show odbase | grep Version| cut -f2 -d' '`
 	EMAIL=`grep admin: /etc/passwd | awk -F: '{print$5}' | cut -f2 -d"<" | cut -f1 -d">"`
 
 	while test -f $PIDFILE
 	do
-		URL="http://cloud.opendomo.com/activate/index.php?UID=$uid&VER=$VERSION&MAIL=$EMAIL"
-		#URL="http://cloud.opendomo.com/activate/index.php?UID=$uid&MAIL=$EMAIL"
+		URL="http://cloud.opendomo.com/activate/index.php?UID=$uid&VER=$ODVER&MAIL=$EMAIL"
 		wget -q -O $TMPFILE $URL 2>/dev/null
 		sleep 600
 	done
