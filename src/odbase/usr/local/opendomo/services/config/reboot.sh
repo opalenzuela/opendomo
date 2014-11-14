@@ -10,4 +10,4 @@ echo "# Rebooting ... Please wait"
 echo
 echo "actions:"
 echo
-/usr/local/bin/reboot.sh >/dev/null
+sudo shutdown -r now
