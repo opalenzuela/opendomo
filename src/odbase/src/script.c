@@ -382,27 +382,29 @@ script_process_form_footer (char *cmdid)
 void
 script_process_list_header (char *id, char *title, char *type)
 {
-  if(gui == html)
-  {
-    // Soporte Multi-formulario
-    if(strcmp (type, "simple") != 0)
-      printf ("\t<div class='tabbertab' id='%s_div'>\n", id);
-    else
-      printf ("\t<div id='%s_div'>\n", id);
+	if(gui == html)
+	{
+		if(type[0] == 0) strcpy(type,"listview");
 
-    printf ("\t<form id='%s_frm' action='%s.sh' method='POST'>\n", id, id);
-    printf ("\t\t<fieldset class='%s'>\n", type);
-    if(title[0] != 0)
-    {
-      printf ("\t\t<h2 id='%s_lgnd_h2'>%s</h2>\n", id, legend);
-      printf ("\t\t\t<legend id='%s_lgnd'>%s</legend>\n", id, title);
-    }
-    printf ("\t\t\t<ul id='%s'>\n", id);
-  }
-  else
-  { /** XML OUTPUT **/
-    printf ("\t<gui action='%s.sh' title='%s'>\n", id, title);
-  }
+		// Soporte Multi-formulario
+		if(strcmp (type, "simple") != 0) 
+		{
+			printf ("\t<div class='tabbertab' id='%s_div'>\n", id);
+		} else {
+			printf ("\t<div id='%s_div'>\n", id);
+		}
+		
+		printf ("\t<form id='%s_frm' action='%s.sh' method='POST'>\n", id, id);
+		printf ("\t\t<fieldset class='%s'>\n", type);
+		if(title[0] != 0)
+		{
+			printf ("\t\t<h2 id='%s_lgnd_h2'>%s</h2>\n", id, legend);
+			printf ("\t\t\t<legend id='%s_lgnd'>%s</legend>\n", id, title);
+		}
+		printf ("\t\t\t<ul id='%s'>\n", id);
+	} else { /** XML OUTPUT **/
+		printf ("\t<gui action='%s.sh' title='%s'>\n", id, title);
+	}
 }
 
 // }}}
