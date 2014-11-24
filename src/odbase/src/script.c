@@ -477,6 +477,7 @@ script_process_list_body (char *id, char *desc, char *type, char *extra)
 		"<label id='%s_lbl'>%s</label>\n\t\t\t\t\t",
 		id, id, T (desc));  	
   	printf("<p>&nbsp;</p></div>\n");
+	return;
   }  
   
   else if(SPELL4 (type, 's', 't', 'r', 'e'))	// stream
