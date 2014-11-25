@@ -7,7 +7,7 @@
 DAEMONSDIR="/usr/local/opendomo/daemons"
 CONFIGSDIR="/etc/opendomo/states"
 STATEDIR="$CONFIGSDIR/$1"
-STATEPID="/var/opendomo/run/states.pid"
+STATEPID="/var/opendomo/run/state.pid"
 INITDIR="/etc/init.d"
 
 # With parameter, execute changes
@@ -39,8 +39,8 @@ fi
 STATESDIR="/etc/opendomo/states"
 DAEMONSDIR="/usr/local/opendomo/daemons"
 INITRDDIR="/etc/init.d"
-CURSTATE=`cat /var/opendomo/run/state.pid`
-STATES=`ls -1 "$STATESDIR" | grep -v $CURSTATE | tr '\n' "," | sed 's/.$//'`
+CURSTATE=`cat $STATEPID`
+#STATES=`ls -1 "$STATESDIR" | grep -v $CURSTATE | tr '\n' "," | sed 's/.$//'`
 
 # Available states
 echo "#> Change state"
