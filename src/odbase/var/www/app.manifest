@@ -1,0 +1,22 @@
+CACHE MANIFEST
+# This is a comment.
+# Cache manifest version 0.0.1
+# If you change the version number in this comment,
+# the cache manifest is no longer byte-for-byte
+# identical.
+ 
+images/logo.png
+images/logo48.png
+ 
+NETWORK:
+# All URLs that start with the following lines
+# are whitelisted.
+http://www.opendomo.com/
+http://es.opendomo.org/
+ 
+CACHE:
+# Additional items to cache.
+#demoimages/stonessmall.jpg
+ 
+FALLBACK:
+#demoimages/currentImg.jpg images/stockImage.jpg

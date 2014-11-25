@@ -192,7 +192,7 @@ odcgi_print_header (char *scriptname, const char *username)
   else
     {
       printf (W3C_DOCTYPE
-		"<html lang=\"%s\">\n"
+		"<html manifest='/app.manifest' lang='%s'>\n"
 		"   <head>\n"
 		"\t<meta http-equiv='X-UA-Compatible' content='IE=Edge'/>\n"
 		"\t<meta name='apple-mobile-web-app-capable' content='yes'/>\n"
