@@ -39,7 +39,7 @@ fi
 STATESDIR="/etc/opendomo/states"
 DAEMONSDIR="/usr/local/opendomo/daemons"
 INITRDDIR="/etc/init.d"
-CURSTATE=`cat /var/opendomo/run/states.pid`
+CURSTATE=`cat /var/opendomo/run/state.pid`
 STATES=`ls -1 "$STATESDIR" | grep -v $CURSTATE | tr '\n' "," | sed 's/.$//'`
 
 # Available states
@@ -49,8 +49,8 @@ cd $STATESDIR
 for state in *; do
     if test -d $state; then
         if [ "$state" = "$CURSTATE" ]; then
-            echo "	$state	$state	state selected"
-	else
+            echo "	-$state	$state	state selected"
+		else
             echo "	-$state	$state	state"
         fi
     fi
