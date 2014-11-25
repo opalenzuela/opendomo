@@ -199,6 +199,7 @@ odcgi_print_header (char *scriptname, const char *username)
 		"\t<link rel='apple-touch-icon' href='/apple-touch-icon.png'/>\n"
 		"\t<meta http-equiv='content-type' content='text/html; charset=utf-8'>\n"
 		"\t<meta name='viewport' content='width=device-width, maximum-scale=1.0, maximum-scale=1.0, user-scalable=0' />\n"
+		"\t<meta name='msapplication-config' content='/IEconfig.xml' />\n"
 		"\t<link rel='shortcut icon' href='/apple-touch-icon.png' type='image/x-icon'/>\n"
 		"\t<link rel='stylesheet' type='text/css' media='screen' href='/cgi-bin/css.cgi?%s'/>\n"
 		"\t<link rel='stylesheet' type='text/css' href='/css/%s.css'/>\n"
@@ -206,20 +207,20 @@ odcgi_print_header (char *scriptname, const char *username)
 		"\t<script type='text/JavaScript' src='/scripts/jquery.flot.min.js'></script>\n"
 		"\t<script type='text/JavaScript' src='/scripts/jquery.flot.pie.min.js'></script>\n"
 		"\t<!--[if IE]><script language='javascript' src='/scripts/excanvas.js' type='text/javascript'></script><![endif]-->\n"
-		"\t<script type='text/javascript' src='/scripts/tabber.js'></script>\n"
+		//"\t<script type='text/javascript' src='/scripts/tabber.js'></script>\n"
 		"\t<script type='text/javascript' src='/scripts/datepicker/js/datepicker.js'></script>\n"
 		"\t<link href='/scripts/datepicker/css/datepicker.css' rel='stylesheet' type='text/css' />\n"
 		"\t<script type='text/javascript' src='/scripts/scrollbars/jquery.mousewheel.js'></script>\n"
 		"\t<script type='text/javascript' src='/scripts/scrollbars/jquery.jscrollpane.min.js'></script>\n"
 		"\t<script type='text/JavaScript' src='/cgi-bin/js.cgi'></script>\n"
 		"\t<script type='text/JavaScript' src='/scripts/%s.js'></script>\n"
-		"\t<script type='text/JavaScript' src='/cgi-bin/%s'></script>\n"	
+		//"\t<script type='text/JavaScript' src='/cgi-bin/%s'></script>\n"	
 		"\t<title>OpenDomoOS</title>\n"		
 		"   </head>\n"
 		"   <body>\n"
 		"   <div id='logo_od'><img src='/images/default/logo.png'/>\n"
 		"\t<a href='/cgi-bin/od.cgi'>Home</a></div>\n",
-		lang, username, scriptname, scriptname, scriptname);
+		lang, username, scriptname, scriptname);
     }
 
   char theme[16] = "unknown";
