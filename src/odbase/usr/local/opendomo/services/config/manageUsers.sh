@@ -15,14 +15,14 @@ else
     echo "#> Available users"
     echo "list:`basename $0`    selectable iconlist"
     for user in `grep "/bin/bash" /etc/passwd | grep -v "root:" | grep -v "admin:"`; do
-        USER=`grep $user /etc/passwd | awk -F: '{print$1}'`
+        username=`grep $user /etc/passwd | awk -F: '{print$1}'`
         INFO=`grep $user /etc/passwd | awk -F: '{print$5}'`
-        echo "  -$USER  $INFO   user"
+        echo "  -$username	$INFO   user"
     done
-	if test -z "$USER"; then
+	if test -z "$username"; then
 		echo "#INFO No users configured yet"
 	fi
     echo "action:"
-    echo "      userModify.sh   Add"
+    echo "	userModify.sh	Add"
     echo
 fi
