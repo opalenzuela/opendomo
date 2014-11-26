@@ -3,6 +3,8 @@
 #type:multiple
 #package:odbase
 
+# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+
 USER="$1"
 FULLNAME="$2"
 EMAIL="$3"
