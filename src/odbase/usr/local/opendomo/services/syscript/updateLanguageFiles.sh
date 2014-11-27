@@ -37,6 +37,6 @@ then
 else
 	echo "#INFO Community files not available"
 fi
-wget -q "$URLTRANS?lang=all" -O $CFGPATH/available 
+wget -q http://cloud.opendomo.com/babel/trans.php?lang=all -O - | grep -v  '<' > $CFGPATH/available 
 chown admin $LPATH/* 2>/dev/null
 echo
