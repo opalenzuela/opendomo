@@ -66,15 +66,16 @@ build_rootstrap() {
 create_packages() {
     # Clean old packages
     rm -r $ROOTSTDIR/tmp/* 2>/dev/null
-    for pkg in $ODPKG; do
-        # Copy package into rootstrap and build
-        cp -r $ODPKGDIR/$pkg $ROOTSTDIR/tmp/ 2>/dev/null
-        if $CHROOT "$ROOTSTDIR" /bin/bash -c "cd /tmp/$pkg && dpkg-buildpackage 2>/dev/null >/dev/null" &>/dev/null; then
-            echo -ne "(${DONE}$pkg${NORL}) "
-        else
-            echo -ne "(${ERRO}$pkg${NORL}) "
-        fi
-    done
+    #for pkg in $ODPKG; do
+	pkg="odbase"
+	# Copy package into rootstrap and build
+	cp -r $ODPKGDIR/$pkg $ROOTSTDIR/tmp/ 2>/dev/null
+	if $CHROOT "$ROOTSTDIR" /bin/bash -c "cd /tmp/$pkg && dpkg-buildpackage 2>/dev/null >/dev/null" &>/dev/null; then
+		echo -ne "(${DONE}$pkg${NORL}) "
+	else
+		echo -ne "(${ERRO}$pkg${NORL}) "
+	fi
+    #done
 
     # Copy packages to export directory
     cp $ROOTSTDIR/tmp/*.deb $EXPORTDIR/ 2>/dev/null
@@ -97,7 +98,7 @@ install_packages() {
     fi
 
     # Install opendomo packages
-    for deb in `ls -r1 $ROOTFSDIR/tmp/*.deb 2>/dev/null`; do
+    for deb in `ls -r1 $ROOTFSDIR/tmp/odbase*.deb 2>/dev/null`; do
         PKG=`basename $deb`
         NAME=`echo $PKG | cut -f1 -d'_'`
         if $CHROOT "$ROOTFSDIR" /bin/bash -c "dpkg -i tmp/$PKG" &>/dev/null; then
