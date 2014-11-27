@@ -23,3 +23,7 @@ echo "actions:"
 echo "	goback	Previous"
 echo "	managePlugins.sh	Continue"
 echo
+
+if  ! test -z "$username"; then
+	# Save and restart (only if invoked with parameters)
+fi
