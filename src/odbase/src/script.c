@@ -199,6 +199,10 @@ script_process_comments (const char *buf)
 		{
 			printf ("\t<p class='info'>%s</p>\n", T (buf += 5));	
 		}
+		else if(SPELL3 (buf, 'T', 'I', 'P'))
+		{
+			printf ("\t<p class='tooltip tip'>%s</p>\n", T (buf += 4));	
+		}		
 		else if(SPELL3 (buf, 'L', 'O', 'A'))
 		{
 			// The page might be slow at loading. Display a "loading" banner ...
@@ -214,26 +218,7 @@ script_process_comments (const char *buf)
 		{
 			printf ("\t<p class='link'>"
 			 "<a href='%s' target='_blank'>%s</a></p>\n", buf += 4, buf);
-		}
-		else if(SPELL3 (buf, 'T', 'I', 'P'))
-		{
-			for (int i=4;i<100;i++) 
-			{
-				if (buf[i]==')'|| buf[i]==0){
-					i++;
-					printf ("\t<div id='%s_tt' class='tooltip'>%s</div>\n", 
-						tipname, T (buf+=i));
-					printf ("<script>\n"
-						"$(\"#%s_lbl\").on('mouseenter',function(){showTT('%s');})\n"
-						"$(\"#%s_lbl\").on('mouseleave',function(){hideTT('%s');})\n"
-						"</script>",tipname, tipname, tipname, tipname); 
-					return;		
-				} else {
-					tipname[i-4] = buf[i];
-					tipname[i-3] = 0;
-				}
-			}
-		}			 
+		}		 
 		else if(buf[0] == '>')
 		{
 			sstrncpy (legend, T (buf += 1), sizeof (legend));
