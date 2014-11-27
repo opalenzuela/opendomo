@@ -29,7 +29,7 @@ source $FUNCDIR/fct_vars
 if test -z "$1"; then
     grep "^##" $0 | sed 's/##//'
     exit 1
-elif [ "$1" = "update" ] && test -x /usr/bin/git; then
+elif [ "$1" = "update" ] &&  ! test -x /usr/bin/git; then
     echo -e "[${ERRO} ERROR ${NORL}] $pkg You need install git to update SDK"
     exit 1
 elif [ "$1" = "build" ] && test -z $2; then
@@ -61,7 +61,7 @@ elif [ "$2" = "sd" ] && test -z $3; then
 fi
 
 if [ "$1" = "update" ]; then
-    $FUNCDIR_fh_sdk update
+	git pull
 else
     sudo $FUNCDIR/fct_main $1 $2 $3
 fi
