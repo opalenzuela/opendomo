@@ -237,7 +237,7 @@ odcgi_print_header (char *scriptname, const char *username)
 		fclose (f);
     }
 
-  char *ua = getenv ("HTTP_USER_AGENT");
+ /* char *ua = getenv ("HTTP_USER_AGENT");
   if (ua)
     {
       if (strstr (ua, "iPhone") ||
@@ -245,7 +245,7 @@ odcgi_print_header (char *scriptname, const char *username)
 	  strstr (ua, "iPad") || strstr (ua, "Android"))
 	strcpy (theme, "iphone");
     }
-
+*/
   printf ("<input type='hidden' id='theme-active' value='%s'/>\n", theme);
 }
 
@@ -321,8 +321,6 @@ odcgi_print_footer (const char *msg, int buttons, cgi_t * cgi)
 void
 odcgi_print_login_form (const char *message, const char *username)
 {
-  //! @todo Use a call to /usr/bin/login.sh instead of this function
-  //script_exec("/usr/bin/login.sh", "loginform", &env);
   char username_label[64] = "";
   char password_label[64] = "";
   char message_label[100] = "";
@@ -884,8 +882,8 @@ main (int argc, char *argv[])
    *  + admin has root privileges
    *  + normal user has Linux privileges
    * --------------------------------------------------------------------- */
-  syslog (LOG_NOTICE, "[odcgi] user: %s, uid: %d, guid: %d\n",
-	  env.user, getuid (), getgid ());
+	syslog (LOG_NOTICE, "[odcgi] user: %s, uid: %d, guid: %d\n",
+		env.user, getuid (), getgid ());
 
 	/* NO USER MANAGEMENT FUNCTIONS IN
   // adds a new user 
@@ -916,25 +914,25 @@ main (int argc, char *argv[])
   /* Privilege separation: drop root privileges */
 //   syslog(LOG_NOTICE, "set session %s\n", http_session);
 //   syslog(LOG_NOTICE, "[odcgi] session_set_ids user: %s\n", env.user);
-  session_set_ids (env.user);
-  syslog (LOG_NOTICE, "[odcgi] dropped privileges user: %s, uid: %d, guid: %d\n",
-	  env.user, getuid (), getgid ());
+	session_set_ids (env.user);
+	syslog (LOG_NOTICE, "[odcgi] dropped privileges user: %s, uid: %d, guid: %d\n",
+		env.user, getuid (), getgid ());
   
 
   /* File reference with user permissions applied */
-  if (strlen (http_getfile) > 5)
+	if (strlen (http_getfile) > 5)
     {
-      char buffer[1024] = "/media/";
-      strcat (buffer, http_getfile);
-      if (http_send_file (buffer))
-	{
-	  cgi_free (cgi);
-	  return 0;
-	}
-      else
-	{
-	  //! @todo Mostrar error
-	}
+		char buffer[1024] = "/media/";
+		strcat (buffer, http_getfile);
+		if (http_send_file (buffer))
+		{
+			cgi_free (cgi);
+			return 0;
+		}
+		else
+		{
+		//! @todo Mostrar error
+		}
     }
 
 
@@ -1048,58 +1046,57 @@ main (int argc, char *argv[])
 	}
 
 
-  /* Check PATH variable */
-  if (strlen (path_info) == 0)
-    strcpy (path_info, "/");
+	/* Check PATH variable */
+	if (strlen (path_info) == 0)
+		strcpy (path_info, "/");
 
-  /* filters */
-  if (!match
-      (path_info,
-       "^/[a-záéíóúàèäëïöüñçA-ZÁÉÍÓÚÀÈÄËÏÖÜÑÇ0-9_/]*\\.{0,1}[a-záéíóúàèäëïöüñçA-ZÁÉÍÓÚÀÈÄËÏÖÜÑÇ0-9_/+ =?:]*$"))
+	/* filters */
+	if (!match(path_info,
+		"^/[a-záéíóúàèäëïöüñçA-ZÁÉÍÓÚÀÈÄËÏÖÜÑÇ0-9_/]*\\.{0,1}[a-záéíóúàèäëïöüñçA-ZÁÉÍÓÚÀÈÄËÏÖÜÑÇ0-9_/+ =?:]*$"))
     {
-      odcgi_print_header ("error", env.user);
-      syslog (LOG_ERR, "%s\n", ODCGI_ERROR__INVALID_PATH);
-      odcgi_msg_error (ODCGI_ERROR__INVALID_PATH,
-      	"Invalid character found in the command.");
-      printf ("\n<!-- PATH_INFO: %s-->\n", path_info);
-      odcgi_print_footer ("", 0, cgi);
-      cgi_free (cgi);
-      return -1;
+		odcgi_print_header ("error", env.user);
+		syslog (LOG_ERR, "%s\n", ODCGI_ERROR__INVALID_PATH);
+		odcgi_msg_error (ODCGI_ERROR__INVALID_PATH,
+		"Invalid character found in the command.");
+		printf ("\n<!-- PATH_INFO: %s-->\n", path_info);
+		odcgi_print_footer ("", 0, cgi);
+		cgi_free (cgi);
+		return -1;
     }
 
-  int err = 0;
+	int err = 0;
 
-  char *param_regex = "[$;'\\\"]";
-  if (strstr (cgi_get_query_string (cgi), ".."))
-    err = 1;
-  else if (strstr (cgi_get_decoded_url (cgi), ".."))
-    err = 2;
-  else if (strlen (cgi_get_query_string (cgi)) > 0 &&
-	   match (cgi_get_query_string (cgi), param_regex))
-    err = 3;
-  else if (strlen (cgi_get_decoded_url (cgi)) > 0 &&
-	   match (cgi_get_decoded_url (cgi), param_regex))
-    err = 4;
+	char *param_regex = "[$;'\\\"]";
+	if (strstr (cgi_get_query_string (cgi), ".."))
+		err = 1;
+	else if (strstr (cgi_get_decoded_url (cgi), ".."))
+		err = 2;
+	else if (strlen (cgi_get_query_string (cgi)) > 0 &&
+		match (cgi_get_query_string (cgi), param_regex))
+		err = 3;
+	else if (strlen (cgi_get_decoded_url (cgi)) > 0 &&
+		match (cgi_get_decoded_url (cgi), param_regex))
+		err = 4;
 
-  if (err!=0)
+	if (err!=0)
     {
-      odcgi_print_header ("error", env.user);
-      syslog (LOG_ERR, "%s\n", ODCGI_ERROR__INVALID_PATH);
-      odcgi_msg_error (ODCGI_ERROR__INVALID_PATH,
-		 "Invalid character found in the parameters.");
-      printf ("\n<!-- PATH ERROR: %d (not allowed) \n\t%s \n\t %s -->\n", 
-      	err,
-      	cgi_get_query_string (cgi),
-      	cgi_get_decoded_url (cgi));
-      odcgi_print_footer ("", 0, cgi);
-      cgi_free (cgi);
-      return -1;
+		odcgi_print_header ("error", env.user);
+		syslog (LOG_ERR, "%s\n", ODCGI_ERROR__INVALID_PATH);
+		odcgi_msg_error (ODCGI_ERROR__INVALID_PATH,
+			"Invalid character found in the parameters.");
+		printf ("\n<!-- PATH ERROR: %d (not allowed) \n\t%s \n\t %s -->\n", 
+			err,
+			cgi_get_query_string (cgi),
+			cgi_get_decoded_url (cgi));
+		odcgi_print_footer ("", 0, cgi);
+		cgi_free (cgi);
+		return -1;
     }
 
-  // If PATH is not modified, use the default path in CONF_DIR.
-  if (path[0] == 0)
+	// If PATH is not modified, use the default path in CONF_DIR.
+	if (path[0] == 0)
     {
-      snprintf (path, sizeof (path), "%s/%s", OD_CFG_ROOT_DIR, path_info);
+		snprintf (path, sizeof (path), "%s/%s", OD_CFG_ROOT_DIR, path_info);
     }
 
   /* root directory */
@@ -1116,22 +1113,22 @@ main (int argc, char *argv[])
     }
 
 
-  char name[256 + len];
-  char value[256 + len];
-  char prename[256 + len];
-  char *shname;
-  string_t *cmd = string_alloc ("");
+	char name[256 + len];
+	char value[256 + len];
+	char prename[256 + len];
+	char *shname;
+	string_t *cmd = string_alloc ("");
 
-  file_t fs;
-  strcpy (scriptname, basename (path));
+	file_t fs;
+	strcpy (scriptname, basename (path));
 
-  /* HTML-head begin */
-  odcgi_print_header (scriptname, env.user);
+	/* HTML-head begin */
+	odcgi_print_header (scriptname, env.user);
 
-  printf ("<!-- path: %s, path_info: %s-->\n", path, path_info);
+	printf ("<!-- path: %s, path_info: %s-->\n", path, path_info);
 
-  /* Check NOHEADER */
-  if ((gui == html) && (atoi(http_noheader) != 1))
+	/* Check NOHEADER */
+	if ((gui == html) && (atoi(http_noheader) != 1))
     {
 		printf("<div id='header'>");
 		printf("	<ul id='categ' class='categories'>");
@@ -1145,28 +1142,28 @@ main (int argc, char *argv[])
 		printf("	</ul>");
 		printf("</div>");
 	  
-	  //string_assign_str (cmd, "/usr/bin/categories.sh ");
-      //string_append (cmd, path_info);
+		//string_assign_str (cmd, "/usr/bin/categories.sh ");
+		//string_append (cmd, path_info);
 
-      //script_exec (cmd->str, "header", &env);
-      //if (strlen (path_info) < 2)
-	//{
-	//  printf
-	//    ("  <div class='applicationTitle'><h1>OpenDomo</h1></div>\n");
-	//}    else	{
-	//  printf ("  <div class='root'><a href='" OD_URI "/'> </a></div>\n");
-	//}
+		//script_exec (cmd->str, "header", &env);
+		//if (strlen (path_info) < 2)
+		//{
+		//  printf
+		//    ("  <div class='applicationTitle'><h1>OpenDomo</h1></div>\n");
+		//}    else	{
+		//  printf ("  <div class='root'><a href='" OD_URI "/'> </a></div>\n");
+		//}
     }
 
 
 
-  sstrncpy (prename, path, sizeof (prename));
-  shname = strtok (prename, " ");
-  file_set_filename (&fs, shname);
-  strcpy (scriptname, basename (path));
+	sstrncpy (prename, path, sizeof (prename));
+	shname = strtok (prename, " ");
+	file_set_filename (&fs, shname);
+	strcpy (scriptname, basename (path));
 
-  /* if dir: list contents */
-  if (file_is_dir (&fs))
+	/* if dir: list contents */
+	if (file_is_dir (&fs))
     {
       string_assign_str (cmd,  "/usr/bin/list.sh ");
       string_append (cmd, path_info);
@@ -1174,11 +1171,11 @@ main (int argc, char *argv[])
 
       script_exec (cmd->str, "main", &env);
     }
-  else
+	else
     {
 		  /* if file: execute */
 		  // The path might be a redirection (no actual link in ..opendomo/root/)
-		  if (!file_is_file (&fs))
+		if (!file_is_file (&fs))
 		{
 		  snprintf (path, sizeof (path), "/usr/local/opendomo/%s",
 				basename (scriptname));
