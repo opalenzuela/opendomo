@@ -20,7 +20,7 @@ if "fname" not in form:
 	message = 'Invalid format'
 	print """\
 	Content-Type: text/html\n
-	<html><head><link rel='stylesheet' type='text/css' href='/css/fileupload.css' /></head>
+	<html><head><link rel='stylesheet' type='text/css' href='/cgi-bin/css.cgi?admin'></head>
 	<body>
 	<h2>%s</h2>
 	</body></html>

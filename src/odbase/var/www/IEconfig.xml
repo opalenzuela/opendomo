@@ -6,10 +6,10 @@
       <square150x150logo src="images/logo48.png"/>
       <wide310x150logo src="images/logo.png"/>
       <square310x310logo src="images/logo.png"/>
-      <TileColor>#009900</TileColor>
+      <TileColor>#2A568E</TileColor>
     </tile>
     <notification>
-      <polling-uri  src="cgi-bin/notifications.cgi"/>
+      <polling-uri  src="cgi-bin/notifications.sh"/>
       <frequency>30</frequency>
       <cycle>1</cycle>
     </notification>

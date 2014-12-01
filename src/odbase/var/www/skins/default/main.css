@@ -1,6 +1,8 @@
+/*
+#desc:Default blue-white skin
+*/
 html {
-    background: url(/skins/default/silver_3.jpg) repeat scroll 0 0 #FAFBFC;
-    font: 13px/20px "Droid Sans",Arial,"Helvetica Neue","Lucida Grande",sans-serif;
+    font-family:"Droid Sans",Tahoma,"Helvetica Neue",sans-serif;
 }
 
 .categories li a{
@@ -25,20 +27,21 @@ h2 {
 	color: #222;
 }
 
+/*
 .toolbar {
 
-	background: rgb(255,255,255); /* Old browsers */
-	background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(193,193,193,1) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(47%,rgba(246,246,246,1)), color-stop(100%,rgba	(193,193,193,1))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(193,193,193,1) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(193,193,193,1) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(193,193,193,1) 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(193,193,193,1) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#c1c1c1',GradientType=0 ); /* IE6-9 */
-}
+	background: rgb(255,255,255); 
+	background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(193,193,193,1) 100%); 
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(47%,rgba(246,246,246,1)), color-stop(100%,rgba	(193,193,193,1)));
+	background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(193,193,193,1) 100%); 
+	background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(193,193,193,1) 100%); 
+	background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(193,193,193,1) 100%); 
+	background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(193,193,193,1) 100%); 
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#c1c1c1',GradientType=0 ); 
+} */
 
 .copyright, .copyright a {
-	color: #666;
+	color: #2A568E;;
 }
 .logout {
 	background-color: white;
@@ -47,9 +50,7 @@ h2 {
 	color: #F66;
 	background-color: #DFDFDF;
 }
-.iconlist ul li  {
-	border-color: #ddd;
-}
+
 
 
 .root, .applicationTitle{
@@ -58,12 +59,11 @@ h2 {
 
 #header
 {
-	font-weight: bold;
+/*font-weight: bold; */
 	background-color: #FFF;
-	background-image: url(/images/logo.png);
-	background-repeat: no-repeat;
-	border-color: #6E6E6E;
-
+	/*background-image: url(/images/default/logo.png);
+	background-repeat: no-repeat; */
+	border-color: #6E6E6E; 
 }
 
 
@@ -82,7 +82,7 @@ h2 {
 	background-color: white;
 	border-color: #6E6E6E;
 }
-
+/*
 button, .buttonlnk {
 	background:#25A6E1;
 	background:-moz-linear-gradient(top,#2A568E 0%,#053F95 100%);
@@ -111,43 +111,37 @@ button:active, .buttonlnk:active {
 	background:linear-gradient(top,#053F95 0%,#053F95 100%);
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#053F95',endColorstr='#053F95',GradientType=0);
 }
+*/
 
 fieldset
 {
-	background: #ffffff; /* Old browsers */
-	background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #ededed 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#f6f6f6), color-stop(100%,#ededed)); /* Chrome,Safari4+ 	*/
-	background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* W3C */
-	border: 1px solid #AAAAAA;
-	box-shadow: 0 0 8px #AAAAAA;
+	/*border-color: #AAAAAA; */
 }
 
 
 legend 
 {
-	border-color: #AAAAAA;
+	color: #2A568E;
 }
 
+.ui-dialog-buttonset,
 .toolbar 
 {
-	margin:0px;
-	padding:5px;
-	border-bottom-left-radius: 10px;
-	border-bottom-right-radius: 10px;
-	background: rgb(255,255,255); /* Old browsers */
-	background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(193,193,193,1) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(47%,rgba(246,246,246,1)), color-stop(100%,rgba	(193,193,193,1))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(193,193,193,1) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(193,193,193,1) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(193,193,193,1) 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(193,193,193,1) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#c1c1c1',GradientType=0 ); /* IE6-9 */
-
+	border-color: #2A568E;
+	background: #2A568E;
 }
-
+.ui-dialog-buttonset button, 
+.toolbar button,
+.toolbar a.button {
+	color: white;
+	background: #2A568E;
+}
+.ui-dialog-buttonset button:hover, 
+.toolbar button:hover, 
+.toolbar a.button:hover{
+	background: white;
+	color: #2A568E;
+}
 
 
 .sel {
@@ -155,7 +149,7 @@ legend
 }
 
 .categories li a{
-	color: #053f95;
+	color: black;
 	background-color: #AAA;	
 }
 .categories .selected a {
@@ -169,17 +163,22 @@ legend
 
 
 h1 {
-	color: #666;
+	color: #2A568E;
 }
 
 h2 {
+	color: #2A568E;
+}
+
+.listbox li:hover,
+.detailed li:hover,
+.selectable li:hover
+ {
+	background-color: #DFDFDF;
 	color: #222;
 }
 
-.listbox li:hover {
-	background: #DFDFDF;
-	color: #222;
-}
+
 
 .message {
 	border: 1px solid red;
