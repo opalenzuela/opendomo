@@ -62,7 +62,7 @@
 #define W3C_DOCTYPE  "<!DOCTYPE html> \n"
 
 //! HTML Copyright fragment
-#define ODCOPYRIGHT "<a href='http://es.opendomo.org'>OpenDomo &copy; 2006-2014</a>"
+#define ODCOPYRIGHT "<a target='opendomoORG' href='http://es.opendomo.org'>OpenDomo &copy; 2006-2014</a>"
 
 #define ODCGI_PRIVILEGED_USER	"admin"	//!< privileged username
 #define ODCGI_SESSION_NAME    "HTSESSID"	//!< Session cookie name
