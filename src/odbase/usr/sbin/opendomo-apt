@@ -223,7 +223,7 @@ plugins_update() {
                 # Download plugin
                 DOWNURL=`grep $PLUGIN $REPOFILE | tail -n1 | cut -f2 -d";"`
                 cd $PLUGIN_DOWNDIR
-                /usr/local/bin/download.sh $DOWNURL
+                download.sh $DOWNURL
             else
                 echo "Plugin $PLUGIN is already updated" | add_date
             fi
@@ -279,7 +279,7 @@ odpackage_update() {
     ## Searching last version of odcommon
     #let ODCOMUPD=`apt-cache show odcommon | grep Version | awk '{print$2}' | cut -f3 -d.`+1
     #ODCOMPKG="odcommon_"$ODPKGMAJOR"."$ODCOMUPD"_$ARCH.deb"
-    #while /usr/local/bin/download.sh "$PACKAGEURL/$ODCOMPKG"; do
+    #while download.sh "$PACKAGEURL/$ODCOMPKG"; do
 	#let ODCOMUPD=$ODCOMUPD+1
     #    ODCOMPKG="odcommon_"$ODPKGMAJOR"."$ODCOMUPD"_$ARCH.deb"
     #done
@@ -297,7 +297,7 @@ odpackage_update() {
     ## Searching last version of odcgi
     #let ODCGIUPD=`apt-cache show odcgi | grep Version | awk '{print$2}' | cut -f3 -d.`+1
     #ODCGIPKG="odcgi_"$ODPKGMAJOR"."$ODCGIUPD"_$ARCH.deb"
-    #while /usr/local/bin/download.sh "$PACKAGEURL/$ODCGIPKG" &>/dev/null; do
+    #while download.sh "$PACKAGEURL/$ODCGIPKG" &>/dev/null; do
     #    let ODCGIUPD=$ODCGIUPD+1
     #    ODCGIPKG="odcgi_"$ODPKGMAJOR"."$ODCGIUPD"_$ARCH.deb"
     #done
@@ -315,7 +315,7 @@ odpackage_update() {
 	# Searching last version of odbase
     let ODBASEUPD=`apt-cache show odbase | grep Version | awk '{print$2}' | cut -f3 -d.`+1
     ODBASEPKG="odbase_"$ODPKGMAJOR"."$ODBASEUPD"_$ARCH.deb"
-    while /usr/local/bin/download.sh "$PACKAGEURL/$ODBASEPKG" &>/dev/null; do
+    while download.sh "$PACKAGEURL/$ODBASEPKG" &>/dev/null; do
         let ODBASEUPD=$ODBASEUPD+1
         ODBASEPKG="odbase_"$ODPKGMAJOR"."$ODBASEUPD"_$ARCH.deb"
     done

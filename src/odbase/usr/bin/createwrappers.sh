@@ -46,7 +46,7 @@ find -L $CGIDIR/ -type l -delete
 # Also, force execution for daemons and eventhandlers
 chmod +x /usr/local/opendomo/daemons/*.sh 	2>/dev/null
 chmod +x /usr/local/opendomo/eventhandlers/*.sh 2>/dev/null
-chmod +x /var/www/cgi-bin/*.sh 2>/dev/null
+chmod +x /var/www/cgi-bin/*.* 2>/dev/null
 
 # Cleaning possible Windows encoding EOL
 DIRS="$ODDIR/bin/ $ODDIR/daemons/ $ODDIR/eventhandlers/ $ODDIR/services/syscript/ \
