@@ -17,7 +17,7 @@ done
 
 echo "#>First configuration wizard [5/5]"
 echo "form:`basename $0`	wizard"
-echo "	pres	Presentation	application	http://opalenzuela.github.io/opendomo/presentation.html"
+echo "	pres	Presentation	application	http://opalenzuela.github.io/opendomo/tour.html"
 echo "#INFO System is saving configuration and restarting. Please wait"
 echo "actions:"
 echo "	goback	Previous"
