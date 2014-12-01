@@ -6,7 +6,7 @@ odbase (2.2.2) experimental; urgency=low
   * IE11 tiles supported (first approach)
   * Update routines modified
  
-  -- Oriol Palenzuela <opalenzuela@opendomo.com> Mon, 1 Dec 2014 07:00:03 +0200
+ -- Javier Miras Blanco <jmirasb@gmail.com>  Mon, 1 Dec 2014 11:43:53 +0200
 
 odbase (2.2.1) experimental; urgency=low
 
