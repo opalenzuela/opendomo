@@ -21,25 +21,30 @@ function loadRAW(filePath) {
 // Load text with Ajax synchronously: takes path to file and optional MIME type
 function loadTextFileAjaxSync(filePath, mimeType)
 {
-  var xmlhttp=new XMLHttpRequest();
-  xmlhttp.open("GET",filePath,false);
-  if (mimeType != null) {
-    if (xmlhttp.overrideMimeType) {
-      xmlhttp.overrideMimeType(mimeType);
-    }
-  }
-  xmlhttp.send();
-  if (xmlhttp.status==200)
-  {
-    return xmlhttp.responseText;
-  }
-  else {
-    // TODO Throw exception
-    return null;
-  }
+	try {
+		var xmlhttp=new XMLHttpRequest();
+		xmlhttp.open("GET",filePath,false);
+		if (mimeType != null) {
+			if (xmlhttp.overrideMimeType) {
+				xmlhttp.overrideMimeType(mimeType);
+			}
+		}
+		xmlhttp.send();
+		if (xmlhttp.status==200)
+		{
+			return xmlhttp.responseText;
+		}
+		else {
+			// TODO Throw exception
+			return null;
+		}
+	} catch(e) {
+		// Do nothing 
+		return null;
+	}
 }
 
-
+/*
 document.getElementsByClassName = function(cl) {
 	console.log("Deprecated function");
 	var retnode = [];
@@ -50,7 +55,7 @@ document.getElementsByClassName = function(cl) {
 		if (myclass.test(classes)) retnode.push(elem[i]);
 	}
 	return retnode;
-}; 
+}; */
 
 function addToolbarButton(tbname, text, action, classes){
 	var btn = document.createElement('button');
@@ -77,7 +82,15 @@ function include_script(file) {
      head.appendChild(script);
    }
 }
+/* DUPLICATED ^
+function addJavascript(filename){
+	  var fileref=document.createElement('script')
+	  fileref.setAttribute("src", "/scripts/" + filename)
+	  fileref.setAttribute("type","text/javascript")
+	  document.head.appendChild(fileref);
+}*/
 
+/* DEPRECATED FUNCTIONS 
 // This function can link two dropdowns, so the second one's data depends on
 // the item selected on the first one
 function linkDropdowns(s,d){
@@ -179,7 +192,8 @@ function getLastSelectedElementFromList(lstname){
 		//alert("List " + lstname + " not found!");
 	}
 	return value;
-}
+} */
+
 /*
 function tryToReloadCam(image){
 	image.src="/images/nocam.png";
@@ -209,25 +223,20 @@ function hideTT(id){
 	var tt = document.getElementById(id+'_tt');
 	if (tt) tt.style.display='none'; 
 }
-*/
+
 
 function help(topic){
 	window.open('http://www.opendomo.com/wiki/index.php?title='+topic,'help');
 }
+*/
 
 
-function addJavascript(filename){
-	  var fileref=document.createElement('script')
-	  fileref.setAttribute("src", "/scripts/" + filename)
-	  fileref.setAttribute("type","text/javascript")
-	  document.head.appendChild(fileref);
-}
 
-jQuery(function($) {
+//jQuery(function($) {
 	//init_focus();
 
 	
-	/* BOTONES ON OFF */
+	/* BOTONES ON OFF - DEPRECATED in 2.2 */
 	$('a:regex(id,^cmd_.*_(on|off)$)').click(function(e)
 	{
 			var $me = $(this);
@@ -246,7 +255,8 @@ jQuery(function($) {
 			  }
 			});
 		
-	});
+	}); 
+
 
 	/*
 	imgs = document.getElementsByTagName("img");
@@ -268,13 +278,13 @@ jQuery(function($) {
 	for (i=0;i<cvs.length;i++){
 	
 	}
-	*/
+	
 	login = document.getElementById("USER");
 	if (login) {
 		login.focus();
 	}	
-	/*if (window.init_form) init_form(); */
-});
+	if (window.init_form) init_form(); */
+//});
 
 
 var iconlist='iconlist';

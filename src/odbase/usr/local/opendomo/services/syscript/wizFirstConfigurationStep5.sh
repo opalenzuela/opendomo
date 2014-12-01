@@ -12,7 +12,7 @@ SYSTEMIP=`/sbin/ifconfig eth0 | grep "inet addr" | cut -f2 -d: | cut -f1 -d' '`
 
 for email in $@; do
 	username=`echo $email | cut -f1 -d@`
-	/usr/local/opendomo/userModify.sh $username $username $email opendomo
+	/usr/local/opendomo/userModify.sh $username $username $email opendomo 2>/dev/null
 done
 
 echo "#>First configuration wizard [5/5]"
@@ -27,3 +27,4 @@ echo
 if  ! test -z "$username"; then
 	# Save and restart (only if invoked with parameters)
 fi
+exit 0
