@@ -1045,8 +1045,8 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 	{
 		printf ("<p class='buttons'>");
 	}
-	pch (char*) = strtok (type, "[],");
-	pch (char*) = strtok (NULL, "[],");
+	pch = strtok (type, "[],");
+	pch = strtok (NULL, "[],");
 	while(pch != NULL)
 	{
 		//TODO Permitir múltiples valores seleccionados al mismo tiempo
