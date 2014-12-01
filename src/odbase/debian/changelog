@@ -1,3 +1,13 @@
+odbase (2.2.2) experimental; urgency=low
+  
+  * CGI styles unified for 2.2 branch
+  * Multiple paths corrected
+  * od.cgi code and dependencies reduced
+  * IE11 tiles supported (first approach)
+  * Update routines modified
+ 
+  -- Oriol Palenzuela <opalenzuela@opendomo.com> Mon, 1 Dec 2014 07:00:03 +0200
+
 odbase (2.2.1) experimental; urgency=low
 
   * Package self-update is now stable
