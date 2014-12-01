@@ -399,12 +399,11 @@ odcgi_msg_error (const char *title, const char *description)
   else
     {
      printf (
-		  "<div id='header'></div>\n"
 		  "<div id='main'>\n"
-		  " <fieldset>\n"
-		  "  <legend id='setScene_lgnd'>%s</legend>\n",T("Error"));
-	printf("  <center class='error'><h1>%s</h1>\n", T(tit));
-	printf("   <p>%s</p></center>\n",  T(description));
+		  " <fieldset class='error'>\n"
+		  "  <legend id='error_lgnd'>%s</legend>\n",T("Error"));
+	printf("  <h1>%s</h1>\n", T(tit));
+	printf("   <p>%s</p>\n",  T(description));
 	printf("  <div class='toolbar'>");
 	printf("  <button type='button' onclick='history.back();'>%s</button>", 
 		T("Back"));
