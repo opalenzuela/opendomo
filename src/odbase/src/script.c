@@ -834,7 +834,7 @@ script_process_graph_body (char *id, char *name, char *type, char *extra)
 			"\t\t\tdt_flot.setHours(dt_flot.getHours() + timeOffsetInHours);\n"\
 			"\t\t\tplot_%s.data[j][0] = dt_flot.getTime();\n"\
 			"\t\t}\n"\
-			"\t}\n",id, id, id, id);
+			"\t}\n",id, id, id);
 		printf("\tdata.push(plot_%s);\n", id);
 	}
 	else
@@ -875,7 +875,7 @@ remove_brackets (const char *originalstring, char *target)
 {
   char *fb;
   char *lb;
-  char os[1024];
+  //char os[1024];
 
   // Miramos si el listado contiene un elemento "list[item1,item2...] etc"...
   fb = strchr (originalstring, '[');
@@ -1045,8 +1045,8 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 	{
 		printf ("<p class='buttons'>");
 	}
-	pch = strtok (type, "[],");
-	pch = strtok (NULL, "[],");
+	pch (char*) = strtok (type, "[],");
+	pch (char*) = strtok (NULL, "[],");
 	while(pch != NULL)
 	{
 		//TODO Permitir múltiples valores seleccionados al mismo tiempo

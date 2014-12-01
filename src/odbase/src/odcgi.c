@@ -884,7 +884,7 @@ main (int argc, char *argv[])
 	syslog (LOG_NOTICE, "[odcgi] user: %s, uid: %d, guid: %d\n",
 		env.user, getuid (), getgid ());
 
-	/* NO USER MANAGEMENT FUNCTIONS IN
+	/* NO USER MANAGEMENT FUNCTIONS IN 2.2
   // adds a new user 
   if (odcgi_add_user (http_newuser, http_newpass1, http_newpass2) == -1)
     {
