@@ -13,9 +13,13 @@ function submitForm(formID) {
  
 	$.post(url,dataString)
 	.done(function(data) {
-		//TODO: Update field values from response
 		console.log( "success" );
-		console.log(data);
+		$(data).find("list, input").each(function(){
+			var retval = $(this).val();
+			var control = $("#" + $(this).prop("id"));
+			control.val(retval);
+		});
+		//console.log(data);
 	})
 	.fail(function(data) {
 		//TODO: Show some feedback in case of failure

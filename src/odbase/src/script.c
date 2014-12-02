@@ -1227,8 +1227,8 @@ script_process_form_body_xml (char *id, char *desc, char *type, char *pextra)
 
   else if(strstr (type, "readonly"))
   {
-    printf ("<text id='%s' readonly='true' label=\"%s\">%s</text>\n",
-	    id, desc, pextra);
+    printf ("<text id='%s' readonly='true' label=\"%s\" value=\"%s\">%s</text>\n",
+	    id, desc, pextra, pextra);
   }
 
   else if(strstr (type, "longtext"))
@@ -1243,7 +1243,7 @@ script_process_form_body_xml (char *id, char *desc, char *type, char *pextra)
 
   else if(strstr (type, "list"))
   {
-    printf ("<list id='%s'>\n", id);
+    printf ("<list id='%s' value='%s'>\n", id, extra);
     pch = strtok (type, "[],\n");
     pch = strtok (NULL, "[],\n");
 
@@ -1287,7 +1287,7 @@ script_process_form_body_xml (char *id, char *desc, char *type, char *pextra)
 
   else if(strstr (type, "image"))
   {
-    printf ("<img id='%s' src='%s' alt='%s'/>\n", id, extra, T (desc));
+    printf ("<img id='%s' src=\"%s\" alt='%s'/>\n", id, extra, T (desc));
   }
 
   else if(strstr (type, "video"))
