@@ -10,7 +10,7 @@ KERNELVERSION=`uname -r` 2> /dev/null
 
 echo "#> About"
 echo "list:`basename $0`"
-echo "# OpenDomoOS is free software, created by OpenDomo Services and the community and distributed under the GPLv3 license"
+echo "#INFO OpenDomoOS is free software, created by OpenDomo Services and the community and distributed under the GPLv3 license"
 echo "#URL:http://www.gnu.org/licenses/gpl-3.0.html"
 echo
 echo "#> Installed products"
@@ -20,6 +20,8 @@ ODBASE_VER=`apt-cache show odbase | grep Version| cut -f2 -d' '`
 
 echo "	-kernel 	Linux kernel	package	v$KERNELVERSION GPL v3"
 echo "	-odbase 	OpenDomoOS base system 	package	v$ODBASE_VER GPL v3"
+echo "actions:"
+echo "	credits.sh	Credits"
 echo
 
 echo "#> Installed plugins"
