@@ -9,7 +9,7 @@
       <TileColor>#2A568E</TileColor>
     </tile>
     <notification>
-      <polling-uri  src="cgi-bin/notifications.sh"/>
+      <polling-uri  src="/cgi-bin/notifications.sh"/>
       <frequency>30</frequency>
       <cycle>1</cycle>
     </notification>

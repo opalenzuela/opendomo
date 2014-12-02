@@ -37,6 +37,7 @@ $(function(){
 			}
 			literal = s.options[s.selectedIndex].value; 
 			$(this).addClass("sw_" + literal);
+			$(this).find("select").trigger("change");
 			//$(this).find("p").text(literal);
 		}
 	});
@@ -47,7 +48,7 @@ $(function(){
 		t.removeClass("sw_off");
 		if (!t.hasClass("sw_on")) {
 			t.addClass("sw_on");
-			t.find("select").val("on");
+			t.find("select").val("on").trigger("change");
 		}
 	});
 	
@@ -57,7 +58,7 @@ $(function(){
 		t.removeClass("sw_on");
 		if (!t.hasClass("sw_off")) {
 			t.addClass("sw_off");
-			t.find("select").val("off");
+			t.find("select").val("off").trigger("change");
 		}
 	});	
 });

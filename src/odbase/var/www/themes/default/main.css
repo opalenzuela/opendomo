@@ -294,6 +294,7 @@ a em {
 .categories {
 	list-style: none;
 	border: none;
+	white-space: nowrap;
 }
 /*
 #header .categories li a{
@@ -355,8 +356,11 @@ width: 90%;
 width: 90%;
 } 
 */
-button, .buttonlnk {
-	height:25px;
+a.button {
+	display: inline-block;
+}
+button, .buttonlnk, a.button {
+	min-height:25px;
 }
 
 /*button, .buttonlnk

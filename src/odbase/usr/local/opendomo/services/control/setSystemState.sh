@@ -3,6 +3,8 @@
 #package:odbase
 #type:local
 
+# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+
 # Variables
 DAEMONSDIR="/usr/local/opendomo/daemons"
 CONFIGSDIR="/etc/opendomo/states"
@@ -37,7 +39,6 @@ fi
 
 # Always reload parameters and see interface
 STATESDIR="/etc/opendomo/states"
-DAEMONSDIR="/usr/local/opendomo/daemons"
 INITRDDIR="/etc/init.d"
 CURSTATE=`cat $STATEPID`
 #STATES=`ls -1 "$STATESDIR" | grep -v $CURSTATE | tr '\n' "," | sed 's/.$//'`
@@ -58,10 +59,14 @@ done
 echo "action:"
 echo
 
+/usr/local/opendomo/setDaemons.sh
+exit 0
+
 # Available services
 echo "#> Available services"
 echo "form:`basename $0`"
 
+DAEMONSDIR="/usr/local/opendomo/daemons"
 cd $DAEMONSDIR
 for service in *; do
     # Check service information and status
