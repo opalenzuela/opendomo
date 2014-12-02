@@ -1,6 +1,6 @@
 #!/bin/sh
-#desc:Lista el contenido del directorio pasado como argumento
-#package:odcgi
+#desc:Lists the content of the directory
+#package:odbase
 #author:opalenzuela
 #
 # Este script muestra el contenido del directorio indicado como argumento,
@@ -10,7 +10,7 @@
 # Por razones de seguridad, seran eliminados de la ruta combinaciones de dos
 # puntos ".." y direccionadores estandar (<>)
 
-### Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
  
 D="$1"
 # "control" dir by default
@@ -24,19 +24,14 @@ RUTA="/var/opendomo/cgiroot"
 cd $RUTA
 cd $RUTA/$D
 PLACE=`basename $D`
-if test -f ./$PLACE.name; then
-	PLACE=`cat ./$PLACE.name`
+if test -f $RUTA/$PLACE.name; then
+	PLACE=`cat $RUTA/$PLACE.name`
 fi
-if test -f ./../$PLACE.name; then
-	PLACE=`cat ./../$PLACE.name`
-fi
-echo "#> Contents of [$PLACE]"
-if test `basename $D` = "map"; then
-	script="map.sh"
-else
-	script="list.sh"
-fi
-echo "list:$script	simple"
+
+echo "#> [$PLACE]"
+script="list.sh"
+
+echo "list:list.sh	listview"
 
 UIDFILE="/etc/opendomo/uid"
 
@@ -49,10 +44,7 @@ if ! test -f $UIDFILE; then
 	fi
 fi
 
-for i in `find -maxdepth 1 -type d | cut -c 3-100 | sort && \
-			 find -maxdepth 1 -type f | cut -c 3-100 | sort && \
-			 find -maxdepth 1 -type l | cut -c 3-100 | sort \
-			`; do
+for i in *.sh; do
 	link="./$i"
 	if test -x "$i"; then
 		if test -e "$i.name"; then
@@ -67,11 +59,7 @@ for i in `find -maxdepth 1 -type d | cut -c 3-100 | sort && \
 
 		if test -d $i; then
 			class="$base dir"
-			if test -x "$i/run.sh"; then
-				link="./$i/run.sh"
-			else
-				link="./$i/"
-			fi
+			link="./$i/"
 		else
 			class="$base sh_file"
 		fi
@@ -84,7 +72,6 @@ for i in `find -maxdepth 1 -type d | cut -c 3-100 | sort && \
 done
 
 echo "actions:"
-
 if test "$CFGWIZARD" = "1"; then
 	if test -x /usr/local/opendomo/wizFirstConfigurationStep1.sh; then
 		echo "	wizFirstConfigurationStep1.sh	Configuration wizard"

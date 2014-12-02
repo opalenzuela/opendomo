@@ -1,0 +1,5 @@
+This script displays the contents of the directory specified as an argument,
+Formatted for CGI OpenDomo. Items shown are only those that can be executed 
+by the validated user (with the flag + x), either scripts or directories. 
+For security reasons, will be removed from the route combinations colon 
+".." and standard routers (<>)
