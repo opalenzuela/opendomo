@@ -857,7 +857,7 @@ script_process_graph_footer (char *cmdid, int closeblock)
 			cmdid[i] = 0;
 		}
 		printf ("\t$.plot($(\"#%s\"), data, options);\n", cmdid);
-		printf ("\n}\n%s_func();\n\t\t\t</script>\n",cmdid);
+		printf ("\n}\nsetTimeout(function(){%s_func();}, 1000);\n\t\t\t</script>\n",cmdid);
 		printf ("\t\t<br/>\n" );
 		if (closeblock==TRUE)
 			printf ("</fieldset>\n\t</form></div>\n");
