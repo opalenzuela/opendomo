@@ -1073,7 +1073,7 @@ input[type="file"] {
 	.wizard ul{
 		margin: 0px;
 		display: block;
-		height: 250px;
+		height: 300px;
 		overflow-y: auto;
 		margin-top: 50px;
 	}
@@ -1179,7 +1179,7 @@ input[type="file"] {
 		margin: 40px 10px 40px 200px;
 		display: block;
 		width: auto!important;
-		height: 250px;
+		height: 300px;
 		overflow-y: auto;
 	}
 	.wizard ul li label{
