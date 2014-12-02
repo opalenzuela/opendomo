@@ -1,4 +1,4 @@
-#!/bin/sh
+﻿#!/bin/sh
 #desc:Credits
 #package:odbase
 #group:users
@@ -12,7 +12,7 @@ echo "	dlerch	Daniel Lerch	Project founder"
 echo "	opalenzuela	Oriol Palenzuela	Lead developer"
 echo "	icatalan	Isidro Catalan	Cloud designer"
 echo "	jmirasb	Javier Miras	Software architect"
-echo "	inigoalonso	I�igo Alonso	Logo and graphic design"
+echo "	inigoalonso	Iñigo Alonso	Logo and graphic design"
 echo "actions:"
 echo "	goback	Back"
 echo
