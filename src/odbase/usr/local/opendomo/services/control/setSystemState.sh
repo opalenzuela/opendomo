@@ -57,28 +57,7 @@ for state in *; do
     fi
 done
 echo "action:"
+echo "	manageSystemStates.sh	Manage system states"
 echo
 
 /usr/local/opendomo/setDaemons.sh
-exit 0
-
-# Available services
-echo "#> Available services"
-echo "form:`basename $0`"
-
-DAEMONSDIR="/usr/local/opendomo/daemons"
-cd $DAEMONSDIR
-for service in *; do
-    # Check service information and status
-    DESC=`grep "# Short-Description" $service | cut -f2 -d:`
-
-    if ./$service status >/dev/null 2>/dev/null ; then
-        STATUS=on
-    else
-        STATUS=off
-    fi
-    echo "	$service	$DESC	subcommand[on,off]	$STATUS"
-done
-echo "action:"
-echo "	manageSystemStates.sh	Manage system states"
-echo

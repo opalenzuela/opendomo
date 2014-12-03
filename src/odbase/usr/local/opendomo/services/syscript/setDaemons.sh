@@ -33,3 +33,4 @@ for service in *; do
     fi
     echo "	$service	$DESC	list[on,off] switch	$STATUS"
 done
+echo
