@@ -9,23 +9,20 @@ STATESDIR=/etc/opendomo/states
 TEMPSTATE=/var/opendomo/tmp/state.tmp
 STATE="$1"
 
-# Always check blacklist
-odstatesmng blacklist
+# Always check blacklist (Disabled for error) Deprecated?
+#odstatesmng blacklist 2>/dev/null 
 
-# $1 only can be a state selected to configure
-if ! test -z $STATE && test -d $STATESDIR/$STATE; then
-    /usr/local/opendomo/editSystemState.sh $STATE
-else
-    rm $TEMPSTATE 2>/dev/null
 
-    # If $1 don't exist, show all states
-    cd $STATESDIR
-    echo "#> Available states"
-    echo "list:`basename $0`	selectable"
-    for state in *; do
-        echo "	-$state	$state	tag"
-    done
-    echo "action:"
-    echo "	addSystemState.sh	Add"
-    echo
-fi
+rm $TEMPSTATE 2>/dev/null
+
+# If $1 don't exist, show all states
+cd $STATESDIR
+echo "#> Available states"
+echo "list:editSystemState.sh	selectable"
+for state in *; do
+	echo "	-$state	$state	tag"
+done
+echo "action:"
+echo "	addSystemState.sh	Add"
+echo
+
