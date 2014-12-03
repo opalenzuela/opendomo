@@ -22,9 +22,11 @@ ERRFILE="/var/opendomo/log/opendomo-apt.err"
 do_start () {
 	log_action_begin_msg "Starting opendomo apt daemon"
 
-
-	echo "Waiting" > $PIDFILE
-	/usr/sbin/opendomo-apt >$LOGFILE 2>$ERRFILE &
+	if ! test -f $PIDFILE; then
+		echo "Waiting" > $PIDFILE
+		/usr/sbin/opendomo-apt >$LOGFILE 2>$ERRFILE &
+	fi
+	
 	log_action_end_msg $?
 }
 
