@@ -42,7 +42,7 @@ else:
 if "file" not in form:
 	print """\
 	Content-Type: text/html\n
-	<html><head><link rel='stylesheet' type='text/css' href='/css/fileupload.css' /></head>
+	<html><head><link rel='stylesheet' type='text/css' href='/cgi-bin/css.cgi?admin'></head>
 	<body>
 	<form enctype='multipart/form-data' action='fileupload.py' method='post' class='%s'>
 	<label><input name='file' type='file'><div class='filecontainer'>%s</div></labe>
@@ -81,7 +81,7 @@ else:
    
 print """\
 Content-Type: text/html\n
-<html><head><link rel='stylesheet' type='text/css' href='/css/fileupload.css' /></head>
+<html><head><link rel='stylesheet' type='text/css' href='/cgi-bin/css.cgi?admin'></head>
 <body>
 <form><div class='filecontainer'>%s</div></form>
 </body></html>
