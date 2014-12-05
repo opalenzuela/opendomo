@@ -194,8 +194,8 @@ odcgi_print_header (char *scriptname, const char *username)
       printf (W3C_DOCTYPE
 		"<html manifest='/app.manifest' lang='%s'>\n"
 		"   <head>\n"
-		"\t<meta http-equiv='X-UA-Compatible' content='IE=Edge'/>\n"
 		"\t<meta name='apple-mobile-web-app-capable' content='yes'/>\n"
+		"\t<meta http-equiv='X-UA-Compatible' content='IE=Edge'/>\n"
 		"\t<link rel='apple-touch-icon' href='/apple-touch-icon.png'/>\n"
 		"\t<meta http-equiv='content-type' content='text/html; charset=utf-8'>\n"
 		"\t<meta name='viewport' content='width=device-width, maximum-scale=1.0, maximum-scale=1.0, user-scalable=0' />\n"
