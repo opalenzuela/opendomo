@@ -1259,3 +1259,7 @@ input[type="file"] {
 	}
 }
 
+#debuginfo {
+	text-align: left;
+	overflow: auto;
+}

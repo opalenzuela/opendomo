@@ -730,78 +730,79 @@ getip (const char *iface)
 int
 main (int argc, char *argv[])
 {
+	/* ---------------------------------------------------------------------
+	*  Alert! setuid program with root privileges
+	* ---------------------------------------------------------------------*/
+
+	/* syslog */
+	openlog ("odcgi", LOG_PID, LOG_USER);
+
+	script_env_t env;
 
 
-  /* ---------------------------------------------------------------------
-   *  Alert! setuid program with root privileges
-   * ---------------------------------------------------------------------*/
+	/* Agent address */
+	//! @todo: what if eth0 don't exists?
+	snprintf (env.agent_address, MAX_ENV_SIZE, "%s", getip ("eth0"));
 
-  /* syslog */
-  openlog ("odcgi", LOG_PID, LOG_USER);
+	//! @todo: lots of static variables. Maybe some can be reused to save memory
+	char http_gui[8];
+	//char http_style[10];
+	char http_logout[8];
+	char http_user[256];
+	char http_pass[256];
+	char http_session[1024];
+	char http_noheader[8];
+	char http_newuser[256];
+	char http_newpass1[256];
+	char http_newpass2[256];
+	char http_deluser[256];
+	char http_moduser[256];
+	char http_modpass1[256];
+	char http_modpass2[256];
+	char http_modoldpass[256];
+	char http_getfile[256];
+	char http_resource[50];
+	char http_play_mjpg[100];
+	char http_temp[100];
 
-  script_env_t env;
+	/* Configuration vars */
+	FILE *fh;
+	read_config_file (fh, OD_APP_I18N_CONF, lang, "en");
+	//read_config_file(fh,OD_APP_STYLE_CONF,style,"default");
+	//read_config_file(fh,OD_APP_SKIN_CONF,skin,"silver");
 
+	/* Get HTTP variables */
+	cgi_t *cgi = cgi_alloc ();
 
-  /* Agent address */
-  //! @todo: what if eth0 don't exists?
-  snprintf (env.agent_address, MAX_ENV_SIZE, "%s", getip ("eth0"));
-
-  //! @todo: lots of static variables. Maybe some can be reused to save memory
-  char http_gui[8];
-  //char http_style[10];
-  char http_logout[8];
-  char http_user[256];
-  char http_pass[256];
-  char http_session[1024];
-  char http_noheader[8];
-  char http_newuser[256];
-  char http_newpass1[256];
-  char http_newpass2[256];
-  char http_deluser[256];
-  char http_moduser[256];
-  char http_modpass1[256];
-  char http_modpass2[256];
-  char http_modoldpass[256];
-  char http_getfile[256];
-  char http_resource[50];
-  char http_play_mjpg[100];
-  char http_temp[100];
-
-  /* Configuration vars */
-  FILE *fh;
-  read_config_file (fh, OD_APP_I18N_CONF, lang, "en");
-  //read_config_file(fh,OD_APP_STYLE_CONF,style,"default");
-  //read_config_file(fh,OD_APP_SKIN_CONF,skin,"silver");
-
-  /* Get HTTP variables */
-  cgi_t *cgi = cgi_alloc ();
-
-  cgi_get_param_by_name (cgi, "GUI", http_gui, sizeof (http_gui));
-  cgi_get_param_by_name (cgi, "LOGOUT", http_logout, sizeof (http_logout));
-  cgi_get_param_by_name (cgi, "USER", http_user, sizeof (http_user));
-  cgi_get_param_by_name (cgi, "PASS", http_pass, sizeof (http_pass));
-  cgi_get_param_by_name (cgi, "HTSESSID", http_session,
-			 sizeof (http_session));
-  cgi_get_param_by_name (cgi, "NOHEADER", http_noheader,
-			 sizeof (http_noheader));
-  cgi_get_param_by_name (cgi, "NEWUSER", http_newuser, sizeof (http_newuser));
-  cgi_get_param_by_name (cgi, "NEWPASS1", http_newpass1,
-			 sizeof (http_newpass1));
-  cgi_get_param_by_name (cgi, "NEWPASS2", http_newpass2,
-			 sizeof (http_newpass2));
-  cgi_get_param_by_name (cgi, "DELUSER", http_deluser, sizeof (http_deluser));
-  cgi_get_param_by_name (cgi, "MODUSER", http_moduser, sizeof (http_moduser));
-  cgi_get_param_by_name (cgi, "MODPASS1", http_modpass1,
-			 sizeof (http_modpass1));
-  cgi_get_param_by_name (cgi, "MODPASS2", http_modpass2,
-			 sizeof (http_modpass2));
-  cgi_get_param_by_name (cgi, "MODOLDPASS", http_modoldpass,
-			 sizeof (http_modoldpass));
-  cgi_get_param_by_name (cgi, "FILE", http_getfile, sizeof (http_getfile));
-  cgi_get_param_by_name (cgi, "resource", http_resource,
-			 sizeof (http_resource));
-  cgi_get_param_by_name (cgi, "play_mjpg", http_play_mjpg,
-			 sizeof (http_play_mjpg));
+	cgi_get_param_by_name (cgi, "GUI", http_gui, sizeof (http_gui));
+	cgi_get_param_by_name (cgi, "LOGOUT", http_logout, sizeof (http_logout));
+	cgi_get_param_by_name (cgi, "USER", http_user, sizeof (http_user));
+	for (int c=0;c<sizeof(http_user);c++){
+		if (http_user[c]=='@') http_user[c]=0; // Cutting e-mail to uid
+	}  
+	cgi_get_param_by_name (cgi, "PASS", http_pass, sizeof (http_pass));
+	cgi_get_param_by_name (cgi, "HTSESSID", http_session,
+	 sizeof (http_session));
+	cgi_get_param_by_name (cgi, "NOHEADER", http_noheader,
+	 sizeof (http_noheader));
+	cgi_get_param_by_name (cgi, "NEWUSER", http_newuser, sizeof (http_newuser));
+	cgi_get_param_by_name (cgi, "NEWPASS1", http_newpass1,
+	 sizeof (http_newpass1));
+	cgi_get_param_by_name (cgi, "NEWPASS2", http_newpass2,
+	 sizeof (http_newpass2));
+	cgi_get_param_by_name (cgi, "DELUSER", http_deluser, sizeof (http_deluser));
+	cgi_get_param_by_name (cgi, "MODUSER", http_moduser, sizeof (http_moduser));
+	cgi_get_param_by_name (cgi, "MODPASS1", http_modpass1,
+	 sizeof (http_modpass1));
+	cgi_get_param_by_name (cgi, "MODPASS2", http_modpass2,
+	 sizeof (http_modpass2));
+	cgi_get_param_by_name (cgi, "MODOLDPASS", http_modoldpass,
+	 sizeof (http_modoldpass));
+	cgi_get_param_by_name (cgi, "FILE", http_getfile, sizeof (http_getfile));
+	cgi_get_param_by_name (cgi, "resource", http_resource,
+	 sizeof (http_resource));
+	cgi_get_param_by_name (cgi, "play_mjpg", http_play_mjpg,
+	 sizeof (http_play_mjpg));
 
 
 
@@ -812,15 +813,18 @@ main (int argc, char *argv[])
 //              cgi_http_header_set_cookie("HTSTYLE", style);
 //      }
 
-  // Si se ha solicitado una hoja de estilo, la entregamos
-  if (cgi_get_param_by_name (cgi, "css", http_temp, sizeof (http_temp)) == 1)
+/* DEPRECATED
+	// Si se ha solicitado una hoja de estilo, la entregamos
+	if (cgi_get_param_by_name (cgi, "css", http_temp, sizeof (http_temp)) == 1)
     {
       syslog (LOG_NOTICE, "printing style: %s\n", http_temp);
       odcgi_print_file (http_temp);
       cgi_free (cgi);
       return 0;
     }
-/*	// Si se ha solicitado el javascript específico, lo entregamos
+*/	
+/*	DEPRECATED
+	// Si se ha solicitado el javascript específico, lo entregamos
 	if (cgi_get_param_by_name(cgi, "js", http_temp, sizeof(http_temp))==1) 
 	{
 		syslog(LOG_NOTICE, "printing script: %s\n", http_temp);
