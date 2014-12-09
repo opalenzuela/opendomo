@@ -1646,7 +1646,7 @@ script_exec (const char *cmd, const char *section, script_env_t * env)
       printf (" <button onclick='history.back();'>%s</button>",
 	      T (ODCGI_TEXT_BACK));
       printf (" <button  "
-	      "onclick=\"window.open('%s%s#error%d','help');\">%s</button>",
+	      "onclick=\"showBubble('%s%s#error%d');\">%s</button>",
 	      ODCGI_URL_HELP, cmdid, WEXITSTATUS (retval),
 	      T (ODCGI_TEXT_ERROR_HELP_LINK));
       printf ("</div>\n");
