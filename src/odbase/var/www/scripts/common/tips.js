@@ -6,7 +6,7 @@ $(function(){
 		$("body").append("<div id='floattip'></div>");
 		$("#floattip").on("click", function(){
 			$("p.tip").show();
-			//$(this).hide();
+			$(this).hide();
 		});
 	}
 	$("p.tip").each(function(){
@@ -21,5 +21,6 @@ $(function(){
 		var t = $(this).text();
 		localStorage["tip:"+t] = "checked";
 		$(this).hide();
+		$("#floattip").show();
 	});
 });
