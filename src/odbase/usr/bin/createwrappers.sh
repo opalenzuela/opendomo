@@ -17,7 +17,7 @@ do
 		# Read possible group information
 		GROUP=`grep '#group' $i | cut -f2 -d:`
 		# If group information is found, apply
-		test -z "$GROUP" || chgrp $GROUP $i 2>/dev/null
+		test "$GROUP" = "users" && chmod g+rx $i 2>/dev/null
     fi
 done
 # Create CGI path links
