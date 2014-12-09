@@ -37,6 +37,7 @@ h2[id*='_lgnd_h2'], #logo_od,.tabberactive, .tabbernav
 }
 .iconlist.selectable ul li {
 	border-style: dashed!important;
+	text-indent: 0px;
 }
 
 .listbox ul li a, 
