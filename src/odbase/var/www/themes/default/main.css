@@ -256,16 +256,6 @@ form {
 	margin: 2px;
 }
 
-.tooltip 
-{
-	display:none;
-	position:absolute;
-	background-color: #EEE;
-	border: 2px solid #888;
-	padding: 10px;
-}
-
-
 
 a em {
 	display: block;
@@ -735,6 +725,7 @@ fieldset.error p {
 	margin: 25px;
 }
 
+p.tip,
 p.info, 
 p.success, 
 p.warning, 
@@ -770,13 +761,19 @@ p.error, p.errorcont {
 }
 p.warning {
 	color: #9F6000;
-	background-color: #FEEFB3;
+	background-color: #FECAB3;
 	background-image: url('/images/default/warning.png');
 }
 p.info {
 	color: #00529B;
 	background-color: #DFF2BF;
 	background-image: url('/images/default/notice.png');
+}
+p.tip {
+	display: none; /* Hidden by default */
+	color: #9F6000;
+	background-color: #FEEFB3;
+	background-image: url('/images/default/tip.png');
 }
 p.notice {
 	color: #4F8A10;
@@ -1026,6 +1023,18 @@ input[type="file"] {
 .ui-dialog-titlebar-close  .ui-button-text {display:none;}
 .ui-dialog-titlebar-close  .ui-icon {display:block; width:24px; height:24px;background:url("/images/close_small.gif") no-repeat;}
 
+
+
+#floattip {
+	display: block;
+	position: fixed;
+	bottom: 0px;
+	right: 0px;
+	height: 32px;
+	background: url('/images/default/tip.png');
+	width: 32px;
+	z-index: 100;
+}
 
 /* cellphone format */ 
 @media (max-width:480px) {
