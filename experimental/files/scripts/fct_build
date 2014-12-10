@@ -66,20 +66,18 @@ build_rootstrap() {
 create_packages() {
     # Clean old packages
     rm -r $ROOTSTDIR/tmp/* 2>/dev/null
-    #for pkg in $ODPKG; do
-	pkg="odbase"
-	# Copy package into rootstrap and build
-	cp -r $ODPKGDIR/$pkg $ROOTSTDIR/tmp/ 2>/dev/null
-	if $CHROOT "$ROOTSTDIR" /bin/bash -c "cd /tmp/$pkg && dpkg-buildpackage 2>/dev/null >/dev/null" &>/dev/null; then
-		echo -ne "(${DONE}$pkg${NORL}) "
-	else
-		echo -ne "(${ERRO}$pkg${NORL}) "
-	fi
-    #done
+
+    # Copy package into rootstrap and build
+    cp -r $ODPKGDIR/$ODPKG $ROOTSTDIR/tmp/ 2>/dev/null
+    if $CHROOT "$ROOTSTDIR" /bin/bash -c "cd /tmp/$ODPKG && dpkg-buildpackage 2>/dev/null >/dev/null" &>/dev/null; then
+        echo -ne "(${DONE}$pkg${NORL}) "
+    else
+        echo -ne "(${ERRO}$pkg${NORL}) "
+    fi
 
     # Copy packages to export directory
-    cp $ROOTSTDIR/tmp/*.deb $EXPORTDIR/ 2>/dev/null
-    chown `users | cut -f1 -d" "` $EXPORTDIR/*.deb
+    cp $ROOTSTDIR/tmp/$ODPCKG_*.deb $EXPORTDIR/ 2>/dev/null
+    chown `users | cut -f1 -d" "` $EXPORTDIR/*.deb &>/dev/null
     echo
 }
 
@@ -92,21 +90,15 @@ install_packages() {
         cp $ROOTSTDIR/tmp/*.deb $ROOTFSDIR/tmp/ 2>/dev/null
     else
         # Download packages
-        for pkg in $ODPKGURLS; do
-            wget -nc -q --directory-prefix=$ROOTFSDIR/tmp --no-check-certificate "$pkg" &>/dev/null
-        done
+        wget -nc -q --directory-prefix=$ROOTFSDIR/tmp --no-check-certificate $ODPKGURLS
     fi
 
     # Install opendomo packages
-    for deb in `ls -r1 $ROOTFSDIR/tmp/odbase*.deb 2>/dev/null`; do
-        PKG=`basename $deb`
-        NAME=`echo $PKG | cut -f1 -d'_'`
-        if $CHROOT "$ROOTFSDIR" /bin/bash -c "dpkg -i tmp/$PKG" &>/dev/null; then
-            echo -ne "(${DONE}$NAME${NORL}) "
-        else
-            echo -ne "(${ERRO}$NAME${NORL}) "
-        fi
-    done
+    if $CHROOT "$ROOTFSDIR" /bin/bash -c "dpkg -i tmp/$ODPKG*" &>/dev/null; then
+        echo -ne "(${DONE}$NAME${NORL}) "
+    else
+        echo -ne "(${ERRO}$NAME${NORL}) "
+    fi
     echo
 
     # Rebuild apt database (just in case), clean packages and umount dev
