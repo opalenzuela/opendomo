@@ -1,8 +1,9 @@
 OPTS= -Wall -std=gnu99 -pedantic 
 # -O2 -s
 HDRS= -I /usr/include -I src/ -I.
-LIBS= -lssl -lcrypto -lcrypt -lconfig -lm
-#-ljpeg
+LIBS=  -lcrypto -lcrypt -lconfig 
+#-lssl -ljpeg
+
 
 # -- default ------------------------------------------------------------------
 default: odcgi

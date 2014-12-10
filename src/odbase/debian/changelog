@@ -1,5 +1,6 @@
 odbase (2.2.2) experimental; urgency=low
-  
+
+  * Less dependences
   * CGI styles unified for 2.2 branch
   * Multiple paths corrected
   * od.cgi code and dependencies reduced
