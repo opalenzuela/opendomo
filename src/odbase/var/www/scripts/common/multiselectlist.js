@@ -22,7 +22,7 @@ $(function() {
 		timetouch = 0;
 		if (milliseconds<1000 && focusitem != null) {
 			var url = $(this).find("a").data("target");
-			if (url) {
+			if (url && (event.button==0)) { // Ignore right and middle button
 				console.log("navigating to " + url);
 				document.location = url;
 			}
