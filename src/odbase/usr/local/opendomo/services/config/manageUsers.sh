@@ -14,12 +14,18 @@ else
     cd $CONFIGDIR
     echo "#> Available users"
     echo "list:manageUsers.sh	selectable iconlist"
-    for user in `grep "/bin/bash" /etc/passwd | grep -v "root:" | grep -v "admin:"`; do
-        username=`grep $user /etc/passwd | awk -F: '{print$1}'`
-        INFO=`grep $user /etc/passwd | awk -F: '{print$5}'`
-        echo "	-$username	$INFO	user"
+	cd /home/
+    for user in *; do
+        INFO=`grep ^$user /etc/passwd | cut -f5 -d:`
+		fullname=`echo $INFO | cut -f1 -d'<'`
+		
+		if test $user = "admin"; then
+			echo "	-$user	$fullname	admin	$INFO"
+		else
+			echo "	-$user	$fullname	user	$INFO"
+		fi
     done
-	if test -z "$username"; then
+	if test -z "$fullname"; then
 		echo "#INFO No users configured yet"
 	fi
     echo "action:"
