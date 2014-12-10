@@ -24,7 +24,7 @@ su -c /usr/bin/createwrappers.sh admin &>/dev/null
 odconfmng &>/dev/null
 
 # Creating default states
-mkdir -p /etc/opendomo/states/sleeping /etc/opendomo/states/secured
+mkdir -p /etc/opendomo/states/sleeping /etc/opendomo/states/secured /etc/opendomo/states/active
 touch /etc/opendomo/states/sleeping/opendomo-apt /etc/opendomo/states/secured/opendomo-apt
 touch /etc/opendomo/states/active/opendomo-apt /etc/opendomo/states/active/ssh
 
