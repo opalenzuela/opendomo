@@ -31,23 +31,22 @@ if   [ "$2" != "build" ] && [ "$2" != "make" ]; then
     exit 1
 
 elif [ `whoami` != "root" ]; then
-    echo -e "[${ERRO} ERROR ${NORL}] You need execute by root or with sudo"
+    echo -e "[${ERRO}ERROR${NORL}] You need execute by root or with sudo"
     exit 1
 
 elif [ "$2" = "build" ] && test -d $TARGET; then
-    echo -e "[${WARN} WARN  ${NORL}] Deleting previous images ..."
     rm -r $TARGET $TARGET.tar $TARGET.tar.gz   2>/dev/null
 
 elif [ "$2" = "make"  ] && ! test -d $TARGET; then
-    echo -e "[${ERRO} ERROR ${NORL}] You need execute build option first"
+    echo -e "[${ERRO}ERROR${NORL}] You need execute build option first"
     exit 1
 fi
 if [ $DEVICE = arm ] && ! test -x /usr/bin/qemu-arm-static; then
-    echo -e "[${ERRO} ERROR ${NORL}] You need install qemu-user-static in the system"
+    echo -e "[${ERRO}ERROR${NORL}] You need install qemu-user-static in the system"
     exit 1
 fi
 if ! test -x $MULTISTRAP; then
-    echo -e "[${ERRO} ERROR ${NORL}] You need install multistrap"
+    echo -e "[${ERRO}ERROR${NORL}] You need install multistrap"
     exit 1
 fi
 if test -x /usr/bin/linux32; then
@@ -63,7 +62,7 @@ CONFIGSDIR="configs"
 MULTISTRAP="/usr/sbin/multistrap"
 ALLPACKAGES="busybox isc-dhcp-client net-tools ifupdown openssh-server libsqlite3-0 sudo libjpeg8 libconfig9 usbutils psmisc rsync \
              ntpdate resolvconf module-init-tools aptitude wget ntp linux-base lighttpd dialog klibc-utils cpio cron console-data \
-             keyboard-configuration console-setup"
+             keyboard-configuration console-setup alsa-utils mpg123"
 
 ARMPACKAGES="raspberrypi-bootloader-nokernel libraspberrypi0"
 
