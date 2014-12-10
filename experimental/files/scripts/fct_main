@@ -8,18 +8,16 @@ mkdir -p $EXPORTDIR $TEMPDIR $LOGSDIR $IMAGESDIR $MOUNTDIR
 chown `users | cut -f1 -d" "` $EXPORTDIR $TEMPDIR $LOGSDIR $IMAGESDIR $MOUNTDIR
 
 case $1 in
-    update )
-        echo -e "########## Updating OpenDomoOS SDK ##########"
-        echo
-        echo -e "[${INFO} 1/1 ${NORL}] Updating SDK ..."
-        git pull &> $LOGSDIR/update.log
-        echo
-    ;;
     clean )
         echo -e "########## Cleaning OpenDomoOS SDK ##########"
         echo
-        echo -e "[${INFO} 1/1 ${NORL}] Cleaning SDK ..."
-	rm -r $TEMPDIR/* &>/dev/null
+        echo -ne "[${INFO} 1/1 ${NORL}] Cleaning SDK ...                             "
+        if rm -r $TEMPDIR/* &>/dev/null; then
+            echo -e "(${DONE}done${NORL})"
+        else
+            echo -e "(${ERRO}failed${NORL})"
+            exit 1
+        fi
         echo
     ;;
     build )
@@ -40,11 +38,11 @@ case $1 in
     assemble )
         echo -e "########## Building OpenDomoOS for $2 ##########"
         echo
-        echo -ne "[${INFO} 1/3 ${NORL}] Downloading rootfs package ...           "
+        echo -ne "[${INFO} 1/3 ${NORL}] Downloading rootfs package ...              "
         download_target
-        echo -ne "[${INFO} 2/3 ${NORL}] Extract rootfs package ...               "
+        echo -ne "[${INFO} 2/3 ${NORL}] Extract rootfs package ...                  "
         extract_target
-        echo -ne "[${INFO} 3/3 ${NORL}] Install opendomo packages in rootfs ...  "
+        echo -ne "[${INFO} 3/3 ${NORL}] Install opendomo packages in rootfs ...     "
         install_packages
         echo
     ;;

@@ -61,7 +61,16 @@ elif [ "$2" = "sd" ] && test -z $3; then
 fi
 
 if [ "$1" = "update" ]; then
-	git pull
+    echo -e "########## Cleaning OpenDomoOS SDK ##########"
+    echo
+    echo -ne "[${INFO} 1/1 ${NORL}] Cleaning SDK ...                             "
+    if git pull &>/dev/null; then
+        echo -e "(${DONE}done${NORL})"
+    else
+        echo -e "(${ERRO}failed${NORL})"
+        exit 1
+    fi
+    echo
 else
     sudo $FUNCDIR/fct_main $1 $2 $3
 fi
