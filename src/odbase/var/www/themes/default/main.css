@@ -99,6 +99,19 @@ li .imgframe {
 	display: table-cell;
 	vertical-align: middle;	
 }
+.listbox ul li b,
+.listbox ul li p {
+	font-weight: normal;
+}
+
+.detailed ul li b {
+	font-weight: bold;
+}
+.listbox ul li p {
+	font-weight: normal;
+}
+
+
 /*.selectable ul li label input {
 	display: inline!important;
 } */
@@ -126,7 +139,7 @@ li .imgframe {
 	display: inline-block;
 	margin: 1px;
 	background-position: center top;
-	background-size: 100px 100px;
+	background-size: 120px;
 	background-repeat: no-repeat;
 	background-image: url("/images/default/pdtbg.png");
 	border-width: 1pt;
@@ -648,6 +661,7 @@ p {
 }
 li.file iframe {
 	height: 28px;
+	width: 98%;
 }
 
 input[type="file"] {
@@ -824,16 +838,14 @@ li.separator {
 	padding-right: 32px;
 }
 
-#list li
+/*#list li
 {
 	font-size: 14px;
 	font-weight: 600;
 	vertical-align: middle; 
 	height: 40px;
 	line-height: 3em;
-	/*padding-left: 10px;
-	text-indent: 10px; */
-}
+} */
 
 /*
 #list li:hover
@@ -841,11 +853,12 @@ li.separator {
 	vertical-align: middle; 
 	height: 40px;
 	padding-left: 10px;
-} */
+} 
 #list li:hover a 
 {
 	color: orange; 
-}
+} 
+*/
 
 .selectable ul .separator label input{
 	display:none;
@@ -908,7 +921,7 @@ input[type=checkbox] {
 }
 
 
-/* LISTBOX */
+/* LISTBOX 
 .listbox #list a{
 	background: url('/images/default/circle.png') scroll no-repeat left center;
 	padding-left: 24px;
@@ -919,13 +932,13 @@ input[type=checkbox] {
 	padding-left: 32px;
 	padding-right: 32px;	
 }
-                                    
+*/                                    
                 
 .textinfo {
 	display: inline!important;
 }
                    
-
+/*
 ul#listControlPorts.tabform li div.on
 {
 	left:0;
@@ -947,6 +960,7 @@ ul#listControlPorts.tabform li div.off
 	width:50px;
 	background:transparent url(/images/default/gray.png) left center no-repeat;
 }
+*/
 
 /* Hack to hide dropdowns */
 select option[disabled]
