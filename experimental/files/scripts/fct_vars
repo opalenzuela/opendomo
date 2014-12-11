@@ -11,7 +11,7 @@ fi
 ODPKG="odbase"
 ODVER="2.2.0"
 INAME="opendomo-$ODVER-$ARCH"
-RPKGS="build-essential make gcc cpp libncurses5-dev g++ bison flex gettext texinfo libconfig-dev libsqlite3-dev libusb-dev debhelper devscripts bc"
+RPKGS="build-essential make gcc cpp libncurses5-dev g++ bison flex gettext texinfo libssl-dev libconfig-dev libsqlite3-dev libusb-dev debhelper devscripts bc"
 
 # Files and directories
 FUNCDIR=files/scripts
