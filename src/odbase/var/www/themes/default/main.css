@@ -1231,6 +1231,7 @@ input[type="file"] {
 		height: 40px; 	
 		line-height: 2em;
 		display: table-cell;
+		width: 50%;
 	}
 	.tabform ul li p {
 		display: table-cell;
