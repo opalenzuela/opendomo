@@ -5,17 +5,25 @@ insserv odchstates.sh  2>/dev/null
 insserv opendomo-apt 2>/dev/null
 insserv ntpdate 2>/dev/null
 
+# Creating opendomo admin user and group
+if ! id -u admin &>/dev/null; then
+      echo "Creating opendomo 'admin' user ..."
+      useradd -m -s /bin/bash -c 'System administrator <admin@opendomoos.org>' \
+          -G users,disk,audio,video,plugdev admin >/dev/null 2>/dev/null
+      echo -e 'opendomo\nopendomo' | (passwd admin) 2>/dev/null
+fi
+
 # Modify opendomo permissions
-chown -R 1000:1000 /etc/opendomo
-chown -R 1000:1000 /usr/local/opendomo
-chown -R 1000:1000 /var/opendomo
-chown -R 1000:1000 /var/www
-chmod 0555         /etc/sudoers.d
-chmod 0440         /etc/sudoers.d/*
-chown root         /var/www/cgi-bin/od.cgi
-chmod +s           /var/www/cgi-bin/od.cgi
-chmod 0744         /etc/initramfs-tools/scripts/init-bottom/rootmount
-chmod 0744         /etc/initramfs-tools/hooks/create_fstab
+chown -R admin:admin /etc/opendomo
+chown -R admin:users /usr/local/opendomo
+chown -R admin:admin /var/opendomo
+chown -R admin:admin /var/www
+chmod 0555           /etc/sudoers.d
+chmod 0440           /etc/sudoers.d/*
+chown root           /var/www/cgi-bin/od.cgi
+chmod +s             /var/www/cgi-bin/od.cgi
+chmod 0744           /etc/initramfs-tools/scripts/init-bottom/rootmount
+chmod 0744           /etc/initramfs-tools/hooks/create_fstab
 
 # Create links and wrapper scripts
 echo "Creating opendomo configuration ..."

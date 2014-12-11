@@ -96,17 +96,8 @@ configure_all() {
     echo "   address 169.254.0.25 "	>>$TARGET/etc/network/interfaces
     echo "   netmask 255.255.255.0"	>>$TARGET/etc/network/interfaces
 
-    # Creating groups and users
-    $CHROOT "$TARGET" /bin/bash -c "addgroup --gid 1000 admin >/dev/null 2>/dev/null"
-    $CHROOT "$TARGET" /bin/bash -c "useradd -s /bin/bash -c 'System administrator <admin@opendomoos.org>' -G disk,audio,video,plugdev -p opendomo -g 1000 -u 1000 admin 2>/dev/null"
-    $CHROOT "$TARGET" /bin/bash -c "echo -e 'opendomo\nopendomo' | (passwd admin) 2>/dev/null"
+    # Change root password
     $CHROOT "$TARGET" /bin/bash -c "echo -e 'opendomo\nopendomo' | (passwd root)  2>/dev/null"
-
-    # Creating admin folder
-    mkdir -p $TARGET/home/admin
-    cp $TARGET/etc/skel/.* $TARGET/home/admin/ 2>/dev/null
-    chown -R 1000:1000 $TARGET/home/admin
-
     # Creating fstab file
     touch $TARGET/etc/fstab
     # Creating mtab symlink (prevent boot warning)
@@ -210,7 +201,7 @@ fix_multistrap_configs() {
 
 case $2 in
     build )
-        echo -ne "[${INFO} 1/4 ${NORL}] Building image ...                      "
+        echo -ne "[${INFO} 1/4 ${NORL}] Building image ...                                        "
         rm -r $TARGET 2> /dev/null
         mkdir logs 2> /dev/null
 
@@ -228,7 +219,7 @@ case $2 in
             mount --rbind /dev/pts $TARGET/dev/pts
 
             # Fix multistrap instalation
-            echo -ne "[${INFO} 2/4 ${NORL}] Configuring packages ...                "
+            echo -ne "[${INFO} 2/4 ${NORL}] Configuring packages ...                                  "
             if fix_multistrap_configs &>/dev/null; then
                 echo -e "(${DONE}done${NORL})"
             else
@@ -236,7 +227,7 @@ case $2 in
             fi
 
             # Install packages
-            echo -ne "[${INFO} 3/4 ${NORL}] Installing extra packages ...           "
+            echo -ne "[${INFO} 3/4 ${NORL}] Installing extra packages ...                              "
             if installpkg_$DEVICE &>> $LOGFILE; then
                 echo -e "(${DONE}done${NORL})"
             else
@@ -244,7 +235,7 @@ case $2 in
             fi
 
             # Install kernel and new initramfs-tools
-            echo -ne "[${INFO} 4/4 ${NORL}] Downloading and installing kernel ...   "
+            echo -ne "[${INFO} 4/4 ${NORL}] Downloading and installing kernel ...                     "
             if download_kernel &>> $LOGFILE; then
                 echo -e "(${DONE}done${NORL})"
             else
@@ -265,7 +256,8 @@ case $2 in
         [ $DEVICE = arm ] && cp /usr/bin/qemu-arm-static $TARGET/usr/bin/qemu-arm-static 2>/dev/null
 
         # Configure image
-        echo -ne "[${INFO} 1/3 ${NORL}] Configuring image ...                   "
+        echo -ne "[${INFO} 1/3 ${NORL}] Configuring image ...                                     "
+
         if configure_all 2>> $LOGFILE && configure_$DEVICE 2>> $LOGFILE; then
             echo -e "(${DONE}done${NORL})"
         else
@@ -273,14 +265,14 @@ case $2 in
         fi
 
         # Creating package
-	echo -ne "[${INFO} 2/3 ${NORL}] Creating package ...                    "
+	echo -ne "[${INFO} 2/3 ${NORL}] Creating package ...                                      "
         if tar cfp $TARGET.tar $TARGET 2>> $LOGFILE; then
             echo -e "(${DONE}done${NORL})"
         else
             echo -e "(${ERRO}failed${NORL})"
         fi
 
-	echo -ne "[${INFO} 3/3 ${NORL}] Compressing package ...                 "
+	echo -ne "[${INFO} 3/3 ${NORL}] Compressing package ...                                   "
         if xz -z $TARGET.tar 2>> $LOGFILE; then
             echo -e "(${DONE}done${NORL})"
         else
