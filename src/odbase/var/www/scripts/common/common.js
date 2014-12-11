@@ -232,9 +232,10 @@ function help(topic){
 
 
 
-//jQuery(function($) {
+jQuery(function($) {
 	//init_focus();
-
+	
+	if ($("#wizFirstConfigurationStep1").length >0) $("#header").hide();
 	
 	/* BOTONES ON OFF - DEPRECATED in 2.2 */
 	$('a:regex(id,^cmd_.*_(on|off)$)').click(function(e)
@@ -284,7 +285,7 @@ function help(topic){
 		login.focus();
 	}	
 	if (window.init_form) init_form(); */
-//});
+});
 
 
 var iconlist='iconlist';
