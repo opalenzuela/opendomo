@@ -44,6 +44,7 @@ h2[id*='_lgnd_h2'], #logo_od,.tabberactive, .tabbernav
 .selectable ul li a {
 	display: table-cell;
 	vertical-align: middle;
+	white-space: nowrap;
 }
 .hidden {
 	display: none!important;
