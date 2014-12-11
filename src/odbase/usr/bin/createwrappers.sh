@@ -7,19 +7,20 @@
 cd /
 for i in `find /usr/local/opendomo/services/ -type f`
 do
-    bn=`basename $i`
-	# Only create wrapper if it does not exist
+    # Only create wrapper if it does not exist
     if ! test -f /usr/local/opendomo/$i; then
-		# Force execution privileges
-		chmod +x $i
-		# Create symbolic link
-		ln -fs $i /usr/local/opendomo/ >/dev/null
-		# Read possible group information
-		GROUP=`grep '#group' $i | cut -f2 -d:`
-		# If group information is found, apply
-		test "$GROUP" = "users" && chmod g+rx $i 2>/dev/null
+        # Force admin permissions in all scripts
+        chmod 0700 $i && chown admin:users $i
+
+        # If group information found, apply new user permissions
+        GROUP=`grep '#group' $i | cut -f2 -d:`
+        test "$GROUP" = "users" && chmod 0750 $i 2>/dev/null
+
+        # Create symbolic link
+        ln -fs $i /usr/local/opendomo/ >/dev/null
     fi
 done
+
 # Create CGI path links
 ROOTPATH="/var/opendomo/cgiroot"
 SCRIPTPATH="/usr/local/opendomo"

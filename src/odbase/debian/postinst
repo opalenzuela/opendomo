@@ -15,7 +15,7 @@ fi
 
 # Modify opendomo permissions
 chown -R admin:admin /etc/opendomo
-chown -R admin:users /usr/local/opendomo
+chown -R admin:admin /usr/local/opendomo
 chown -R admin:admin /var/opendomo
 chown -R admin:admin /var/www
 chmod 0555           /etc/sudoers.d
