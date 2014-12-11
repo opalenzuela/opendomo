@@ -31,7 +31,7 @@ fi
 echo "#> [$PLACE]"
 script="list.sh"
 
-echo "list:list.sh	listview"
+echo "list:list.sh	listbox"
 
 UIDFILE="/etc/opendomo/uid"
 
