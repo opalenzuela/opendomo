@@ -1,1 +1,1 @@
-rw quiet rootwait aufs=tmpfs
+rw quiet rootwait loglevel=0 aufs=yes bootdev=/dev/mmcblk0p1
