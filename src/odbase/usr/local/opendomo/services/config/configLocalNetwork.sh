@@ -3,7 +3,7 @@
 #type:local
 #package:odbase
 
-CFGFILE="/etc/opendomo/system/interfaces"
+CFGFILE="/etc/network/interfaces"
 
 if ! test -z "$1"; then
 	MODE="$1"
