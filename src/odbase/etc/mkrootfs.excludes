@@ -2,6 +2,7 @@
 run/**
 var/opendomo/tmp/**
 var/opendomo/run/**
+var/www/data/**
 var/tmp/**
 var/run/**
 proc/**
