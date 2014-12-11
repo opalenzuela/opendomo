@@ -64,6 +64,7 @@ case $1 in
         download_target
         echo -ne "[${INFO} 2/3 ${NORL}] Extract rootfs package ...                                "
         extract_target
+        echo -ne "[${INFO} 3/3 ${NORL}] Install opendomo package in rootfs ...                    "
         install_packages
         echo
     ;;
