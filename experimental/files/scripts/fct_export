@@ -5,20 +5,19 @@ source $FUNCDIR/fct_vars
 
 create_image() {
     # Delete old image delete emulator
-    echo -ne "[${INFO} 1/4 ${NORL}] Build rootfs image ...                      "
+    echo -ne "[${INFO} 1/4 ${NORL}] Build rootfs image ...                                    "
     mkdir -p $IMAGESDIR
     rm -f $ROOTFSIMG 2>/dev/null
-    [ "$ARCH" = "arm" ] && rm $ROOTFSDIR/usr/bin/qemu-arm-static 2>/dev/null
 
-    # Clean apt sources before create image
+    # Clean image before creation
     SOURCES=`cat $ROOTFSDIR/etc/apt/sources.list`
     echo "# $SOURCES" > $ROOTFSDIR/etc/apt/sources.list
     $CHROOT $ROOTFSDIR /bin/bash -c "apt-get update" &>/dev/null
     echo "$SOURCES"   > $ROOTFSDIR/etc/apt/sources.list
+    [ "$ARCH" = "arm" ] && rm $ROOTFSDIR/usr/bin/qemu-arm-static 2>/dev/null
 
     # Create raw image and copy files
-    if
-    dd if=/dev/zero of=$ROOTFSIMG bs=1024 count=1500000 &>/dev/null; then
+    if dd if=/dev/zero of=$ROOTFSIMG bs=1024 count=1500000 &>/dev/null; then
         # Format and copy data
 	if mkfs.ext2 -F $ROOTFSIMG >/dev/null >/dev/null 2>/dev/null && mount -o loop $ROOTFSIMG $MOUNTDIR 2>/dev/null; then
             echo -ne "(${DONE}make${NORL}) "
@@ -40,27 +39,99 @@ create_image() {
     fi
 }
 
+prepare_sd() {
+    # Umount all partitions and copy RasberryPi files
+    DEVICE=$1; DRIVE_PARTS=`blkid -o device | grep $DEVICE`
+    for part in $DRIVE_PARTS; do
+        umount $part 2>/dev/null
+    done
+
+    # Clean drive and creating partitions
+    echo -ne "[${INFO} 2/4 ${NORL}] Creating new partitions ...                               "
+    parted -s /dev/$DEVICE mktable msdos                &>/dev/null   # Clean drive
+    parted -s /dev/$DEVICE mkpart primary fat16 0 2048M &>/dev/null   # Create partition 2G
+    parted -s /dev/$DEVICE set 1 boot on                &>/dev/null   # Change partition type
+    sleep 2                                                           # Time to update partition database
+    if test -e /dev/$DEVICE"1"; then
+        echo -e "(${DONE}done${NORL})"
+    else
+        echo -e "(${ERRO}failed${NORL})" && exit 1
+    fi
+
+    # Format new partition
+    echo -ne "[${INFO} 3/4 ${NORL}] Formatting device ...                                     "
+    if mkfs.msdos -I -n "oddistro" -F 16 /dev/$DEVICE"1" &>/dev/null; then
+        echo -e "(${DONE}done${NORL})"
+    else
+        echo -e "(${ERRO}failed${NORL})" && exit 1
+    fi
+}
+
+export_to_sd() {
+    # Create partition and filesystems SD
+    prepare_sd $1
+    DEVICE=$1"1"
+
+    # Mount drive, prepare target and copy files to SD
+    cp -r $ISOFILES/* $TARGETDIR/
+    echo "DEFAULT $KERNELIMG initrd=$INITRDIMG rw quiet loglevel=0 aufs=yes bootdev=/dev/sda1" > $TARGETDIR/syslinux.cfg
+    mount /dev/$DEVICE $MOUNTDIR
+
+    # Mount device and copy files
+    echo -ne "[${INFO} 4/4 ${NORL}] Copy opendomo files ...                                   "
+    if cp -r $TARGETDIR/* $MOUNTDIR/; then
+        echo -e "(${DONE}done${NORL})"
+    else
+        sleep 5 & umount /dev/$DEVICE
+        echo -e "(${ERRO}failed${NORL})" && exit 1
+    fi
+
+    # Installing syslinux
+    syslinux -i /dev/$DEVICE
+    sleep 5 & umount /dev/$DEVICE
+}
+
+export_to_rpi() {
+    # Create partition and filesystems SD
+    prepare_sd $1
+    DEVICE=$1"1"
+
+    # Mount drive, prepare target and copy files to SD
+    cp -r $RPIFILES/* $TARGETDIR/
+    mount /dev/$DEVICE $MOUNTDIR || exit 1
+
+    echo -ne "[${INFO} 4/4 ${NORL}] Copy opendomo files ...                                   "
+    if cp -r $TARGETDIR/* $MOUNTDIR/; then
+        sleep 5
+        umount /dev/$DEVICE
+        echo -e "(${DONE}done${NORL})"
+    else
+        sleep 5
+        umount /dev/$DEVICE
+        echo -e "(${ERRO}failed${NORL})" && exit 1
+    fi
+}
+
 export_to_vmdk() {
     # Delete old images and copy isofiles
     rm $EXPORTDIR/$NAME.img $EXPORTDIR/$INAME.vmdk 2>/dev/null
     cp -r $ISOFILES/* $TARGETDIR/
 
-    # Creating syslinx file
+    # Creating syslinux file
     echo "DEFAULT $KERNELIMG initrd=$INITRDIMG rw quiet loglevel=0 aufs=yes bootdev=/dev/sda" > $TARGETDIR/syslinux.cfg
 
-    # Creating loodev
-    echo -ne "[${INFO} 2/4 ${NORL}] Creating raw image ...                      "
+    # Creating loopdev
+    echo -ne "[${INFO} 2/4 ${NORL}] Creating raw image ...                                    "
     if qemu-img create -f raw $EXPORTDIR/$INAME.img 2G &>/dev/null; then
         losetup -f $EXPORTDIR/$INAME.img
         LOOPDEV=`losetup -a | grep -m1 "opendomo" | cut -f1 -d: | tail -n1`
         echo -e "(${DONE}done${NORL})"
     else
-        echo -e "(${ERRO}failed${NORL})"
-        exit 1
+        echo -e "(${ERRO}failed${NORL})" && exit 1
     fi
 
     # Format, mount and copy files
-    echo -ne "[${INFO} 3/4 ${NORL}] Formatting raw image ...                    "
+    echo -ne "[${INFO} 3/4 ${NORL}] Formatting raw image ...                                  "
     if mkfs.vfat -n oddistro $LOOPDEV &>/dev/null; then
         mount $EXPORTDIR/$INAME.img $MOUNTDIR
         cp -r $TARGETDIR/* $MOUNTDIR/
@@ -79,25 +150,15 @@ export_to_vmdk() {
         done
         echo -e "(${DONE}done${NORL})"
     else
-        echo -e "(${ERRO}failed${NORL})"
+        echo -e "(${ERRO}failed${NORL})"  && exit 1
     fi
 
     # Convert raw to vmdk
-    echo -ne "[${INFO} 4/4 ${NORL}] Converting raw to vmdk image ...            "
+    echo -ne "[${INFO} 4/4 ${NORL}] Converting raw to vmdk image ...                          "
     if qemu-img convert -O vmdk $EXPORTDIR/$INAME.img $EXPORTDIR/$INAME.vmdk; then
         chown `users | cut -f1 -d" "` $EXPORTDIR/$INAME.*
         echo -e "(${DONE}done${NORL})"
     else
-        echo -e "(${ERRO}failed${NORL})"
+        echo -e "(${ERRO}failed${NORL})"  && exit 1
     fi
-}
-
-export_to_sd() {
-    #TODO
-    echo -ne "[${INFO} 1/1 ${NORL}] Exporting to SD ...                         "
-}
-
-export_to_rpi() {
-    echo -ne "[${INFO} 1/1 ${NORL}] Exporting to RPI ...                        "
-    #TODO
 }
