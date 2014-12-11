@@ -70,9 +70,9 @@ create_packages() {
     # Copy package into rootstrap and build
     cp -r $ODPKGDIR/$ODPKG $ROOTSTDIR/tmp/ 2>/dev/null
     if $CHROOT "$ROOTSTDIR" /bin/bash -c "cd /tmp/$ODPKG && dpkg-buildpackage 2>/dev/null >/dev/null" &>/dev/null; then
-        echo -ne "(${DONE}$pkg${NORL}) "
+        echo -ne "(${DONE}done${NORL})"
     else
-        echo -ne "(${ERRO}$pkg${NORL}) "
+        echo -ne "(${ERRO}failed${NORL})" & exit 1
     fi
 
     # Copy packages to export directory
@@ -95,9 +95,9 @@ install_packages() {
 
     # Install opendomo packages
     if $CHROOT "$ROOTFSDIR" /bin/bash -c "dpkg -i tmp/$ODPKG*" &>/dev/null; then
-        echo -ne "(${DONE}$NAME${NORL}) "
+        echo -ne "(${DONE}done${NORL})"
     else
-        echo -ne "(${ERRO}$NAME${NORL}) "
+        echo -ne "(${ERRO}failed${NORL})"
     fi
     echo
 
