@@ -9,7 +9,7 @@ MAIL="$1"
 URL="http://cloud.opendomo.com/alert/index.php"
 TMPFILE="/var/opendomo/tmp/$$.tmp"
 
-TEXT=`/usr/local/bin/i18n.sh "$2" | sed 's/ /+/g'`
+TEXT=`i18n.sh "$2" | sed 's/ /+/g'`
 AUID=`cat /etc/opendomo/uid`
 FURL="$URL?UID=$AUID&MAIL=$EMAIL&TEXT=$TEXT"
 
