@@ -34,7 +34,7 @@ elif ! test -z $1 && test -z $3; then
 	
     sudo usermod -c "$FULLNAME <$EMAIL>" $USERNAME  &>/dev/null
     echo -e "$PASSWD\n$PASSWD" | (passwd $USERNAME) 2>/dev/null
-	/usr/local/opendomo/setMailTo.sh $EMAIL "Your account in OpenDomoOS has been activated. Go to [http://$SYSTEMIP] and enter with your e-mail and password 'opendomo' to configure your account."
+	/usr/local/opendomo/bin/sendMailTo.sh $EMAIL "Your account in OpenDomoOS has been activated. Go to [http://$SYSTEMIP] and enter with your e-mail and password 'opendomo' to configure your account."
     manageUsers.sh
 	
 # With user but without passwd, see modify interface
