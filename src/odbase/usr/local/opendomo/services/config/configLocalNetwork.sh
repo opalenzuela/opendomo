@@ -68,6 +68,6 @@ echo "	gw	Gateway	text	$DEFAULTGW"
 echo "	dns	DNS server	text	$DNSSERVER"
 if ! test -z "$1"; then
 	echo "action:"
-	echo "	saveConfigReboot.sh	Save & reboot system"
+	echo "	saveConfig.sh	Save config"
 fi
 echo
