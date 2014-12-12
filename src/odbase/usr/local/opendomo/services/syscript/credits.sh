@@ -40,7 +40,7 @@ if test -z "$1"; then
 else
 	echo "form:credits.sh"
 	echo "	name	Name	readonly	$1"
-	echo "	page	Page	list	https://github.com/$1"
+	echo "	page	Page	application	https://github.com/$1"
 	echo "actions:"
 	echo "	goback	Back"
 fi
