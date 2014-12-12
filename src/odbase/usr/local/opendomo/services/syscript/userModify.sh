@@ -32,7 +32,7 @@ elif ! test -z $1 && test -z $3; then
 	USERNAME=`echo $EMAIL | cut -f1 -d@`
 	PASSWD="opendomo"
 	
-    sudo usermod -c "$FULLNAME <$EMAIL>" $USERNAME  &>/dev/null
+    sudo useradd -s /bin/bash -c "$FULLNAME <$EMAIL>" -g $GROUPUID -G $USERGROUPS -m $USERNAME &>/dev/null
     echo -e "$PASSWD\n$PASSWD" | (passwd $USERNAME) 2>/dev/null
 	/usr/local/opendomo/bin/sendMailTo.sh $EMAIL "Your account in OpenDomoOS has been activated. Go to [http://$SYSTEMIP] and enter with your e-mail and password 'opendomo' to configure your account."
     manageUsers.sh
