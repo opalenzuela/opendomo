@@ -1,1 +1,1 @@
-addJavascript("managePlugins.sh.js");
+include_script("/scripts/managePlugins.sh.js");
