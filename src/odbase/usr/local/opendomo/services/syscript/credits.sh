@@ -1,4 +1,4 @@
-#!/bin/sh
+﻿#!/bin/sh
 #desc:Credits
 #package:odbase
 #group:users
@@ -32,7 +32,9 @@ if test -z "$1"; then
 		echo "#INFO No plugins installed"
 		echo "actions:"
 		echo "	goback	Back"
-		echo "	managePlugins.sh	Manage plugins"
+		if test -x /usr/local/opendomo/managePlugins.sh; then
+			echo "	managePlugins.sh	Manage plugins"
+		fi
 		echo
 		exit 0
 	fi	
