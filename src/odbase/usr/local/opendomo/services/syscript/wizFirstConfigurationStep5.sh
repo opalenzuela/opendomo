@@ -12,19 +12,19 @@ SYSTEMIP=`/sbin/ifconfig eth0 | grep "inet addr" | cut -f2 -d: | cut -f1 -d' '`
 
 for email in $@; do
 	username=`echo $email | cut -f1 -d@`
-	/usr/local/opendomo/userModify.sh $username $email 2>/dev/null
+	/usr/local/opendomo/userModify.sh $username $email 2>/dev/null >/dev/null
 done
 
 echo "#>First configuration wizard [5/5]"
 echo "form:`basename $0`	wizard"
-echo "	pres	Presentation	application	http://opalenzuela.github.io/opendomo/tour.html"
-echo "#INFO System is saving configuration and restarting. Please wait"
+#echo "	pres	Presentation	application	http://opalenzuela.github.io/opendomo/tour.html"
+echo "#LOAD System is saving configuration. Please wait"
 echo "actions:"
 echo "	goback	Previous"
 echo "	managePlugins.sh	Continue"
 echo
 
 if  ! test -z "$username"; then
-	# Save and restart (only if invoked with parameters)
+	saveConfig.sh
 fi
 exit 0
