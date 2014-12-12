@@ -24,7 +24,6 @@ echo "	goback	Previous"
 echo "	managePlugins.sh	Continue"
 echo
 
-if  ! test -z "$username"; then
-	saveConfig.sh
-fi
+/usr/local/opendomo/saveConfig.sh
+
 exit 0
