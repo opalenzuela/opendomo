@@ -19,24 +19,25 @@ if test -z "$1"; then
 	echo "#> Plugin credits"
 	echo "list:credits.sh	detailed"
 	cd /var/opendomo/plugins/
-	if ls * &>/dev/null; then
-		for plugin in *.info; do
+	for plugin in *.info; do
+		if test -f $plugin; then
 			AUTHORID=""
 			source ./$plugin
 			if ! test -z "$AUTHORID" && ! test -z "$AUTHOR"; then
 				echo "	$AUTHORID	$DESCRIPTION	user	$AUTHOR"
 			fi
-	    	done
+		fi
+	done
+	if test -z "$AUTHORID"; then
+		echo "#INFO No plugins installed"
 		echo "actions:"
 		echo "	goback	Back"
-        	echo
-	else
-        	echo "# No plugins installed yet"
-		echo "actions:"
-		echo "	goback	Back"
-        	echo "	managePlugins.sh	Manage plugins"
-        	echo
-	fi
+		echo "	managePlugins.sh	Manage plugins"
+		echo
+		exit 0
+	fi	
+	echo "actions:"
+	echo "	goback	Back"
 else
 	echo "form:credits.sh"
 	echo "	name	Name	readonly	$1"

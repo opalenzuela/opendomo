@@ -1139,7 +1139,7 @@ main (int argc, char *argv[])
 		printf("		<li id='cat-tools'  class='tab'><a href='/cgi-bin/od.cgi/tools'>%s</a></li>",T("Applications"));
 		printf("		<li id='cat-config' class='tab'><a href='/cgi-bin/od.cgi/config'>%s</a></li>",T("Configuration"));
 		if (1000 == getgid()) { // Only "admin" can save system configuration
-			printf ("\t\t<li id='cat-save' class='tab'><a href='/cgi-bin/od.cgi/manageConfiguration.sh' >%s</a></li>\n", T(ODCGI_TEXT_SAVE));			
+			printf ("\t\t<li id='cat-save' class='tab'><a href='/cgi-bin/od.cgi/saveConfig.sh' >%s</a></li>\n", T(ODCGI_TEXT_SAVE));			
 		}	
 		printf("		<li id='cat-logout' class='tab'><a href='?LOGOUT=1'>%s</a></li>\n", T (ODCGI_TEXT_LOGOUT));		
 		printf("	</ul>");

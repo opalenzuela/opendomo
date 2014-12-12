@@ -1,4 +1,4 @@
-#!/bin/sh
+﻿#!/bin/sh
 #desc:System information
 #package:odbase
 #group:users
@@ -25,28 +25,23 @@ echo
 # Checking plugins dir and see info
 echo "#> Installed plugins"
 echo "list:managePlugins.sh	detailed"
-
 cd /var/opendomo/plugins/
-if ls * &>/dev/null; then
-	for plugin in `ls | cut -f1 -d. | uniq`; do
-		if iscfg.sh $plugin.info &>/dev/null;
-		then
-			VERSION=""
-			LICENSE="GPLv3"
-			DESCRIPTION="$plugin plugin"
-			source ./$plugin.info  2> /dev/null
-			echo "	-$plugin	$DESCRIPTION	package	$VERSION $LICENSE"
-		else
-			echo "	-$plugin	$plugin 	package 	Missing info file "
-		fi
-	done
-	echo "actions:"
-	echo "	credits.sh	Credits"
-	echo
-else
+for plugin in *.info
+do
+	if test -f $plugin
+	then
+		FOUND=1
+		VERSION=""
+		LICENSE="GPLv3"
+		DESCRIPTION="$plugin plugin"
+		source ./$plugin 
+		echo "	-$plugin	$DESCRIPTION	package	$VERSION $LICENSE"
+	fi
+done
+if test -z "$FOUND"; then
 	echo "# No plugins installed yet"
 	echo "actions:"
 	echo "	credits.sh	Credits"
 	echo "	managePlugins.sh	Manage plugins"
-	echo
 fi
+echo

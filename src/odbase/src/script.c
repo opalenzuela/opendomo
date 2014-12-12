@@ -127,7 +127,7 @@ script_format_error (char *script, char *message)
 {
   if(gui == html)
   {
-    printf ("<div name='debuginfo' class='debug'>%s:%s</div>\n", script,
+    printf ("<div class='debug'>%s:%s</div>\n", script,
 	    message);
   }
 }
