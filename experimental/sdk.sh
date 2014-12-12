@@ -32,7 +32,7 @@ if test -z "$1"; then
 elif [ "$1" = "update" ]; then
     # Previous checks
     if [ "$1" = "update" ] && ! test -x /usr/bin/git; then
-        echo -e "[${ERRO}error${NORL}] $pkg You need install git to update SDK" & exit 1
+        echo -e "[${ERRO} err ${NORL}] You need install git to update SDK" & exit 1
     fi
 
     echo -e "########## Cleaning OpenDomoOS SDK ##########"
