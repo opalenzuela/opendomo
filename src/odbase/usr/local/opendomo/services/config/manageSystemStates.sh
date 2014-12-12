@@ -1,4 +1,4 @@
-#!/bin/sh
+k#!/bin/sh
 #desc:Manage system states
 #type:local
 #package:odbase
@@ -8,10 +8,6 @@
 STATESDIR=/etc/opendomo/states
 TEMPSTATE=/var/opendomo/tmp/state.tmp
 STATE="$1"
-
-# Always check blacklist (Disabled for error) Deprecated?
-#odstatesmng blacklist 2>/dev/null 
-
 
 rm $TEMPSTATE 2>/dev/null
 
@@ -23,6 +19,8 @@ for state in *; do
 	echo "	-$state	$state	tag"
 done
 echo "action:"
-echo "	addSystemState.sh	Add"
+echo "	addSystemState.sh	Add / Rename"
+echo "	delSystemState.sh	Delete"
 echo
-
+echo "#TIP Press and hold to select state"
+echo

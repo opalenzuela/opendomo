@@ -61,7 +61,6 @@ else
 	echo "	manageSystemStates.sh	Back"
 	echo "	editSystemState.sh	Save changes"
 	if test "$1" != "active"; then
-		echo "	addSystemState.sh	Rename"
 		echo "	delSystemState.sh	Delete"
 	fi
 	echo
@@ -69,4 +68,3 @@ else
 	# Save current state in temporal file
 	echo "$1" >$TEMPSTATE
 fi
-

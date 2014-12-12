@@ -28,20 +28,12 @@ if test -z $2; then
        # Change state in pidfile
        echo "$1" > $STATEPID
     fi
-else
-    # Start / Stop service
-    if ! test -z $1 && [ "$2" = "on" ]; then
-        sudo odservice $1 start &>/dev/null
-    elif ! test -z $1 && [ "$2" = "off" ]; then
-        sudo odservice $1 stop  &>/dev/null
-    fi
 fi
 
 # Always reload parameters and see interface
 STATESDIR="/etc/opendomo/states"
 INITRDDIR="/etc/init.d"
 CURSTATE=`cat $STATEPID`
-#STATES=`ls -1 "$STATESDIR" | grep -v $CURSTATE | tr '\n' "," | sed 's/.$//'`
 
 # Available states
 echo "#> Change state"

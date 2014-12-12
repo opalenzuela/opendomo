@@ -35,6 +35,7 @@ odconfmng &>/dev/null
 mkdir -p /etc/opendomo/states/sleeping /etc/opendomo/states/secured /etc/opendomo/states/active
 touch /etc/opendomo/states/sleeping/opendomo-apt /etc/opendomo/states/secured/opendomo-apt
 touch /etc/opendomo/states/active/opendomo-apt /etc/opendomo/states/active/ssh
+chown -R admin:admin /etc/opendomo/states
 
 # Add modules and create new initramfs image
 [ `grep -c1 nls_cp437 /etc/initramfs-tools/modules` -eq 1 ] || echo "nls_cp437" >> /etc/initramfs-tools/modules

@@ -8,7 +8,6 @@
 STATESDIR="/etc/opendomo/states"
 TEMPSTATE="/var/opendomo/tmp/state.tmp"
 
-
 if ! test -z $2 && [ "$1" = "new" ]; then
     # Creating new state
     mkdir  -p $STATESDIR/$2
@@ -24,13 +23,11 @@ elif ! test -z $2 && [ "$1" != "new" ]; then
         /usr/local/opendomo/manageSystemStates.sh
     fi
 
-elif test -f $TEMPSTATE && test -z $2; then
-    STATE=`cat $TEMPSTATE`
-
+elif ! test -z $1 && test -z $2; then
     # Modify state
-    echo "#> Modify state"
+    echo "#> Modify state: [$1]"
     echo "form:`basename $0`"
-    echo "	oldname	oldname	hidden	$STATE"
+    echo "	oldname	oldname	hidden	$1"
     echo "	name	Name	text	$STATE"
     echo
 else
