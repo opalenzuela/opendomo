@@ -1,5 +1,7 @@
 odbase (2.2.2) experimental; urgency=low
 
+  * Appcache enabled
+  * Enabling user privileges separation
   * Less dependences
   * CGI styles unified for 2.2 branch
   * Multiple paths corrected
