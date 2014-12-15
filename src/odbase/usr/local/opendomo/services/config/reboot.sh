@@ -4,7 +4,8 @@
 #package:odbase
 #type:local
 
-# TODO: Json system busy implementation
+SYSSTATUS="/var/www/data/status.json"
+echo "{\"status\":\"rebooting\"}" > $SYSSTATUS
 
 echo "# Rebooting ... Please wait"
 echo

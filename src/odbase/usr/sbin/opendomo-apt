@@ -17,7 +17,7 @@ test `arch` == "armv6l" && ARCH="armhf"
 PIDFILE="/var/opendomo/run/opendomo-apt.pid"
 LOGFILE="/var/opendomo/log/opendomo-apt.log"
 DBGFILE="/var/opendomo/log/opendomo-apt.dbg"
-SYSSTATE="/var/opendomo/run/Systembusy.pid"
+SYSSTATUS="/var/www/data/status.json"
 
 DAEMONDIR="/var/opendomo/apt"
 QUEUEFILE="$DAEMONDIR/queue"
@@ -53,12 +53,19 @@ add_date() {
     done
 }
 
+## Change system state. System can be in active, busy or rebooting
+## To use: $command $state
+
+change_sysstatus() {
+    echo "{\"status\":\"$1\"}" > $SYSSTATUS
+}
+
 ### Update apt and opendomo repository sources.
 ### You can active the funtion immediately using 'echo 0 > /var/opendomo/apt/update'
 
 update_sources() {
     echo "Busy: Updating sources" > $PIDFILE
-    echo "Updating sources"       > $SYSSTATE
+    change_sysstatus busy
 
     aptitude update | add_date
     echo "$CURWEEK" > $SRCUPDATE
@@ -68,8 +75,8 @@ update_sources() {
     rm $REPOTEMP $REPOFILE 2>/dev/null
     wget $REPOSITORY/ -O $REPOTEMP --no-check-certificate --max-redirect=0 2>&1 | add_date && grep -v "#" $REPOTEMP | grep "-" > $REPOFILE
 
-    echo "Waiting"  > $PIDFILE
-    rm $SYSSTATE
+    echo "Waiting"  		> $PIDFILE
+    change_sysstatus active
 }
 
 ### Check package size and memory free. The function return void value if package can be installed.
@@ -124,34 +131,30 @@ aptitude_install() {
     # Installing package or updating system
     if [ "$1" == "install" ]; then
         echo "Busy: Installing $pkg" > $PIDFILE
-        echo "Installing $pkg"       > $SYSSTATE
+        change_sysstatus busy
     else
         echo "Busy: Updating system" > $PIDFILE
-        echo "Updating system"       > $SYSSTATE
+        change_sysstatus busy
     fi
     if
     LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive aptitude $APTOPTS -y -q $1 $2 | add_date
     then
         # Instalation complete, delete download files and clean queue
-        echo "Waiting" > $PIDFILE
-        rm $SYSSTATE
         aptitude -q clean | add_date
         /bin/sed -i "s/$2//"    $QUEUEFILE
         /bin/sed -i 's/ \+/ /g' $QUEUEFILE
     else
         # Install is not complete, clean downloaded package and rebuild dpkg database
         echo "Busy: Rebuilding database" > $PIDFILE
-        echo "Rebuilding database"       > $SYSSTATE
-
         apt-get clean       | add_date
         dpkg -a --configure | add_date
         apt-get -f install  | add_date
-        echo "Waiting" > $PIDFILE
-        rm $SYSSTATE
     fi
 
     # Copy opendomo configuration files for new packages
     manage_conf.sh copy &>/dev/null
+    echo "Waiting" 	         > $PIDFILE
+    change_sysstatus active
 }
 
 ### Install all plugin in $PLUGIN_FILEDIR, no need any argument to work
@@ -170,7 +173,7 @@ plugins_install() {
         if test -z "$QUEUEDEPS"; then
             cd /
             echo "Busy: Installing: $PLUGINNAME" > $PIDFILE
-            echo "Installing $PLUGINNAME"        > $SYSSTATE
+            change_sysstatus busy
             echo "Installing $PLUGINNAME ..." | add_date
 
             if test `echo $plugin | grep ".tar.gz"`; then
@@ -188,13 +191,13 @@ plugins_install() {
             echo "$PLUGINVERS" >$PLUGIN_FILEDIR/$PLUGINNAME.version && chown admin:admin $PLUGIN_FILEDIR/$PLUGINNAME.version
             manage_conf.sh copy &>/dev/null
             rm "$PLUGIN_DOWNDIR/$plugin" &>/dev/null
-            echo "Waiting" > $PIDFILE
-            rm $SYSSTATE
+            echo "Waiting" 			   > $PIDFILE
+            change_sysstatus active
 
             # Starting plugins services
             for serv in `grep $PLUGIN_SERVDIR $PLUGIN_FILEDIR/$PLUGINNAME.files`; do
                  SERVICE=`basename $serv`
-                 /usr/local/bin/changestate.sh service $SERVICE on | add_date
+                 /usr/local/bin/odse $SERVICE on | add_date
             done
         fi
     done
@@ -241,7 +244,7 @@ plugins_remove() {
         PLUGINNAME=`echo $plugin | cut -f1 -d.`
         echo "Deleting $PLUGINNAME ..." | add_date
 	echo "Busy: Deleting $PLUGINNAME" > $PIDFILE
-        echo "Deleting $PLUGINNAME"       > $SYSSTATE
+        change_sysstatus busy
 
         # Delete plugins dependecies if not used anymore
         for dep in `cat $PLUGINNAME.deps`; do
@@ -262,8 +265,8 @@ plugins_remove() {
         # Delete old wrappers, remaining files, and change status
         su admin -c "/usr/local/bin/createwrappers.sh"
 	rm $PLUGINNAME.* 2>/dev/null
-	echo "Waiting" > $PIDFILE
-        rm $SYSSTATE
+	echo "Waiting"              > $PIDFILE
+        change_sysstatus active
     done
 }
 
@@ -272,7 +275,7 @@ plugins_remove() {
 
 odpackage_update() {
     echo "Busy: Updating opendomo packages" > $PIDFILE
-    echo "Updating opendomo packages"       > $SYSSTATE
+    change_sysstatus busy
     echo "Updating opendomo packages" | add_date
     cd $PACKAG_DOWNDIR
 
@@ -312,7 +315,7 @@ odpackage_update() {
     #	echo "odcgi version "$ODPKGMAJOR"."$ODCGIUPD" don't exist yet" | add_date
     #fi
 	
-	# Searching last version of odbase
+    # Searching last version of odbase
     let ODBASEUPD=`apt-cache show odbase | grep Version | awk '{print$2}' | cut -f3 -d.`+1
     ODBASEPKG="odbase_"$ODPKGMAJOR"."$ODBASEUPD"_$ARCH.deb"
     while download.sh "$PACKAGEURL/$ODBASEPKG" &>/dev/null; do
@@ -329,15 +332,15 @@ odpackage_update() {
         LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive dpkg -i $ODBASEPKG
     else
     	echo "odbase version "$ODPKGMAJOR"."$ODBASEUPD" don't exist yet" | add_date
-    fi	
+    fi
 
     # Cleaning packages
     rm *.deb 2>/dev/null
 
     # Installing new dependecies
     LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive sudo apt-get --force-yes -fyq install | add_date
-    echo "Waiting" > $PIDFILE
-    rm $SYSSTATE
+    echo "Waiting"             > $PIDFILE
+    change_sysstatus active
 }
 
 ### Loop function while $PIDFILE exist. No arguments required
@@ -367,7 +370,6 @@ while test -f $PIDFILE; do
 
         # Remove marked plugins
         plugins_remove
-
         sleep 3
     fi
 done

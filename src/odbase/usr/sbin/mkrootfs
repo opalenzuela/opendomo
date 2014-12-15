@@ -7,6 +7,11 @@ MOUNTDIR="/mnt/rootfs-rw"
 TMPFSDIR="/mnt/tmpfs"
 SYNCOPTS="--quiet --archive --exclude-from=/etc/mkrootfs.excludes"
 TEMPFILE="/var/opendomo/tmp/mkrootfs.tmp"
+SYSSTATUS="/var/www/data/status.json"
+
+change_sysstatus() {
+    echo "{\"status\":\"$1\"}" > $SYSSTATUS
+}
 
 # Checking state and image mount
 if grep -c1 aufs=no "/proc/cmdline" &>/dev/null; then
@@ -21,6 +26,9 @@ elif ! test -d $IMAGESDIR; then
     exit 1
 
 else
+    # Creating sysstate file
+    change_sysstatus busy
+
     # Check filesystems before mount
     mount | grep $MOUNTDIR  &>/dev/null && umount -f $MOUNTDIR
     fsck.ext2 -y $ROOTIMAGE &>/dev/null
@@ -48,4 +56,7 @@ else
     done
     rmdir $MOUNTDIR 2>/dev/null
     fsck.ext2 -y $ROOTIMAGE &>/dev/null
+
+    # Active sysstate
+    change_sysstatus active
 fi
