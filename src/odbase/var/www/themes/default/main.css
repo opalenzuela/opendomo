@@ -919,6 +919,7 @@ input[type=checkbox] {
 	border: none;
 	padding: 0px 20px;
 	margin: 0px 10px;	
+	line-height: 1.5;
 }
 
 
@@ -1120,6 +1121,13 @@ input[type="file"] {
 	}
 	.tabform ul li p {
 		display: block;
+	}
+	
+	.detailed ul li p {
+		max-width: 150px;
+		overflow: hidden; 
+		text-overflow: ellipsis; 
+		white-space: nowrap;
 	}
 	
 	/* Width=200% is equivalent to colspan=2 */
