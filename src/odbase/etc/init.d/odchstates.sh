@@ -19,7 +19,7 @@
 do_start () {
     STATEDIR="/etc/opendomo/states/active"
     SYSSTATUS="/var/www/data/status.json"
-    echo "{\"status\":\"rebooting\"}" > $SYSSTATUS
+    echo "{\"status\":\"rebooting\"}" > $SYSSTATUS && chown admin:admin $SYSSTATUS
 
     # Start services in default state and create pid
     cd $STATEDIR
