@@ -9,7 +9,7 @@
 USERNAME="$1"
 EMAIL="$2"
 FULLNAME="$3"
-PASSWD="$4"
+PASSWD="$5"
 
 PARAMCOUNT=$#
 GROUPUID="100"
@@ -26,10 +26,8 @@ case $PARAMCOUNT in
 #if test -z "$USERNAME"; then
 		echo "#> Add user"
 		echo "form:`basename $0`"
-		#echo "	user	User	text	$USERNAME"
 		echo "	fullname	Full name	text $FULLNAME"
 		echo "	email	Email	text	$EMAIL"
-		#echo "	passw	Password	password	$PASSWD"
 		echo "actions:"
 		echo "	goback	Back"
 		echo "	userModify.sh	Add"
@@ -44,7 +42,10 @@ case $PARAMCOUNT in
 		echo "	user	User	hidden	$USERNAME"
 		echo "	fullname	Full name	text	$FULLNAME"
 		echo "	email	Email	text	$EMAIL"
-		echo "	passw	Password	password	$PASSWD"
+		echo "	separator	Password	separator"
+		echo "	opassw	Previous	password	"		
+		echo "	npassw	Password	password	"
+		echo "	passw	Re-type 	password	"
 		echo "actions:"
 		echo "	goback	Back"
 		echo "	userModify.sh	Modify"
@@ -62,13 +63,18 @@ case $PARAMCOUNT in
 		#ERROR!
 		echo "#ERR Invalid parameter combination"		
 	;;
-	4) # All 4 parameters: USER, MAIL, NAME and PASSWD (has to be yourself!!)
+	*)# All parameters: USER, MAIL, NAME and PASSWD (has to be yourself!!)
 		if [ `grep -c1 ^$USERNAME: /etc/passwd` -eq 1 ] ; then
-			# User exists. Modify
-			#sudo usermod -c "$FULLNAME <$EMAIL>" $USERNAME  &>/dev/null
-			echo "$EMAIL" > /home/$USERNAME/.email
-			echo -e "$PASSWD\n$PASSWD" | (passwd $USERNAME) 2>/dev/null
-			manageUsers.sh
+			OLDPASS="$4"
+			if test "$5" != "$6"; then
+				echo "#ERR Entered passwords don't match"
+				exit 1
+			else
+				#sudo usermod -c "$FULLNAME <$EMAIL>" $USERNAME  &>/dev/null
+				echo "$EMAIL" > /home/$USERNAME/.email
+				echo -e "$OLDPASS\n$PASSWD\n$PASSWD" | (passwd $USERNAME) 2>/dev/null
+				manageUsers.sh
+			fi
 		else
 			echo "#ERR User does not exist"
 			# User does not exist. ERROR
