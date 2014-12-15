@@ -98,11 +98,11 @@ else
 	else
 		STATUS="new"
 	fi	
-	
+	CODE=`echo $1 | cut -f1 -d.`
 	echo "#> Plugin details"
 	echo "form:managePlugins.sh	"
 	#echo "	icon	Icon	image	$WEB/$1.png"
-	echo "	code	Code	readonly	$1"
+	echo "	code	Code	readonly	$CODE"
 	echo "	desc	Description	readonly	$DESC"
 	echo "	deps	Dependences	readonly	$DEPS"
 	echo "	webp	Web page	readonly	$WEB"
