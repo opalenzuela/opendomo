@@ -21,6 +21,7 @@ if test -z "$1"; then
 	cd /var/opendomo/plugins/
 	for plugin in *.info; do
 		if test -f $plugin; then
+			FOUND=1
 			AUTHORID=""
 			source ./$plugin
 			if ! test -z "$AUTHORID" && ! test -z "$AUTHOR"; then
@@ -28,18 +29,15 @@ if test -z "$1"; then
 			fi
 		fi
 	done
-	if test -z "$AUTHORID"; then
+	if test -z "$FOUND"; then
 		echo "#INFO No plugins installed"
-		echo "actions:"
-		echo "	goback	Back"
-		if test -x /usr/local/opendomo/managePlugins.sh; then
-			echo "	managePlugins.sh	Manage plugins"
-		fi
-		echo
 		exit 0
 	fi	
 	echo "actions:"
 	echo "	goback	Back"
+	if test -x /usr/local/opendomo/managePlugins.sh; then
+		echo "	managePlugins.sh	Manage plugins"
+	fi	
 else
 	echo "form:credits.sh"
 	echo "	name	Name	readonly	$1"
