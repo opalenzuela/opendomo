@@ -44,6 +44,12 @@ if ! test -f $UIDFILE; then
 	fi
 fi
 
+if test $USER != "admin" && ! test -f $HOME/.email; then
+	echo "#INFO Welcome to OpenDomoOS. Before starting, I need some more data to create your account."
+	/usr/local/opendomo/userModify.sh
+	exit 0
+fi
+
 for i in *.sh; do
 	link="./$i"
 	if test -x "$i"; then

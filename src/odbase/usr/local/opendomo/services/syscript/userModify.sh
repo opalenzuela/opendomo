@@ -62,10 +62,11 @@ case $PARAMCOUNT in
 		#ERROR!
 		echo "#ERR Invalid parameter combination"		
 	;;
-	4) # All 4 parameters: USER, MAIL, NAME and PASSWD
+	4) # All 4 parameters: USER, MAIL, NAME and PASSWD (has to be yourself!!)
 		if [ `grep -c1 ^$USERNAME: /etc/passwd` -eq 1 ] ; then
 			# User exists. Modify
-			sudo usermod -c "$FULLNAME <$EMAIL>" $USERNAME  &>/dev/null
+			#sudo usermod -c "$FULLNAME <$EMAIL>" $USERNAME  &>/dev/null
+			echo "$EMAIL" > /home/$USERNAME/.email
 			echo -e "$PASSWD\n$PASSWD" | (passwd $USERNAME) 2>/dev/null
 			manageUsers.sh
 		else
