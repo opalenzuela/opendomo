@@ -335,7 +335,7 @@ odcgi_print_login_form (const char *message, const char *username)
 	sstrncpy (message_label, T (ODCGI_MSG), sizeof (message_label));
       cgi_http_header_begin ("text/xml");
       cgi_http_header_end ();
-	  printf("<html manifest='/manifest.appcache'>");
+	  
       odcgi_print_header ("loginform", username);
       printf ("  <gui>\n");
       // Usando la API, nunca debería mostrarse al usuario esta salida
@@ -355,6 +355,7 @@ odcgi_print_login_form (const char *message, const char *username)
       //! @todo adaptar "action" para obtener la ruta actual
       cgi_http_header_begin ("text/html");
       cgi_http_header_end ();
+	  printf("<html manifest='/manifest.appcache'>");
       odcgi_print_header ("/loginform", username);
       printf ("<div id='header'></div>\n"
 	      "<div id='main'>\n"
