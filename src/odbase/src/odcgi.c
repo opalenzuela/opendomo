@@ -192,6 +192,7 @@ odcgi_print_header (char *scriptname, const char *username)
   else
     {
       printf (W3C_DOCTYPE
+		"<html>\n"
 		"   <head>\n"
 		"\t<meta name='apple-mobile-web-app-capable' content='yes'/>\n"
 		"\t<meta http-equiv='X-UA-Compatible' content='IE=Edge'/>\n"
@@ -320,66 +321,64 @@ odcgi_print_footer (const char *msg, int buttons, cgi_t * cgi)
 void
 odcgi_print_login_form (const char *message, const char *username)
 {
-  char username_label[64] = "";
-  char password_label[64] = "";
-  char message_label[100] = "";
-  cgi_t *cgi = cgi_alloc ();
+	char username_label[64] = "";
+	char password_label[64] = "";
+	char message_label[100] = "";
+	cgi_t *cgi = cgi_alloc ();
 
-  sstrncpy (username_label, CT ("Username"), sizeof (username_label));
-  sstrncpy (password_label, CT ("Password"), sizeof (password_label));
-  sstrncpy (message_label, CT (message), sizeof (message_label));
+	sstrncpy (username_label, CT ("Username"), sizeof (username_label));
+	sstrncpy (password_label, CT ("Password"), sizeof (password_label));
+	sstrncpy (message_label, CT (message), sizeof (message_label));
 
-  if (gui == xml)
-    {
-      if (strlen (message) == 0)
-	sstrncpy (message_label, T (ODCGI_MSG), sizeof (message_label));
-      cgi_http_header_begin ("text/xml");
-      cgi_http_header_end ();
-	  
-      odcgi_print_header ("loginform", username);
-      printf ("  <gui>\n");
-      // Usando la API, nunca debería mostrarse al usuario esta salida
-      printf ("     <error>%s</error>\n", message_label);
-      printf ("     <text id='user' label=\"%s:\"/>\n"
+	if (gui == xml)
+	{
+		if (strlen (message) == 0)
+			sstrncpy (message_label, T (ODCGI_MSG), sizeof (message_label));
+		cgi_http_header_begin ("text/xml");
+		cgi_http_header_end ();
+		odcgi_print_header ("loginform", username);
+		printf ("  <gui>\n");
+		// Usando la API, nunca debería mostrarse al usuario esta salida
+		printf ("     <error>%s</error>\n", message_label);
+		printf ("     <text id='user' label=\"%s:\"/>\n"
 	      "     <password id='pass' label=\"%s:\"/>\n"
 	      "     <actions>\n"
 	      "        <action name='default' url='" OD_URI "/'/>\n"
 	      "     </actions>\n"
 	      "  </gui>\n", username_label, password_label);
 
-    }
-  else
-    {
-      if (strlen (message) == 0)	// Si no hay ningún mensaje, damos la bienvenida
-	sstrncpy (message_label, T (ODCGI_MSG), sizeof (message_label));
-      //! @todo adaptar "action" para obtener la ruta actual
-      cgi_http_header_begin ("text/html");
-      cgi_http_header_end ();
-	  printf("<html manifest='/manifest.appcache'>");
-      odcgi_print_header ("/loginform", username);
-      printf ("<div id='header'></div>\n"
-	      "<div id='main'>\n"
-	      "<form id='loginform_frm' action='" OD_URI "/control' method='post'>\n"
-	      "<fieldset class='tabform'>\n"
-	      " <h1>%s</h1>\n"
-	      " <ul id='login' class='loginform'>\n"
-	      "  <li id='USER_lbl' class='input'><label for='USER'>%s:</label>"
-	      "<p><input type='text' id='USER' name='USER' value=\"%s\"  autocapitalize='off'/></p></li>\n"
-	      "  <li id='PASS_lbl' class='password'><label for='PASS'>%s:</label>"
-	      "<p><input type='password' id='PASS' name='PASS'/></p></li>\n"
-	      " </ul>\n"
-	      " <div id='advpad'></div>\n",
-	      message_label, username_label, username, password_label);
-      printf (" <div class='toolbar' id='login_tbr'>\n");
+	}
+	else
+	{
+		if (strlen (message) == 0)	// Si no hay ningún mensaje, damos la bienvenida
+			sstrncpy (message_label, T (ODCGI_MSG), sizeof (message_label));
+		//! @todo adaptar "action" para obtener la ruta actual
+		cgi_http_header_begin ("text/html");
+		cgi_http_header_end ();
+		odcgi_print_header ("/loginform", username);
+		printf ("<div id='header'></div>\n"
+			"<div id='main'>\n"
+			"<form id='loginform_frm' action='" OD_URI "/control' method='post'>\n"
+			"<fieldset class='tabform'>\n"
+			" <h1>%s</h1>\n"
+			" <ul id='login' class='loginform'>\n"
+			"  <li id='USER_lbl' class='input'><label for='USER'>%s:</label>"
+			"<p><input type='text' id='USER' name='USER' value=\"%s\"  autocapitalize='off'/></p></li>\n"
+			"  <li id='PASS_lbl' class='password'><label for='PASS'>%s:</label>"
+			"<p><input type='password' id='PASS' name='PASS'/></p></li>\n"
+			" </ul>\n"
+			" <div id='advpad'></div>\n",
+			message_label, username_label, username, password_label);
+		printf (" <div class='toolbar' id='login_tbr'>\n");
 //      printf ("  <a href='/wzconf/' target='_top' class='buttonlnk'>%s</a>",
 //	      T ("Configuration wizards"));
-      printf ("  <button type='button' onclick=\"help('Login');\">%s</button>",
-      	T ("Help"));
-      printf ("  <button type='submit'>%s</button>\n", T ("Login"));
-      printf (" </div>\n  </fieldset>\n </form>\n</div>\n");
-    }
-  odcgi_print_footer ("", BUTTON_NONE, cgi);
-  cgi_free (cgi);
+		printf ("  <button type='button' onclick=\"help('Login');\">%s</button>",
+			T ("Help"));
+		printf ("  <button type='submit'>%s</button>\n", T ("Login"));
+		printf (" </div>\n  </fieldset>\n </form>\n</div>\n");
+	}
+	odcgi_print_footer ("", BUTTON_NONE, cgi);
+	cgi_free (cgi);
   //fflush(stdout);
 }
 
@@ -1058,7 +1057,6 @@ main (int argc, char *argv[])
 	if (!match(path_info,
 		"^/[a-záéíóúàèäëïöüñçA-ZÁÉÍÓÚÀÈÄËÏÖÜÑÇ0-9_/]*\\.{0,1}[a-záéíóúàèäëïöüñçA-ZÁÉÍÓÚÀÈÄËÏÖÜÑÇ0-9_/+ =?:]*$"))
     {
-		printf("<html>");
 		odcgi_print_header ("error", env.user);
 		syslog (LOG_ERR, "%s\n", ODCGI_ERROR__INVALID_PATH);
 		odcgi_msg_error (ODCGI_ERROR__INVALID_PATH,
@@ -1085,7 +1083,6 @@ main (int argc, char *argv[])
 
 	if (err!=0)
     {
-		printf("<html>\n");
 		odcgi_print_header ("error", env.user);
 		syslog (LOG_ERR, "%s\n", ODCGI_ERROR__INVALID_PATH);
 		odcgi_msg_error (ODCGI_ERROR__INVALID_PATH,
@@ -1108,7 +1105,6 @@ main (int argc, char *argv[])
   /* root directory */
   if (chdir (OD_CFG_ROOT_DIR) != 0)
     {
-	  printf("<html>\n");
       odcgi_print_header ("error", env.user);
       syslog (LOG_ERR, "%s\n", ODCGI_ERROR__ROOT_PATH_ACCESS);
       odcgi_msg_error (ODCGI_ERROR__ROOT_PATH_ACCESS,
@@ -1130,7 +1126,6 @@ main (int argc, char *argv[])
 	strcpy (scriptname, basename (path));
 
 	/* HTML-head begin */
-	printf("<html>\n");
 	odcgi_print_header (scriptname, env.user);
 
 	printf ("<!-- path: %s, path_info: %s-->\n", path, path_info);
