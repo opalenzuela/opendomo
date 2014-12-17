@@ -1,28 +1,30 @@
 CACHE MANIFEST
 # OpenDomoOS Base system version 2.2.1
  
-images/logo.png
-images/logo48.png
  
-NETWORK:
-# All URLs that start with the following lines
-# are whitelisted.
-cgi-bin/od.cgi
-*
- 
+  
 CACHE:
-# Additional items to cache.
-#demoimages/stonessmall.jpg
 cgi-bin/css.cgi?admin
+cgi-bin/js.cgi
 scripts/vendor/jquery.min.js
+scripts/vendor/jquery.flot.min.js
+scripts/vendor/jquery.flot.pie.min.js
 images/logo48.png
 images/logo16.png
+images/logo.png
 images/default/logo.png
 themes/default/control.png
 themes/default/apps.png
 themes/default/config.png
 themes/default/logout.png
 themes/default/save.png
+
+ 
+NETWORK:
+# All URLs that start with the following lines
+# are whitelisted.
+cgi-bin/od.cgi
+*
 
 FALLBACK:
 / errors/error-en-offline.html
