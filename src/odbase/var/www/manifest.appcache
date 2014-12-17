@@ -1,8 +1,6 @@
-CACHE MANIFEST
+﻿CACHE MANIFEST
 # OpenDomoOS Base system version 2.2.1
  
- 
-  
 CACHE:
 cgi-bin/css.cgi?admin
 cgi-bin/js.cgi
@@ -19,12 +17,10 @@ themes/default/config.png
 themes/default/logout.png
 themes/default/save.png
 
- 
 NETWORK:
-# All URLs that start with the following lines
-# are whitelisted.
-cgi-bin/od.cgi
-*
+/cgi-bin/od.cgi/
+/cgi-bin/od.cgi
+/cgi-bin/od.cgi*
 
 FALLBACK:
 / errors/error-en-offline.html

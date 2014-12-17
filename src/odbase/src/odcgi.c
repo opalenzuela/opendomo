@@ -192,7 +192,6 @@ odcgi_print_header (char *scriptname, const char *username)
   else
     {
       printf (W3C_DOCTYPE
-		"<html manifest='/manifest.appcache' lang='%s'>\n"
 		"   <head>\n"
 		"\t<meta name='apple-mobile-web-app-capable' content='yes'/>\n"
 		"\t<meta http-equiv='X-UA-Compatible' content='IE=Edge'/>\n"
@@ -336,6 +335,7 @@ odcgi_print_login_form (const char *message, const char *username)
 	sstrncpy (message_label, T (ODCGI_MSG), sizeof (message_label));
       cgi_http_header_begin ("text/xml");
       cgi_http_header_end ();
+	  printf("<html manifest='/manifest.appcache'>");
       odcgi_print_header ("loginform", username);
       printf ("  <gui>\n");
       // Usando la API, nunca debería mostrarse al usuario esta salida
@@ -1057,6 +1057,7 @@ main (int argc, char *argv[])
 	if (!match(path_info,
 		"^/[a-záéíóúàèäëïöüñçA-ZÁÉÍÓÚÀÈÄËÏÖÜÑÇ0-9_/]*\\.{0,1}[a-záéíóúàèäëïöüñçA-ZÁÉÍÓÚÀÈÄËÏÖÜÑÇ0-9_/+ =?:]*$"))
     {
+		printf("<html>");
 		odcgi_print_header ("error", env.user);
 		syslog (LOG_ERR, "%s\n", ODCGI_ERROR__INVALID_PATH);
 		odcgi_msg_error (ODCGI_ERROR__INVALID_PATH,
@@ -1083,6 +1084,7 @@ main (int argc, char *argv[])
 
 	if (err!=0)
     {
+		printf("<html>\n");
 		odcgi_print_header ("error", env.user);
 		syslog (LOG_ERR, "%s\n", ODCGI_ERROR__INVALID_PATH);
 		odcgi_msg_error (ODCGI_ERROR__INVALID_PATH,
@@ -1105,6 +1107,7 @@ main (int argc, char *argv[])
   /* root directory */
   if (chdir (OD_CFG_ROOT_DIR) != 0)
     {
+	  printf("<html>\n");
       odcgi_print_header ("error", env.user);
       syslog (LOG_ERR, "%s\n", ODCGI_ERROR__ROOT_PATH_ACCESS);
       odcgi_msg_error (ODCGI_ERROR__ROOT_PATH_ACCESS,
@@ -1126,6 +1129,7 @@ main (int argc, char *argv[])
 	strcpy (scriptname, basename (path));
 
 	/* HTML-head begin */
+	printf("<html>\n");
 	odcgi_print_header (scriptname, env.user);
 
 	printf ("<!-- path: %s, path_info: %s-->\n", path, path_info);
