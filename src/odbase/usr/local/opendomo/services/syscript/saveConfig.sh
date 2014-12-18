@@ -3,7 +3,10 @@
 #package:odbase
 #type:multiple
 
+
+echo '{"status":"busy"}' > /var/www/data/status.json
 sudo mkrootfs
+echo '{"status":"active"}' > /var/www/data/status.json
 
 echo "#> Configuration saved"
 echo "#INFO Your configuration was saved"

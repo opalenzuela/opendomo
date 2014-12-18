@@ -18,12 +18,14 @@ done
 echo "#>First configuration wizard [5/5]"
 echo "form:`basename $0`	wizard"
 #echo "	pres	Presentation	application	http://opalenzuela.github.io/opendomo/tour.html"
-echo "#INFO System is saving configuration. Please wait"
+echo "#WARN System is saving configuration. Please wait"
+echo "#INFO Ready to install some plugins!"
+echo
 echo "actions:"
 echo "	goback	Previous"
 echo "	managePlugins.sh	Continue"
 echo
-
-/usr/local/opendomo/saveConfig.sh >/dev/null
+echo
+/usr/local/opendomo/saveConfig.sh &  >/dev/null
 
 exit 0
