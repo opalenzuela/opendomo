@@ -5,11 +5,15 @@ var focusitem = null;
 var milliseconds = 0;
 
 $(function() {
+	$("fieldset.selectable li").each(function(){
+		var url = $(this).find("a").attr("href");
+		$(this).data("target",url);
+	});
 	$("fieldset.selectable li").on("mousedown touchstart", function(event) {
-		var url = $(this).find("a").attr("href") ;
-		$(this).find("a")
-			.attr("href","javascript:void(0)")
-			.data("target",url);	
+		//var url = $(this).find("a").attr("href") ;
+		//$(this).find("a")
+		//	.attr("href","javascript:void(0)")
+		//	.data("target",url);	
 			
 		focusitem = $(this);
 		timetouch = new Date().getTime();
@@ -21,7 +25,7 @@ $(function() {
 	$("fieldset.selectable li").on("mouseup touchend", function(event) {
 		timetouch = 0;
 		if (milliseconds<1000 && focusitem != null) {
-			var url = $(this).find("a").data("target");
+			var url = $(this).data("target");
 			if (url && (event.button==0)) { // Ignore right and middle button
 				console.log("navigating to " + url);
 				document.location = url;
