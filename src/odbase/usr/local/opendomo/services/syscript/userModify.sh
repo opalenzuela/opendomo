@@ -40,8 +40,8 @@ case $PARAMCOUNT in
 		echo "#> Modify user"
 		echo "form:`basename $0`"
 		echo "	user	User	hidden	$USERNAME"
-		echo "	fullname	Full name	text	$FULLNAME"
 		echo "	email	Email	text	$EMAIL"
+		echo "	fullname	Full name	text	$FULLNAME"		
 		echo "	separator	Password	separator"
 		echo "	opassw	Previous	password	"		
 		echo "	npassw	Password	password	"
@@ -73,7 +73,12 @@ case $PARAMCOUNT in
 				#sudo usermod -c "$FULLNAME <$EMAIL>" $USERNAME  &>/dev/null
 				echo "$EMAIL" > /home/$USERNAME/.email
 				echo -e "$OLDPASS\n$PASSWD\n$PASSWD" | (passwd $USERNAME) 2>/dev/null
-				manageUsers.sh
+				if test -x /usr/local/opendomo/manageUsers.sh; then
+					/usr/local/opendomo/manageUsers.sh
+				else
+					echo "#INFO Configuration successfully modified"
+					echo
+				fi
 			fi
 		else
 			echo "#ERR User does not exist"
