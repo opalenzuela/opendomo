@@ -49,13 +49,15 @@ case $PARAMCOUNT in
 		echo "actions:"
 		echo "	goback	Back"
 		echo "	userModify.sh	Modify"
-		echo "	userDelete.sh	Delete"
+		if test -x /usr/local/opendomo/userDelete.sh; then
+			echo "	userDelete.sh	Delete"
+		fi
 	;;
 	2) # Only 2 parameters (USERNAME + MAIL): creating new user with default password
 		PASSWD="opendomo"
 		
 		sudo useradd -s /bin/bash -c "$USERNAME <$EMAIL>" -g $GROUPUID -G $USERGROUPS -m $USERNAME &>/dev/null
-		echo -e "$PASSWD\n$PASSWD" | (sudo passwd $USERNAME) 2>/dev/null
+		echo -e "$PASSWD\n$PASSWD" | (sudo passwd $USERNAME) 
 		/usr/local/opendomo/bin/sendMailTo.sh $EMAIL "Your account in OpenDomoOS has been activated. Go to [http://$SYSTEMIP] and enter with your e-mail and password 'opendomo' to configure your account."
 		manageUsers.sh
 	;;
