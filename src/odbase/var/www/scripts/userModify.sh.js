@@ -1,5 +1,7 @@
 $(function(){
 	$("button").prop("disabled",true).css("opacity","0.3");
+	$("#npassw_lbl").append("<i></i>");
+	$("#passw_lbl").append("<i></i>");
 	$("#npassw, #passw, #opassw").on("change", function(){
 		var prev = $("#opassw").val();
 		if (prev.length>=6) {
@@ -16,5 +18,8 @@ $(function(){
 		} else {
 			$("#npassw, #passw").css("border-color","red");
 		}
+		
+		$("#npassw_lbl>i").text("   (" + np1.length + "/6)");
+		$("#passw_lbl>i").text("   (" + np2.length + "/6)");
 	});
 });

@@ -36,7 +36,10 @@ case $PARAMCOUNT in
 		USERINFO=`grep ^$USERNAME: /etc/passwd | awk -F: '{print$5}'`
 		FULLNAME=`echo $USERINFO | cut -f1 -d"<"`
 		EMAIL=`echo $USERINFO | cut -f2 -d"<" | cut -f1 -d">"`
-
+		if test -f /home/$USERNAME/.fullname; then
+			FULLNAME=`cat /home/$USERNAME/.fullname`
+		fi
+		
 		echo "#> Modify user"
 		echo "form:`basename $0`"
 		echo "	user	User	hidden	$USERNAME"
@@ -74,6 +77,7 @@ case $PARAMCOUNT in
 			else
 				#sudo usermod -c "$FULLNAME <$EMAIL>" $USERNAME  &>/dev/null
 				echo "$EMAIL" > /home/$USERNAME/.email
+				echo "$FULLNAME" > /home/$USERNAME/.fullname
 				echo -e "$OLDPASS\n$PASSWD\n$PASSWD" | (passwd $USERNAME) 2>/dev/null
 				if test -x /usr/local/opendomo/manageUsers.sh; then
 					/usr/local/opendomo/manageUsers.sh
