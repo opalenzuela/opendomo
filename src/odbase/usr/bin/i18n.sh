@@ -12,7 +12,11 @@ fi
 if test `echo $TEXT | grep '\[' | wc -l` != 0; then
 	# Hay una variable!
 	VAR=`echo $TEXT | cut -f2 -d[ | cut -f1 -d]`
-	TEXT=`echo $TEXT | sed 's/\[[a-z]*\]*/%s/'`
+	PRETEXT=`echo $TEXT | cut -f1 -d[`
+	POSTEXT=`echo $TEXT | cut -f2 -d]`
+	TEXT=`echo $PRETEXT "%s" $POSTEXT`
+	#echo "VAR: $VAR"
+	#echo "TEXT: $TEXT"
 fi
 
 
@@ -26,7 +30,8 @@ if test -f /etc/opendomo/lang; then
 		echo $TEXT
 		exit 2
 	else
-		TRANS=`grep "^$ID:" $LANGFILE | head -n1 | cut -f2- -d:`
+		TRANS=`grep "^$ID:" $LANGFILE | head -n1 | cut -f2- -d: | sed 's/%s/[]/'` 
+		#echo "TRANS: $TRANS"
 		if test -z "$TRANS"; then
 			# No se encontró el ID en el LANGFILE
 			echo $TEXT
@@ -37,7 +42,9 @@ if test -f /etc/opendomo/lang; then
 				echo $TRANS	
 			else
 				#FIXME Si la variable contiene cualquier texto a escapar, falla
-				echo $TRANS | sed "s/%s/$VAR/"
+				PRETRANS=`echo $TRANS | cut -f1 -d[`
+				POSTRANS=`echo $TRANS | cut -f2 -d]`
+				echo $PRETRANS $VAR $POSTRANS
 			fi
 			exit 0
 		fi

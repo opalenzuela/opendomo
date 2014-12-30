@@ -61,7 +61,7 @@ case $PARAMCOUNT in
 		
 		sudo useradd -s /bin/bash -c "$USERNAME <$EMAIL>" -g $GROUPUID -G $USERGROUPS -m $USERNAME &>/dev/null
 		echo -e "$PASSWD\n$PASSWD" | (sudo passwd $USERNAME) 
-		/usr/local/opendomo/bin/sendMailTo.sh $EMAIL "Your account in OpenDomoOS has been activated. Go to [http://$SYSTEMIP] and enter with your e-mail and password 'opendomo' to configure your account."
+		/usr/local/opendomo/bin/sendMailTo.sh $EMAIL "Your account in OpenDomoOS has been activated. Go to [http://$SYSTEMIP] and enter with your e-mail and password opendomo to configure your account."
 		manageUsers.sh
 	;;
 	3)
