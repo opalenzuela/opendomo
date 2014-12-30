@@ -16,7 +16,7 @@ if test -z "$1"; then
 	echo "	jmirasb 	Javier Miras    	user	Software architect"
 	echo "	inigoalonso	Iñigo Alonso    	user	Logo and graphic design"
 	echo
-	echo "#> Plugin credits"
+	echo "#> Installed plugins"
 	echo "list:credits.sh	detailed"
 	cd /var/opendomo/plugins/
 	for plugin in *.info; do
@@ -30,8 +30,7 @@ if test -z "$1"; then
 		fi
 	done
 	if test -z "$FOUND"; then
-		echo "#INFO No plugins installed"
-		exit 0
+		echo "#INFO No plugins installed yet"
 	fi	
 	echo "actions:"
 	echo "	goback	Back"
