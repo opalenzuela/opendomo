@@ -1243,6 +1243,7 @@ input[type="file"] {
 	}
 	.tabform ul li p {
 		display: table-cell;
+		min-width: 150px;
 	}	
 	
 	/* Width=200% is equivalent to colspan=2 */
