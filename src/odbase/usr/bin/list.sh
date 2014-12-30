@@ -50,6 +50,7 @@ if test $USER != "admin" && ! test -f /home/$USER/.email; then
 	exit 0
 fi
 
+link=""
 for i in *.sh; do
 	link="./$i"
 	if test -x "$i"; then
@@ -76,6 +77,11 @@ for i in *.sh; do
 		fi
     fi
 done
+
+if test -z "$name"
+then
+	echo "#INFO This location is empty"
+fi
 
 echo "actions:"
 if test "$CFGWIZARD" = "1"; then
