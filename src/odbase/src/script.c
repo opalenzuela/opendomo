@@ -1,6 +1,6 @@
 ﻿/*****************************************************************************
  *  This file is part of the OpenDomo project.
- *  Copyright(C) 2014 OpenDomo Services SL
+ *  Copyright(C) 2015 OpenDomo Services SL
  *  
  *  Daniel Lerch Hostalot <dlerch@opendomo.com>
  *

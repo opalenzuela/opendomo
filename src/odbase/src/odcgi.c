@@ -1,6 +1,6 @@
 /*****************************************************************************
  *  This file is part of the OpenDomo project.
- *  Copyright(C) 2014 OpenDomo Services SL
+ *  Copyright(C) 2015 OpenDomo Services SL
  *  
  *  Daniel Lerch Hostalot <dlerch@opendomo.com>
  *
@@ -62,7 +62,7 @@
 #define W3C_DOCTYPE  "<!DOCTYPE html> \n"
 
 //! HTML Copyright fragment
-#define ODCOPYRIGHT "<a target='opendomoORG' href='http://es.opendomo.org'>OpenDomo &copy; 2006-2014</a>"
+#define ODCOPYRIGHT "<a target='opendomoORG' href='http://es.opendomo.org'>OpenDomo &copy; 2006-2015</a>"
 
 #define ODCGI_PRIVILEGED_USER	"admin"	//!< privileged username
 #define ODCGI_SESSION_NAME    "HTSESSID"	//!< Session cookie name
