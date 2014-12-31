@@ -1,20 +1,15 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
+<!DOCTYPE html> 
 <html manifest='/manifest.appcache'>
 	<head>
-		<title>OpenDomo</title>
-		 <meta http-equiv="refresh" content="0;URL='/cgi-bin/od.cgi/'" />    
+		<title>OpenDomoOS</title>
+		 <meta http-equiv="refresh" content="2;URL='/cgi-bin/od.cgi/'" />    
 	</head>
 	<body>
+		Loading...
 		<script type='text/Javascript'>
-			window.location="/cgi-bin/od.cgi/";
+			setTimeout(function(){
+				window.location="/cgi-bin/od.cgi/";
+			},2000);
 		</script>
-		<noscript>
-			<frameset rows="*">
-				<frame src="/cgi-bin/od.cgi/" scrolling="auto"/>
-			</frameset>
-			<noframes>
-				<a href="/cgi-bin/od.cgi/">Start</a>
-			</noframes>
-		</noscript>
 	</body>
 </html>
