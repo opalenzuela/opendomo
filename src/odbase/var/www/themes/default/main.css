@@ -802,8 +802,13 @@ p.loading {
 	background-image:url('/images/loading.gif');	
 }
 div.separator {
-	font-weight: bold;
 	display: block!important;
+	border-bottom: 1pt solid #eee;
+	width: 100%;	
+}
+div.separator p{display:none;}
+div.separator label {
+	line-height:1.5;
 }
 /* Provisional bugfix for CGI */
 li.separator {
