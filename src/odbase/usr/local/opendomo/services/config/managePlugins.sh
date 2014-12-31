@@ -39,6 +39,10 @@ if test -z "$1"; then
 		DESC=`grep $plugin $REPOFILE | cut -f3 -d';' | head -n1`
 		test -z "$DESC" && DESC="$ID"
 
+		if ! test -f /var/www/data/$ID.png ; then
+			wget -q http://es.opendomo.org/files/$ID.png -O /var/www/data/$ID.png
+		fi
+		
 		# Check status
 		if   [ `echo $INSTALLED | grep -c1 $ID` == "1" ]; then
 			STATUS="installed"
