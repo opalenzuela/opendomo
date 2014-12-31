@@ -8,6 +8,8 @@ $(function() {
 	$("fieldset.selectable li").each(function(){
 		var url = $(this).find("a").attr("href");
 		$(this).data("target",url);
+		// Disable the link
+		$(this).find("a").attr("href","#");
 	});
 	$("fieldset.selectable li").on("mousedown touchstart", function(event) {
 		//var url = $(this).find("a").attr("href") ;
