@@ -140,18 +140,16 @@ li .imgframe {
 	display: inline-block;
 	margin: 1px;
 	background-position: center top;
-	background-size: 120px;
 	background-repeat: no-repeat;
 	background-image: url("/images/default/pdtbg.png");
 	border-width: 1pt;
 	border-style: solid;
 	border-radius: 10px;
-	height: 120px;
-	width: 120px;
 	overflow: hidden;
 	white-space: nowrap;
 	text-align: center;
 }
+
 .iconlist ul li a,
 .iconlist ul li label{
 	width: 100%;
@@ -1140,6 +1138,13 @@ input[type="file"] {
 		height:300px;
 		width:100%; 
 	}	
+
+	/* Standard icon size */
+	.iconlist ul li{
+		background-size: 80px;	
+		height: 80px;
+		width: 80px;
+	}	
 	
 	/* Booleans and switches */
 	li.sw_on label,
@@ -1256,6 +1261,13 @@ input[type="file"] {
 		height:300px;
 		width:200%; 
 	}
+	
+	/* Standard icon size */
+	.iconlist ul li{
+		background-size: 120px;	
+		height: 120px;
+		width: 120px;
+	}		
 	
 	/* Booleans and switches */
 	li.switch p,
