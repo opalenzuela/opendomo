@@ -1058,6 +1058,14 @@ input[type="file"] {
 	z-index: 100;
 }
 
+/* FOLDABLE */
+fieldset.foldable {transition: all 0.5s ease;}
+fieldset.foldable ul {display:block;overflow-y: auto;transition: all 0.5s ease;}
+fieldset.folded legend:after {	content:"  [+]";}
+fieldset.folded ul {	max-height: 0px;}
+fieldset.unfolded legend:after{	content: "  [-]";}
+fieldset.unfolded ul {max-height: 500px;}
+
 /* cellphone format */ 
 @media (max-width:480px) {
 	#categ{
