@@ -26,11 +26,17 @@ for service in *; do
     if ./$service status >/dev/null 2>/dev/null ; then
         STATUS=on
         # Only if status is ON and we requested OFF, we execute
-        test "$VAL" = "off" && sudo odservice $service stop >/dev/null 2>/dev/null
+        if test "$VAL" = "off"; then 
+			logevent debug service "Stopping service [$service]"
+			sudo odservice $service stop >/dev/null 2>/dev/null
+		fi
     else
         STATUS=off
         # Or the other way around
-        test "$VAL" = "on" && sudo odservice $service start >/dev/null 2>/dev/null
+        if test "$VAL" = "on"; then
+			logevent debug service "Starting service [$service]"
+			sudo odservice $service start >/dev/null 2>/dev/null
+		fi
     fi
     echo "	$service	$DESC	list[on,off] switch	$STATUS"
 done

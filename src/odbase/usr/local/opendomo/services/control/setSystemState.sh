@@ -3,7 +3,7 @@
 #package:odbase
 #type:local
 
-# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+# Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
 
 # Variables
 DAEMONSDIR="/usr/local/opendomo/daemons"
@@ -15,18 +15,23 @@ INITDIR="/etc/init.d"
 # With parameter, execute changes
 if test -z $2; then
     if ! test -z $1; then
-       # Change system state
-       cd $DAEMONSDIR
-       for daemon in *; do
-           # Start/Stop service in state
-           if test -f $STATEDIR/$daemon; then
-               sudo odservice $daemon start 2>/dev/null
-           else
-               sudo odservice $daemon stop  2>/dev/null
-           fi
-       done
-       # Change state in pidfile
-       echo "$1" > $STATEPID
+		PREVSTATE=`cat $STATEPID`
+		
+		# Change system state
+		logevent changestate "$1" "Changing state to [$1] "
+		cd $DAEMONSDIR
+		for daemon in *; do
+			# Start/Stop service in state
+			if test -f $STATEDIR/$daemon; then
+				logevent debug service "Starting service [$daemon]"
+				sudo odservice $daemon start 2>/dev/null
+			else
+				logevent debug service "Stopping service [$daemon]"
+				sudo odservice $daemon stop  2>/dev/null
+			fi
+		done
+		# Change state in pidfile
+		echo "$1" > $STATEPID
     fi
 fi
 
