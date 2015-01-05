@@ -1059,7 +1059,7 @@ input[type="file"] {
 }
 
 /* FOLDABLE */
-fieldset.foldable {transition: all 0.5s ease;}
+fieldset.foldable {transition: all 0.5s ease;-webkit-transition: all 0.5s ease;}
 fieldset.foldable ul {display:block;overflow-y: auto;transition: all 0.5s ease;}
 fieldset.folded legend:after {	content:"  [+]";}
 fieldset.folded ul {	max-height: 0px;}
