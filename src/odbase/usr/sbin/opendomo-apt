@@ -17,6 +17,7 @@ test `arch` == "armv6l" && ARCH="armhf"
 PIDFILE="/var/opendomo/run/opendomo-apt.pid"
 LOGFILE="/var/opendomo/log/opendomo-apt.log"
 DBGFILE="/var/opendomo/log/opendomo-apt.dbg"
+UIDFILE="/etc/opendomo/uid"
 SYSSTATUS="/var/www/data/status.json"
 
 DAEMONDIR="/var/opendomo/apt"
@@ -315,14 +316,16 @@ while test -f $PIDFILE; do
 
     # Start if daemon is not in "spaceless" mode
     elif [ `cat $PIDFILE | cut -f1 -d:` != "Spaceless" ]; then
-        # Update functions once a week (sources and upgrade dependencies and plugins
+        # Update system every day only in configured systems
         if ! test -f $SRCUPDATE || [ "$CURWEEK" -gt `cat $SRCUPDATE` ]; then
-            odpackage_update
-            update_sources
+#           odpackage_update
+            if test -f $UIDFILE; then
+                update_sources
 
-            # Checking memory before update system and plugins
-            test -z `check_free_memory safe-upgrade` && aptitude_install safe-upgrade
-            plugins_update
+                # Checking memory before update system and plugins
+                test -z `check_free_memory safe-upgrade` && aptitude_install safe-upgrade
+                plugins_update
+            fi
         fi
 
         # Clean queue file for prevent file errors
