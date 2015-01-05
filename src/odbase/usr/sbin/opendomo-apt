@@ -192,9 +192,9 @@ plugins_install() {
             fi
 
             # Creating wrappers, version and delete downloaded files
-            su admin -c "/usr/local/bin/createwrappers.sh"
+            su admin -c "/usr/bin/createwrappers.sh"
             echo "$PLUGINVERS" >$PLUGIN_FILEDIR/$PLUGINNAME.version && chown admin:admin $PLUGIN_FILEDIR/$PLUGINNAME.version
-            manage_conf.sh copy &>/dev/null
+            odconfmng &>/dev/null
             rm "$PLUGIN_DOWNDIR/$plugin" &>/dev/null
             [ `cat $PIDFILE` != "Stoping" ] && echo "Waiting" > $PIDFILE
             change_sysstatus active
@@ -270,7 +270,7 @@ plugins_remove() {
         done
 
         # Delete old wrappers, remaining files, and change status
-        su admin -c "/usr/local/bin/createwrappers.sh"
+        su admin -c "/usr/bin/createwrappers.sh"
 	rm $PLUGINNAME.* 2>/dev/null
 
         [ `cat $PIDFILE` != "Stoping" ] && echo "Waiting" > $PIDFILE
@@ -348,6 +348,6 @@ while test -f $PIDFILE; do
 
         # Remove marked plugins
         plugins_remove
-        sleep 3
+        sleep 1
     fi
 done
