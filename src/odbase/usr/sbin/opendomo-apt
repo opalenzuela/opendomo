@@ -3,6 +3,7 @@
 # opendomo-apt can be in 3 diferent states:
 #    busy - opendomo-apt is working, installing package, updating system, updating sources
 #    waiting - opendomo-apt is free, queue is emply and don't have other tasks pending
+#    stoping - opendomo-apt stops when is secure, all started tasks are finished
 #    spaceless - opendomo-apt can't install packages because don't free space available.
 #       Every task is canceled and is required save config and reboot to continue
 #
@@ -64,18 +65,19 @@ change_sysstatus() {
 ### You can active the funtion immediately using 'echo 0 > /var/opendomo/apt/update'
 
 update_sources() {
-    echo "Busy: Updating sources" > $PIDFILE
+    # Generate PIDs, events and status
+    [ `cat $PIDFILE` != "Stoping" ] && echo "Busy: Updating sources" > $PIDFILE
     change_sysstatus busy
 
+    # Download plugins repository file and apt sources
+    rm $REPOTEMP $REPOFILE 2>/dev/null
+    wget $REPOSITORY/ -O $REPOTEMP --no-check-certificate --max-redirect=0 2>&1 | add_date && grep -v "#" $REPOTEMP | grep "-" > $REPOFILE
     aptitude update | add_date
+
     echo "$CURWEEK" > $SRCUPDATE
     chown admin:admin $SRCUPDATE
 
-    # Download plugins repository file
-    rm $REPOTEMP $REPOFILE 2>/dev/null
-    wget $REPOSITORY/ -O $REPOTEMP --no-check-certificate --max-redirect=0 2>&1 | add_date && grep -v "#" $REPOTEMP | grep "-" > $REPOFILE
-
-    echo "Waiting"  		> $PIDFILE
+    [ `cat $PIDFILE` != "Stoping" ] && echo "Waiting" > $PIDFILE
     change_sysstatus active
 }
 
@@ -105,7 +107,7 @@ check_free_memory() {
     fi
 
     # Sum sizes and test free space
-    PACKAGE_MEMORY_FREE=`/usr/local/bin/get_mem_free.sh | grep PACKAGE_MEMORY_FREE | cut -f2 -d=`
+    PACKAGE_MEMORY_FREE=`/usr/bin/get_mem_free.sh | grep PACKAGE_MEMORY_FREE | cut -f2 -d=`
     let TOTAL_INSTALL_SIZE="$PKG_INSTALL_SIZE + $PKG_DOWNLOAD_SIZE + 5000"
 
     # Package information, send to debug file
@@ -130,10 +132,12 @@ aptitude_install() {
 
     # Installing package or updating system
     if [ "$1" == "install" ]; then
-        echo "Busy: Installing $pkg" > $PIDFILE
+        # Generate PIDs, events and status
+        [ `cat $PIDFILE` != "Stoping" ] && echo "Busy: Installing $pkg" > $PIDFILE
         change_sysstatus busy
     else
-        echo "Busy: Updating system" > $PIDFILE
+        # Generate PIDs, events and status
+        [ `cat $PIDFILE` != "Stoping" ] && echo "Busy: Updating system" > $PIDFILE
         change_sysstatus busy
     fi
     if
@@ -145,7 +149,7 @@ aptitude_install() {
         /bin/sed -i 's/ \+/ /g' $QUEUEFILE
     else
         # Install is not complete, clean downloaded package and rebuild dpkg database
-        echo "Busy: Rebuilding database" > $PIDFILE
+        [ `cat $PIDFILE` != "Stoping" ] && echo "Busy: Rebuilding database" > $PIDFILE
         apt-get clean       | add_date
         dpkg -a --configure | add_date
         apt-get -f install  | add_date
@@ -153,7 +157,7 @@ aptitude_install() {
 
     # Copy opendomo configuration files for new packages
     manage_conf.sh copy &>/dev/null
-    echo "Waiting" 	         > $PIDFILE
+    [ `cat $PIDFILE` != "Stoping" ] && echo "Waiting" > $PIDFILE
     change_sysstatus active
 }
 
@@ -172,7 +176,8 @@ plugins_install() {
         # Check installed deps and install plugin
         if test -z "$QUEUEDEPS"; then
             cd /
-            echo "Busy: Installing: $PLUGINNAME" > $PIDFILE
+            # Generate PIDs, events and status
+            [ `cat $PIDFILE` != "Stoping" ] && echo "Busy: Installing: $PLUGINNAME" > $PIDFILE
             change_sysstatus busy
             echo "Installing $PLUGINNAME ..." | add_date
 
@@ -191,7 +196,7 @@ plugins_install() {
             echo "$PLUGINVERS" >$PLUGIN_FILEDIR/$PLUGINNAME.version && chown admin:admin $PLUGIN_FILEDIR/$PLUGINNAME.version
             manage_conf.sh copy &>/dev/null
             rm "$PLUGIN_DOWNDIR/$plugin" &>/dev/null
-            echo "Waiting" 			   > $PIDFILE
+            [ `cat $PIDFILE` != "Stoping" ] && echo "Waiting" > $PIDFILE
             change_sysstatus active
 
             # Starting plugins services
@@ -242,8 +247,10 @@ plugins_remove() {
     for plugin in `ls -1 | grep remove`; do
         # Updating package info
         PLUGINNAME=`echo $plugin | cut -f1 -d.`
+
+        # Generate PIDs, events and status
         echo "Deleting $PLUGINNAME ..." | add_date
-	echo "Busy: Deleting $PLUGINNAME" > $PIDFILE
+	[ `cat $PIDFILE` != "Stoping" ] && echo "Busy: Deleting $PLUGINNAME" > $PIDFILE
         change_sysstatus busy
 
         # Delete plugins dependecies if not used anymore
@@ -265,16 +272,18 @@ plugins_remove() {
         # Delete old wrappers, remaining files, and change status
         su admin -c "/usr/local/bin/createwrappers.sh"
 	rm $PLUGINNAME.* 2>/dev/null
-	echo "Waiting"              > $PIDFILE
+
+        [ `cat $PIDFILE` != "Stoping" ] && echo "Waiting" > $PIDFILE
         change_sysstatus active
     done
 }
 
-### Install opendomo packages, packages always are reinstalled, with or without update. This method prevent packages corruption
+### Update opendomo package. Check last version, update and install
 ### No exit errors or arguments required
 
 odpackage_update() {
-    echo "Busy: Updating opendomo packages" > $PIDFILE
+    # Generate PIDs, events and status
+    [ `cat $PIDFILE` != "Stoping" ] && echo "Busy: Updating opendomo packages" > $PIDFILE
     change_sysstatus busy
     echo "Updating opendomo packages" | add_date
     cd $PACKAG_DOWNDIR
@@ -303,22 +312,21 @@ odpackage_update() {
 
     # Installing new dependecies
     LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive sudo apt-get --force-yes -fyq install | add_date
-    echo "Waiting"             > $PIDFILE
+    [ `cat $PIDFILE` != "Stoping" ] && echo "Waiting" > $PIDFILE
     change_sysstatus active
 }
 
 ### Loop function while $PIDFILE exist. No arguments required
-
 while test -f $PIDFILE; do
     # Stoping service when are in stop mode
-    if   [ `cat $PIDFILE | cut -f1 -d:` = "Stoping" ]; then
+    if [ `cat $PIDFILE | cut -f1 -d:` = Stoping ]; then
         rm $PIDFILE
 
     # Start if daemon is not in "spaceless" mode
     elif [ `cat $PIDFILE | cut -f1 -d:` != "Spaceless" ]; then
         # Update system every day only in configured systems
         if ! test -f $SRCUPDATE || [ "$CURWEEK" -gt `cat $SRCUPDATE` ]; then
-#           odpackage_update
+#            odpackage_update
             if test -f $UIDFILE; then
                 update_sources
 
