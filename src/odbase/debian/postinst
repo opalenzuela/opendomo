@@ -37,6 +37,9 @@ touch /etc/opendomo/states/sleeping/opendomo-apt /etc/opendomo/states/secured/op
 touch /etc/opendomo/states/active/opendomo-apt /etc/opendomo/states/active/ssh
 chown -R admin:admin /etc/opendomo/states
 
+# Creating default eventhandler
+ln -s /usr/local/opendomo/eventhandlers/writeToLog.sh /usr/local/opendomo/defaults/eventhandlers/all-all
+
 # Add modules and create new initramfs image
 [ `grep -c1 nls_cp437 /etc/initramfs-tools/modules` -eq 1 ] || echo "nls_cp437" >> /etc/initramfs-tools/modules
 [ `grep -c1 nls_utf8  /etc/initramfs-tools/modules` -eq 1 ] || echo "nls_utf8"  >> /etc/initramfs-tools/modules

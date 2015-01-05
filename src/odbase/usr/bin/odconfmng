@@ -6,7 +6,7 @@ DIRCONF="/etc/opendomo"
 DEFCONF="/usr/local/opendomo/defaults"
 SYSCONF="/usr/local/opendomo/defaults/system"
 BLACKLIST="group group- gshadow gshadow- shadow shadow- passwd passwd- sudoers sudoers.d debian_version os-release os-release.orig mtab"
-RSYNCOPTS="--ignore-existing --exclude 'system' --recursive --perms"
+RSYNCOPTS="--ignore-existing --exclude 'system' --recursive --perms --links"
 
 # Sync opendomo configuration
 rsync $RSYNCOPTS $DEFCONF/* $DIRCONF
