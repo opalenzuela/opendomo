@@ -35,9 +35,9 @@ elif [ "$1" = "update" ]; then
         echo -e "[${ERRO} err ${NORL}] You need install git to update SDK" & exit 1
     fi
 
-    echo -e "########## Cleaning OpenDomoOS SDK ##########"
+    echo -e "########## Updating OpenDomoOS SDK ##########"
     echo
-    echo -ne "[${INFO} 1/1 ${NORL}] Cleaning SDK ...                             "
+    echo -ne "[${INFO} 1/1 ${NORL}] Updating SDK ...                             "
     if git pull &>/dev/null; then
         echo -e "(${DONE}done${NORL})"
     else
