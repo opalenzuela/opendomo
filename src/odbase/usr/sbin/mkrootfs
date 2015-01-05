@@ -9,15 +9,15 @@ SYNCOPTS="--quiet --archive --exclude-from=/etc/mkrootfs.excludes"
 TEMPFILE="/var/opendomo/tmp/mkrootfs.tmp"
 SYSSTATUS="/var/www/data/status.json"
 
-change_sysstatus() {
-    echo "{\"status\":\"$1\"}" > $SYSSTATUS
-}
-
 # Checking state and image mount
 if grep -c1 aufs=no "/proc/cmdline" &>/dev/null; then
     echo "#ERRO System is in read-write mode"
     echo
-    exit 0
+
+# Checking system busy
+while [ `cat $SYSSTATUS | cut -f2 -d: | cut -f1 -d}` = "busy" ]; do
+    sleep 1
+done
 
 # Check roofs image
 elif ! test -d $IMAGESDIR; then
@@ -27,7 +27,7 @@ elif ! test -d $IMAGESDIR; then
 
 else
     # Creating sysstate file
-    change_sysstatus busy
+    echo "{\"status\":\"busy\"}" > $SYSSTATUS
 
     # Check filesystems before mount
     mount | grep $MOUNTDIR  &>/dev/null && umount -f $MOUNTDIR
@@ -39,8 +39,6 @@ else
     mount $ROOTIMAGE $MOUNTDIR || exit 1
 
     # Copy new files in image
-    echo "#LOADING Save system configuration (please wait) ..."
-    echo
     rsync $SYNCOPTS $TMPFSDIR/ $MOUNTDIR/
 
     # Delete missing files in image
@@ -58,5 +56,5 @@ else
     fsck.ext2 -y $ROOTIMAGE &>/dev/null
 
     # Active sysstate
-    change_sysstatus active
+    echo "{\"status\":\"active\"}" > $SYSSTATUS
 fi
