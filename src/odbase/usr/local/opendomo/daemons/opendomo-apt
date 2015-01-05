@@ -1,0 +1,11 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:		opendomo-apt
+# Required-Start:
+# Required-Stop:
+# Default-Start:	2 3 4 5
+# Default-Stop:
+# Short-Description:	Plugins installer
+### END INIT INFO
+
+/etc/init.d/opendomo-apt $1

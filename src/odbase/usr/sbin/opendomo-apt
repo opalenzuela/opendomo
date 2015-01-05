@@ -309,8 +309,12 @@ odpackage_update() {
 ### Loop function while $PIDFILE exist. No arguments required
 
 while test -f $PIDFILE; do
+    # Stoping service when are in stop mode
+    if   [ `cat $PIDFILE | cut -f1 -d:` = "Stoping" ]; then
+        rm $PIDFILE
+
     # Start if daemon is not in "spaceless" mode
-    if [ `cat $PIDFILE | cut -f1 -d:` != "Spaceless" ]; then
+    elif [ `cat $PIDFILE | cut -f1 -d:` != "Spaceless" ]; then
         # Update functions once a week (sources and upgrade dependencies and plugins
         if ! test -f $SRCUPDATE || [ "$CURWEEK" -gt `cat $SRCUPDATE` ]; then
             odpackage_update
