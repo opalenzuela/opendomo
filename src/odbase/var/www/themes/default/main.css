@@ -1136,7 +1136,7 @@ fieldset.unfolded ul {max-height: 500px;}
 		display: block;
 	}
 	
-	.detailed ul li p {
+	.detailed ul li p, .detailed ul li a {
 		max-width: 150px;
 		overflow: hidden; 
 		text-overflow: ellipsis; 
