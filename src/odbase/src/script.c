@@ -1612,7 +1612,7 @@ script_exec (const char *cmd, const char *section, script_env_t * env)
     else
     {
       printf ("\n<!-- Non-formated line '%s' -->\n", buf);
-      script_format_error (script_name, "Not formatted line");
+      script_format_error (script_name, "Not formatted line", buf);
     }
 
   }
