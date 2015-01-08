@@ -22,10 +22,10 @@ if test -z $2; then
 	    # Start/Stop service in state
             if test -f $STATEDIR/$daemon; then
                 logevent debug service "Starting service [$daemon]"
-                odservice $daemon status || sudo odservice $daemon start 2>/dev/null
+                sudo odservice $daemon status &>/dev/null || sudo odservice $daemon start
             else
                 logevent debug service "Stopping service [$daemon]"
-                odservice $daemon status && sudo odservice $daemon stop  2>/dev/null
+                sudo odservice $daemon status &>/dev/null && sudo odservice $daemon stop
             fi
         done
         # Change state in pidfile

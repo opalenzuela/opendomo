@@ -1,4 +1,4 @@
-k#!/bin/sh
+#!/bin/sh
 #desc:Manage system states
 #type:local
 #package:odbase
@@ -16,7 +16,7 @@ cd $STATESDIR
 echo "#> Available states"
 echo "list:editSystemState.sh	selectable"
 for state in *; do
-    [ $state =! "idle" ] && echo "	-$state	$state	tag"
+    [ "$state" != "idle" ] && echo "	-$state	$state	tag"
 done
 echo "action:"
 echo "	addSystemState.sh	Add / Rename"

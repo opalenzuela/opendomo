@@ -25,12 +25,12 @@ do_start () {
 
     # Create sysstatus and pid
     echo "{\"status\":\"$STATE\"}" > $SYSSTATUS && chown admin:admin $SYSSTATUS
-    echo "$STATE" > $PIDFILE
+    echo "$STATE" > $PIDFILE && chown admin:admin $PIDFILE
 
     # Start services in state
     cd $STATEDIR
     for daemon in *; do
-        odservice $daemon start
+        test -f $daemon && odservice $daemon start
     done
 }
 
