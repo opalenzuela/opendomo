@@ -51,7 +51,7 @@ do_status () {
 		echo "$basename $0 is running"
 		exit 0
 	else
-		eche "$basename $0 is not running"
+		echo "$basename $0 is not running"
 		exit 1
 	fi
 }
