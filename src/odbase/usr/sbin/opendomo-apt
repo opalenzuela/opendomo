@@ -67,7 +67,7 @@ change_sysstatus() {
 
 update_sources() {
     # Generate PIDs, events and status
-    [ `cat $PIDFILE` != "Stoping" ] && echo "Busy: Updating sources" > $PIDFILE
+    [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Busy: Updating sources" > $PIDFILE
     change_sysstatus busy
 
     # Download plugins repository file and apt sources
@@ -78,7 +78,7 @@ update_sources() {
     echo "$CURWEEK" > $SRCUPDATE
     chown admin:admin $SRCUPDATE
 
-    [ `cat $PIDFILE` != "Stoping" ] && echo "Waiting" > $PIDFILE
+    [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Waiting" > $PIDFILE
     change_sysstatus active
 }
 
@@ -134,11 +134,11 @@ aptitude_install() {
     # Installing package or updating system
     if [ "$1" == "install" ]; then
         # Generate PIDs, events and status
-        [ `cat $PIDFILE` != "Stoping" ] && echo "Busy: Installing $pkg" > $PIDFILE
+        [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Busy: Installing $pkg" > $PIDFILE
         change_sysstatus busy
     else
         # Generate PIDs, events and status
-        [ `cat $PIDFILE` != "Stoping" ] && echo "Busy: Updating system" > $PIDFILE
+        [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Busy: Updating system" > $PIDFILE
         change_sysstatus busy
     fi
     if
@@ -150,7 +150,7 @@ aptitude_install() {
         /bin/sed -i 's/ \+/ /g' $QUEUEFILE
     else
         # Install is not complete, clean downloaded package and rebuild dpkg database
-        [ `cat $PIDFILE` != "Stoping" ] && echo "Busy: Rebuilding database" > $PIDFILE
+        [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Busy: Rebuilding database" > $PIDFILE
         apt-get clean       | add_date
         dpkg -a --configure | add_date
         apt-get -f install  | add_date
@@ -158,7 +158,7 @@ aptitude_install() {
 
     # Copy opendomo configuration files for new packages
     manage_conf.sh copy &>/dev/null
-    [ `cat $PIDFILE` != "Stoping" ] && echo "Waiting" > $PIDFILE
+    [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Waiting" > $PIDFILE
     change_sysstatus active
 }
 
@@ -178,7 +178,7 @@ plugins_install() {
         if test -z "$QUEUEDEPS"; then
             cd /
             # Generate PIDs, events and status
-            [ `cat $PIDFILE` != "Stoping" ] && echo "Busy: Installing: $PLUGINNAME" > $PIDFILE
+            [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Busy: Installing: $PLUGINNAME" > $PIDFILE
             change_sysstatus busy
             echo "Installing $PLUGINNAME ..." | add_date
 
@@ -197,13 +197,14 @@ plugins_install() {
             echo "$PLUGINVERS" >$PLUGIN_FILEDIR/$PLUGINNAME.version && chown admin:admin $PLUGIN_FILEDIR/$PLUGINNAME.version
             odconfmng &>/dev/null
             rm "$PLUGIN_DOWNDIR/$plugin" &>/dev/null
-            [ `cat $PIDFILE` != "Stoping" ] && echo "Waiting" > $PIDFILE
+
+            [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Waiting" > $PIDFILE
             change_sysstatus active
 
             # Starting plugins services
             for serv in `grep $PLUGIN_SERVDIR $PLUGIN_FILEDIR/$PLUGINNAME.files`; do
                  SERVICE=`basename $serv`
-                 /usr/local/bin/odse $SERVICE on | add_date
+                 /usr/sbin/odservice $SERVICE start | add_date
             done
         fi
     done
@@ -251,7 +252,7 @@ plugins_remove() {
 
         # Generate PIDs, events and status
         echo "Deleting $PLUGINNAME ..." | add_date
-	[ `cat $PIDFILE` != "Stoping" ] && echo "Busy: Deleting $PLUGINNAME" > $PIDFILE
+        [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Busy: Deleting $PLUGINNAME" > $PIDFILE
         change_sysstatus busy
 
         # Delete plugins dependecies if not used anymore
@@ -274,7 +275,7 @@ plugins_remove() {
         su admin -c "/usr/bin/createwrappers.sh"
 	rm $PLUGINNAME.* 2>/dev/null
 
-        [ `cat $PIDFILE` != "Stoping" ] && echo "Waiting" > $PIDFILE
+        [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Waiting" > $PIDFILE
         change_sysstatus active
     done
 }
@@ -284,7 +285,7 @@ plugins_remove() {
 
 odpackage_update() {
     # Generate PIDs, events and status
-    [ `cat $PIDFILE` != "Stoping" ] && echo "Busy: Updating opendomo packages" > $PIDFILE
+    [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Busy: Updating opendomo packages" > $PIDFILE
     change_sysstatus busy
     echo "Updating opendomo packages" | add_date
     cd $PACKAG_DOWNDIR
@@ -313,7 +314,7 @@ odpackage_update() {
 
     # Installing new dependecies
     LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive sudo apt-get --force-yes -fyq install | add_date
-    [ `cat $PIDFILE` != "Stoping" ] && echo "Waiting" > $PIDFILE
+    [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Waiting" > $PIDFILE
     change_sysstatus active
 }
 
