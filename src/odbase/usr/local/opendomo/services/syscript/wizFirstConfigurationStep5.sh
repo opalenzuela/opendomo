@@ -28,4 +28,7 @@ echo
 echo
 /usr/local/opendomo/saveConfig.sh &  >/dev/null
 
+# Change to active state
+setSystemState.sh active
+
 exit 0
