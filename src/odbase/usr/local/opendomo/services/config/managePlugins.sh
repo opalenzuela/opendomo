@@ -3,7 +3,7 @@
 #type:local
 #package:odbase
 
-# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+# Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
 
 ODAPTPID=/var/opendomo/run/opendomo-apt.pid
 STATFILE=/var/opendomo/tmp/plugin_status.tmp
@@ -25,7 +25,7 @@ source $STATFILE
 # opendomo-apt is in "Spaceless" mode, plugins can be installed
 grep Spaceless $ODAPTPID &>/dev/null && echo "#WARN No free space available, you need save configuration and reboot to install plugins"
 
-# Repository don't exists or emply, force download
+# Repository don't exists or empty, force download
 if test -z `cat $REPOFILE 2>/dev/null | head -c2`; then
 	wget $REPOSITORY/ -O $REPOTEMP --no-check-certificate --max-redirect=0 &>/dev/null && grep -v "#" $REPOTEMP | grep "-" > $REPOFILE
 fi
