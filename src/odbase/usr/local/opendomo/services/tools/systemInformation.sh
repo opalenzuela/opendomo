@@ -40,9 +40,9 @@ do
 done
 if test -z "$FOUND"; then
 	echo "# No plugins installed yet"
-	echo "actions:"
 fi
 
+echo "actions:"
 echo "	credits.sh	Credits"
 if test -x /usr/local/opendomo/managePlugins.sh; then
 	echo "	managePlugins.sh	Manage plugins"
