@@ -16,7 +16,7 @@ cd $STATESDIR
 echo "#> Available states"
 echo "list:editSystemState.sh	selectable"
 for state in *; do
-	echo "	-$state	$state	tag"
+    [ $state =! "idle" ] && echo "	-$state	$state	tag"
 done
 echo "action:"
 echo "	addSystemState.sh	Add / Rename"

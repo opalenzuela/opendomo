@@ -26,6 +26,7 @@ QUEUEFILE="$DAEMONDIR/queue"
 SRCUPDATE="$DAEMONDIR/update"
 REPOFILE="$DAEMONDIR/repository.lst"
 REPOTEMP="$DAEMONDIR/repository.tmp"
+CURSTATE=`cat /var/opendomo/run/state.pid`
 
 PLUGIN_DOWNDIR="$DAEMONDIR/plugins"
 PLUGIN_FILEDIR="/var/opendomo/plugins"
@@ -326,10 +327,9 @@ while test -f $PIDFILE; do
     elif [ `cat $PIDFILE | cut -f1 -d:` != "Spaceless" ]; then
         # Update system every day only in configured systems
         if ! test -f $SRCUPDATE || [ "$CURWEEK" -gt `cat $SRCUPDATE` ]; then
-#            odpackage_update
-            if test -f $UIDFILE; then
-                update_sources
-
+            odpackage_update
+            update_sources
+            if $CURSTATE =! "idle"; then
                 # Checking memory before update system and plugins
                 test -z `check_free_memory safe-upgrade` && aptitude_install safe-upgrade
                 plugins_update

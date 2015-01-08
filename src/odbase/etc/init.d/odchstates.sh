@@ -17,11 +17,17 @@
 . /lib/lsb/init-functions
 
 do_start () {
-    STATEDIR="/etc/opendomo/states/active"
+    PIDFILE="/var/opendomo/run/state.pid"
+    UIDFILE="/etc/opendomo/uid"
     SYSSTATUS="/var/www/data/status.json"
-    echo "{\"status\":\"active\"}" > $SYSSTATUS && chown admin:admin $SYSSTATUS
+    test -f $UIDFILE && STATEDIR="/etc/opendomo/states/active"; STATE=active
+    test -f $UIDFILE || STATEDIR="/etc/opendomo/states/idle"  ; STATE=idle
 
-    # Start services in default state and create pid
+    # Create sysstatus and pid
+    echo "{\"status\":\"$STATE\"}" > $SYSSTATUS && chown admin:admin $SYSSTATUS
+    echo "$STATE" > $PIDFILE
+
+    # Start services in state
     cd $STATEDIR
     for daemon in *; do
         odservice $daemon start

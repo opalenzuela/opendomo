@@ -32,9 +32,10 @@ su -c /usr/bin/createwrappers.sh admin &>/dev/null
 odconfmng &>/dev/null
 
 # Creating default states
-mkdir -p /etc/opendomo/states/sleeping /etc/opendomo/states/secured /etc/opendomo/states/active
-touch /etc/opendomo/states/sleeping/opendomo-apt /etc/opendomo/states/secured/opendomo-apt
-touch /etc/opendomo/states/active/opendomo-apt /etc/opendomo/states/active/ssh
+mkdir -p /etc/opendomo/states/sleeping /etc/opendomo/states/secured \
+   /etc/opendomo/states/active /etc/opendomo/states/idle
+touch /etc/opendomo/states/sleeping/opendomo-apt /etc/opendomo/states/secured/opendomo-apt \
+   /etc/opendomo/states/active/opendomo-apt /etc/opendomo/states/active/ssh
 chown -R admin:admin /etc/opendomo/states
 
 # Creating default eventhandler
