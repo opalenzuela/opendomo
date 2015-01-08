@@ -39,6 +39,7 @@ touch /etc/opendomo/states/sleeping/opendomo-apt /etc/opendomo/states/secured/op
 chown -R admin:admin /etc/opendomo/states
 
 # Creating default eventhandler
+mkdir /usr/local/opendomo/defaults/eventhandlers
 ln -s /usr/local/opendomo/eventhandlers/writeToLog.sh /usr/local/opendomo/defaults/eventhandlers/all-all
 
 # Add modules and create new initramfs image
