@@ -34,8 +34,7 @@ odconfmng &>/dev/null
 # Creating default states
 mkdir -p /etc/opendomo/states/sleeping /etc/opendomo/states/secured \
    /etc/opendomo/states/active /etc/opendomo/states/idle
-touch /etc/opendomo/states/sleeping/opendomo-apt /etc/opendomo/states/secured/opendomo-apt \
-   /etc/opendomo/states/active/opendomo-apt /etc/opendomo/states/active/ssh
+touch /etc/opendomo/states/active/ssh
 chown -R admin:admin /etc/opendomo/states
 
 # Creating default eventhandler
