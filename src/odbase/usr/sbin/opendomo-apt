@@ -335,6 +335,10 @@ while test -f $PIDFILE; do
                 test -z `check_free_memory safe-upgrade` && aptitude_install safe-upgrade
                 plugins_update
             fi
+            # Updating language files, wrappers and config files
+            su admin -c "/usr/local/opendomo/services/syscript/updateLanguageFiles.sh" | add_date
+            su admin -c "createwrappers.sh"
+            odconfmng &>/dev/null
         fi
 
         # Clean queue file for prevent file errors
