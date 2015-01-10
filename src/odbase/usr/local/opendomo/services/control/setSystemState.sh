@@ -55,4 +55,6 @@ echo "action:"
 echo "	manageSystemStates.sh	Manage system states"
 echo
 
+# Waiting changes and see daemons
+sleep 1
 /usr/local/opendomo/setDaemons.sh

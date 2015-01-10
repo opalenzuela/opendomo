@@ -26,16 +26,16 @@ else
 		cd $DAEMONSDIR
 		for service in *; do
 			let i=i+1
-			VAL=`echo $VALUES | cut -f$i -d' '`	
+			VAL=`echo $VALUES | cut -f$i -d' '`
 			echo "Evaluating $service in $VAL"
 			case "$VAL" in
 				on)
 					echo " $service should be on in $STATE "
-					ln -s /usr/local/opendomo/daemons/$service $CONFIGSDIR/$STATE/$service
+					touch $CONFIGSDIR/$STATE/$service
 				;;
 				off)
 					echo " $service will not be on in $STATE "
-					rm -fr $CONFIGSDIR/$STATE/$service 
+					rm -fr $CONFIGSDIR/$STATE/$service
 				;;
 			esac
 		done

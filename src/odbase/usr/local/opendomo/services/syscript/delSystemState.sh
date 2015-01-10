@@ -9,6 +9,8 @@ STATESDIR=/etc/opendomo/states
 TEMPSTATE="/var/opendomo/tmp/state.tmp"
 STATE=$1
 
+test $STATE = active && echo "#ERRO State active can be deleted"
+
 if ! test -z $STATE; then
     test $STATE != active && rm -r $STATESDIR/$STATE
 elif test -f $TEMPSTATE; then
