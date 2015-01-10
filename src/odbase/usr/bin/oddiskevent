@@ -16,7 +16,7 @@ case $1 in
               # Saving disk config in temporal file
               echo "\"$2"\"$DISKTYPE\"" >> $TMPFILE
          else
-              logevent adddisk odbase 'Disk attached' /media/$2"
+              logevent adddisk odbase 'Disk attached' "/media/$2"
          fi
     ;;
     del )
