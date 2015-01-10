@@ -70,9 +70,10 @@ update_sources() {
     [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Busy: Updating sources" > $PIDFILE
     change_sysstatus busy
 
-    # Download plugins repository file and apt sources
+    # Download plugins repository file, languages files and apt sources
     rm $REPOTEMP $REPOFILE 2>/dev/null
     wget $REPOSITORY/ -O $REPOTEMP --no-check-certificate --max-redirect=0 2>&1 | add_date && grep -v "#" $REPOTEMP | grep "-" > $REPOFILE
+    su admin -c "/usr/local/opendomo/services/syscript/updateLanguageFiles.sh" | add_date
     aptitude update | add_date
 
     echo "$CURWEEK" > $SRCUPDATE
@@ -91,7 +92,7 @@ check_free_memory() {
 
     # Check size info and convert units to Kb
     SIZEINFO=`echo 'n' | aptitude $APTOPTS -s $1 $2 | awk '/^Need to get/ {print $4,$5,$10,$11}' | sed 's/,/./g'`
-    test -z $SIZEINFO && SIZEINFO="0 MB 0 MB"
+    test -z $SIZEINFO 2>/dev/null && SIZEINFO="0 MB 0 MB"
     if [ `echo $SIZEINFO | cut -f2 -d" "` == "MB" ]; then
         PKG_DOWNLOAD_SIZE=`echo $SIZEINFO | cut -f1 -d" "`
         let PKG_DOWNLOAD_SIZE="`printf %.0f $PKG_DOWNLOAD_SIZE` * 1024"
@@ -146,7 +147,7 @@ aptitude_install() {
     then
         # Instalation complete, delete download files and clean queue
         aptitude -q clean | add_date
-        /bin/sed -i "s/$2//"    $QUEUEFILE
+        [ "$1" == "install" ] && /bin/sed -i "s/$2//"    $QUEUEFILE
         /bin/sed -i 's/ \+/ /g' $QUEUEFILE
     else
         # Install is not complete, clean downloaded package and rebuild dpkg database
@@ -214,16 +215,14 @@ plugins_install() {
 ### No exit errors or arguments required
 
 plugins_update() {
-   cd $PLUGIN_FILEDIR
-   for plugin in `ls -1 | grep version`; do
-
+   for plugin in `ls -1 $PLUGIN_FILEDIR/*.version`; do
         # Checking plugin version
-        PLUGIN=`echo $plugin | cut -f1 -d.`
-        INSTALLED_VERSION=`cat $plugin`
-        AVAILABLE_VERSION=`grep $PLUGIN $REPOFILE | head -n1 | cut -f1 -d";" | cut -f2 -d- | cut -f1 -d.`
+        PLUGIN=`basename $plugin | cut -f1 -d.`
+        test -f $plugin && let INSTALLED_VERSION=`cat $plugin`
+        let AVAILABLE_VERSION=`grep $PLUGIN $REPOFILE | head -n1 | cut -f1 -d";" | cut -f2 -d- | cut -f1 -d.`
 
         # Update plugin; only plugins in repository file can be updated
-        if ! test -z $AVAILABLE_VERSION; then
+        if ! test -z $AVAILABLE_VERSION && ! test -z $INSTALLED_VERSION; then
             if [ $AVAILABLE_VERSION -gt $INSTALLED_VERSION ]; then
                 # Enqueue dependecies, only new will be installed
                 echo "Updating plugin: $PLUGIN to $AVAILABLE_VERSION" | add_date
@@ -313,7 +312,7 @@ odpackage_update() {
     rm *.deb 2>/dev/null
 
     # Installing new dependecies
-    LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive sudo apt-get --force-yes -fyq install | add_date
+    LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive apt-get --force-yes -fyq install | add_date
     [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Waiting" > $PIDFILE
     change_sysstatus active
 }
@@ -328,15 +327,13 @@ while test -f $PIDFILE; do
     elif [ `cat $PIDFILE | cut -f1 -d:` != "Spaceless" ]; then
         # Update system every day only in configured systems
         if ! test -f $SRCUPDATE || [ "$CURWEEK" -gt `cat $SRCUPDATE` ]; then
+            # Only update system if system is not in idle state
             odpackage_update
             update_sources
-            if $CURSTATE =! "idle"; then
-                # Checking memory before update system and plugins
-                test -z `check_free_memory safe-upgrade` && aptitude_install safe-upgrade
-                plugins_update
-            fi
-            # Updating language files, wrappers and config files
-            su admin -c "/usr/local/opendomo/services/syscript/updateLanguageFiles.sh" | add_date
+            [ $CURSTATE != "idle" ] && test -z `check_free_memory safe-upgrade` && aptitude_install safe-upgrade
+            plugins_update
+
+            # Updating wrappers and config files
             su admin -c "createwrappers.sh"
             odconfmng &>/dev/null
         fi
