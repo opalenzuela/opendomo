@@ -182,6 +182,7 @@ plugins_install() {
             [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Busy: Installing: $PLUGINNAME" > $PIDFILE
             change_sysstatus busy
             echo "Installing $PLUGINNAME ..." | add_date
+            logevent plugininstall odbase 'Plugin installed' "$PLUGINNAME" &
 
             if test `echo $plugin | grep ".tar.gz"`; then
                 su admin -c "/bin/tar -m --no-overwrite-dir -zxvf $PLUGIN_DOWNDIR/$plugin | grep -v /$ \
@@ -233,6 +234,9 @@ plugins_update() {
                 DOWNURL=`grep $PLUGIN $REPOFILE | tail -n1 | cut -f2 -d";"`
                 cd $PLUGIN_DOWNDIR
                 download.sh $DOWNURL
+
+                # Trigger event
+                logevent pluginupdate odbase 'Plugin updated' "$PLUGIN" &
             else
                 echo "Plugin $PLUGIN is already updated" | add_date
             fi
@@ -249,10 +253,11 @@ plugins_remove() {
         # Updating package info
         PLUGINNAME=`echo $plugin | cut -f1 -d.`
 
-        # Generate PIDs, events and status
+        # Generate PIDs, trigger events and status
         echo "Deleting $PLUGINNAME ..." | add_date
         [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Busy: Deleting $PLUGINNAME" > $PIDFILE
         change_sysstatus busy
+        logevent pluginremove odbase 'Plugin removed' "$PLUGINNAME" &
 
         # Delete plugins dependecies if not used anymore
         for dep in `cat $PLUGINNAME.deps`; do
@@ -283,7 +288,7 @@ plugins_remove() {
 ### No exit errors or arguments required
 
 odpackage_update() {
-    # Generate PIDs, events and status
+    # Generate PIDs y status
     [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Busy: Updating opendomo packages" > $PIDFILE
     change_sysstatus busy
     echo "Updating opendomo packages" | add_date
@@ -304,6 +309,9 @@ odpackage_update() {
     if test -f $ODBASEPKG; then
         echo "Installing odbase version $ODPKGMAJOR.$ODCOMUPD ..."  | add_date
         LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive dpkg -i $ODBASEPKG
+
+        # Trigger event
+        logevent debupgrade odbase 'Package odbase updated' &
     else
     	echo "odbase version "$ODPKGMAJOR"."$ODBASEUPD" don't exist yet" | add_date
     fi
@@ -336,6 +344,9 @@ while test -f $PIDFILE; do
             # Updating wrappers and config files
             su admin -c "createwrappers.sh"
             odconfmng &>/dev/null
+
+            # Trigger update event
+            logevent sysupgrade odbase 'System upgraded' &
         fi
 
         # Clean queue file for prevent file errors
