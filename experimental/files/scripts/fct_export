@@ -74,7 +74,7 @@ export_to_sd() {
 
     # Mount drive, prepare target and copy files to SD
     cp -r $ISOFILES/* $TARGETDIR/
-    echo "DEFAULT $KERNELIMG initrd=$INITRDIMG rw quiet rootdelay=1 loglevel=0 aufs=yes bootdev=/dev/sda1" > $TARGETDIR/syslinux.cfg
+    echo "DEFAULT $KERNELIMG initrd=$INITRDIMG rw quiet rootdelay=2 loglevel=0 aufs=yes bootdev=/dev/sda1" > $TARGETDIR/syslinux.cfg
     mount /dev/$DEVICE $MOUNTDIR
 
     # Mount device and copy files

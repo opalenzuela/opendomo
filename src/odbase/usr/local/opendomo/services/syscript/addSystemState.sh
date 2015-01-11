@@ -8,22 +8,22 @@
 STATESDIR="/etc/opendomo/states"
 TEMPSTATE="/var/opendomo/tmp/state.tmp"
 
-if ! test -z $2 && [ "$1" = "new" ]; then
+if ! test -z "$2" && [ "$1" = "new" ]; then
     # Creating new state
-    mkdir  -p $STATESDIR/$2
-    /usr/local/opendomo/editSystemState.sh $2
+    mkdir  -p "$STATESDIR/$2"
+    /usr/local/opendomo/editSystemState.sh "$2"
 
-elif ! test -z $2 && [ "$1" != "new" ]; then
+elif ! test -z "$2" && [ "$1" != "new" ]; then
     # Modify state
-    if test -d $STATESDIR/$1 && [ "$1" != "active" ]; then
-        mv $STATESDIR/$1 $STATESDIR/$2
-        /usr/local/opendomo/editSystemState.sh $2
+    if test -d "$STATESDIR/$1" && [ "$1" != "active" ]; then
+        mv "$STATESDIR/$1" "$STATESDIR/$2"
+        /usr/local/opendomo/editSystemState.sh "$2"
     else
         echo "#ERR State 'active' can't be modified"
         /usr/local/opendomo/manageSystemStates.sh
     fi
 
-elif ! test -z $1 && test -z $2; then
+elif ! test -z $1 && test -z "$2"; then
     # Modify state
     echo "#> Modify state: [$1]"
     echo "form:`basename $0`"

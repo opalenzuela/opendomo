@@ -12,7 +12,7 @@ INITRDDIR="/etc/init.d"
 
 
 # Check if state exist and see form
-if ! test -d $CONFIGSDIR/$1 || test -z $1; then
+if ! test -d "$CONFIGSDIR/$1" || test -z "$1"; then
 	echo "#> Configure states"
 	echo "#ERR Need specify state"
 	echo
@@ -21,7 +21,7 @@ else
 	i=1
 	if ! test -z "$2"; then
 		# Commands received
-		STATE=$1
+		STATE="$1"
 		VALUES="$@"
 		cd $DAEMONSDIR
 		for service in *; do
@@ -31,11 +31,11 @@ else
 			case "$VAL" in
 				on)
 					echo " $service should be on in $STATE "
-					touch $CONFIGSDIR/$STATE/$service
+					touch "$CONFIGSDIR/$STATE/$service"
 				;;
 				off)
 					echo " $service will not be on in $STATE "
-					rm -fr $CONFIGSDIR/$STATE/$service
+					rm -fr "$CONFIGSDIR/$STATE/$service"
 				;;
 			esac
 		done
@@ -50,7 +50,7 @@ else
 		# Check service information and status
 		DESC=`grep "# Short-Description" $service | cut -f2 -d:`
 
-		if test -f $CONFIGSDIR/$1/$service ; then
+		if test -f "$CONFIGSDIR/$1/$service"; then
 			STATUS=on
 		else
 			STATUS=off

@@ -20,7 +20,7 @@ if test -z $2; then
         cd $DAEMONSDIR
         for daemon in *; do
 	    # Start/Stop service in state
-            if test -f $STATEDIR/$daemon; then
+            if test -f "$STATEDIR/$daemon"; then
                 logevent debug service "Starting service [$daemon]"
                 sudo odservice $daemon status &>/dev/null || sudo odservice $daemon start
             else
@@ -43,7 +43,7 @@ echo "#> Change state"
 echo "list:`basename $0`"
 cd $STATESDIR
 for state in *; do
-    if test -d $state && [ $state != "idle" ]; then
+    if test -d "$state" && [ "$state" != "idle" ]; then
         if   [ "$state" = "$CURSTATE" ]; then
             echo "	-$state	$state	state selected"
         else

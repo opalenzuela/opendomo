@@ -23,20 +23,20 @@ for service in *; do
     # Check service information and status
     DESC=`grep "# Short-Description" $service | cut -f2 -d:`
 
-    if ./$service status >/dev/null 2>/dev/null ; then
+    if odservice $service status &>/dev/null ; then
         STATUS=on
         # Only if status is ON and we requested OFF, we execute
-        if test "$VAL" = "off"; then 
-			logevent debug service "Stopping service [$service]"
-			sudo odservice $service stop >/dev/null 2>/dev/null
-		fi
+        if test "$VAL" = "off"; then
+	     logevent debug service "Stopping service [$service]"
+	     sudo odservice $service stop &>/dev/null
+	fi
     else
         STATUS=off
         # Or the other way around
         if test "$VAL" = "on"; then
-			logevent debug service "Starting service [$service]"
-			sudo odservice $service start >/dev/null 2>/dev/null
-		fi
+	    logevent debug service "Starting service [$service]"
+	    sudo odservice $service start &>/dev/null
+	fi
     fi
     echo "	$service	$DESC	list[on,off] switch	$STATUS"
 done

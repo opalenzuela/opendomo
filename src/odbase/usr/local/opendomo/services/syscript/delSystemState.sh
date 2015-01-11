@@ -7,15 +7,15 @@
 
 STATESDIR=/etc/opendomo/states
 TEMPSTATE="/var/opendomo/tmp/state.tmp"
-STATE=$1
+STATE="$1"
 
-test $STATE = active && echo "#ERRO State active can be deleted"
+test "$STATE" = active && echo "#ERRO State active can be deleted"
 
-if ! test -z $STATE; then
-    test $STATE != active && rm -r $STATESDIR/$STATE
+if ! test -z "$STATE"; then
+    test "$STATE" != active && rm -r "$STATESDIR/$STATE"
 elif test -f $TEMPSTATE; then
     STATE=`cat $TEMPSTATE`
-    test $STATE != active && rm -r $STATESDIR/$STATE
+    test "$STATE" != active && rm -r "$STATESDIR/$STATE"
 else
     echo "#> Delete states"
     echo "#ERR No system state specified"
