@@ -3,7 +3,7 @@
 #package:odbase
 #type:local
 
-# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+# Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
 
 # In the fifth step we create the user accounts and we send them an e-mail with 
 # the instructions to follow. 
@@ -20,15 +20,14 @@ echo "form:`basename $0`	wizard"
 #echo "	pres	Presentation	application	http://opalenzuela.github.io/opendomo/tour.html"
 echo "#WARN System is saving configuration. Please wait"
 echo "#INFO Ready to install some plugins!"
-echo
 echo "actions:"
 echo "	goback	Previous"
 echo "	managePlugins.sh	Continue"
 echo
 echo
-/usr/local/opendomo/saveConfig.sh &  >/dev/null
+/usr/local/opendomo/saveConfig.sh >/dev/null &
 
 # Change to active state
-setSystemState.sh active
+setSystemState.sh active >/dev/null
 
 exit 0
