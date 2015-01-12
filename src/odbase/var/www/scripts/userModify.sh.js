@@ -1,6 +1,12 @@
 $(function(){
-	if ($("#npassw_lbl").length==1) { // Only if password fields exist
+	$("#passwordsep_sep").on("click",function(){
+		$("#opassw_li").removeClass("hidden");
+		$("#npassw_li").removeClass("hidden");
+		$("#passw_li").removeClass("hidden");
 		$("button").prop("disabled",true).css("opacity","0.3");
+	});
+	
+	if ($("#npassw_lbl").length==1) { // Only if password fields exist
 		$("#npassw_lbl").append("<i></i>");
 		$("#passw_lbl").append("<i></i>");
 		$("#npassw, #passw, #opassw").on("change", function(){
