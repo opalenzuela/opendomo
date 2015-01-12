@@ -19,10 +19,14 @@ if ! test -z "$3"; then
 	SUBJECT="$TEXT"
 	TEXT=`i18n.sh "$3" | sed 's/ /+/g'`
 fi
+if ! test -z "$4"; then
+	LINK="$4"
+fi
+
 
 
 AUID=`cat /etc/opendomo/uid`
-FURL="$URL?UID=$AUID&MAIL=$EMAIL&TEXT=$TEXT&SUBJECT=$SUBJECT"
+FURL="$URL?UID=$AUID&MAIL=$EMAIL&TEXT=$TEXT&SUBJECT=$SUBJECT&LINK=$LINK"
 
 rm -fr $TMPFILE 2>/dev/null
 wget -q $FURL -O $TMPFILE 2>/dev/null
