@@ -4,7 +4,7 @@
 #group:users
 #package:odbase
 
-# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+# Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
 
 USERNAME="$1"
 EMAIL="$2"
@@ -78,7 +78,11 @@ case $PARAMCOUNT in
 				#sudo usermod -c "$FULLNAME <$EMAIL>" $USERNAME  &>/dev/null
 				echo "$EMAIL" > /home/$USERNAME/.email
 				echo "$FULLNAME" > /home/$USERNAME/.fullname
-				echo -e "$OLDPASS\n$PASSWD\n$PASSWD" | (passwd $USERNAME) 2>/dev/null
+				if test -z "$OLDPASS" || test -z "$PASSWD" ; then
+					echo "$FULLNAME" > /home/$USERNAME/.fullname
+				else
+					echo -e "$OLDPASS\n$PASSWD\n$PASSWD" | (passwd $USERNAME) 2>/dev/null
+				fi
 				if test -x /usr/local/opendomo/manageUsers.sh; then
 					/usr/local/opendomo/manageUsers.sh
 				else

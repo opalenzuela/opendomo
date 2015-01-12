@@ -3,7 +3,7 @@
 #type:multiple
 #package:odbase
 
-# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+# Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
 
 # If $1 modify user
 if ! test -z $1; then
@@ -18,6 +18,9 @@ else
     for user in *; do
         INFO=`grep ^$user /etc/passwd | cut -f5 -d:`
 		fullname=`echo $INFO | cut -f1 -d'<'`
+		if test -f /home/$user/.fullname; then
+			fullname=`cat /home/$user/.fullname`
+		fi
 		
 		if test $user = "admin"; then
 			echo "	-$user	$fullname	admin	$INFO"
