@@ -338,7 +338,7 @@ while test -f $PIDFILE; do
             # Only update system if system is not in idle state
             odpackage_update
             update_sources
-            [ $CURSTATE != "idle" ] && test -z `check_free_memory safe-upgrade` && aptitude_install safe-upgrade
+            [ "$CURSTATE" != "idle" ] && test -z `check_free_memory safe-upgrade` && aptitude_install safe-upgrade
             plugins_update
 
             # Updating wrappers and config files
