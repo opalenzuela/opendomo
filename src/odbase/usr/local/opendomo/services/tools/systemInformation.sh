@@ -4,7 +4,7 @@
 #group:users
 #type:local
 
-# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+# Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
 
 KERNELVERSION=`uname -r` 2> /dev/null
 
@@ -35,7 +35,8 @@ do
 		LICENSE="GPLv3"
 		DESCRIPTION="$plugin plugin"
 		source ./$plugin 
-		echo "	-$plugin	$DESCRIPTION	package	$VERSION $LICENSE"
+		PLUGINID=`echo $plugin | cut -f1 -d.`
+		echo "	-$PLUGINID	$DESCRIPTION	package	$VERSION $LICENSE"
 	fi
 done
 if test -z "$FOUND"; then
