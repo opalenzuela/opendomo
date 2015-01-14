@@ -18,9 +18,9 @@ else
 	for plugin in $@
 	do
 		# Sending deps to queue and download file
-		DOWNURL=`grep $plugin $REPOFILE  | tail -n1 | cut -f2 -d";"`
+		DOWNURL=`grep ^$plugin $REPOFILE  | tail -n1 | cut -f2 -d";"`
 		DOWNPKG=`basename $DOWNURL`
-		PLUGDEPS=`grep $plugin $REPOFILE | tail -n1 | cut -f4 -d";"`
+		PLUGDEPS=`grep ^$plugin $REPOFILE | tail -n1 | cut -f4 -d";"`
 		if ! test -z "$DOWNURL"
 		then
 			echo -n " $PLUGDEPS " >> $QUEUEFILE
