@@ -3,7 +3,7 @@
 #type:local
 #package:odbase
 
-# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+# Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
 
 REPOFILE="/var/opendomo/apt/repository.lst"
 PLUGINSDIR="/var/opendomo/apt/plugins"

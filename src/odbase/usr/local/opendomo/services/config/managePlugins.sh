@@ -102,10 +102,16 @@ else
 		STATUS="new"
 	fi	
 	CODE=`echo $1 | cut -f1 -d.`
-	echo "#> Plugin details"
+	echo "#> Plugin"
 	echo "form:managePlugins.sh	"
 	#echo "	icon	Icon	image	$WEB/$1.png"
 	echo "	code	Code	readonly	$CODE"
+	echo "actions:"
+	echo "	goback	Back"
+	test -f "$INSTDIR/$1.files" && echo "	removePlugin.sh	Uninstall"
+	test -f "$DOWNDIR/$FILE" || test -f "$INSTDIR/$1.files" || echo "	installPlugin.sh	Install"
+	echo	
+	echo "#> Plugin details"
 	echo "	desc	Description	readonly	$DESC"
 	echo "	deps	Dependences	readonly	$DEPS"
 	echo "	webp	Web page	readonly	$WEB"
@@ -114,10 +120,5 @@ else
 	then
 		head -n10 /var/opendomo/tmp/$1.changelog | sed 's/^/# /'
 	fi
-	
-	echo "actions:"
-	echo "	goback	Back"
-	test -f "$INSTDIR/$1.files" && echo "	removePlugin.sh	Uninstall"
-	test -f "$DOWNDIR/$FILE" || test -f "$INSTDIR/$1.files" || echo "	installPlugin.sh	Install"
 fi
 echo
