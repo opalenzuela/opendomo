@@ -3,7 +3,7 @@
 #type:local
 #package:odbase
 
-# Copyright(c) 2011 OpenDomo Services SL. Licensed under GPL v3 or later
+# Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
 
 STATESDIR="/etc/opendomo/states"
 TEMPSTATE="/var/opendomo/tmp/state.tmp"
@@ -29,12 +29,11 @@ elif ! test -z $1 && test -z "$2"; then
     echo "form:`basename $0`"
     echo "	oldname	oldname	hidden	$1"
     echo "	name	Name	text	$STATE"
-    echo
 else
     # Add state
     echo "#> Add state"
     echo "form:`basename $0`"
     echo "	action	action	hidden	new"
-    echo "	name	Name	text	$2"
-    echo
+    echo "	name	Name	text	$2"    
 fi
+echo
