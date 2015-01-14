@@ -77,7 +77,6 @@ else
 		DEPS="none"
 		WEB="http://linux.org"
 	else
-		
 		FILE=`grep ^$1 $REPOFILE | sort -r  | head -n1 | cut -f1 -d';' `
 		URL=`grep ^$1 $REPOFILE  | sort -r  | head -n1 | cut -f2 -d';' `
 		DESC=`grep ^$1 $REPOFILE | sort -r  | head -n1 | cut -f3 -d';' `

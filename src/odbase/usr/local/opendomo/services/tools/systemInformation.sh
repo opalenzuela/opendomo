@@ -1,10 +1,13 @@
-﻿#!/bin/sh
+#!/bin/sh
 #desc:System information
 #package:odbase
 #group:users
 #type:local
 
 # Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
+
+## This menu shows the system information, with the installed plugins,  
+## their versions and build time.
 
 KERNELVERSION=`uname -r` 2> /dev/null
 
@@ -36,7 +39,8 @@ do
 		DESCRIPTION="$plugin plugin"
 		source ./$plugin 
 		PLUGINID=`echo $plugin | cut -f1 -d.`
-		echo "	-$PLUGINID	$DESCRIPTION	package	$VERSION $LICENSE"
+		BUILD=`cat /var/opendomo/plugins/$PLUGINID.version`
+		echo "	-$PLUGINID	$DESCRIPTION	package	$VERSION ($BUILD)"
 	fi
 done
 if test -z "$FOUND"; then
