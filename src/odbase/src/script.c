@@ -611,7 +611,7 @@ void
 script_process_action_body (char *id, char *name, char *type)
 {
 	char *cmdid;
-	sstrncpy(cmdid, script_name, sizeof (cmdid));
+	sstrncpy(cmdid, id, sizeof (cmdid));
 	for(int i = 0; i < strlen(cmdid); i++)
 	{
 		if(cmdid[i] == '.')	cmdid[i] = 0;
