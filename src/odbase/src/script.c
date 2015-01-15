@@ -349,7 +349,7 @@ script_process_form_footer (char *cmdid)
     //printf("\t\t\t\t<button type='reset'>%s</button>\n", CT("Reset"));
     //printf("\t\t\t\t<button type='button' "
     //     "onclick='history.back()'>%s</button>\n", CT(ODCGI_TEXT_BACK));
-    printf ("\t\t\t\t<button type='button' "
+    printf ("\t\t\t\t<button type='button' id='submit-help' "
 	    "onclick=\"help('%s');\">%s</button>\n", cmdid, CT (ODCGI_TEXT_HELP));
     printf ("\t\t\t</div>\n");
     printf ("\t\t</fieldset>\n" "\t</form></div>\n");
@@ -620,7 +620,7 @@ script_process_action_body (char *id, char *name, char *type)
 	if(gui == html)
 	{
 		if(strstr (id, "goback")) {
-			printf ("\t\t\t<button type='button' "\
+			printf ("\t\t\t<button type='button' id='submit-back'"\
 				"onclick='history.back();'>%s</button>\n",
 				T(name));	
 		} else {
@@ -648,7 +648,7 @@ script_process_action_footer (char *cmdid)
 //TODO Añadir la sección <noscript>
     //printf("\t\t\t\t<button type='button' "
     //     "onclick='history.back()'>%s</button>\n", CT(ODCGI_TEXT_BACK));
-    printf ("\t\t\t\t<button type='button' "
+    printf ("\t\t\t\t<button type='button' id='submit-help' "
 	    "onclick=\"help('%s');\">%s</button>\n", cmdid, T (ODCGI_TEXT_HELP));
     printf ("\t\t\t</div>\n" "\t\t</fieldset>\n" "\t</form></div>\n");
   }
@@ -1640,7 +1640,7 @@ script_exec (const char *cmd, const char *section, script_env_t * env)
       printf ("<p class='error'>%s (%d): %s</p>\n"
               "<div id='tbrerror' class='toolbar'>\n",
 	      strerror (errno), errno, cmd);
-      printf (" <button onclick='history.back();'>%s</button>",
+      printf (" <button id='submit-back' onclick='history.back();'>%s</button>",
 	      T (ODCGI_TEXT_BACK));
       printf ("</div>\n");
       syslog (LOG_ERR, "%s (%d): %s\n", strerror (errno), errno, cmd);
@@ -1651,7 +1651,7 @@ script_exec (const char *cmd, const char *section, script_env_t * env)
       printf ("\t\t<p class='error'>%s</p>\n"
         "<div id='tbrerror' class='toolbar'>",
 	      T (ODCGI_TEXT_ERROR_HELP));
-      printf (" <button onclick='history.back();'>%s</button>",
+      printf (" <button id='submit-back' onclick='history.back();'>%s</button>",
 	      T (ODCGI_TEXT_BACK));
       printf (" <button  "
 	      "onclick=\"showBubble('%s%s#error%d');\">%s</button>",
