@@ -610,23 +610,31 @@ script_process_action_header (char *cmdid)
 void
 script_process_action_body (char *id, char *name, char *type)
 {
-  if(gui == html)
-  {
-	if(strstr (id, "goback")) {
-		printf ("\t\t\t<button type='button' "\
-			"onclick='history.back();'>%s</button>\n",
-			T(name));	
-	} else {
-	    // With the name of the field we can know the target script:
-	    printf ("\t\t\t<button type='submit' id='submit-%s' name='submit_%s' "\
-	    		" formaction='/cgi-bin/od.cgi/%s'>%s</button>\n",
-		    id, id, id, T(name));
+	char *cmdid;
+	sstrncpy(cmdid, script_name, sizeof (cmdid));
+	for(int i = 0; i < strlen(cmdid); i++)
+	{
+		if(cmdid[i] == '.')	cmdid[i] = 0;
 	}
-  }
-  else
-  {/** XML OUTPUT **/
-    printf ("\t\t\t<action id='%s' description='%s' />\n", id, CT (name));
-  }
+	
+	if(gui == html)
+	{
+		if(strstr (id, "goback")) {
+			printf ("\t\t\t<button type='button' "\
+				"onclick='history.back();'>%s</button>\n",
+				T(name));	
+		} else {
+			// With the name of the field we can know the target script:
+			printf ("\t\t\t<button type='submit' id='submit-%s' name='submit_%s' "\
+	    		" formaction='/cgi-bin/od.cgi/%s'>%s</button>\n",
+				cmdid, id, id, T(name));
+		}
+	}
+	else
+	{/** XML OUTPUT **/
+		printf ("\t\t\t<action id='%s' description='%s' />\n", 
+			id, CT (name));
+	}
 }
 
 // }}}
