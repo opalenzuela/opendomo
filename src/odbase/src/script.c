@@ -610,7 +610,7 @@ script_process_action_header (char *cmdid)
 void
 script_process_action_body (char *id, char *name, char *type)
 {
-	char *cmdid;
+	char cmdid[256];
 	sstrncpy(cmdid, id, sizeof (cmdid));
 	for(int i = 0; i < strlen(cmdid); i++)
 	{
