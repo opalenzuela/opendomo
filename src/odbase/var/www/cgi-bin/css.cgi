@@ -2,8 +2,11 @@
 #desc This script selects the right CSS file
 # The procedure was done inside the CGI, but this is no longer needed
 
+# Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
+
 echo "Content-Type: text/css"
 echo "Cache-Control: max-age=3600"
+echo "Vary: Accept-Encoding"
 echo
 
 THEMEPATH="/var/www/themes"
