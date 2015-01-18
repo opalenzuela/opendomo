@@ -1,0 +1,72 @@
+#!/bin/sh
+#desc: Install plugins deps
+# opendomo-apt can be in 3 diferent states:
+#    busy - opendomo-apt is working, installing package, updating system, updating sources
+#    waiting - opendomo-apt is free, queue is emply and don't have other tasks pending
+#    stoping - opendomo-apt stops when is secure, all started tasks are finished
+#    spaceless - opendomo-apt can't install packages because don't free space available.
+#       Every task is canceled and is required save config and reboot to continue
+#
+
+# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+
+# Checking arch
+test `arch` == "i686"   && ARCH="i386"
+test `arch` == "armv6l" && ARCH="armhf"
+
+# Files and directories
+PIDFILE="/var/opendomo/run/opendomo-apt.pid"
+DAEMONDIR="/var/opendomo/apt"
+QUEUEFILE="$DAEMONDIR/queue"
+SRCUPDATE="$DAEMONDIR/update"
+
+# Commands options and messages
+CURSTATE=`cat /var/opendomo/run/state.pid`
+CURRSTAT=`cat $PIDFILE | cut -f1 -d:`
+CURWEEK=`date +%j`
+source /etc/os-release
+
+# Creating directories and file permissions
+mkdir -p $DAEMONDIR $PLUGIN_DOWNDIR $PACKAG_DOWNDIR
+touch $QUEUEFILE
+chown -R admin:admin $QUEUEFILE $PLUGIN_DOWNDIR $PIDFILE $PACKAG_DOWNDIR
+
+### Loop function while $PIDFILE exist. No arguments required
+while test -f $PIDFILE; do
+    # Stoping service when are in stop mode
+    if [ "$CURRSTAT" == "Stoping" ]; then
+        rm $PIDFILE
+
+    # Start if daemon is not in "spaceless" mode
+    elif [ "$CURRSTAT" != "Spaceless" ]; then
+        # Update system every day only in configured systems
+        if ! test -f $SRCUPDATE || [ "$CURWEEK" -gt `cat $SRCUPDATE` ]; then
+            # Only update system if system is not in idle state
+            odapt odpackage_update
+            odapt update_sources
+            [ "$CURSTATE" != "idle" ] && test -z `odapt check_free_memory safe-upgrade` && odapt aptitude_install safe-upgrade
+            odapt plugins_update
+
+            # Updating wrappers and config files
+            su admin -c "createwrappers.sh"
+            odconfmng &>/dev/null
+
+            # Trigger update event
+            logevent sysupgrade odbase 'System upgraded' &
+        fi
+
+        # Clean queue file for prevent file errors
+	grep -q -e [a-z] $QUEUEFILE || echo > $QUEUEFILE
+
+        # Install dependecies and plugins
+        for pkg in `cat $QUEUEFILE`; do
+            # Checking memory before install package
+            test -z `odapt check_free_memory install $pkg` && odapt aptitude_install install $pkg
+        done
+        odapt plugins_install
+
+        # Remove marked plugins
+        odapt plugins_remove
+        sleep 1
+    fi
+done

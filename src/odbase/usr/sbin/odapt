@@ -39,6 +39,7 @@ CURWEEK=`date +%j`
 source /etc/os-release
 REPOSITORY="http://cloud.opendomo.com/repo/$VERSION"
 PACKAGEURL="http://es.opendomo.org/files"
+CURRSTATUS=`cat $PIDFILE | cut -f1 -d:`
 ODPKGMAJOR="2.2"
 
 # Creating directories and file permissions
@@ -46,8 +47,8 @@ mkdir -p $DAEMONDIR $PLUGIN_DOWNDIR $PACKAG_DOWNDIR
 touch $QUEUEFILE
 chown -R admin:admin $QUEUEFILE $PLUGIN_DOWNDIR $PIDFILE $PACKAG_DOWNDIR
 
-### Add date to every line in log file
-### To use: $command | add_date_to_log
+  ### Add date to every line in log file
+  ### To use: $command | add_date_to_log
 
 add_date() {
     while IFS= read -r line; do
@@ -55,19 +56,21 @@ add_date() {
     done
 }
 
-## Change system state. System can be in active, busy or rebooting
-## To use: $command $state
+  ### Change system state. System can be in active, busy or rebooting
+  ### To use: $command $state
 
 change_sysstatus() {
     echo "{\"status\":\"$1\"}" > $SYSSTATUS
 }
 
-### Update apt and opendomo repository sources.
-### You can active the funtion immediately using 'echo 0 > /var/opendomo/apt/update'
+  ### Update apt and opendomo repository sources.
+  ### You can active the funtion immediately using 'echo 0 > /var/opendomo/apt/update'
 
-update_sources() {
+case $1 in
+  update_sources )
+
     # Generate PIDs, events and status
-    [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Busy: Updating sources" > $PIDFILE
+    [ "$CURRSTATUS" != "Stoping" ] && echo "Busy: Updating sources" > $PIDFILE
     change_sysstatus busy
 
     # Download plugins repository file, languages files and apt sources
@@ -79,19 +82,20 @@ update_sources() {
     echo "$CURWEEK" > $SRCUPDATE
     chown admin:admin $SRCUPDATE
 
-    [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Waiting" > $PIDFILE
+    [ "$CURRSTATUS" != "Stoping" ] && echo "Waiting" > $PIDFILE
     change_sysstatus active
-}
+  ;;
 
-### Check package size and memory free. The function return void value if package can be installed.
-### The function need 2 arguments, $1 is action to do like install or safe-update and $2 is the package in install action
+  ### Check package size and memory free. The function return void value if package can be installed.
+  ### The function need 2 arguments, $2 is action to do like install or safe-update and $3 is the package in install action
 
-check_free_memory() {
+  check_free_memory )
+
     # Always clean downloaded packages before start
     aptitude -q clean | add_date
 
     # Check size info and convert units to Kb
-    SIZEINFO=`echo 'n' | aptitude $APTOPTS -s $1 $2 | awk '/^Need to get/ {print $4,$5,$10,$11}' | sed 's/,/./g'`
+    SIZEINFO=`echo 'n' | aptitude $APTOPTS -s $2 $3 | awk '/^Need to get/ {print $4,$5,$10,$11}' | sed 's/,/./g'`
     test -z $SIZEINFO 2>/dev/null && SIZEINFO="0 MB 0 MB"
     if [ `echo $SIZEINFO | cut -f2 -d" "` == "MB" ]; then
         PKG_DOWNLOAD_SIZE=`echo $SIZEINFO | cut -f1 -d" "`
@@ -113,8 +117,8 @@ check_free_memory() {
     let TOTAL_INSTALL_SIZE="$PKG_INSTALL_SIZE + $PKG_DOWNLOAD_SIZE + 5000"
 
     # Package information, send to debug file
-    test -z $2 && echo "Update system info:"		 > $DBGFILE
-    test -z $2 || echo "Installing $2 info:"		 > $DBGFILE
+    test -z $3 && echo "Update system info:"		 > $DBGFILE
+    test -z $3 || echo "Installing $3 info:"		 > $DBGFILE
     echo "SIZEINFO=$SIZEINFO"                           >> $DBGFILE
     echo "PKG_DOWNLOAD_SIZE=$PKG_DOWNLOAD_SIZE"         >> $DBGFILE
     echo "PKG_INSTALL_SIZE=$PKG_INSTALL_SIZE"           >> $DBGFILE
@@ -123,35 +127,36 @@ check_free_memory() {
 
     # No space available for this package, active spaceless mode
     test "$PACKAGE_MEMORY_FREE" -lt "$TOTAL_INSTALL_SIZE" && echo "-1" && echo "Spaceless" > $PIDFILE
-}
+  ;;
 
-### Update and install debian packages. If installation fail active apt db recovery
-### The function need 2 arguments, $1 is action to do like install or safe-update and $2 is the package in install action
+  ### Update and install debian packages. If installation fail active apt db recovery
+  ### The function need 2 arguments, $2 is action to do like install or safe-update and $3 is the package in install action
 
-aptitude_install() {
+  aptitude_install )
+
     # Always clean downloaded packages before start
     aptitude -q clean | add_date
 
     # Installing package or updating system
-    if [ "$1" == "install" ]; then
+    if [ "$2" == "install" ]; then
         # Generate PIDs, events and status
-        [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Busy: Installing $pkg" > $PIDFILE
+        [ "$CURRSTATUS" != "Stoping" ] && echo "Busy: Installing $pkg" > $PIDFILE
         change_sysstatus busy
     else
         # Generate PIDs, events and status
-        [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Busy: Updating system" > $PIDFILE
+        [ "$CURRSTATUS" != "Stoping" ] && echo "Busy: Updating system" > $PIDFILE
         change_sysstatus busy
     fi
     if
-    LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive aptitude $APTOPTS -y -q $1 $2 | add_date
+    LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive aptitude $APTOPTS -y -q $2 $3 | add_date
     then
         # Instalation complete, delete download files and clean queue
         aptitude -q clean | add_date
-        [ "$1" == "install" ] && /bin/sed -i "s/$2//"    $QUEUEFILE
+        [ "$2" == "install" ] && /bin/sed -i "s/$3//"    $QUEUEFILE
         /bin/sed -i 's/ \+/ /g' $QUEUEFILE
     else
         # Install is not complete, clean downloaded package and rebuild dpkg database
-        [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Busy: Rebuilding database" > $PIDFILE
+        [ "$CURRSTATUS" != "Stoping" ] && echo "Busy: Rebuilding database" > $PIDFILE
         apt-get clean       | add_date
         dpkg -a --configure | add_date
         apt-get -f install  | add_date
@@ -159,14 +164,15 @@ aptitude_install() {
 
     # Copy opendomo configuration files for new packages
     manage_conf.sh copy &>/dev/null
-    [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Waiting" > $PIDFILE
+    [ "$CURRSTATUS" != "Stoping" ] && echo "Waiting" > $PIDFILE
     change_sysstatus active
-}
+  ;;
 
-### Install all plugin in $PLUGIN_FILEDIR, no need any argument to work
-### In normal exit, funtion return void
+  ### Install all plugin in $PLUGIN_FILEDIR, no need any argument to work
+  ### In normal exit, funtion return void
 
-plugins_install() {
+  plugins_install )
+
     cd $PLUGIN_DOWNDIR
     for plugin in `ls * 2>/dev/null`; do
         # Checking installed deps from repo
@@ -179,7 +185,7 @@ plugins_install() {
         if test -z "$QUEUEDEPS"; then
             cd /
             # Generate PIDs, events and status
-            [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Busy: Installing: $PLUGINNAME" > $PIDFILE
+            [ "$CURRSTATUS" != "Stoping" ] && echo "Busy: Installing: $PLUGINNAME" > $PIDFILE
             change_sysstatus busy
             echo "Installing $PLUGINNAME ..." | add_date
             logevent plugininstall odbase 'Plugin installed' "$PLUGINNAME" &
@@ -200,7 +206,7 @@ plugins_install() {
             odconfmng &>/dev/null
             rm "$PLUGIN_DOWNDIR/$plugin" &>/dev/null
 
-            [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Waiting" > $PIDFILE
+            [ "$CURRSTATUS" != "Stoping" ] && echo "Waiting" > $PIDFILE
             change_sysstatus active
 
             # Starting plugins services
@@ -210,12 +216,12 @@ plugins_install() {
             done
         fi
     done
-}
+  ;;
 
-### Check installed plugin to find updates. When update is available, download plugin and enqueue dependecies
-### No exit errors or arguments required
+  ### Check installed plugin to find updates. When update is available, download plugin and enqueue dependecies
+  ### No exit errors or arguments required
 
-plugins_update() {
+  plugins_update )
    for plugin in `ls -1 $PLUGIN_FILEDIR/*.version`; do
         # Checking plugin version
         PLUGIN=`basename $plugin | cut -f1 -d.`
@@ -242,12 +248,12 @@ plugins_update() {
             fi
         fi
     done
-}
+  ;;
 
-### Delete plugins marked to remove. For remove plugins only $plugin.remove file in plugins directory is required
-### No exit errors or arguments required
+  ### Delete plugins marked to remove. For remove plugins only $plugin.remove file in plugins directory is required
+  ### No exit errors or arguments required
 
-plugins_remove() {
+  plugins_remove )
     cd $PLUGIN_FILEDIR
     for plugin in `ls -1 | grep remove`; do
         # Updating package info
@@ -255,7 +261,7 @@ plugins_remove() {
 
         # Generate PIDs, trigger events and status
         echo "Deleting $PLUGINNAME ..." | add_date
-        [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Busy: Deleting $PLUGINNAME" > $PIDFILE
+        [ "$CURRSTATUS" != "Stoping" ] && echo "Busy: Deleting $PLUGINNAME" > $PIDFILE
         change_sysstatus busy
         logevent pluginremove odbase 'Plugin removed' "$PLUGINNAME" &
 
@@ -279,17 +285,17 @@ plugins_remove() {
         su admin -c "/usr/bin/createwrappers.sh"
 	rm $PLUGINNAME.* 2>/dev/null
 
-        [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Waiting" > $PIDFILE
+        [ "$CURRSTATUS" != "Stoping" ] && echo "Waiting" > $PIDFILE
         change_sysstatus active
     done
-}
+  ;;
 
-### Update opendomo package. Check last version, update and install
-### No exit errors or arguments required
+  ### Update opendomo package. Check last version, update and install
+  ### No exit errors or arguments required
 
-odpackage_update() {
+  odpackage_update )
     # Generate PIDs y status
-    [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Busy: Updating opendomo packages" > $PIDFILE
+    [ "$CURRSTATUS" != "Stoping" ] && echo "Busy: Updating opendomo packages" > $PIDFILE
     change_sysstatus busy
     echo "Updating opendomo packages" | add_date
     cd $PACKAG_DOWNDIR
@@ -321,46 +327,7 @@ odpackage_update() {
 
     # Installing new dependecies
     LC_ALL=C LANGUAGE=C LANG=C DEBIAN_FRONTEND=noninteractive apt-get --force-yes -fyq install | add_date
-    [ `cat $PIDFILE | cut -f1 -d:` != "Stoping" ] && echo "Waiting" > $PIDFILE
+    [ "$CURRSTATUS" != "Stoping" ] && echo "Waiting" > $PIDFILE
     change_sysstatus active
-}
-
-### Loop function while $PIDFILE exist. No arguments required
-while test -f $PIDFILE; do
-    # Stoping service when are in stop mode
-    if [ `cat $PIDFILE | cut -f1 -d:` = Stoping ]; then
-        rm $PIDFILE
-
-    # Start if daemon is not in "spaceless" mode
-    elif [ `cat $PIDFILE | cut -f1 -d:` != "Spaceless" ]; then
-        # Update system every day only in configured systems
-        if ! test -f $SRCUPDATE || [ "$CURWEEK" -gt `cat $SRCUPDATE` ]; then
-            # Only update system if system is not in idle state
-            odpackage_update
-            update_sources
-            [ "$CURSTATE" != "idle" ] && test -z `check_free_memory safe-upgrade` && aptitude_install safe-upgrade
-            plugins_update
-
-            # Updating wrappers and config files
-            su admin -c "createwrappers.sh"
-            odconfmng &>/dev/null
-
-            # Trigger update event
-            logevent sysupgrade odbase 'System upgraded' &
-        fi
-
-        # Clean queue file for prevent file errors
-	grep -q -e [a-z] $QUEUEFILE || echo > $QUEUEFILE
-
-        # Install dependecies and plugins
-        for pkg in `cat $QUEUEFILE`; do
-            # Checking memory before install package
-            test -z `check_free_memory install $pkg` && aptitude_install install $pkg
-        done
-        plugins_install
-
-        # Remove marked plugins
-        plugins_remove
-        sleep 1
-    fi
-done
+  ;;
+esac
