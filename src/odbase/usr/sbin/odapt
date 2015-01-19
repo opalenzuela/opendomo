@@ -226,7 +226,7 @@ case $1 in
         # Checking plugin version
         PLUGIN=`basename $plugin | cut -f1 -d.`
         test -f $plugin && let INSTALLED_VERSION=`cat $plugin`
-        let AVAILABLE_VERSION=`grep $PLUGIN $REPOFILE | head -n1 | cut -f1 -d";" | cut -f2 -d- | cut -f1 -d.`
+        let AVAILABLE_VERSION=`grep ^$PLUGIN $REPOFILE | tail -n1 | cut -f1 -d";" | cut -f2 -d- | cut -f1 -d.`
 
         # Update plugin; only plugins in repository file can be updated
         if ! test -z $AVAILABLE_VERSION && ! test -z $INSTALLED_VERSION; then
