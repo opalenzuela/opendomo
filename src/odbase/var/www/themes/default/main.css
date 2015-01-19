@@ -1027,6 +1027,20 @@ li.pushbutton select {
 	scroll-behavior: initial;
 	overflow: overlay;
 }
+#bubble_closebutton {
+	display: block;
+	width: 100%;
+	background: url("/images/close_small.gif") right center no-repeat;
+}
+#helpbox {
+	margin: 20px;
+	text-align: justify;
+	line-height: 1.5;
+}
+#helpbox  p {
+	margin-bottom: 20px;
+}
+
 
 /* FILE UPLOAD STYLE */
 input[type="file"] {
