@@ -13,7 +13,7 @@ INSTDIR=/var/opendomo/plugins
 IFS=$'\x0A'$'\x0D'
 source /etc/os-release
 
-REPOSITORY="http://cloud.opendomo.com/repo/$VERSION"
+PLUGINREPOSITORY="http://cloud.opendomo.com/repo/$VERSION"
 REPOTEMP=/var/opendomo/apt/repository.tmp
 REPOFILE=/var/opendomo/apt/repository.lst
 
@@ -27,7 +27,7 @@ grep Spaceless $ODAPTPID &>/dev/null && echo "#WARN No free space available, you
 
 # Repository don't exists or empty, force download
 if test -z `cat $REPOFILE 2>/dev/null | head -c2`; then
-	wget $REPOSITORY/ -O $REPOTEMP --no-check-certificate --max-redirect=0 &>/dev/null && grep -v "#" $REPOTEMP | grep "-" > $REPOFILE
+	wget $PLUGINREPOSITORY/ -O $REPOTEMP --no-check-certificate --max-redirect=0 &>/dev/null && grep -v "#" $REPOTEMP | grep "-" > $REPOFILE
 fi
 
 if test -z "$1"; then
@@ -87,10 +87,16 @@ else
 	then
 		DEPS="none"
 	fi
-	if test -z "$WEB"
+	if test -f /var/opendomo/plugins/$1.info; then
+		source /var/opendomo/plugins/$1.info
+	fi
+	
+	if test -z "$REPOSITORY" || test -z "$AUTHORID"
 	then
 		# If website is not specified, we use the community one.
 		WEB="http://es.opendomo.org/"
+	else
+		WEB="https://raw.githubusercontent.com/$AUTHORID/$REPOSITORY/master/"
 	fi
 	
 	# Check status
@@ -112,13 +118,19 @@ else
 	test -f "$DOWNDIR/$FILE" || test -f "$INSTDIR/$1.files" || echo "	installPlugin.sh	Install"
 	echo	
 	echo "#> Plugin details"
+	echo "form:seePluginDetails.sh"
 	echo "	desc	Description	readonly	$DESC"
 	echo "	deps	Dependences	readonly	$DEPS"
 	echo "	webp	Web page	readonly	$WEB"
 	echo "	stat 	Status	readonly	$STATUS"
-	if test -f /var/opendomo/tmp/$1.changelog || wget -q $WEB/CHANGELOG -O /var/opendomo/tmp/$1.changelog
+	echo "actions:"	
+	echo
+	if wget -q $WEB/CHANGELOG -O /var/opendomo/tmp/$1.changelog
 	then
+		echo "#> Changes"
+		echo "form:seePluginDetails.sh"	
 		head -n10 /var/opendomo/tmp/$1.changelog | sed 's/^/# /'
+		echo "actions:"		
 	fi
 fi
 echo
