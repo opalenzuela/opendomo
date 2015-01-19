@@ -3,7 +3,7 @@
 
 # Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
 
-echo "HTTP/1.1 304 Not Modified"
+#echo "HTTP/1.1 304 Not Modified"
 echo "Content-Type: text/javascript"
 echo
 
