@@ -127,8 +127,8 @@ else
 	echo
 	if wget -q $WEB/CHANGELOG -O /var/opendomo/tmp/$1.changelog
 	then
-		echo "#> Changes"
-		echo "form:seePluginDetails.sh"	
+		echo "#> Last changes"
+		echo "form:seePluginDetails.sh	foldable"	
 		head -n10 /var/opendomo/tmp/$1.changelog | sed 's/^/# /'
 		echo "actions:"		
 	fi
