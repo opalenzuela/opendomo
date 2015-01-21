@@ -6,7 +6,7 @@
 # Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
 
 if test -z "$1"; then
-	echo "usage:$0 e-mail [Subject] Message "
+	echo "usage:$0 e-mail [Subject] Message [link]"
 	exit 0
 fi
 
