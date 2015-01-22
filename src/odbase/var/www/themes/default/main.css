@@ -1079,6 +1079,7 @@ fieldset.folded legend:after {	content:"  [+]";}
 fieldset.folded ul {	max-height: 0px;}
 fieldset.unfolded legend:after{	content: "  [-]";}
 fieldset.unfolded ul {max-height: 500px;padding: 1px;}
+.foldable{display: none;}
 
 /* cellphone format */ 
 @media (max-width:480px) {
