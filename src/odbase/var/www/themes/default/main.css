@@ -679,10 +679,6 @@ div.filecontainer {
 	display: inline-block;
 }
 
-.hidden {
-	display: none!important;
-}
-
 #loginbox{
 	border-collapse: collapse;
 	float: center;
@@ -922,8 +918,8 @@ input[type=checkbox] {
 .toolbar a.button {
 	border-radius: 0px;
 	border: none;
-	padding: 0px 20px;
-	margin: 0px 10px;	
+	padding: 0px 10px;
+	margin: 0px;	
 	line-height: 1.5;
 }
 
@@ -1031,6 +1027,8 @@ li.pushbutton select {
 	display: block;
 	width: 100%;
 	background: url("/images/close_small.gif") right center no-repeat;
+	color: transparent;
+	height: 24px;
 }
 #helpbox {
 	margin: 20px;
