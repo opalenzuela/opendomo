@@ -1164,9 +1164,9 @@ fieldset.unfolded ul {max-height: 500px;padding: 1px;}
 
 	/* Standard icon size */
 	.iconlist ul li{
-		background-size: 80px;	
-		height: 80px;
-		width: 80px;
+		background-size: 70px;	
+		height: 70px;
+		width: 70px;
 	}	
 	
 	/* Booleans and switches */
