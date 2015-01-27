@@ -7,12 +7,17 @@ function checkIfRestarted() {
 	$.post(url)
 	.done(function(data) {
 		//TODO: check the contents of "data"
-		console.log( "success" );
-		window.location.reload();
+		if (data.indexOf("active")>-1) {
+			console.log( "success" );
+			window.location.replace("/cgi-bin/od.cgi/control/");
+		} else {
+			console.log( "not ready yet: " + data );
+			setTimeout(checkIfRestarted,1000); // Then check every second 			
+		}
 	})
 	.fail(function(data) {
 		// JSON does not exist yet or connection is not available
 		console.log( "failed" );
-		setTimeout(checkIfRestarted,1000); // Then check every 2 second 
+		setTimeout(checkIfRestarted,1000); // Then check every second 
 	});
 }

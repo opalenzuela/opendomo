@@ -3,18 +3,21 @@
 #package:odbase
 #type:multiple
 
+# Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
+
 PIDFILE="/var/opendomo/run/mkrootfs.pid"
 
 message() {
-    echo "#LOADING Save system configuration (please wait) ..."
+    echo "#LOADING Saving system configuration ..."
     echo
     while  pstree | grep mkrootfs >/dev/null; do
         sleep 1
     done
     echo "#INFO Your configuration was saved"
     echo
+	echo "list:reboot.sh"
     echo "actions:"
-    echo "	reboot.sh	Reboot now"
+    echo "	reboot.sh	Reboot"
     echo
 }
 
