@@ -21,11 +21,17 @@ if test -z "$1"; then
 	cd /var/opendomo/plugins/
 	for plugin in *.info; do
 		if test -f $plugin; then
+			BNAME=`echo $plugin | cut -f1 -d.`
 			FOUND=1
 			AUTHORID=""
 			source ./$plugin
+			echo "	sep$plugin	$DESCRIPTION	separator"
 			if ! test -z "$AUTHORID" && ! test -z "$AUTHOR"; then
-				echo "	$AUTHORID	$DESCRIPTION	user	$AUTHOR"
+				echo "	$AUTHORID	Project leader	leader	$AUTHOR"
+			fi
+			if test -f /var/opendomo/plugins/$BNAME.credits
+			then
+				cat /var/opendomo/plugins/$BNAME.credits
 			fi
 		fi
 	done
