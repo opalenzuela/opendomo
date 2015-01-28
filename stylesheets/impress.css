@@ -96,13 +96,13 @@ body {
 /*    font-family: 'PT Sans', sans-serif; */
     min-height: 740px;
 
-    background: rgb(215, 215, 215);
-    background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 500, from(rgb(240, 240, 240)), to(rgb(90, 90, 90)));
-    background: -webkit-radial-gradient(rgb(240, 240, 240), rgb(90, 90, 90));
-    background:    -moz-radial-gradient(rgb(240, 240, 240), rgb(90, 90, 90));
-    background:     -ms-radial-gradient(rgb(240, 240, 240), rgb(90, 90, 90));
-    background:      -o-radial-gradient(rgb(240, 240, 240), rgb(90, 90, 90));
-    background:         radial-gradient(rgb(240, 240, 240), rgb(90, 90, 90));
+    background: #2A568E;
+    background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 500, from(rgb(240, 240, 240)), to(#2A568E));
+    background: -webkit-radial-gradient(rgb(240, 240, 240), #2A568E);
+    background:    -moz-radial-gradient(rgb(240, 240, 240), #2A568E);
+    background:     -ms-radial-gradient(rgb(240, 240, 240), #2A568E);
+    background:      -o-radial-gradient(rgb(240, 240, 240),#2A568E);
+    background:         radial-gradient(rgb(240, 240, 240), #2A568E);
 }
 
 /*

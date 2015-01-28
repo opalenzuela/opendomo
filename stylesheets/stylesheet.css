@@ -483,6 +483,16 @@ footer a:hover {
   }
 }
 
+.side-icon {
+	float:right;
+	height: 130px;
+	width: 130px;
+	margin: 5px;
+}
+b {	
+	font-weight: 700;
+}
+
 /* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
 @media only screen and (min-width: 480px) and (max-width: 767px) {}
 
