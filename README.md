@@ -4,8 +4,7 @@ OpenDomoOS is a project that implements an accessible and secure home automation
 
 OpenDomo OS
 ===========
-The main website of this project is  
-<a title="OpenDomo" href="http://opalenzuela.github.io/opendomo/index.html">here</a>, but in <a href='https://github.com/opalenzuela/opendomo/wiki/OpenDomo'>this page</a> you can find useful information about it. 
+The main website of this project is <a title="OpenDomo" href="http://opalenzuela.github.io/opendomo/index.html">here</a>, but in <a href='https://github.com/opalenzuela/opendomo/wiki/OpenDomo'>this page</a> you can find useful information about it. 
 
 At the moment, <a href='https://github.com/search?q=opendomo&ref=cmdform'> several sub-projects are already hosted in Github</a>.
 
