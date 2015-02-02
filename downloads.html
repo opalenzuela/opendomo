@@ -20,11 +20,11 @@
     <header>
       <div class="inner">
 		<a href='index.html'>
-        <h1>OpenDomoOS</h1>
+        <h1><img src='./images/squarelogo.png' style="height:50px;width:50px;">OpenDomoOS</h1>
         <h2>The free OS for home automation</h2>
 		</a>
         <a href="https://github.com/opalenzuela/opendomo" class="button">
-		<small>View project on</small>GitHub</a>
+		<small>View project on </small>GitHub</a>
       </div>
     </header>
 
@@ -38,9 +38,9 @@
 			<ul>
 				<li><a href='#vm'>Virtual Machines</a></li>
 				<li><a href='#rpi'>Raspberry PI</a></li>
-				<li><a href='#odnetwork'>ODNetwork (coming soon)</a></li>
+				<li><a href='#odnetwork'>ODNetwork</a></li>
 			</ul>
-			<p>Other hardware:</p>
+			<p>Software for other hardware:</p>
 			<ul>
 				<li><a href='#odcontrol'>ODControl</a></li>
 				<li><a href='#domino'>Arduino</a></li>
@@ -54,6 +54,8 @@
 			where is common to have computers permanently on, and also the fastest if you
 			want to test the system.</p>
 			<ul>
+				<li><a href='http://cloud.opendomo.com/download/index.php?name=OD-VM&version=2.2.0'>Download v2.2</a> - 
+					<a href='http://es.opendomo.org/od220' target="opendomoorg">Release notes</a></li>		
 				<li><a href='http://cloud.opendomo.com/download/index.php?name=OD-VM&version=2.1.0'>Download v2.1</a> - 
 					<a href='http://es.opendomo.org/od210' target="opendomoorg">Release notes</a></li>			
 				<li><a href='http://cloud.opendomo.com/download/index.php?name=OD-VM&version=2.0.0'>Download v2.0</a> - 
@@ -68,9 +70,13 @@
 			<span class="octicon octicon-link"></span></a>Raspberry PI</h2>
 			<img src='images/rpi-icon.png' class='side-icon'>
 			<p>OpenDomoOS can run on <a href='http://www.raspberrypi.org/' 
-			target='raspberrypi'>Raspberry PI</a> models B and B+. This is a very
-			popular, low-consumption and inexpensive platform.</p>
+			target='raspberrypi'>Raspberry PI</a> model B, and also model B+ 
+			on version 2.2 or higher. This is a very popular, low-consumption 
+			and inexpensive platform, perfect for prototyping and home 
+			automation.</p>
 			<ul>
+				<li><a href='http://cloud.opendomo.com/download/index.php?name=OD-RPI&version=2.2.0'>Download v2.2</a> - 
+					<a href='http://es.opendomo.org/od220' target="opendomoorg">Release notes</a></li>		
 				<li><a href='http://cloud.opendomo.com/download/index.php?name=OD-RPI&version=2.1.0'>Download v2.1</a> - 
 					<a href='http://es.opendomo.org/od210' target="opendomoorg">Release notes</a></li>			
 				<li><a href='http://cloud.opendomo.com/download/index.php?name=OD-RPI&version=2.0.0'>Download v2.0</a> - 
@@ -84,6 +90,23 @@
 # dd if={filename}.img of=/dev/{device}</code></pre>
 
 
+			<h2><a name="odnetwork" class="anchor" href="#odnetwork">
+			<span class="octicon octicon-link"></span></a>ODNetwork</h2>
+			<img src='images/odnetwork-icon.png' class='side-icon'>
+			<p><a href='http://www.opendomo.com/wiki/index.php/ODNetwork' target='odnetwork'>
+			ODNetwork</a> is an embedded platform running OpenDomoOS. This is 
+			very robust and reliable device, optimal for industrial automation
+			and professional installations.</p>
+			<ul>
+				<li><a href='http://cloud.opendomo.com/download/index.php?name=OD-NETWORK&version=2.2.0'>Download v2.2</a> - 
+					<a href='http://es.opendomo.org/od220' target="opendomoorg">Release notes</a></li>		
+			</ul>
+			
+			<p>To use this file, download the file and flash it on the SD card to 
+			boot the ODNetwork. <b>Important:</b> {device} must be the SD device ID, not the partition, 
+			and it must have at least 2GB of capacity</p>
+			<pre><code># gunzip {filename}.gz
+# dd if={filename}.img of=/dev/{device}</code></pre>
 
 
 			<h2><a name="odcontrol" class="anchor" href="#odcontrol">
@@ -146,7 +169,7 @@
 	</script>
 
 	<footer>
-		<a href='www.opendomo.com' target='opendomoservices'>Copyright(c) OpenDomo Services S.L.</a>
+		<a href='http://www.opendomo.com' target='opendomoservices'>Copyright(c) OpenDomo Services S.L.</a>
 	</footer>
   </body>
 </html>

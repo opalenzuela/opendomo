@@ -78,6 +78,7 @@ header h1 {
   line-height: 1;
   margin-bottom: 0.2em;
   width: 540px;
+  white-space: nowrap;
 }
 
 header h2 {
