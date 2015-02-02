@@ -225,11 +225,12 @@ case $1 in
    for plugin in `ls -1 $PLUGIN_FILEDIR/*.version`; do
         # Checking plugin version
         PLUGIN=`basename $plugin | cut -f1 -d.`
-        test -f $plugin && let INSTALLED_VERSION=`cat $plugin`
-        let AVAILABLE_VERSION=`grep ^$PLUGIN $REPOFILE | tail -n1 | cut -f1 -d";" | cut -f2 -d- | cut -f1 -d.`
+        test -f $plugin && INSTALLED_VERSION="`cat $plugin`"
+        AVAILABLE_VERSION="`grep ^$PLUGIN $REPOFILE | tail -n1 | cut -f1 -d";" | cut -f2 -d- | cut -f1 -d.`"
 
         # Update plugin; only plugins in repository file can be updated
-        if ! test -z $AVAILABLE_VERSION && ! test -z $INSTALLED_VERSION; then
+        if ! test -z "$AVAILABLE_VERSION" && ! test -z "$INSTALLED_VERSION"
+		then
             if [ $AVAILABLE_VERSION -gt $INSTALLED_VERSION ]; then
                 # Enqueue dependecies, only new will be installed
                 echo "Updating plugin: $PLUGIN to $AVAILABLE_VERSION" | add_date
