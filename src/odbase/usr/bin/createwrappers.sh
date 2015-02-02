@@ -2,7 +2,7 @@
 #desc:Create script wrappers
 #package:odbase
 
-# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+# Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
 
 cd /
 for i in `find /usr/local/opendomo/services/ -type f`
@@ -50,9 +50,7 @@ chmod +x /usr/local/opendomo/eventhandlers/*.sh 2>/dev/null
 chmod +x /var/www/cgi-bin/*.* 2>/dev/null
 
 # Cleaning possible Windows encoding EOL
-DIRS="$ODDIR/bin/ $ODDIR/daemons/ $ODDIR/eventhandlers/ $ODDIR/services/syscript/ \
-      $ODDIR/services/config/ $ODDIR/services/control/ $ODDIR/services/tools/"
-
+DIRS="$ODDIR/bin/ $ODDIR/bindings/ $ODDIR/daemons/ $ODDIR/eventhandlers/ $ODDIR/services/syscript/ $ODDIR/services/config/ $ODDIR/services/control/ $ODDIR/services/tools/"
 for dir in $DIRS; do
-	test -z `ls $dir/* | head -c1` || sed -e 's/\r//g' -i $dir/*.sh
+	sed 's/\r//g' -i $dir/*.sh
 done
