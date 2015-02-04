@@ -6,13 +6,16 @@ function checkIfRestarted() {
 	
 	$.post(url)
 	.done(function(data) {
-		//TODO: check the contents of "data"
-		if (data.indexOf("active")>-1) {
-			console.log( "success" );
-			window.location.replace("/cgi-bin/od.cgi/control/");
-		} else {
-			console.log( "not ready yet: " + data );
-			setTimeout(checkIfRestarted,1000); // Then check every second 			
+		try {
+			if ((typeof data == "object") && (data.status == "active")>-1) {
+				console.log( "success" );
+				window.location.replace("/cgi-bin/od.cgi/control/");
+			} else {
+				console.log( "not ready yet: " + data );
+				setTimeout(checkIfRestarted,1000); // Then check every second 			
+			}
+		} catch (e) {
+			setTimeout(checkIfRestarted,1000); // Check again later
 		}
 	})
 	.fail(function(data) {
