@@ -1,4 +1,4 @@
-#odbase (2.2.4) experimental; urgency=low
+odbase (2.2.4) experimental; urgency=low
  
   * Reboot script fixed
   * New user notification corrected
