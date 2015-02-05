@@ -14,11 +14,14 @@ EMAIL="$1"
 URL="http://cloud.opendomo.com/alert/index.php"
 TMPFILE="/var/opendomo/tmp/$$.tmp"
 
-TEXT=`i18n.sh "$2" | sed 's/ /+/g'`
 if ! test -z "$3"; then
-	SUBJECT="$TEXT"
+	SUBJECT=`i18n.sh "$2" | sed 's/ /+/g'`
 	TEXT=`i18n.sh "$3" | sed 's/ /+/g'`
+else
+	SUBJECT=`i18n.sh "$2" | sed 's/ /+/g'`
+	TEXT="$SUBJECT"
 fi
+
 if ! test -z "$4"; then
 	LINK="$4"
 fi

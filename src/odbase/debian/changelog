@@ -1,6 +1,7 @@
 #odbase (2.2.4) experimental; urgency=low
  
   * Reboot script fixed
+  * New user notification corrected
 
  -- Javier Miras Blanco <jmirasb@gmail.com>  Mon, 04 Feb 2015 17:19:51 +0100
 
