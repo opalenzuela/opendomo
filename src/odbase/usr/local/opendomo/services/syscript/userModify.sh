@@ -64,7 +64,7 @@ case $PARAMCOUNT in
 		SUBJECT="Your account in OpenDomoOS has been activated"
 		MESSAGE="Your account in OpenDomoOS has been activated. Follow this link and enter with your e-mail and password opendomo to configure your account."
 		LINK="http://$SYSTEMIP/"
-		/usr/local/opendomo/bin/sendMailTo.sh $EMAIL $SUBJECT $MESSAGE $LINK
+		/usr/local/opendomo/bin/sendMailTo.sh "$EMAIL" "$SUBJECT" "$MESSAGE" "$LINK"
 		manageUsers.sh
 	;;
 	3)
