@@ -1,3 +1,9 @@
+odbase (2.2.5) experimental; urgency=low
+
+  * Mounting disks event corrected
+
+ -- Javier Miras Blanco <jmirasb@gmail.com>  Mon, 14 Feb 2015 17:19:51 +0100
+
 odbase (2.2.4) experimental; urgency=low
  
   * Reboot script fixed
