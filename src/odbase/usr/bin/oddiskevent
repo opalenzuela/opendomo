@@ -1,29 +1,38 @@
 #!/bin/sh
-#desc: Launch events in new drives
+#desc:Launch events in new drives
+#package:odbase
+
+# Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
 
 TMPFILE="/tmp/diskevent.tmp"
 CFGFILE="/media/$2/opendomo.cfg"
 
 case $1 in
     add )
-         # Check configuration file
-         if test -f $CFGFILE; then
-              source $CFGFILE
-              for disktype in $(grep DISKTYPE $CFGFILE | cut -f2 -d"\""); do
-                  # Launch add events
-                  logevent add"$disktype"disk odbase "$disktype disk type added" $2
-              done
-              # Saving disk config in temporal file
-              echo "\"$2"\"$DISKTYPE\"" >> $TMPFILE
-         else
-              logevent adddisk odbase 'Disk attached' "/media/$2"
-         fi
+		# Check configuration file
+		if test -f $CFGFILE; then
+			source $CFGFILE
+			# Launch add events
+			if test -z "$DISKTYPE"; then
+				disktype="unknown"
+				logevent add"$disktype"disk odbase "$disktype disk type added" $2
+			else
+				for disktype in $DISKTYPE; do
+					logevent add"$disktype"disk odbase "$disktype disk type added" $2
+				done			  
+			fi
+
+			# Saving disk config in temporal file
+			echo "\"$2"\"$DISKTYPE\"" >> $TMPFILE
+		else
+			logevent adddisk odbase 'New disk attached' "/media/$2"
+		fi
     ;;
     del )
-         # Check disk events and launch del event
-         DISKTYPE=`grep $2 $TMPFILE | awk -F'"' '{print$4}'`
-         for disktype in $DISKTYPE; do
-             logevent del"$disktype"disk odbase "$disktype disk type deleted" $2
-         done
+		# Check disk events and launch del event
+		DISKTYPE=`grep $2 $TMPFILE | awk -F'"' '{print$4}'`
+		for disktype in $DISKTYPE; do
+			logevent del"$disktype"disk odbase "$disktype disk type deleted" $2
+		done
     ;;
 esac
