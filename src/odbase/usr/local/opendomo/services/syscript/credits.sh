@@ -27,7 +27,7 @@ if test -z "$1"; then
 			source ./$plugin
 			echo "	sep$plugin	$DESCRIPTION	separator"
 			if ! test -z "$AUTHORID" && ! test -z "$AUTHOR"; then
-				echo "	$AUTHORID	Project leader	leader	$AUTHOR"
+				echo "	$AUTHORID	Project leader	user leader	$AUTHOR"
 			fi
 			if test -f /var/opendomo/plugins/$BNAME.credits
 			then

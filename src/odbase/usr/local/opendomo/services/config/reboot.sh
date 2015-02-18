@@ -4,6 +4,8 @@
 #package:odbase
 #type:local
 
+# Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
+
 SYSSTATUS="/var/www/data/status.json"
 echo "{\"status\":\"rebooting\"}" > $SYSSTATUS
 
