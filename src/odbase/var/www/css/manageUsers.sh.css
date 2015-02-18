@@ -1,6 +1,6 @@
 .iconlist li.user {
-	background: url("/images/default/user.png") no-repeat center center;
+	background-image: url("/images/default/user.png");
 }
 .iconlist li.admin {
-	background: url("/images/default/admin.png") no-repeat center center;
+	background-image: url("/images/default/admin.png");
 }
