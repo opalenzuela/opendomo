@@ -7,7 +7,7 @@ function checkIfRestarted() {
 	$.post(url)
 	.done(function(data) {
 		try {
-			if ((typeof data == "object") && (data.status == "active")>-1) {
+			if ((typeof data == "object") && (data.status == "active")) {
 				console.log( "success" );
 				window.location.replace("/cgi-bin/od.cgi/control/");
 			} else {
