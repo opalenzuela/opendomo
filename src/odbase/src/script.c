@@ -943,10 +943,11 @@ script_process_form_body (char *id, char *desc, char *type, char *pextra)
 	if(pextra != NULL)
 		extra = pextra;
  	// ********** LINE HEADER **************
- 	printf ("\n\n<!-- %s [%s] %s %s !!%s!! (%s) -->\n",
+ 	/*printf ("\n\n<!-- %s [%s] %s %s !!%s!! (%s) -->\n",
+		stype, buffer, id, desc, extra, cleantype); */
+ 	/*syslog (LOG_DEBUG, "\n\n<!-- %s [%s] %s %s !!%s!! (%s) -->\n",
 		stype, buffer, id, desc, extra, cleantype);
- 	syslog (LOG_DEBUG, "\n\n<!-- %s [%s] %s %s !!%s!! (%s) -->\n",
-		stype, buffer, id, desc, extra, cleantype);
+	*/
 
 	//Particular case: if ID starts by ":", render as info text line
 	//TODO: Remove this and replace it by # information paragraph
@@ -1619,8 +1620,8 @@ script_exec (const char *cmd, const char *section, script_env_t * env)
 
     else
     {
-      printf ("\n<!-- Non-formated line '%s' -->\n", buf);
-      script_format_error (script_name, "Not formatted line");
+      printf ("\n<div class='debug'> Non-formated line '%s' </div>\n", buf);
+      //script_format_error (script_name, "Not formatted line");
     }
 
   }
