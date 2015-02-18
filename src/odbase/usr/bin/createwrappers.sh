@@ -54,3 +54,6 @@ DIRS="$ODDIR/bin/ $ODDIR/bindings/ $ODDIR/daemons/ $ODDIR/eventhandlers/ $ODDIR/
 for dir in $DIRS; do
 	sed 's/\r//g' -i $dir/*.sh
 done
+
+# Delete dynamic temporary CGI files
+rm /var/opendomo/tmp/javascript.tmp /var/opendomo/tmp/stylesheets.tmp 2>/dev/null

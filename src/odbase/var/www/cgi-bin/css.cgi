@@ -3,53 +3,38 @@
 
 # Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
 
-#echo "HTTP/1.1 304 Not Modified"
-echo "Content-Type: text/css"
-echo
+CSSFILE="/var/opendomo/tmp/stylesheets.tmp"
 
-THEMEPATH="/var/www/themes"
-SKINPATH="/var/www/skins"
-
-if ! test -f /etc/opendomo/cgi_style; then
-	echo "default" > /etc/opendomo/cgi_style
-	chown admin:users /etc/opendomo/cgi_style 2>/dev/null
-fi
-if ! test -f /etc/opendomo/cgi_skin; then
-	echo "default" > /etc/opendomo/cgi_skin
-	chown admin:users /etc/opendomo/cgi_skin  2>/dev/null
-fi
-
-########### THEME / STYLE ##########
-STYLE=`cat /etc/opendomo/cgi_style`
-
-# New feature: customizable style per-user
-if ! test -z "$QUERY_STRING"; then
-	USER="$QUERY_STRING"
-	if test -f /home/$USER/cgi_style; then
-		STYLE=`cat /home/$USER/cgi_style`
+if ! test -z "$HTTP_IF_MODIFIED_SINCE" && test -f $CSSFILE; then
+	echo "HTTP/1.1 304 Not Modified"
+	echo
+	exit
+else
+	if ! test -f $CSSFILE; then
+		STYLE=`cat /etc/opendomo/cgi_style`
+		test -z "$STYLE" && STYLE=default
+		echo " /* STYLE $STYLE */" >> $CSSFILE
+		cat /var/www/themes/$STYLE/main.css >> $CSSFILE
+		
+		SKIN=`cat /etc/opendomo/cgi_skin` 
+		test -z "$SKIN" && SKIN=default
+		echo " /* SKIN $SKIN */" >> $CSSFILE
+		cat /var/www/skins/$SKIN/main.css >> $CSSFILE	
+		#TODO Compress/cleanup file
 	fi
+	
+	FILESIZE=`wc -c $CSSFILE |cut -f1 -d' '`
+	ETAG=`md5sum $CSSFILE | cut -f1 -d' '`
+	DATE=`date -R --date='last Fri'`
+	EXPIRE=`date -R --date='next Fri'`
+	echo "Vary: Accept-Encoding"
+	echo "Cache-Control: max-age=3600, must-revalidate"
+	echo "Date: $DATE"
+	echo "Expires: $EXPIRE"
+	echo "Last-Modified: $DATE"
+	#echo "ETag: $ETAG"
+	echo "Content-Length: $FILESIZE"
+	echo "Content-Type: text/css"
+	echo
+	cat $CSSFILE
 fi
-
-# This should NEVER happen
-if test -z "$STYLE" || ! test -d "/var/www/themes/$STYLE"; then
-	STYLE="default"
-	echo $STYLE > /etc/opendomo/cgi_style
-	chown admin:users /etc/opendomo/cgi_style 2>/dev/null
-fi
-echo " /* STYLE $STYLE */"
-cat /var/www/themes/$STYLE/main.css
-#TODO sed -e '/\/\*/,/\*\//d' -e '/^\s*$/d' -e 's/[  ,\t]/ /g'
-echo
-
-############# SKIN #################
-SKIN=`cat /etc/opendomo/cgi_skin`
-# This should NEVER happen
-if test -z "$SKIN"; then
-	SKIN="default"
-	echo $SKIN > /etc/opendomo/cgi_skin
-	chown admin:users /etc/opendomo/cgi_skin 2>/dev/null
-fi
-echo " /* SKIN $SKIN */"
-cat /var/www/skins/$SKIN/main.css
-echo
-
