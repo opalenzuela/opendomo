@@ -628,6 +628,7 @@ p {
 	background: #DFDFDF;
 	text-align: left; 
 	overflow: auto;
+	padding: 2px;
 }
 .message p{
 	text-align: left;
