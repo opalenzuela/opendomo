@@ -3,7 +3,7 @@
 #package:odbase
 #type:local
 
-# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+# Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
 
 # Variables
 DAEMONSDIR="/usr/local/opendomo/daemons"
@@ -23,7 +23,8 @@ for service in *; do
     # Check service information and status
     DESC=`grep "# Short-Description" $service | cut -f2 -d:`
 
-    if odservice $service status &>/dev/null ; then
+    if ./$service status &>/dev/null 
+	then
         STATUS=on
         # Only if status is ON and we requested OFF, we execute
         if test "$VAL" = "off"; then
