@@ -12,9 +12,9 @@ if ! test -z "$HTTP_IF_MODIFIED_SINCE" && test -f $JSFILE; then
 else
 	if ! test -f $JSFILE; then
 		cd /var/www/scripts/common/
-		echo "/*" > $JSFILE
-		env >> $JSFILE
-		echo "*/" >> $JSFILE
+		#echo "/*" > $JSFILE
+		#env >> $JSFILE
+		#echo "*/" >> $JSFILE
 		for file in *.js
 		do
 			echo "/* File $file*/" >> $JSFILE
