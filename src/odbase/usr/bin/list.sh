@@ -10,7 +10,7 @@
 # Por razones de seguridad, seran eliminados de la ruta combinaciones de dos
 # puntos ".." y direccionadores estandar (<>)
 
-# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+# Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
  
 D="$1"
 # "control" dir by default
@@ -71,10 +71,7 @@ for i in *.sh; do
 			class="$base sh_file"
 		fi
 
-		if ! echo "$name" | grep "@invisible" > /dev/null
-		then
-			echo "	$link	$name  	$class"
-		fi
+		echo "	$link	$name  	$class"
     fi
 done
 
