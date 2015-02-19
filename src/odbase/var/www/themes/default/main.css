@@ -300,6 +300,7 @@ a em {
 	list-style: none;
 	border: none;
 	white-space: nowrap;
+	margin-top: 0px;
 }
 /*
 #header .categories li a{
@@ -311,6 +312,7 @@ a em {
 	display: inline-block !important;
 	margin: 0px;
 	padding: 0px;
+	vertical-align: top;
 }
 .categories li a {
 	background-position: center left;
