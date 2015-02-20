@@ -23,7 +23,7 @@ echo "INSTALLED=\"`ls -1 $INSTDIR | cut -f1 -d. | uniq | tr '$\n' " "`\""  >> $S
 source $STATFILE
 
 # opendomo-apt is in "Spaceless" mode, plugins can be installed
-grep Spaceless $ODAPTPID &>/dev/null && echo "#WARN No free space available, you need save configuration and reboot to install plugins"
+grep Spaceless $ODAPTPID &>/dev/null && echo "#WARN No free space available, you need save to configuration and reboot to continue"
 
 # Repository don't exists or empty, force download
 if test -z `cat $REPOFILE 2>/dev/null | head -c2`; then

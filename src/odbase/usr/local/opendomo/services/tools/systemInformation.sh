@@ -18,11 +18,21 @@ echo "#URL:http://www.gnu.org/licenses/gpl-3.0.html"
 echo
 echo "#> Installed products"
 echo "list:`basename $0`	detailed"
-
-ODBASE_VER=`apt-cache show odbase | grep Version| cut -f2 -d' '`
-
 echo "	-kernel 	Linux kernel	package	v$KERNELVERSION GPL v3"
-echo "	-odbase 	OpenDomoOS base system 	package	v$ODBASE_VER GPL v3"
+
+ODBASE_VER=`apt-cache show odbase | grep Version | cut -f2 -d' '`
+CLEANVER=`echo $ODBASE_VER | sed 's/\.//g'`
+let CLEANVER="$CLEANVER + 1"
+if wget -q --spider "http://es.opendomo.org/od$CLEANVER"
+then
+	echo "	-odbase 	OpenDomoOS base system 	package new	v$ODBASE_VER GPL v3"
+	if test -x /usr/local/opendomo/updateSystem.sh; then
+		echo "actions:"
+		echo "	updateSystem.sh	Update system"
+	fi
+else
+	echo "	-odbase 	OpenDomoOS base system 	package	v$ODBASE_VER GPL v3"
+fi 
 echo
 
 # Checking plugins dir and see info
