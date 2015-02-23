@@ -29,7 +29,7 @@ TMPFILE="$TMPPATH/$TOPIC.tmp"
 	fi
 #fi
 echo "<legend>"
-i18n.sh $TOPIC
+echo $TOPIC
 echo "</legend>"
 cat $TMPFILE | sed -e 's/href=\([^ ]*\) \([^$]*\)$/<a href=\1>\2<\/a>/' -e 's/^/<p>/' -e 's/$/<\/p>/' 
 
