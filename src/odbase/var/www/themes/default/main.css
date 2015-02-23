@@ -68,6 +68,9 @@ fieldset.multiselect ul li label input {display: inline!important;}
 li label {
 	display: inline-block;
 }
+li label b{
+	font-weight: normal;
+}
 li .imgframe {
 	display: none;
 }
@@ -1147,6 +1150,7 @@ fieldset.unfolded ul {max-height: 500px;padding: 1px;}
 	.tabform ul li label, .listbox ul li label, .detailed ul li label {
 		display: block;
 		line-height: 2em;
+		padding-left: 5px;
 	}
 	.tabform ul li p {
 		display: block;
