@@ -7,31 +7,39 @@
 # Default-Start:     1 2 3 4 5
 # Default-Stop:      0 6
 # Short-Description: Cloud access service
-# Description:       Cloud access service
+# Description:       Provide access to the cloud services and from Internet to the local network
 #
 ### END INIT INFO
-### Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+
+# Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
 
 . /lib/lsb/init-functions
 PIDFILE="/var/opendomo/run/cloudaccess.pid"
 TMPFILE="/var/opendomo/tmp/cloudaccess.tmp"
 UIDFILE="/etc/opendomo/uid"
+EXTERNALPORT="9325"
 
 do_background() {
 	echo "ON" >$PIDFILE
 	uid=`cat  $UIDFILE`
 	ODVER=`apt-cache show odbase | grep Version| cut -f2 -d' '`
 	EMAIL=`grep admin: /etc/passwd | awk -F: '{print$5}' | cut -f2 -d"<" | cut -f1 -d">"`
+	MYIP="169.254.0.25"
 
+	test -f /usr/bin/upnpc && upnpc -a $MYIP 80 $EXTERNALPORT TCP
+	
 	while test -f $PIDFILE
 	do
-		URL="http://cloud.opendomo.com/activate/index.php?UID=$uid&VER=$ODVER&MAIL=$EMAIL"
+		URL="http://cloud.opendomo.com/activate/index.php?UID=$uid&VER=$ODVER&MAIL=$EMAIL&PORT=$EXTERNALPORT"
 		wget -q -O $TMPFILE $URL 2>/dev/null
 		sleep 600
 	done
+	
 	# Service stopped here:
 	URL="http://cloud.opendomo.com/activate/index.php?UID=$uid&MAIL=$EMAIL&ACTION=STOP"
 	wget -q -O $TMPFILE $URL 2>/dev/null		
+	
+	test -f /usr/bin/upnpc && upnpc -d $EXTERNALPORT TCP
 }
 
 do_start(){
