@@ -32,7 +32,7 @@ else
 		echo "#INFO No users configured yet"
 	fi
     echo "action:"
-    echo "	userModify.sh	Add"
-	echo "	userDelete.sh	Delete"
+    echo "	editUser.sh	Add"
+	echo "	delUser.sh	Delete"
     echo
 fi
