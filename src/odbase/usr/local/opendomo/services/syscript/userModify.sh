@@ -51,7 +51,7 @@ case $PARAMCOUNT in
 		echo "	passw	Re-type 	password hidden	"
 		echo "actions:"
 		echo "	goback	Back"
-		echo "	userModify.sh	Modify"
+		echo "	userModify.sh	Save"
 		if test -x /usr/local/opendomo/userDelete.sh; then
 			echo "	userDelete.sh	Delete"
 		fi
@@ -81,18 +81,21 @@ case $PARAMCOUNT in
 				exit 1
 			else
 				#sudo usermod -c "$FULLNAME <$EMAIL>" $USERNAME  &>/dev/null
-				echo "$EMAIL" > /home/$USERNAME/.email
-				echo "$FULLNAME" > /home/$USERNAME/.fullname
-				if test -z "$OLDPASS" || test -z "$PASSWD" ; then
+				if touch /home/$USERNAME/.email; then
+					echo "$EMAIL" > /home/$USERNAME/.email
 					echo "$FULLNAME" > /home/$USERNAME/.fullname
+					if test -z "$OLDPASS" || test -z "$PASSWD" ; then
+						echo "$FULLNAME" > /home/$USERNAME/.fullname
+					else
+						echo -e "$OLDPASS\n$PASSWD\n$PASSWD" | (passwd $USERNAME) 2>/dev/null
+					fi
+					if test -x /usr/local/opendomo/manageUsers.sh; then
+						/usr/local/opendomo/manageUsers.sh
+					else
+						echo "#INFO Configuration successfully modified"
+					fi
 				else
-					echo -e "$OLDPASS\n$PASSWD\n$PASSWD" | (passwd $USERNAME) 2>/dev/null
-				fi
-				if test -x /usr/local/opendomo/manageUsers.sh; then
-					/usr/local/opendomo/manageUsers.sh
-				else
-					echo "#INFO Configuration successfully modified"
-					echo
+					echo "#WARN Missing privileges"
 				fi
 			fi
 		else

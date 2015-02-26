@@ -24,6 +24,7 @@ do_background() {
 	uid=`cat  $UIDFILE`
 	ODVER=`apt-cache show odbase | grep Version| cut -f2 -d' '`
 	EMAIL=`grep admin: /etc/passwd | awk -F: '{print$5}' | cut -f2 -d"<" | cut -f1 -d">"`
+	#TODO Use real IP
 	MYIP="169.254.0.25"
 
 	test -f /usr/bin/upnpc && upnpc -a $MYIP 80 $EXTERNALPORT TCP
