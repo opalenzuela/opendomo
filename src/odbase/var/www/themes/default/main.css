@@ -834,6 +834,7 @@ li.separator {
 #cat-apps a {	background: url('/themes/default/apps.png') scroll no-repeat left center;}
 #cat-logout a {	background: url('/themes/default/logout.png') scroll no-repeat left center; }
 #cat-save a {	background: url('/themes/default/save.png') scroll no-repeat left center; }
+#cat-user a {	background: url('/themes/default/user.png') scroll no-repeat left center; }
 
 #cat-control a,
 #cat-config a ,
@@ -841,7 +842,8 @@ li.separator {
 #cat-apps a,
 #cat-logout a,
 #cat-save a,
-#cat-map a {
+#cat-map a, 
+#cat-user a {
 	padding-left: 32px;
 	padding-right: 32px;
 }
@@ -1109,7 +1111,8 @@ fieldset.unfolded ul {max-height: 500px;padding: 1px;}
 	#cat-apps a,
 	#cat-logout a,
 	#cat-save a,
-	#cat-map a {
+	#cat-map a,
+	#cat-user a{
 		display: block;
 		font-size: 0;
 		padding:0px;
@@ -1235,7 +1238,8 @@ fieldset.unfolded ul {max-height: 500px;padding: 1px;}
 	#cat-apps a,
 	#cat-logout a,
 	#cat-save a,	
-	#cat-map a {
+	#cat-map a,
+	#cat-user a {
 		padding-left: 25px;
 		padding-right: 0px;	
 		background-position: left center;
