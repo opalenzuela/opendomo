@@ -63,8 +63,8 @@ case $PARAMCOUNT in
 		echo -e "$PASSWD\n$PASSWD" | (sudo passwd $USERNAME) 
 		SUBJECT="Your account in OpenDomoOS has been activated"
 		MESSAGE="Your account in OpenDomoOS has been activated. Follow this link and enter with your e-mail and password opendomo to configure your account."
-		#TODO Use final IP instead of autoconf
-		SYSTEMIP="169.254.0.25"
+		SYSTEMIP=`/sbin/ifconfig eth0 | grep "inet addr" | cut -f2 -d: | cut -f1 -d' '`
+		test -z "$SYSTEMIP" && SYSTEMIP="169.254.0.25"
 		LINK="http://$SYSTEMIP/"
 		/usr/local/opendomo/bin/sendMailTo.sh "$EMAIL" "$SUBJECT" "$MESSAGE" "$LINK"
 		manageUsers.sh

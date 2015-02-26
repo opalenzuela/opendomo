@@ -6,6 +6,8 @@
 
 # Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
 
+### DEPRECATED SCRIPT:  use editUser.sh instead ###
+
 USERNAME="$1"
 EMAIL="$2"
 FULLNAME="$3"

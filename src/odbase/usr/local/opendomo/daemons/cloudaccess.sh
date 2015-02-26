@@ -24,14 +24,13 @@ do_background() {
 	uid=`cat  $UIDFILE`
 	ODVER=`apt-cache show odbase | grep Version| cut -f2 -d' '`
 	EMAIL=`grep admin: /etc/passwd | awk -F: '{print$5}' | cut -f2 -d"<" | cut -f1 -d">"`
-	#TODO Use real IP
-	MYIP="169.254.0.25"
+	SYSTEMIP=`/sbin/ifconfig eth0 | grep "inet addr" | cut -f2 -d: | cut -f1 -d' '`
 
-	test -f /usr/bin/upnpc && upnpc -a $MYIP 80 $EXTERNALPORT TCP
+	test -f /usr/bin/upnpc && upnpc -a $SYSTEMIP 80 $EXTERNALPORT TCP
 	
 	while test -f $PIDFILE
 	do
-		URL="http://cloud.opendomo.com/activate/index.php?UID=$uid&VER=$ODVER&MAIL=$EMAIL&PORT=$EXTERNALPORT"
+		URL="http://cloud.opendomo.com/activate/index.php?UID=$uid&VER=$ODVER&MAIL=$EMAIL&PORT=$EXTERNALPORT&INTERNALIP=$SYSTEMIP"
 		wget -q -O $TMPFILE $URL 2>/dev/null
 		sleep 600
 	done
