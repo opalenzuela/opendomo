@@ -1142,6 +1142,8 @@ main (int argc, char *argv[])
 			printf ("\t\t<li id='cat-save' class='tab'><a href='/cgi-bin/od.cgi/saveConfig.sh' >%s</a></li>\n", T(ODCGI_TEXT_SAVE));			
 		}	
 		printf("		<li id='cat-logout' class='tab'><a href='?LOGOUT=1'>%s</a></li>\n", T (ODCGI_TEXT_LOGOUT));		
+		printf("		<li id='cat-user' class='tab'><a href='/cgi-bin/od.cgi/editUser.sh'>%s</a></li>\n", env.user);		
+		
 		printf("	</ul>");
 		printf("</div>");
 	  
