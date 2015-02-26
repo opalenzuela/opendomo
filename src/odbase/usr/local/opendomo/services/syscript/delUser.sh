@@ -3,9 +3,7 @@
 #type:multiple
 #package:odbase
 
-# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
-
-### DEPRECATED SCRIPT:  use delUser.sh instead ###
+# Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
 
 if ! test -z $1 || test "$1" != "admin"; then
     sudo userdel $1
