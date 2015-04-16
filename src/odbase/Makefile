@@ -1,4 +1,4 @@
-OPTS= -Wall -std=gnu99 -pedantic 
+OPTS= -O2 -s -Wall -std=gnu99 -pedantic 
 # -O2 -s
 HDRS= -I /usr/include -I src/ -I.
 LIBS=  -lcrypto -lcrypt -lconfig 
@@ -6,7 +6,7 @@ LIBS=  -lcrypto -lcrypt -lconfig
 
 
 # -- default ------------------------------------------------------------------
-default: odcgi
+default: odbase
 
 # -- odcgi --------------------------------------------------------------------
 ODCM_FILES = src/str.c src/string.c src/match.c src/base64.c 
@@ -14,7 +14,7 @@ ODCM_FILES = src/str.c src/string.c src/match.c src/base64.c
 ODCGI_OBJS = src/i18n.o src/user.o src/file.o src/util.o src/session.o src/cgi.o src/secfunc.o src/script.o
 #src/mjpg.o 
                 
-odcgi: $(ODCGI_OBJS) 
+odbase: $(ODCGI_OBJS) 
 	$(CC) $(OPTS) $(HDRS)  $(ODCM_FILES) $(ODCGI_OBJS) $(LIBCONFIG_FILES) src/odcgi.c -o var/www/cgi-bin/od.cgi -g $(LIBS)
 	$(CC) $(FLAGS) $(HDRS) src/bgshell.c -o usr/bin/bgshell
 	#$(CC) $(OPTS) $(HDRS) src/secfunc.o src/user.o  src/test.c -o bin/test -l crypt
