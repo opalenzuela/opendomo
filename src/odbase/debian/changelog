@@ -1,3 +1,9 @@
+odbase (2.2.6) experimental; urgency=low
+
+  * Reducing dependencies
+  
+ -- Javier Miras Blanco <jmirasb@gmail.com>  Mon, 14 Apr 2015 17:19:51 +0100
+ 
 odbase (2.2.5) experimental; urgency=low
 
   * Mounting disks event corrected
