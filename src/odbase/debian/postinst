@@ -3,7 +3,6 @@
 echo "Configuring opendomo services ..."
 insserv odchstates.sh  2>/dev/null
 insserv opendomo-apt 2>/dev/null
-insserv ntpdate 2>/dev/null
 
 # Creating opendomo admin user and group
 if ! id -u admin &>/dev/null; then
