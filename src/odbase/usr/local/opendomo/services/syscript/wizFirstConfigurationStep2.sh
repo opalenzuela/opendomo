@@ -3,7 +3,7 @@
 #package:odbase
 #type:local
 
-# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+# Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
 
 # In the second step, we save the information obtained from the first one
 # (e-mail and language) and we display the license in the selected language

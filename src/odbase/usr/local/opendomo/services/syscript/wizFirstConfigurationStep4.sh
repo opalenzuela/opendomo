@@ -3,7 +3,7 @@
 #package:odbase
 #type:local
 
-# Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+# Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
 
 # The fourth step will store the collected information in its final configuration 
 # file, activate the system into the Cloud (so we can use messaging) and we will
