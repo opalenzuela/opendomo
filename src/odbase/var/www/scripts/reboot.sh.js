@@ -11,16 +11,19 @@ function checkIfRestarted() {
 				console.log( "success" );
 				window.location.replace("/cgi-bin/od.cgi/control/");
 			} else {
+				$("p.loading").show();
 				console.log( "not ready yet: " + data );
 				setTimeout(checkIfRestarted,1000); // Then check every second 			
 			}
 		} catch (e) {
+			$("p.loading").show();
 			setTimeout(checkIfRestarted,1000); // Check again later
 		}
 	})
 	.fail(function(data) {
 		// JSON does not exist yet or connection is not available
 		console.log( "failed" );
+		$("p.loading").show();
 		setTimeout(checkIfRestarted,1000); // Then check every second 
 	});
 }
