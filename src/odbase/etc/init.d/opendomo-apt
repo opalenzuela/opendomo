@@ -10,17 +10,18 @@
 # Description:       Install opendomo plugins, deps and update system daemon
 #
 ### END INIT INFO
-### Copyright(c) 2014 OpenDomo Services SL. Licensed under GPL v3 or later
+### Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
 
 . /lib/init/vars.sh
 . /lib/lsb/init-functions
 
+DESC="OpenDomo update manager"
 PIDFILE="/var/opendomo/run/opendomo-apt.pid"
 LOGFILE="/var/opendomo/log/opendomo-apt.log"
 ERRFILE="/var/opendomo/log/opendomo-apt.err"
 
 do_start () {
-	log_action_begin_msg "Starting opendomo apt daemon"
+	log_action_begin_msg "Starting $DESC"
 	if ! test -f $PIDFILE; then
 		echo "Waiting" > $PIDFILE
 		/usr/sbin/odapt-daemon >$LOGFILE 2>$ERRFILE &
@@ -29,17 +30,17 @@ do_start () {
 }
 
 do_stop () {
-	log_action_begin_msg "Stoping opendomo apt daemon"
+	log_action_begin_msg "Stopping $DESC"
 	test -f $PIDFILE && echo "Stoping" > $PIDFILE
 	log_action_end_msg $?
 }
 
 do_status () {
 	if test -f $PIDFILE; then
-		echo "$basename $0 is running"
+		echo "$DESC is running"
 		exit 0
 	else
-		echo "$basename $0 is not running"
+		echo "$DESC is not running"
 		exit 1
 	fi
 }
@@ -62,7 +63,7 @@ case "$1" in
         exit $?
         ;;
   *)
-        echo "Usage: opendomo-apt [start|stop|restart|status]" >&2
+        echo "Usage: $0 [start|stop|restart|status]" >&2
         exit 3
         ;;
 esac

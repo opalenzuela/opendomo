@@ -10,7 +10,7 @@
 # Description:       Load default state in boot process
 #
 ### END INIT INFO
-### Copyright(c) 2011 OpenDomo Services SL. Licensed under GPL v3 or later
+### Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
 
 
 . /lib/init/vars.sh
