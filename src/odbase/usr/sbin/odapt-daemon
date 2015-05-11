@@ -1,11 +1,11 @@
 #!/bin/sh
 #desc: Install plugins deps
-# opendomo-apt can be in 3 diferent states:
+# opendomo-apt can be in 3 different states:
 #    busy - opendomo-apt is working, installing package, updating system, updating sources
-#    waiting - opendomo-apt is free, queue is emply and don't have other tasks pending
+#    waiting - opendomo-apt is free, queue is empty and don't have other tasks pending
 #    stoping - opendomo-apt stops when is secure, all started tasks are finished
 #    spaceless - opendomo-apt can't install packages because don't free space available.
-#       Every task is canceled and is required save config and reboot to continue
+#       Every task is cancelled and is required save config and reboot to continue
 #
 
 # Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
