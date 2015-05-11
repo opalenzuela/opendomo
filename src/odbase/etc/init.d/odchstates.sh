@@ -16,15 +16,25 @@
 . /lib/init/vars.sh
 . /lib/lsb/init-functions
 
-do_start () {
-    PIDFILE="/var/opendomo/run/state.pid"
-    UIDFILE="/etc/opendomo/uid"
-    SYSSTATUS="/var/www/data/status.json"
-    test -f $UIDFILE && STATEDIR="/etc/opendomo/states/active"; STATE=active
-    test -f $UIDFILE || STATEDIR="/etc/opendomo/states/idle"  ; STATE=idle
+PIDFILE="/var/opendomo/run/state.pid"
+UIDFILE="/etc/opendomo/uid"
+SYSSTATUS="/var/www/data/status.json"
 
+do_start () {
+	if test -f $PIDFILE; then
+		STATE=`cat $PIDFILE`
+	else
+		if test -f $UIDFILE ; then
+			STATE="active"
+		else
+			STATE="idle"
+		fi
+	fi
+	STATEDIR="/etc/opendomo/states/$STATE"
+	
     # Create sysstatus and pid
-    echo "{\"status\":\"$STATE\"}" > $SYSSTATUS && chown admin:admin $SYSSTATUS
+    echo "{\"status\":\"$STATE\"}" > $SYSSTATUS 
+	chown admin:admin $SYSSTATUS
     echo "$STATE" > $PIDFILE && chown admin:admin $PIDFILE
 
     # Start services in state
@@ -34,7 +44,14 @@ do_start () {
     done
 }
 
+do_background() {
+
+}
+
 case "$1" in
+	background)
+		do_background
+		;;
     start|"")
         do_start
         ;;
