@@ -14,6 +14,7 @@
 # Copyright(c) 2015 OpenDomo Services SL. Licensed under GPL v3 or later
 
 . /lib/lsb/init-functions
+DESC="Cloud access service"
 PIDFILE="/var/opendomo/run/cloudaccess.pid"
 TMPFILE="/var/opendomo/tmp/cloudaccess.tmp"
 UIDFILE="/etc/opendomo/uid"
@@ -43,23 +44,23 @@ do_background() {
 }
 
 do_start(){
-	log_action_begin_msg "Starting Cloud access service"
+	log_action_begin_msg "Starting $DESC"
 	test -f $PIDFILE || $0 background > /dev/null &
 	log_action_end_msg $?
 }
 
 do_stop () {
-	log_action_begin_msg "Stopping Cloud access service"	
+	log_action_begin_msg "Stopping $DESC"	
 	rm $PIDFILE 2>/dev/null
 	log_action_end_msg $?
 }
 
 do_status () {
 	if test -f $PIDFILE; then
-		echo "$basename $0 is running"
+		echo "$DESC is running"
 		exit 0
 	else
-		echo "$basename $0 is not running"
+		echo "$DESC is not running"
 		exit 1
 	fi
 }

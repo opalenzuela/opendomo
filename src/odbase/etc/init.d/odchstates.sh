@@ -20,13 +20,35 @@ PIDFILE="/var/opendomo/run/state.pid"
 UIDFILE="/etc/opendomo/uid"
 SYSSTATUS="/var/www/data/status.json"
 
+# On bootstart, the system status will be "busy" until process is finished
 do_start () {
+	STATE="busy"
+	
+    # Create sysstatus and pid
+    echo "{\"status\":\"$STATE\"}" > $SYSSTATUS 
+	chown admin:admin $SYSSTATUS
+    echo "$STATE" > $PIDFILE && chown admin:admin $PIDFILE
+	
+	$0 background &
+}
+
+do_background() {
+	# Before setting the actual system status, wait until odapt is ready
+	APTSTATUS=""
+	while "$APTSTATUS" != "waiting"; do
+		APTSTATUS=`/usr/sbin/odapt status` 
+		sleep 5
+	done
+	
+	# Normal case: restoring previous state
 	if test -f $PIDFILE; then
 		STATE=`cat $PIDFILE`
 	else
 		if test -f $UIDFILE ; then
+			# System is configured but no status specified. Go to Active
 			STATE="active"
 		else
+			# If system has never been configured, stay idle
 			STATE="idle"
 		fi
 	fi
@@ -37,15 +59,8 @@ do_start () {
 	chown admin:admin $SYSSTATUS
     echo "$STATE" > $PIDFILE && chown admin:admin $PIDFILE
 
-    # Start services in state
-    cd $STATEDIR
-    for daemon in *; do
-        test -f $daemon && odservice $daemon start
-    done
-}
-
-do_background() {
-
+    # Start services in state (always as admin)
+	su admin -c "/usr/local/opendomo/setSystemState.sh $STATE"
 }
 
 case "$1" in
