@@ -4,7 +4,7 @@
 #    busy - opendomo-apt is working, installing package, updating system, updating sources
 #    waiting - opendomo-apt is free, queue is empty and don't have other tasks pending
 #    stoping - opendomo-apt stops when is secure, all started tasks are finished
-#    spaceless - opendomo-apt can't install packages because don't free space available.
+#    spaceless - opendomo-apt can't install packages, no space available.
 #       Every task is cancelled and is required save config and reboot to continue
 #
 
@@ -33,10 +33,16 @@ chown -R admin:admin $QUEUEFILE $PLUGIN_DOWNDIR $PIDFILE $PACKAG_DOWNDIR
 
 ### Loop function while $PIDFILE exist. No arguments required
 while test -f $PIDFILE; do
-    # Stoping service when are in stop mode
+    # Stopping service when are in stop mode
     if [ "$CURRSTAT" == "Stoping" ]; then
         rm $PIDFILE
 
+	# Start if daemon is in "spaceless" mode
+    elif [ "$CURRSTAT" == "Spaceless" ]; then
+		su admin -c "/usr/local/opendomo/saveConfig.sh"
+		sync
+		/sbin/reboot
+		
     # Start if daemon is not in "spaceless" mode
     elif [ "$CURRSTAT" != "Spaceless" ]; then
         # Update system every day only in configured systems
@@ -56,9 +62,9 @@ while test -f $PIDFILE; do
         fi
 
         # Clean queue file for prevent file errors
-	grep -q -e [a-z] $QUEUEFILE || echo > $QUEUEFILE
+		grep -q -e [a-z] $QUEUEFILE || echo > $QUEUEFILE
 
-        # Install dependecies and plugins
+        # Install dependencies and plugins
         for pkg in `cat $QUEUEFILE`; do
             # Checking memory before install package
             test -z `odapt check_free_memory install $pkg` && odapt aptitude_install install $pkg
