@@ -32,6 +32,7 @@ fi
 
 if test -z "$1"; then
 	echo "#> Manage plugins"
+	echo "#INFO You must save the configuration before installing plugins"
 	echo  "list:managePlugins.sh	iconlist selectable"
 	for plugin in `cat $REPOFILE |  cut -f1 -d- | uniq`; do
 		# Extract plugin information
