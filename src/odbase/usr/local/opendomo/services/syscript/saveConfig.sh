@@ -28,7 +28,7 @@ if   [ `cat /var/www/data/status.json | cut -f2 -d: | cut -f1 -d}` = '"busy"' ] 
 elif [ `cat /var/www/data/status.json | cut -f2 -d: | cut -f1 -d}` = '"busy"' ]; then
     # System is busy by other process
     echo
-    echo "#WARN Configuration can be saved yet, system is busy"
+    echo "#WARN Configuration cannot be saved yet, system is busy"
     echo
 
 else

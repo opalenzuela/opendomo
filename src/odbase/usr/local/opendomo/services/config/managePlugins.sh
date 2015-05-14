@@ -59,7 +59,7 @@ if test -z "$1"; then
 	echo "actions:"
 	echo "	managePlugins.sh	Details"
 	echo "	installPlugin.sh	Install"
-	grep Spaceless $ODAPTPID &>/dev/null && echo "	saveConfigReboot.sh	Save and reboot"
+	grep Spaceless $ODAPTPID &>/dev/null && echo "	saveConfig.sh	Save and reboot"
 	if test -x /usr/local/opendomo/installPluginFromGithub.sh
 	then
 		echo "	installPluginFromGithub.sh	Install from Github"
