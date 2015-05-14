@@ -2,8 +2,7 @@
 function loadAsync(filePath, callback){
 	jQuery.ajax({
 		type : "GET",
-		url : filePath,
-		contentType : 'text/javascript; charset=utf-8'
+		url : filePath
 	}).success(callback);		
 }
 
