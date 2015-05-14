@@ -1,9 +1,22 @@
 
+function loadAsync(filePath, callback){
+	jQuery.ajax({
+		type : "GET",
+		url : filePath,
+		contentType : 'text/javascript; charset=utf-8'
+	}).success(callback);		
+}
+
 function loadJSON(filePath) {
   // Load json file;
-  var json = loadTextFileAjaxSync(filePath, "application/json");
-  // Parse json
-  return JSON.parse(json);
+  try {
+	  var json = loadTextFileAjaxSync(filePath, "application/json");
+	  // Parse json
+	  return JSON.parse(json);
+  } catch (){
+	  var o = {};
+	  return o;
+  }
 }   
 
 function loadTXT(filePath) {
