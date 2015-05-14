@@ -13,7 +13,7 @@ INSTDIR=/var/opendomo/plugins
 IFS=$'\x0A'$'\x0D'
 source /etc/os-release
 
-PLUGINREPOSITORY="http://cloud.opendomo.com/repo/2.2.0/"
+PLUGINREPOSITORY="http://cloud.opendomo.com/repo/2.2.0"
 REPOTEMP=/var/opendomo/apt/repository.tmp
 REPOFILE=/var/opendomo/apt/repository.lst
 

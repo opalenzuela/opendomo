@@ -37,7 +37,7 @@ PACKAG_DOWNDIR="$DAEMONDIR/packages"
 APTOPTS="--no-gui --without-recommends"
 CURWEEK=`date +%j`
 source /etc/os-release
-REPOSITORY="http://cloud.opendomo.com/repo/$VERSION"
+REPOSITORY="http://cloud.opendomo.com/repo/2.2.0"
 PACKAGEURL="http://es.opendomo.org/files"
 CURRSTATUS=`cat $PIDFILE | cut -f1 -d:`
 ODPKGMAJOR="2.2"
