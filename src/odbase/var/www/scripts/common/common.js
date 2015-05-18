@@ -64,18 +64,6 @@ function loadTextFileAjaxSync(filePath, mimeType){
 	}
 }
 
-/*
-document.getElementsByClassName = function(cl) {
-	console.log("Deprecated function");
-	var retnode = [];
-	var myclass = new RegExp('\\b'+cl+'\\b');
-	var elem = this.getElementsByTagName('*');
-	for (var i = 0; i < elem.length; i++) {
-		var classes = elem[i].className;
-		if (myclass.test(classes)) retnode.push(elem[i]);
-	}
-	return retnode;
-}; */
 
 function addToolbarButton(tbname, text, action, classes){
 	var btn = document.createElement('button');
@@ -92,164 +80,16 @@ function addToolbarButton(tbname, text, action, classes){
 } 
 
 function include_script(file) {
-   if (document.createElement && document.getElementsByTagName) {
-     var head = document.getElementsByTagName('head')[0];
+	if (document.createElement && document.getElementsByTagName) {
+		var head = document.getElementsByTagName('head')[0];
 
-     var script = document.createElement('script');
-     script.setAttribute('type', 'text/javascript');
-     script.setAttribute('src', file);
+		var script = document.createElement('script');
+		script.setAttribute('type', 'text/javascript');
+		script.setAttribute('src', file);
 
-     head.appendChild(script);
-   }
-}
-/* DUPLICATED ^
-function addJavascript(filename){
-	  var fileref=document.createElement('script')
-	  fileref.setAttribute("src", "/scripts/" + filename)
-	  fileref.setAttribute("type","text/javascript")
-	  document.head.appendChild(fileref);
-}*/
-
-/* DEPRECATED FUNCTIONS 
-// This function can link two dropdowns, so the second one's data depends on
-// the item selected on the first one
-function linkDropdowns(s,d){
-	s.onchange = function(){
-		for (i=0;i<d.children.length;i++){
-			if (d.children[i].id == s.value) {
-				show_optiongroup(d.children[i]);
-				if (d.children[i].children[0]) {
-					d.children[i].children[0].selected = true;
-				}
-			} else {
-				hide_optiongroup(d.children[i]);
-			}
-			d.children[i].label="";
-		}
-		if (d.onchange) d.onchange();
-	}
-	s.onchange();
-}
-// Similar to linkDropdown, this function does basically the same, but
-// attaching the event to another dropdown
-function crossLinkDropdowns(e,s,d){
-	e.onchange = function(){
-		for (i=0;i<d.children.length;i++){
-			if (d.children[i].id == s.value) {
-				show_optiongroup(d.children[i]);
-				if (d.children[i].children[0]) {
-					d.children[i].children[0].selected = true;
-				}
-			} else {
-				hide_optiongroup(d.children[i]);
-			}
-			d.children[i].label="";
-		}
-		if (d.onchange) d.onchange();
+		head.appendChild(script);
 	}
 }
-
-function hide_optiongroup(o){
-	var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
-	o.label="";
-	if (is_chrome){
-		// Nasty browser that does not support hiding optgroups
-		o.disabled=true;
-	} else {
-		o.hidden=true;
-	}
-}
-
-function show_optiongroup(o){
-	var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
-	o.label="";
-	if (is_chrome){
-		o.disabled=false;
-	} else {
-		o.hidden=false;
-	}
-	//o.innerHTML = 
-}
-
-function loadDropdownFromArray(dropdown,arraydata,arraydata_name,section){
-	// First group is for system variables
-	if (section!=""){
-		var vgrp= document.createElement("optgroup");
-		vgrp.label=section;
-		dropdown.appendChild(vgrp);
-	}
-
-	for (i=0;i<arraydata.length; i++){                                      
-		dropdown.options[dropdown.options.length] = new Option(arraydata_name[i],arraydata[i]);
-	}
-}
-
-function getSelectedElementsFromList(lstname){
-	var value = "";
-	var lsb = document.getElementById(lstname+'_frm');
-	if (lsb) {
-		for (i=0;i<fields.length;i++) {
-			if ((fields[i].type == "checkbox") && fields[i].checked == true){
-				value = value + ',' + fields[i].value;
-			}
-		}
-	} else {
-		//alert("List " + lstname + " not found!");
-	}
-	return value;
-}
-
-function getLastSelectedElementFromList(lstname){
-	var value = "";
-	var lsb = document.getElementById(lstname+'_frm');
-	if (lsb) {
-		for (i=0;i<fields.length;i++) {
-			if ((fields[i].type == "checkbox") && fields[i].checked == true){
-				value = fields[i].value;
-			}
-		}
-	} else {
-		//alert("List " + lstname + " not found!");
-	}
-	return value;
-} */
-
-/*
-function tryToReloadCam(image){
-	image.src="/images/nocam.png";
-}
-
-function showTT(id){
-	console.log("Deprecated function");
-	var tt = document.getElementById(id+'_tt');
-	var lbl = document.getElementById(id+'_lbl');
-	var curleft = 20;
-	var curtop = 0;
-	
-	if (lbl && lbl.offsetParent) {
-		do {
-			curleft += lbl.offsetLeft;
-			curtop += lbl.offsetTop;
-		} while (lbl = lbl.offsetParent);
-	}
-	
-	if (tt){
-		tt.left = curleft;
-		tt.top = curtop;
-		tt.style.display='block'; 
-	}	
-}
-function hideTT(id){
-	var tt = document.getElementById(id+'_tt');
-	if (tt) tt.style.display='none'; 
-}
-
-
-function help(topic){
-	window.open('http://www.opendomo.com/wiki/index.php?title='+topic,'help');
-}
-*/
-
 
 
 jQuery(function($) {
@@ -277,34 +117,6 @@ jQuery(function($) {
 			});
 		
 	}); 
-
-
-	/*
-	imgs = document.getElementsByTagName("img");
-	for (i=0;i<imgs.length;i++) {
-		adjust_img(imgs[i]);
-	}
-	*/
-	/*
-	lists = document.getElementsByTagName("ul");
-	for (i=0;i<lists.length;i++){
-		if(hasClassName(lists[i],"listbox")){
-			add_listbox_toolbar(lists[i]);
-		}
-	}
-	
-
-	cvs = document.getElementsByTagName("canvas");
-	if (cvs.length>0) init_graph_lib();
-	for (i=0;i<cvs.length;i++){
-	
-	}
-	
-	login = document.getElementById("USER");
-	if (login) {
-		login.focus();
-	}	
-	if (window.init_form) init_form(); */
 });
 
 
@@ -319,11 +131,12 @@ function add_listbox_toolbar(list){
 	
 	//TODO Insert the toolbar in the "legend" box when the ID field is corrected
 	//list.parentNode.childNodes[1].appendChild(tbar);
+	//FIXME Use jQuery instead	
 	list.parentNode.insertBefore(tbar,list);
 }
 
 function sel_view_mode(list,mode){
-//	alert(list.parentNode.parentNode.childNodes[4]+'.className= '+mode);
+	//FIXME Use jQuery instead
 	list.parentNode.parentNode.childNodes[4].className=mode;
 }
 
