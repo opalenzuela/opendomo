@@ -7,7 +7,6 @@ function loadAsync(filePath, callback){
 }
 
 function loadJSON(filePath) {
-	console.log("Using deprecated function");
 	// Load json file;
 	try {
 		var json = loadTextFileAjaxSync(filePath, "application/json");
@@ -20,7 +19,6 @@ function loadJSON(filePath) {
 }   
 
 function loadTXT(filePath) {
-	console.log("Using deprecated function");
 	try {
 		// Load TXT file;
 		var text = loadTextFileAjaxSync(filePath, "text/plain");
@@ -31,7 +29,6 @@ function loadTXT(filePath) {
 }   
 
 function loadRAW(filePath) {
-	console.log("Using deprecated function");
 	try {	
 		// Load TXT file;
 		var raw = loadTextFileAjaxSync(filePath, "application/octet-stream");
@@ -43,6 +40,7 @@ function loadRAW(filePath) {
 
 // Load text with Ajax synchronously: takes path to file and optional MIME type
 function loadTextFileAjaxSync(filePath, mimeType){
+	console.log("Using deprecated function");
 	try {
 		var xmlhttp=new XMLHttpRequest();
 		xmlhttp.open("GET",filePath,false);
