@@ -7,32 +7,42 @@ function loadAsync(filePath, callback){
 }
 
 function loadJSON(filePath) {
-  // Load json file;
-  try {
-	  var json = loadTextFileAjaxSync(filePath, "application/json");
-	  // Parse json
-	  return JSON.parse(json);
-  } catch (){
-	  var o = {};
-	  return o;
-  }
+	console.log("Using deprecated function");
+	// Load json file;
+	try {
+		var json = loadTextFileAjaxSync(filePath, "application/json");
+		// Parse json
+		return JSON.parse(json);
+	} catch (){
+		var o = {};
+		return o;
+	}
 }   
 
 function loadTXT(filePath) {
-  // Load TXT file;
-  var text = loadTextFileAjaxSync(filePath, "text/plain");
-  return text;
+	console.log("Using deprecated function");
+	try {
+		// Load TXT file;
+		var text = loadTextFileAjaxSync(filePath, "text/plain");
+		return text;
+	} catch(e) {
+		return "";
+	}
 }   
 
 function loadRAW(filePath) {
-  // Load TXT file;
-  var raw = loadTextFileAjaxSync(filePath, "application/octet-stream");
-  return raw;
+	console.log("Using deprecated function");
+	try {	
+		// Load TXT file;
+		var raw = loadTextFileAjaxSync(filePath, "application/octet-stream");
+		return raw;
+	} catch(e) {
+		return "";
+	}
 } 
 
 // Load text with Ajax synchronously: takes path to file and optional MIME type
-function loadTextFileAjaxSync(filePath, mimeType)
-{
+function loadTextFileAjaxSync(filePath, mimeType){
 	try {
 		var xmlhttp=new XMLHttpRequest();
 		xmlhttp.open("GET",filePath,false);
